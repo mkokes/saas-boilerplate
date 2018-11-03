@@ -1,0 +1,15 @@
+{
+  "name": "amga_ventures.saas_boilerplate.api.live",
+  "alias": "live.api.saas_boilerplate.amga_ventures",
+  "scale": {
+    "bru1": {
+      "min": 1,
+      "max": 1
+    }
+  },
+  "env": {
+    "LOG": "debug",
+    "NODE_ENV": "production",
+    "APP_MODE": "live"
+  }
+}

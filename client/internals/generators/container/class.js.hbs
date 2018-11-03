@@ -1,0 +1,29 @@
+/**
+ *
+ * {{properCase name }}
+ *
+ */
+
+import React from 'react';
+// import PropTypes from 'prop-types';
+{{#if wantHeaders}}
+import { Helmet } from 'react-helmet';
+{{/if}}
+
+/* eslint-disable react/prefer-stateless-function */
+export class {{ properCase name }} extends React.PureComponent {
+  render() {
+    return (
+      <div>
+      {{#if wantHeaders}}
+        <Helmet>
+          <title>{{properCase name}}</title>
+          <meta name="description" content="Description of {{properCase name}}" />
+        </Helmet>
+      {{/if}}
+      </div>
+    );
+  }
+}
+
+{{ properCase name }}.propTypes = {};
