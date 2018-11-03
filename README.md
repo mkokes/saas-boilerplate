@@ -1,3 +1,3 @@
 # WIP – WORK IN PROGRESS
 
-⚡️Boilerplate to launch SaaS projects (React for the frontend and Serverless Framework for the API)
+⚡️Boilerplate to launch SaaS projects quickly
