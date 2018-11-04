@@ -1,9 +1,52 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route as DefaultRoute,
+  Switch,
+} from 'react-router-dom';
+
+import DefaultLayout from 'layout';
+
+import PrivateRoute from 'components/PrivateRoute/Loadable';
+import RouteAnalytics from 'components/RouteAnalytics';
+import ScrollToTop from 'components/ScrollToTop';
 
 import Homepage from 'containers/Homepage/Loadable';
-import ScrollToTop from 'components/ScrollToTop';
+
+const Route = ({
+  component: Component,
+  layout: Layout = DefaultLayout,
+  ...rest
+}) => (
+  <DefaultRoute
+    {...rest}
+    render={props => {
+      let privateRoute = null;
+      if (rest.protected) {
+        privateRoute = <PrivateRoute exact path={rest.path} />;
+      }
+
+      return (
+        <React.Fragment>
+          {privateRoute}
+          <RouteAnalytics key={rest.path} {...props}>
+            <Layout>
+              <Component {...props} />
+            </Layout>
+          </RouteAnalytics>
+        </React.Fragment>
+      );
+    }}
+  />
+);
+
+Route.propTypes = {
+  component: PropTypes.func,
+  layout: PropTypes.func,
+  protected: PropTypes.bool,
+};
 
 export default function App() {
   return (
