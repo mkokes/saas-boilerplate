@@ -7,7 +7,7 @@ module.exports = ({ config: { JWT_SECRET }, server, log: parentLog }) => {
     jwt({
       secret: JWT_SECRET,
       passthrough: true,
-      algorithm: 'HS256',
+      algorithm: 'RS256',
     }),
   );
 
