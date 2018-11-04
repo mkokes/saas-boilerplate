@@ -5,6 +5,9 @@ TODO
 node_modules
 .DS_Store
 
+# Ignore yarn if yarn is used by accident
+yarn.lock
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
