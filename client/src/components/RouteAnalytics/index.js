@@ -6,6 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 import { AnalyticsApi } from 'api/vendors';
 
@@ -29,4 +30,4 @@ RouteAnalytics.propTypes = {
   location: PropTypes.object,
 };
 
-export default RouteAnalytics;
+export default withRouter(RouteAnalytics);
