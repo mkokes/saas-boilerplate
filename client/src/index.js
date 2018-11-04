@@ -15,7 +15,7 @@ import { GlobalProvider } from 'GlobalState';
 import GlobalStyle from 'GlobalStyle';
 
 import { clientInstance } from './graphql';
-import App from './App';
+import App from './app';
 
 import registerServiceWorker from './registerServiceWorker';
 
