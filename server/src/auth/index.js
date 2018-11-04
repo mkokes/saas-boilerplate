@@ -1,11 +1,11 @@
 const jwt = require('koa-jwt');
 
-module.exports = ({ log: parentLog, server }) => {
+module.exports = ({ config: { JWT_SECRET }, server, log: parentLog }) => {
   const log = parentLog.create('auth');
 
   server.use(
     jwt({
-      secret: 'amgaventures',
+      secret: JWT_SECRET,
       passthrough: true,
       algorithm: 'HS256',
     }),
