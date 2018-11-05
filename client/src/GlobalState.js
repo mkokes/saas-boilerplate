@@ -13,7 +13,12 @@ const providerPromise = new Promise(resolve => {
 export const getProvider = () => providerPromise;
 
 export class GlobalProvider extends React.PureComponent {
-  state = {};
+  state = {
+    auth: {
+      loggedIn: false,
+      token: null,
+    },
+  };
 
   async componentDidMount() {
     // await this.reloadUserAddress();
@@ -23,6 +28,16 @@ export class GlobalProvider extends React.PureComponent {
 
     setProviderInstance(this);
   }
+
+  authToken() {
+    return this.state.auth.token;
+  }
+
+  isLoggedIn() {
+    return this.state.auth.loggedIn;
+  }
+
+  signIn = async () => null;
 
   render() {
     return (
@@ -34,5 +49,5 @@ export class GlobalProvider extends React.PureComponent {
 }
 
 GlobalProvider.propTypes = {
-  children: propTypes.object,
+  children: propTypes.node,
 };
