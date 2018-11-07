@@ -13,6 +13,9 @@ const GlobalStyle = createGlobalStyle`
     justify-content: space-between;
     background-color: #fafafa;
   }
+  .grecaptcha-badge {
+    display: none;
+  }
 `;
 
 export default GlobalStyle;
