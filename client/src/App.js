@@ -12,6 +12,7 @@ import DefaultLayout from 'layout';
 import PrivateRoute from 'components/PrivateRoute/Loadable';
 import RouteAnalytics from 'components/RouteAnalytics';
 import ScrollToTop from 'components/ScrollToTop';
+import NotFoundPage from 'components/NotFoundPage/Loadable';
 
 import Homepage from 'containers/Homepage/Loadable';
 
@@ -56,6 +57,8 @@ export default function App() {
         <ScrollToTop>
           <Switch>
             <Route exact path="/" component={Homepage} />
+
+            <Route component={NotFoundPage} />
           </Switch>
         </ScrollToTop>
       </Router>
