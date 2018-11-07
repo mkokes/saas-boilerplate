@@ -14,7 +14,7 @@ import RouteAnalytics from 'components/RouteAnalytics';
 import ScrollToTop from 'components/ScrollToTop';
 import NotFoundPage from 'components/NotFoundPage/Loadable';
 
-import Homepage from 'containers/Homepage/Loadable';
+import HomePage from 'containers/HomePage/Loadable';
 
 const Route = ({
   component: Component,
@@ -56,7 +56,7 @@ export default function App() {
       <Router>
         <ScrollToTop>
           <Switch>
-            <Route exact path="/" component={Homepage} />
+            <Route exact path="/" component={HomePage} />
 
             <Route component={NotFoundPage} />
           </Switch>
