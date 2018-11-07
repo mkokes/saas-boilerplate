@@ -1,5 +1,5 @@
 module.exports = () => ({
   Query: {
-    hello: () => `Hello World!`,
+    hello: (_, { name }) => `Hello ${name}!`,
   },
 });

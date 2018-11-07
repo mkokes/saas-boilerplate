@@ -1,7 +1,6 @@
 const typeDefs = `
-  type Query {
-    hello: String
-  }
+  type Query {}
+  type Mutation {}
 `;
 
 export default typeDefs;

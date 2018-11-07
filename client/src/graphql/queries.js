@@ -1,9 +1,5 @@
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
 
 import {} from './fragments';
 
-export const Hello = gql`
-  query hello {
-    hello
-  }
-`;
+// export const Hello = gql``;
