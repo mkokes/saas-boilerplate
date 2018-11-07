@@ -8,6 +8,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'sanitize.css/sanitize.css';
 import { ApolloProvider } from 'react-apollo';
+// import FontFaceObserver from 'fontfaceobserver';
+import 'semantic-ui-css/semantic.min.css';
 
 import { AnalyticsApi } from 'api/vendors';
 
@@ -18,6 +20,12 @@ import { clientInstance } from './graphql';
 import App from './app';
 
 import registerServiceWorker from './registerServiceWorker';
+
+// Observe font loading
+/* const robotoFontObserver = new FontFaceObserver('Roboto', {});
+robotoFontObserver.load().then(() => {
+  document.body.classList.add('fontLoaded');
+}); */
 
 AnalyticsApi.setup();
 
