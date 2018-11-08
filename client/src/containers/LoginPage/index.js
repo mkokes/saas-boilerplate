@@ -46,6 +46,7 @@ export default class LoginPage extends React.PureComponent {
 
               <Segment attached>
                 <Form
+                  serverValidation
                   initialValues={{
                     userIdentifier: '',
                     password: '',
