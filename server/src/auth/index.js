@@ -1,8 +1,6 @@
 const jwt = require('koa-jwt');
 
-module.exports = ({ config: { JWT_SECRET }, server, log: parentLog }) => {
-  const log = parentLog.create('auth');
-
+module.exports = ({ config: { JWT_SECRET }, server }) => {
   server.use(
     jwt({
       secret: JWT_SECRET,
@@ -13,7 +11,6 @@ module.exports = ({ config: { JWT_SECRET }, server, log: parentLog }) => {
 
   server.use(async (ctx, next) => {
     if (ctx.state.user) {
-      log.debug('got user', ctx.state.user);
       // try {
       // } catch (err) {
       //   ctx.state.user = '';

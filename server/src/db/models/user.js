@@ -10,14 +10,6 @@ const SALT_WORK_FACTOR = 10;
  * User Schema
  */
 const UserSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    required: true,
-    unique: true,
-    index: true,
-  },
   email: {
     type: String,
     trim: true,
@@ -28,6 +20,11 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    trim: true,
     required: true,
   },
   passwordResetedAt: {
@@ -81,7 +78,7 @@ const UserSchema = new mongoose.Schema({
  */
 UserSchema.plugin(uniqueValidator, {
   type: 'mongoose-unique-validator',
-  message: 'Already in use',
+  message: 'Already in use, try another',
 });
 
 /**

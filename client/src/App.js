@@ -15,6 +15,12 @@ import ScrollToTop from 'components/ScrollToTop';
 import NotFoundPage from 'components/NotFoundPage/Loadable';
 
 import HomePage from 'containers/HomePage/Loadable';
+import ContactPage from 'containers/ContactPage/Loadable';
+import SignupPage from 'containers/SignupPage/Loadable';
+import LoginPage from 'containers/LoginPage/Loadable';
+import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
+import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
+import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 
 const Route = ({
   component: Component,
@@ -57,6 +63,8 @@ export default function App() {
         <ScrollToTop>
           <Switch>
             <Route exact path="/" component={HomePage} />
+            <Route exact path="/signup" component={SignupPage} />
+            <Route exact path="/auth/login" component={LoginPage} />
 
             <Route component={NotFoundPage} />
           </Switch>

@@ -19,19 +19,21 @@ export default class SafeQuery extends Component {
       isLoading = DEFAULT_IS_LOADING,
       renderError = DEFAULT_RENDER_ERROR,
       renderLoading = DEFAULT_RENDER_LOADING,
+      showError = false,
+      showLoading = false,
       ...props
     } = this.props;
 
     return (
       <Query {...props}>
         {result => {
-          // if it's a polling refetch call then we still have the data from before
-          // so check that this isn't the case
+          // if it's a polling refetch call then we still have the data from before so check that this isn't the case
           if (!result.data) {
             const { error } = result;
-            if (error) return renderError(result);
-            if (isLoading(result)) return renderLoading(result);
+            if (error && showError) return renderError(result);
+            if (isLoading(result) && showLoading) return renderLoading(result);
           }
+
           return children(result);
         }}
       </Query>

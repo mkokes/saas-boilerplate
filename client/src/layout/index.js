@@ -12,8 +12,21 @@ const DefaultLayout = ({ children }) => (
   </React.Fragment>
 );
 
+const DashboardLayout = ({ children }) => (
+  <React.Fragment>
+    <Navbar navbarBrandLink="/dashboard" />
+    {children}
+    <Footer minimal />
+  </React.Fragment>
+);
+
 DefaultLayout.propTypes = {
   children: PropTypes.object,
 };
 
+DashboardLayout.propTypes = {
+  children: PropTypes.object,
+};
+
 export default DefaultLayout;
+export { DefaultLayout, DashboardLayout };

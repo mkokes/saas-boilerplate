@@ -1,42 +1,37 @@
 /**
- *
  * NotFoundPage
  *
+ * This is the page we show when the user visits a url that doesn't have a route
+ *
+ * NOTE: while this component should technically be a stateless functional
+ * component (SFC), hot reloading does not currently support SFCs. If hot
+ * reloading is not a necessity for you then you can refactor it and remove
+ * the linting exception.
  */
 
-import React, { Fragment } from 'react';
-import { Helmet } from 'react-helmet';
+import React from 'react';
+import { Container, Row, Col, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Container, Header, Button } from 'semantic-ui-react';
 
 /* eslint-disable react/prefer-stateless-function */
-class NotFoundPage extends React.PureComponent {
+export default class NotFound extends React.PureComponent {
   render() {
     return (
-      <Fragment>
-        <Helmet>
-          <title>404</title>
-          <meta
-            name="description"
-            content="Sorry, the page you are looking for doesn't exist."
-          />
-        </Helmet>
-        <Container as="main" textAlign="center">
-          <Header as="h1" style={{ fontSize: '6em' }}>
-            404
-          </Header>
-          <p style={{ fontSize: '1.5em' }}>
-            Sorry, the page you are looking for doesn&apos;t exist.
-          </p>
-          <Link to="/">
-            <Button size="massive">Return to home page</Button>
-          </Link>
-        </Container>
-      </Fragment>
+      <Container tag="main">
+        <Row className="justify-content-center">
+          <Col md="12" className="text-center">
+            <span className="display-1 d-block">404</span>
+            <span className="display-4 lead">
+              The page you are looking for was not found
+            </span>
+            <Link to="/">
+              <Button size="lg" className="mt-4">
+                <strong>Return to home page</strong>
+              </Button>
+            </Link>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
-
-NotFoundPage.propTypes = {};
-
-export default NotFoundPage;

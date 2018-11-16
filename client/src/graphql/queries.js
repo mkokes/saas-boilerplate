@@ -1,5 +1,11 @@
-// import gql from 'graphql-tag';
+import gql from 'graphql-tag';
 
-import {} from './fragments';
+import { ProfileFields } from './fragments';
 
-// export const Hello = gql``;
+export const GetUserQuery = gql`
+  ${ProfileFields}
+
+  query getUser {
+    ...ProfileFields
+  }
+`;

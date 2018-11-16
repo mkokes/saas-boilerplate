@@ -1,135 +1,137 @@
 /**
  *
- * Footer
+ * FooterComponent
  *
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import {
-  Container,
-  Segment,
-  Grid,
-  List as ListDefault,
-} from 'semantic-ui-react';
+import styled from 'styled-components';
 
-/* const Footer = styled.footer`
+const FooterContainer = styled.footer`
   position: relative;
-  line-height: 34px;
   bottom: 0;
   width: 100%;
-`; */
-
-const FooterElement = styled(Segment)`
-  &&& {
-    padding-top: 3em;
-    padding-bottom: 3em;
-    background-color: rgb(35, 49, 67);
-  }
-`;
-const ListColumn = styled(Grid.Column)`
-  &&& {
-    display: flex !important;
-    justify-content: center;
-  }
-`;
-const List = styled(ListDefault)`
-  &&& {
-    margin-bottom: 16px;
-  }
-`;
-const ListHeader = styled(List.Header)`
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
-`;
-const ListItem = styled(List.Item)`
-  font-size: 16px;
-
-  a {
-    color: rgba(255, 255, 255, 0.5);
-  }
-  a:hover {
-    color: #ffffff;
-    text-decoration: underline;
-  }
+  line-height: 34px;
+  background-color: #f5f5f5;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
-class Footer extends React.PureComponent {
+export class FooterComponent extends React.PureComponent {
   render() {
+    const { minimal } = this.props;
+
     return (
-      <FooterElement vertical inverted>
+      <FooterContainer className="bg-dark text-light">
         <Container>
-          <Grid centered columns={5}>
-            <ListColumn mobile={8} tablet={3} computer={3}>
-              <List>
-                <ListHeader>Product</ListHeader>
-                <ListItem>
-                  <Link to="/pricing">Pricing</Link>
-                </ListItem>
-                <ListItem>
-                  <Link to="/signup">Sign up</Link>
-                </ListItem>
-                <ListItem>
-                  <Link to="/auth/login">Log in</Link>
-                </ListItem>
-              </List>
-            </ListColumn>
-            <ListColumn mobile={8} tablet={3} computer={3}>
-              <List>
-                <ListHeader>Resources</ListHeader>
-                <ListItem>
-                  <Link to="/support">Support</Link>
-                </ListItem>
-                <ListItem>
-                  <Link to="/blog">Blog</Link>
-                </ListItem>
-                <ListItem>
-                  <Link to="/legal">Legal</Link>
-                </ListItem>
-              </List>
-            </ListColumn>
-            <ListColumn mobile={8} tablet={3} computer={3}>
-              <List>
-                <ListHeader>Developers</ListHeader>
-                <ListItem>
-                  <Link to="https://status.domain.io">Status page</Link>
-                </ListItem>
-                <ListItem>
-                  <Link to="https://docs.domain.io">API documentation</Link>
-                </ListItem>
-              </List>
-            </ListColumn>
-            <ListColumn mobile={8} tablet={3} computer={3}>
-              <List>
-                <ListHeader>Company</ListHeader>
-                <ListItem>
-                  <Link to="/about">About</Link>
-                </ListItem>
-                <ListItem>
-                  <Link to="/contact">Contact us</Link>
-                </ListItem>
-              </List>
-            </ListColumn>
-          </Grid>
-          <Grid columns={2}>
-            <Grid.Column width={12}>
-              {' '}
-              <span>® {new Date().getFullYear()} ACME Company Inc.</span>
-            </Grid.Column>
-            <Grid.Column textAlign="right" width={4}>
-              <img src="/logo.png" alt="logo" width="26" height="26" />
-            </Grid.Column>
-          </Grid>
+          <Row className="mx-auto pt-4" hidden={minimal}>
+            <div className="col-6 col-md offset-md-1">
+              <h5 className="font-weight-bold">Product</h5>
+              <ul className="list-unstyled text-small">
+                <li>
+                  <Link to="/pricing" className="text-light">
+                    Pricing
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/signup" className="text-light">
+                    Sign up
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/auth/login" className="text-light">
+                    Log in
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="col-6 col-md">
+              <h5 className="font-weight-bold">Developers</h5>
+              <ul className="list-unstyled text-small">
+                <li>
+                  <a
+                    href="https://status.domain.io"
+                    className="text-light"
+                    target="new"
+                  >
+                    Status page
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://docs.domain.io/api"
+                    className="text-light"
+                    target="new"
+                  >
+                    API documentation
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-6 col-md">
+              <h5 className="font-weight-bold">Company</h5>
+              <ul className="list-unstyled text-small">
+                <li>
+                  <Link to="/about" className="text-light">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="text-light">
+                    Contact us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="col-6 col-md">
+              <h5 className="font-weight-bold">Resources</h5>
+              <ul className="list-unstyled text-small">
+                <li>
+                  <Link to="/dashboard/support" className="text-light">
+                    Support
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="https://blog.domain.io"
+                    className="text-light"
+                    target="new"
+                  >
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <Link to="/legal/terms" className="text-light">
+                    Legal
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </Row>
+          <Row className="mt-1 mb-1">
+            <Col xs="10">
+              <span>® {new Date().getFullYear()} ACME Inc.</span>
+            </Col>
+            <Col xs="2" className="text-right">
+              <img
+                className=""
+                src="/logo.png"
+                alt="app logo"
+                width="26"
+                height="26"
+              />
+            </Col>
+          </Row>
         </Container>
-      </FooterElement>
+      </FooterContainer>
     );
   }
 }
 
-Footer.propTypes = {};
+FooterComponent.propTypes = {
+  minimal: PropTypes.bool,
+};
 
-export default Footer;
+export default FooterComponent;

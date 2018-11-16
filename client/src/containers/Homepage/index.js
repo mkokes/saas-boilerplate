@@ -2,85 +2,99 @@
  * HomePage
  *
  * This is the first thing users see of our App, at the '/' route
+ *
+ * NOTE: while this component should technically be a stateless functional
+ * component (SFC), hot reloading does not currently support SFCs. If hot
+ * reloading is not a necessity for you then you can refactor it and remove
+ * the linting exception.
  */
 
-import React, { Fragment } from 'react';
-import { Helmet } from 'react-helmet';
+import React from 'react';
+import Helmet from 'react-helmet';
+import { Container, Row, Col, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { Segment, Container, Header, Button, Divider } from 'semantic-ui-react';
-
-const Main = styled.main`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-`;
-
-const IntroSegment = styled(Segment)`
-  &&& {
-    padding-top: 7em;
-    padding-bottom: 7em;
-    margin-bottom: 0px;
-  }
-`;
-const ContentSegment = styled(Segment)`
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-`;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class HomePage extends React.PureComponent {
   render() {
     return (
-      <Fragment>
+      <main className="d-flex flex-column flex-grow-1">
         <Helmet>
-          <title>Home Page</title>
-          <meta
-            name="description"
-            content="A React.js Boilerplate application homepage"
-          />
+          <title>Homepage</title>
+          <meta name="description" content="Domain.io homepage" />
         </Helmet>
-        <Main>
-          <IntroSegment textAlign="center" inverted>
-            <Container text>
-              <Header as="h1" inverted>
-                Intro title
-              </Header>
-              <Header as="h2" inverted>
-                Make it short and sweet, but not too short so folks dont simply
-                skip over it entirely.
-              </Header>
+        <section className="jumbotron text-center mb-0">
+          <div className="container">
+            <h1 className="jumbotron-heading">Intro title</h1>
+            <p className="lead">
+              Make it short and sweet, but not too short so folks dont simply
+              skip over it entirely.
+            </p>
+            <p>
               <Link to="/signup">
-                <Button primary size="huge">
-                  Sign up free
+                <Button color="primary" size="lg">
+                  <strong>Sign up free</strong>
                 </Button>
               </Link>
-            </Container>
-          </IntroSegment>
-          <ContentSegment vertical>
-            <Container text>
-              <Header as="h3">Breaking The Grid, Grabs Your Attention</Header>
-              <p>
-                Instead of focusing on content creation and hard work, we have
-                learned how to master the art of doing nothing by providing
-                massive amounts of whitespace and generic content that can seem
-                massive, monolithic and worth your attention.
+            </p>
+          </div>
+        </section>
+        <Container className="d-flex flex-column flex-grow-1 justify-content-center">
+          <Row className="mb-5">
+            <Col>
+              <h1>Lorem ipsum dolor sit amet, consectetur adipiscin</h1>
+              <p className="lead">
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                qui officia deserunt mollit anim id est laborum{' '}
+                <code>padding-top: 60px;</code> liquip ex ea commodo consequat{' '}
+                <code>body &gt; .container</code>. sed quia non numquam eius
+                modi tempora incidunt ut labore et dolore magnam aliquam quaerat
+                voluptatem. Ut enim ad minima veniam, quis nostrum
+                exercitationem ullam corporis suscipit laboriosam, nisi ut
+                aliquid <strong>ex ea commodi consequatur?</strong>
               </p>
-              <Button size="large">Read More</Button>
-              <Divider horizontal>Case Studies</Divider>
-              <Header as="h3">Did We Tell You About Our Bananas?</Header>
+            </Col>
+          </Row>
+          <Row>
+            <Col md="4">
+              <h2>Heading</h2>
               <p>
-                Yes I know you probably disregarded the earlier boasts as
-                non-sequitur filler content, but its really true. It took years
-                of gene splicing and combinatory DNA research, but our bananas
-                can really dance.
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
+                tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+                fermentum massa justo sit amet risus. Etiam porta sem malesuada
+                magna mollis euismod. Donec sed odio dui.{' '}
               </p>
-              <Button size="large">I am interested</Button>
-            </Container>
-          </ContentSegment>
-        </Main>
-      </Fragment>
+              <p>
+                <Button color="secondary">View details »</Button>
+              </p>
+            </Col>
+            <Col md="4">
+              <h2>Heading</h2>
+              <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
+                tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+                fermentum massa justo sit amet risus. Etiam porta sem malesuada
+                magna mollis euismod. Donec sed odio dui.{' '}
+              </p>
+              <p>
+                <Button color="secondary">View details »</Button>
+              </p>
+            </Col>
+            <Col md="4">
+              <h2>Heading</h2>
+              <p>
+                Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
+                tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+                fermentum massa justo sit amet risus. Etiam porta sem malesuada
+                magna mollis euismod. Donec sed odio dui.{' '}
+              </p>
+              <p>
+                <Button color="secondary">View details »</Button>
+              </p>
+            </Col>
+          </Row>
+        </Container>
+      </main>
     );
   }
 }

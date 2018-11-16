@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 
 import ErrorBox from 'components/ErrorBox';
-import LoadingIndicator from 'components/LoadingIndicator';
+
+import { transformError } from 'utils/graphql';
 
 export const DEFAULT_IS_LOADING = ({ loading }) => loading;
 export const DEFAULT_RENDER_ERROR = ({ error }) => {
   /* eslint-disable no-console */
   console.error(error);
+  // const transformedError = transformError(error);
 
   let errStr = `${error}`;
   const errStrLowercase = errStr.toLowerCase();
@@ -20,7 +22,7 @@ export const DEFAULT_RENDER_ERROR = ({ error }) => {
 
   return <ErrorBox>{errStr}</ErrorBox>;
 };
-export const DEFAULT_RENDER_LOADING = () => <LoadingIndicator />;
+export const DEFAULT_RENDER_LOADING = () => <div>Loading</div>;
 
 DEFAULT_RENDER_ERROR.propTypes = {
   error: PropTypes.string,
@@ -38,6 +40,8 @@ export default class SafeMutation extends Component {
       isLoading = DEFAULT_IS_LOADING,
       renderError = DEFAULT_RENDER_ERROR,
       renderLoading = DEFAULT_RENDER_LOADING,
+      showError = false,
+      showLoading = false,
       ...props
     } = this.props;
 
@@ -45,9 +49,9 @@ export default class SafeMutation extends Component {
       <Mutation {...props}>
         {(mutator, result) => (
           <>
+            {result.error && showError ? renderError(result) : null}
+            {isLoading(result) && showLoading ? renderLoading(result) : null}
             {children(mutator, result.data || {})}
-            {result.error ? renderError(result) : null}
-            {isLoading(result) ? renderLoading(result) : null}
           </>
         )}
       </Mutation>

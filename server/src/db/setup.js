@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
 module.exports = async ({ config: { DB_CONNECTION_URI }, log: parentLog }) => {
-  const log = parentLog.create('mlab');
+  const log = parentLog.create('db/setup');
 
   const db = await mongoose.connect(
     DB_CONNECTION_URI,
-    { useNewUrlParser: true },
+    { useCreateIndex: true, useNewUrlParser: true },
   );
-  log.info('connected to database');
+
+  log.info('connected');
 
   return db;
 };

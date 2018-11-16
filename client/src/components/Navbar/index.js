@@ -1,3 +1,5 @@
+// @TODO: Refactor this component
+
 /**
  *
  * Navbar
@@ -6,55 +8,100 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Container, Menu, Button } from 'semantic-ui-react';
-
-const BrandNameMenuItem = styled(Menu.Item)`
-  a {
-    color: rgba(0, 0, 0, 0.87);
-  }
-`;
-const SignUpButton = styled(Button)`
-  &&& {
-    font-size: 1em;
-  }
-`;
+import {
+  Container,
+  Collapse,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  Nav,
+  NavItem,
+  NavLink,
+  Button,
+} from 'reactstrap';
+import { NavLink as RRNavLink } from 'react-router-dom';
 
 /* eslint-disable react/prefer-stateless-function */
-class Navbar extends React.PureComponent {
+export class NavbarComponent extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      isOpen: false,
+    };
+  }
+
+  toggle() {
+    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+  }
+
+  handleClick() {
+    const { isOpen } = this.state;
+
+    if (isOpen) this.toggle();
+  }
+
   render() {
-    const { brandNameLink } = this.props;
+    const { navbarBrandLink } = this.props;
+    const { isOpen } = this.state;
 
     return (
       <header>
-        <Menu size="huge" borderless>
+        <Navbar color="dark" dark expand="sm">
           <Container>
-            <BrandNameMenuItem header>
-              <Link to={brandNameLink}>APP_BRAND_NAME</Link>
-            </BrandNameMenuItem>
-            <Menu.Item position="right">
-              <Menu.Item>
-                <Link to="/auth/login">Log in</Link>
-              </Menu.Item>
-              <Menu.Item name="signup">
-                <Link to="/signup" className="button">
-                  <SignUpButton basic>Sign up</SignUpButton>
-                </Link>
-              </Menu.Item>
-            </Menu.Item>
+            <NavLink
+              to={navbarBrandLink}
+              tag={RRNavLink}
+              className="navbar-brand navbar-brandname"
+              onClick={this.handleClick}
+            >
+              <NavbarBrand tag="span">
+                Domain.io
+                <span className="beta-icon align-text-bottom">beta</span>
+              </NavbarBrand>
+            </NavLink>
+            <NavbarToggler key="navbar-toggler" onClick={this.toggle} />
+            <Collapse key="navbar-collapse" isOpen={isOpen} navbar>
+              <Nav className="ml-auto align-items-center" navbar>
+                <NavItem key="register" onClick={this.handleClick}>
+                  <NavLink
+                    to="/signup"
+                    exact
+                    activeClassName="active"
+                    tag={RRNavLink}
+                  >
+                    <Button color="primary">
+                      <strong>Sign up</strong>
+                    </Button>
+                  </NavLink>
+                </NavItem>
+                <NavItem key="login" onClick={this.handleClick}>
+                  <NavLink
+                    to="/auth/login"
+                    exact
+                    activeClassName="active"
+                    className="text-light"
+                    tag={RRNavLink}
+                  >
+                    Log In
+                  </NavLink>
+                </NavItem>
+              </Nav>
+            </Collapse>
           </Container>
-        </Menu>
+        </Navbar>
       </header>
     );
   }
 }
 
-Navbar.defaultProps = {
-  brandNameLink: '/',
+NavbarComponent.defaultProps = {
+  navbarBrandLink: '/',
 };
-Navbar.propTypes = {
-  brandNameLink: PropTypes.string,
+NavbarComponent.propTypes = {
+  navbarBrandLink: PropTypes.string,
 };
 
-export default Navbar;
+export default NavbarComponent;

@@ -1,14 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Alert } from 'reactstrap';
 
-const ErrorDiv = styled.div`
+const Error = styled(Alert)`
   width: 100%;
-  background: #f00;
-  color: #fff;
   padding: 1em 2em;
   justify-content: space-between;
 `;
 
-const ErrorBox = children => <ErrorDiv>{children}</ErrorDiv>;
+const ErrorBox = props => (
+  <Error color="danger" fade={false}>
+    <strong>{props.children}</strong>
+  </Error>
+);
+
+ErrorBox.propTypes = {
+  children: PropTypes.node,
+};
 
 export default ErrorBox;

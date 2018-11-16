@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 import 'sanitize.css/sanitize.css';
 import { ApolloProvider } from 'react-apollo';
 // import FontFaceObserver from 'fontfaceobserver';
-import 'semantic-ui-css/semantic.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 import { AnalyticsApi } from 'api/vendors';
 
