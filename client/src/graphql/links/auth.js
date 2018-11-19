@@ -6,7 +6,7 @@ import {
 } from 'apollo-utilities';
 
 import { getProvider as getGlobalProvider } from 'GlobalState';
-import { buildAuthHeaders } from 'utils/requests';
+import { buildAuthHeader } from 'utils/requests';
 
 const sanitizedQueryCache = new Map();
 
@@ -64,7 +64,7 @@ export default () =>
       // add auth headers if possible
       if (globalProvider.isLoggedIn()) {
         currentOperation.setContext({
-          headers: buildAuthHeaders(globalProvider.authToken()),
+          headers: buildAuthHeader(globalProvider.authAccessToken()),
         });
       }
 

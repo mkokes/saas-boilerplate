@@ -18,7 +18,13 @@ export const SignUpUser = gql`
       password: $password
       name: $name
     ) {
-      ...ProfileFields
+      profile {
+        ...ProfileFields
+      }
+      tokens {
+        accessToken
+        refreshToken
+      }
     }
   }
 `;

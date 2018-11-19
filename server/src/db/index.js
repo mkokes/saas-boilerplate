@@ -1,7 +1,5 @@
-const { ApolloError, UserInputError } = require('apollo-server-koa');
 const EventEmitter = require('eventemitter3');
 
-const { validateRecaptchaResponse } = require('../utils/recaptcha');
 const setupDb = require('./setup');
 const User = require('./models/user');
 const { NOTIFICATION } = require('../constants/events');
@@ -13,6 +11,16 @@ class Db extends EventEmitter {
     this._config = config;
     this._nativeDb = nativeDb;
     this._log = parentLog.create('db/core');
+  }
+
+  async _getUser(userId, { mustExist = false } = {}) {
+    const user = await User.findOne({ _id: userId }).exec();
+
+    if (mustExist && !user) {
+      throw new Error(`User not found: ${userId}`);
+    }
+
+    return user;
   }
 
   async notifyUser(userId, type, data) {
@@ -27,96 +35,44 @@ class Db extends EventEmitter {
     this.emit(NOTIFICATION, obj._id);
   }
 
-  async signUpUser(useRecaptcha, recaptchaResponse, email, password, name) {
-    try {
-      if (useRecaptcha) {
-        const isRecaptchaValid = await validateRecaptchaResponse(
-          this._config.RECAPTCHA_SECRET_KEY,
-          recaptchaResponse,
-        );
-
-        if (!isRecaptchaValid)
-          throw new ApolloError(
-            'Submited reCaptcha response is not valid',
-            'INVALID_CAPTCHA',
-          );
-      }
-
-      const user = new User({
-        email,
-        password,
-        name,
-      });
-
-      const createdUser = await user.save();
-
-      this.notifyUser(createdUser._id, VERIFY_EMAIL, {
-        email: createdUser.email,
-      });
-
-      return createdUser;
-    } catch (e) {
-      if (e.name === 'ValidationError') {
-        const validationErrors = {};
-
-        Object.entries(e.errors).forEach(([key, value]) => {
-          validationErrors[key] = value.message;
-        });
-
-        return new UserInputError(
-          'Failed to sign up due to validation errors',
-          { validationErrors },
-        );
-      }
-
-      return e;
-    }
-  }
-
-  async signInUser(email, password) {
-    const doc = await this._getUser({ email, password }, { mustExist: true });
-
-    this._log.info(`Updating login timestamp for user ${doc.user._id} ...`);
-
-    await doc.update({
-      lastLogin: Date.now(),
+  async signUpUser(email, password, name) {
+    const user = new User({
+      email,
+      password,
+      name,
     });
 
-    return this.getUserProfile(doc.user._id, true);
+    const createdUser = await user.save();
+
+    this.notifyUser(createdUser._id, VERIFY_EMAIL, {
+      email: createdUser.email,
+    });
+
+    return createdUser;
   }
 
-  async getUserProfile(userAddress, canViewPrivateFields = false) {
-    const doc = await this._getUser(userAddress);
+  async loginUser(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
 
-    if (!doc.exists) {
+    this._log.info(`Updating login timestamp for user ${userId}`);
+    user.lastLoginAt = Date.now();
+    await user.save();
+
+    return this.getUserProfile(userId, true);
+  }
+
+  async getUserProfile(userId, canViewPrivateFields = false) {
+    const user = await this._getUser(userId);
+
+    if (!user) {
       return {};
     }
 
-    const {
-      address,
-      social,
-      legal,
-      created,
-      lastLogin,
-      email,
-      realName,
-      username,
-    } = doc.data;
+    const { lastLoginAt, email, name } = user;
 
     return {
-      address,
-      username,
-      created,
-      lastLogin,
-      social: Object.keys(social || {}).reduce((m, type) => {
-        m.push({
-          type,
-          value: social[type],
-        });
-
-        return m;
-      }, []),
-      ...(canViewPrivateFields ? { email, legal, realName } : {}),
+      lastLoginAt,
+      ...(canViewPrivateFields ? { email, name } : {}),
     };
   }
 }

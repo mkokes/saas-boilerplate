@@ -2,7 +2,8 @@
 TODO
 
 # Cruft
-node_modules
+node_modules/*
+**/node_modules/*
 .DS_Store
 
 # Ignore yarn if yarn is used by accident

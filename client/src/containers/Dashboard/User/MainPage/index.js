@@ -17,6 +17,7 @@ export default class MainPage extends React.PureComponent {
           <title>MainPage</title>
           <meta name="description" content="Description of MainPage" />
         </Helmet>
+        <h1>Dashboard page</h1>
       </Fragment>
     );
   }

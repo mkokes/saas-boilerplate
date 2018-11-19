@@ -16,7 +16,7 @@ import {
   Button,
   Alert,
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
@@ -28,6 +28,7 @@ import Reaptcha from 'reaptcha';
 import config from 'config';
 import { SignUpUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
+import { GlobalConsumer } from 'GlobalState';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SignupPage extends React.PureComponent {
@@ -35,8 +36,8 @@ export default class SignupPage extends React.PureComponent {
     super(props);
 
     this.state = {
-      recaptchaResponse: null,
-      signUpErrorMessage: null,
+      recaptchaResponse: '',
+      signUpErrorMessage: '',
       alreadyTakenEmails: [],
     };
 
@@ -56,181 +57,206 @@ export default class SignupPage extends React.PureComponent {
     } = this.state;
 
     return (
-      <Fragment>
-        <Helmet>
-          <title>Sign up</title>
-          <meta name="description" content="Description of SignupPage" />
-        </Helmet>
+      <GlobalConsumer>
+        {({ setAuthTokens, setUserProfile, loggedIn }) => (
+          <Fragment>
+            {loggedIn && <Redirect to="/dashboard/index" />}
 
-        <Container tag="main">
-          <Row>
-            <Col md={{ size: 6, offset: 3 }}>
-              <Card>
-                <CardHeader>
-                  <h3 className="mb-0">Sign up</h3>
-                </CardHeader>
-                <CardBody>
-                  {signUpErrorMessage ? (
-                    <Row>
-                      <Col className="text-center">
-                        <Alert color="danger" role="alert" fade={false}>
-                          <strong>{signUpErrorMessage}</strong>
-                        </Alert>
-                      </Col>
-                    </Row>
-                  ) : (
-                    ''
-                  )}
-                  <Row>
-                    <Col>
-                      <ApolloConsumer>
-                        {client => (
-                          <Formik
-                            initialValues={{
-                              email: '',
-                              name: '',
-                              password: '',
-                            }}
-                            validationSchema={() =>
-                              Yup.object().shape({
-                                email: Yup.string()
-                                  .email('Invalid email')
-                                  .notOneOf(
-                                    alreadyTakenEmails,
-                                    'Already in use, use another email',
-                                  )
-                                  .required('Required'),
-                                name: Yup.string()
-                                  .min(2, 'Too short!')
-                                  .required('Required'),
-                                password: Yup.string().required('Required'),
-                              })
-                            }
-                            onSubmit={async (values, formikBag) => {
-                              this.setState({
-                                signUpErrorMessage: null,
-                              });
+            <Helmet>
+              <title>Sign up</title>
+              <meta name="description" content="Description of SignupPage" />
+            </Helmet>
 
-                              if (!recaptchaResponse) {
-                                formikBag.setSubmitting(false);
-                                this.captcha.execute();
-                                return;
-                              }
-
-                              try {
-                                const { data } = await client.mutate({
-                                  mutation: SignUpUser,
-                                  variables: { ...values, recaptchaResponse },
-                                });
-                                console.debug(JSON.stringify(data));
-                              } catch (e) {
-                                const err = transformApolloErr(e);
-
-                                if (err.type === 'BAD_USER_INPUT') {
-                                  formikBag.setErrors(err.data);
-
-                                  if ('email' in err.data) {
-                                    this.setState(prevState => ({
-                                      alreadyTakenEmails: [
-                                        ...prevState.alreadyTakenEmails,
-                                        values.email,
-                                      ],
-                                    }));
-                                  }
+            <Container tag="main">
+              <Row>
+                <Col md={{ size: 6, offset: 3 }}>
+                  <Card>
+                    <CardHeader>
+                      <h3 className="mb-0">Sign up</h3>
+                    </CardHeader>
+                    <CardBody>
+                      {signUpErrorMessage && (
+                        <Row>
+                          <Col className="text-center">
+                            <Alert color="danger" role="alert" fade={false}>
+                              <strong>{signUpErrorMessage}</strong>
+                            </Alert>
+                          </Col>
+                        </Row>
+                      )}
+                      <Row>
+                        <Col>
+                          <ApolloConsumer>
+                            {client => (
+                              <Formik
+                                initialValues={{
+                                  email: '',
+                                  name: '',
+                                  password: '',
+                                }}
+                                validationSchema={() =>
+                                  Yup.object().shape({
+                                    email: Yup.string()
+                                      .email('Invalid email')
+                                      .notOneOf(
+                                        alreadyTakenEmails,
+                                        'Already in use, use another email',
+                                      )
+                                      .required('Required'),
+                                    name: Yup.string()
+                                      .min(2, 'Too short!')
+                                      .required('Required'),
+                                    password: Yup.string().required('Required'),
+                                  })
                                 }
+                                onSubmit={async (values, formikBag) => {
+                                  this.setState({
+                                    signUpErrorMessage: null,
+                                  });
 
-                                this.resetCaptcha();
-                                formikBag.setSubmitting(false);
-                                this.setState({
-                                  signUpErrorMessage: err.message,
-                                });
-                              }
-                            }}
-                          >
-                            {({ submitForm, isSubmitting }) => (
-                              <Form>
-                                <Field
-                                  component={ReactstrapInput}
-                                  name="email"
-                                  type="email"
-                                  placeholder="john@acme.com"
-                                  label="E-mail address"
-                                  autoComplete="email"
-                                />
-                                <Field
-                                  component={ReactstrapInput}
-                                  name="name"
-                                  type="text"
-                                  placeholder="John Doe"
-                                  label="Name"
-                                  autoComplete="name"
-                                />
-                                <Field
-                                  component={ReactstrapInput}
-                                  name="password"
-                                  type="password"
-                                  placeholder="Password"
-                                  label="Password"
-                                  autoComplete="off"
-                                />
+                                  if (!recaptchaResponse) {
+                                    formikBag.setSubmitting(false);
+                                    this.captcha.execute();
+                                    return;
+                                  }
 
-                                <Button
-                                  type="submit"
-                                  block
-                                  size="lg"
-                                  color="success"
-                                  disabled={isSubmitting}
-                                >
-                                  <FontAwesomeIcon
-                                    pulse
-                                    icon={faSpinner}
-                                    className={isSubmitting ? 'mr-2' : 'd-none'}
-                                  />
-                                  Get started now
-                                </Button>
+                                  try {
+                                    const { data } = await client.mutate({
+                                      mutation: SignUpUser,
+                                      variables: {
+                                        ...values,
+                                        recaptchaResponse,
+                                      },
+                                    });
 
-                                <Reaptcha
-                                  // eslint-disable-next-line
-                                  ref={e => (this.captcha = e)}
-                                  sitekey={config.RECAPTCHA_SITE_KEY}
-                                  onVerify={res => {
-                                    this.setState({ recaptchaResponse: res });
-                                    submitForm();
-                                  }}
-                                  onExpire={() => this.resetCaptcha}
-                                  onError={() => this.resetCaptcha}
-                                  size="invisible"
-                                />
+                                    const { profile, tokens } = data.signUpUser;
+                                    const {
+                                      accessToken,
+                                      refreshToken,
+                                    } = tokens;
 
-                                <p className="mt-1 text-center text-muted small">
-                                  By signing up you agree to our{' '}
-                                  <a href="/legal/terms#tos" target="popup">
-                                    Terms of Service
-                                  </a>{' '}
-                                  and{' '}
-                                  <a href="/legal/terms#pp" target="popup">
-                                    Privacy Policy
-                                  </a>
-                                  .
-                                </p>
-                              </Form>
+                                    await setAuthTokens({
+                                      accessToken,
+                                      refreshToken,
+                                    });
+                                    await setUserProfile(profile);
+                                  } catch (e) {
+                                    const err = transformApolloErr(e);
+
+                                    if (err.type === 'BAD_USER_INPUT') {
+                                      formikBag.setErrors(err.data);
+
+                                      if ('email' in err.data) {
+                                        this.setState(prevState => ({
+                                          alreadyTakenEmails: [
+                                            ...prevState.alreadyTakenEmails,
+                                            values.email,
+                                          ],
+                                        }));
+                                      }
+                                    }
+
+                                    this.resetCaptcha();
+                                    formikBag.setSubmitting(false);
+                                    this.setState({
+                                      signUpErrorMessage: err.message,
+                                    });
+                                  }
+                                }}
+                              >
+                                {({ submitForm, isSubmitting }) => (
+                                  <Form>
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="email"
+                                      type="email"
+                                      placeholder="john@acme.com"
+                                      label="E-mail address"
+                                      autoComplete="email"
+                                      required
+                                    />
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="name"
+                                      type="text"
+                                      placeholder="John Doe"
+                                      label="Name"
+                                      autoComplete="name"
+                                      required
+                                    />
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="password"
+                                      type="password"
+                                      placeholder="Password"
+                                      label="Password"
+                                      autoComplete="off"
+                                      required
+                                    />
+
+                                    <Button
+                                      type="submit"
+                                      block
+                                      size="lg"
+                                      color="success"
+                                      disabled={isSubmitting}
+                                    >
+                                      <FontAwesomeIcon
+                                        pulse
+                                        icon={faSpinner}
+                                        className={
+                                          isSubmitting ? 'mr-2' : 'd-none'
+                                        }
+                                      />
+                                      Get started now
+                                    </Button>
+
+                                    <Reaptcha
+                                      // eslint-disable-next-line
+                                      ref={e => (this.captcha = e)}
+                                      sitekey={config.RECAPTCHA_SITE_KEY}
+                                      onVerify={res => {
+                                        this.setState({
+                                          recaptchaResponse: res,
+                                        });
+                                        submitForm();
+                                      }}
+                                      onExpire={() => this.resetCaptcha}
+                                      onError={() => this.resetCaptcha}
+                                      size="invisible"
+                                    />
+
+                                    <p className="mt-1 text-center text-muted small">
+                                      By signing up you agree to our{' '}
+                                      <a href="/legal/terms#tos" target="popup">
+                                        Terms of Service
+                                      </a>{' '}
+                                      and{' '}
+                                      <a href="/legal/terms#pp" target="popup">
+                                        Privacy Policy
+                                      </a>
+                                      .
+                                    </p>
+                                  </Form>
+                                )}
+                              </Formik>
                             )}
-                          </Formik>
-                        )}
-                      </ApolloConsumer>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-              <div className="mt-5 text-center">
-                <Link to="/auth/login">Already have an account? Log in</Link>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </Fragment>
+                          </ApolloConsumer>
+                        </Col>
+                      </Row>
+                    </CardBody>
+                  </Card>
+                  <div className="mt-5 text-center">
+                    <Link to="/auth/login">
+                      Already have an account? Log in
+                    </Link>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </Fragment>
+        )}
+      </GlobalConsumer>
     );
   }
 }
-
-SignupPage.propTypes = {};

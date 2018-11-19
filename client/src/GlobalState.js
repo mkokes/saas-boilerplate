@@ -1,10 +1,11 @@
 import React, { createContext, Component } from 'react';
 import propTypes from 'prop-types';
 import { withApollo } from 'react-apollo';
+import jwtDecode from 'jwt-decode';
 
 import { LocalStorageApi } from 'api/vendors';
 import { LoginUserNoAuth } from 'graphql/mutations';
-import { buildAuthHeaders } from './utils/requests';
+import { buildAuthHeader } from './utils/requests';
 
 const GlobalContext = createContext({});
 
@@ -15,19 +16,34 @@ const providerPromise = new Promise(resolve => {
   setProviderInstance = resolve;
 });
 
+let setSignedIn;
+const signInPromise = new Promise(resolve => {
+  setSignedIn = resolve;
+});
+
 export const getProvider = () => providerPromise;
 
-const AUTH = 'auth';
-// const TOKEN_ALGORITHM = 'HS256';
-
+/* eslint-disable no-console */
 class Provider extends Component {
   state = {
+    appLoad: false,
     apolloClient: this.props.client,
-    auth: LocalStorageApi.getItem(AUTH) || {},
+    auth: {
+      accessToken: LocalStorageApi.getItem('access_token') || undefined,
+      refreshToken: LocalStorageApi.getItem('refresh_token') || undefined,
+    },
   };
 
-  authToken() {
-    return this.state.auth.token;
+  setAppLoad(val) {
+    this.setState({ appLoad: val });
+  }
+
+  authAccessToken() {
+    return this.state.auth.accessToken;
+  }
+
+  authRefreshToken() {
+    return this.state.auth.refreshToken;
   }
 
   apolloClient() {
@@ -38,75 +54,116 @@ class Provider extends Component {
     return this.state.auth.loggedIn;
   }
 
-  signIn = async ({ dontForceSignIn } = {}) => {
-    /* console.debug('dontForceSignIn', dontForceSignIn);
+  signIn = async ({ forceSignIn = false } = {}) => {
     if (this.state.loggedIn) {
       return;
     }
 
     console.debug(`Checking if user is logged in ...`);
 
+    function validateJWT(token) {
+      if (!token) return 'INVALID_TOKEN';
+
+      try {
+        const isExpired = jwtDecode(token).exp < Date.now() / 1000;
+        if (isExpired) return 'EXPIRED';
+
+        return 'OK';
+      } catch (e) {
+        console.error(e);
+        return 'INVALID_TOKEN';
+      }
+    }
+
     try {
-      const token = this.authToken();
+      const accessToken = this.authAccessToken();
+      const refreshToken = this.authRefreshToken();
 
-      const {
-        data: { profile },
-      } = await this.apolloClient().mutate({
-        mutation: LoginUserNoAuth,
-        context: {
-          headers: buildAuthHeaders(token),
-        },
-      });
+      const accessTokenStatus = validateJWT(accessToken);
+      const refreshTokenStatus = validateJWT(refreshToken);
 
-      console.debug(`User is logged in and has a profile`);
+      if (
+        accessTokenStatus !== 'INVALID_TOKEN' &&
+        refreshTokenStatus === 'OK'
+      ) {
+        const {
+          data: { profile },
+        } = await this.apolloClient().mutate({
+          mutation: LoginUserNoAuth,
+          context: {
+            headers: buildAuthHeader(accessToken),
+          },
+        });
+        console.debug('User is logged in and has a profile');
 
-      this.setUserProfile(profile);
+        this.setUserProfile(profile);
+      } else {
+        throw new Error('User tokens are not valid');
+      }
     } catch (err) {
-      console.debug(`User is not logged and/or does not have a profile`);
+      console.debug(`User is not logged and/or does not exist in db`);
 
       this.setState(state => ({
         auth: {
           ...state.auth,
-          token: undefined,
           profile: null,
           loggedIn: false,
         },
       }));
 
-      if (!dontForceSignIn) {
-        // this.showModal({ name: SIGN_IN });
+      if (forceSignIn) {
+        // @TODO: go to login form
+
+        // eslint-disable-next-line
+        return signInPromise;
       }
-    } */
+    }
+  };
+
+  renewAccessToken = async () => {
+    console.debug('Renewing access_token');
+
+    const refreshToken = this.authRefreshToken();
+
+    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YmYyOWZmM2UyNGY1ZjlhZWI2YWZjYWYiLCJpYXQiOjE1NDI2MjczMTUsImV4cCI6MTU0MjYyNzYxNX0.ogxvTqpDTBoGDnCcBtgPKw49v48PG0sYs1TJ-VzkwqYx';
   };
 
   setUserProfile = profile => {
-    console.log('Current user', profile);
+    console.debug('Current user', profile);
 
-    this.setState(state => ({
-      auth: {
-        ...state.auth,
-        profile,
-        // need this on both this function and setUserProfile() since they can be called independently of each other
-        loggedIn: true,
-      },
-    }));
+    this.setState(
+      state => ({
+        auth: {
+          ...state.auth,
+          profile,
+          loggedIn: true,
+        },
+      }),
+      /* now we resolve the promise -> */ setSignedIn,
+    );
+  };
+
+  setAuthTokens = ({ accessToken, refreshToken }) => {
+    if (accessToken) LocalStorageApi.setItem('access_token', accessToken);
+    if (refreshToken) LocalStorageApi.setItem('refresh_token', refreshToken);
   };
 
   async componentDidMount() {
-    // try and sign in!
-    await this.signIn({ dontForceSignIn: true });
+    await this.signIn();
 
     setProviderInstance(this);
+    this.setAppLoad(true);
   }
 
   render() {
     return (
       <GlobalContext.Provider
         value={{
+          appLoadStatus: this.state.appLoad,
           userProfile: this.state.auth.profile,
           loggedIn: this.isLoggedIn(),
           signIn: this.signIn,
-          setAuthTokenFromSignature: this.setAuthTokenFromSignature,
+          setAuthTokens: this.setAuthTokens,
           setUserProfile: this.setUserProfile,
         }}
       >

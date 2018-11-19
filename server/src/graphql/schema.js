@@ -1,20 +1,18 @@
 const { gql } = require('apollo-server-koa');
 
 module.exports = gql`
-  type AccessToken {
-    str: String!
-  }
-  type RefreshToken {
-    str: String!
-  }
   type AuthTokens {
-    accessToken: AccessToken
-    refreshToken: RefreshToken
+    accessToken: String
+    refreshToken: String
   }
-
   type UserProfile {
     name: String
     email: String
+  }
+
+  type SignUpResponse {
+    profile: UserProfile
+    tokens: AuthTokens
   }
 
   type Query {
@@ -26,6 +24,7 @@ module.exports = gql`
       email: String!
       password: String!
       name: String!
-    ): UserProfile
+    ): SignUpResponse
+    loginUser: UserProfile
   }
 `;

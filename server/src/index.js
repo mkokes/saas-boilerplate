@@ -35,7 +35,7 @@ const init = async () => {
     await nextHandler();
   });
 
-  setupAuthMiddleware({ config, db, server });
+  setupAuthMiddleware({ config, db, server, log });
   setupGraphQLEndpoint({ config, db, server, log });
 
   server.use(router.routes());

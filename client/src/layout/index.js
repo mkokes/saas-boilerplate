@@ -14,7 +14,7 @@ const DefaultLayout = ({ children }) => (
 
 const DashboardLayout = ({ children }) => (
   <React.Fragment>
-    <Navbar navbarBrandLink="/dashboard" />
+    <Navbar navbarBrandLink="/dashboard/index" />
     {children}
     <Footer minimal />
   </React.Fragment>

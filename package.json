@@ -3,6 +3,10 @@
   "name": "saas-boilerplate",
   "version": "0.1.0",
   "description": "⚡️ Boilerplate to launch SaaS projects (React for the frontend and Serverless Framework for the API)",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AMGAVentures/saas-boilerplate.git"

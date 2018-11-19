@@ -2,27 +2,33 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { GlobalConsumer } from 'GlobalState';
+
 export class PrivateRoute extends React.PureComponent {
   render() {
-    const { redirect: pathname, isLoggedIn, children, ...rest } = this.props;
+    const { redirect: pathname, children, ...rest } = this.props;
 
-    if (!isLoggedIn) {
-      return (
-        <Route
-          {...rest}
-          render={props => (
-            <Redirect
-              to={{
-                pathname,
-                state: { from: props.location },
-              }}
-            />
-          )}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <GlobalConsumer>
+        {({ loggedIn }) => (
+          <>
+            {!loggedIn ? (
+              <Route
+                {...rest}
+                render={props => (
+                  <Redirect
+                    to={{
+                      pathname,
+                      state: { from: props.location },
+                    }}
+                  />
+                )}
+              />
+            ) : null}
+          </>
+        )}
+      </GlobalConsumer>
+    );
   }
 }
 
@@ -31,10 +37,8 @@ PrivateRoute.defaultProps = {
 };
 
 PrivateRoute.propTypes = {
-  layout: PropTypes.func,
   redirect: PropTypes.string,
   location: PropTypes.object,
-  isLoggedIn: PropTypes.bool,
   children: PropTypes.object,
 };
 

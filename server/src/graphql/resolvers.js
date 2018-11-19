@@ -1,7 +1,11 @@
 const validator = require('validator');
+const jsonwebtoken = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
 
-module.exports = ({ db }) => ({
+const { assertUser } = require('../utils/asserts');
+const { validateRecaptchaResponse } = require('../utils/recaptcha');
+
+module.exports = ({ config: { JWT_SECRET }, db }) => ({
   Query: {
     tokens: () => ({
       accessToken: { value: '1' },
@@ -10,41 +14,86 @@ module.exports = ({ db }) => ({
   },
   Mutation: {
     signUpUser: async (_, { recaptchaResponse, email, password, name }) => {
-      const validationErrors = {};
-      const useRecaptcha = true;
+      const paramsValidationErrors = {};
+      const useRecaptcha = false;
 
-      if (validator.isEmpty(recaptchaResponse)) {
+      if (useRecaptcha && validator.isEmpty(recaptchaResponse)) {
         throw new ApolloError(
           'ReCaptcha response is required to continue',
           'INVALID_CAPTCHA',
         );
       }
       if (!validator.isEmail(email)) {
-        validationErrors.email = 'Email is not valid';
+        paramsValidationErrors.email = 'Email is not valid';
       }
       if (validator.isEmpty(password)) {
-        validationErrors.password = 'Password must be set';
+        paramsValidationErrors.password = 'Password must be set';
       }
       if (validator.isEmpty(name)) {
-        validationErrors.name = 'What is your name?';
+        paramsValidationErrors.name = 'What is your name?';
       }
       if (!validator.isLength(name, { min: 2, max: undefined })) {
-        validationErrors.name = 'Too short!';
+        paramsValidationErrors.name = 'Too short!';
       }
 
-      if (Object.keys(validationErrors).length > 0) {
+      if (Object.keys(paramsValidationErrors).length > 0) {
         throw new UserInputError('Failed to sign up due to validation errors', {
-          validationErrors,
+          validationErrors: paramsValidationErrors,
         });
       }
 
-      return db.signUpUser(
-        useRecaptcha,
-        recaptchaResponse,
-        email,
-        password,
-        name,
-      );
+      if (useRecaptcha) {
+        const isRecaptchaValid = await validateRecaptchaResponse(
+          recaptchaResponse,
+        );
+
+        if (!isRecaptchaValid)
+          throw new ApolloError(
+            'Submited reCaptcha response is not valid',
+            'INVALID_CAPTCHA',
+          );
+      }
+
+      try {
+        const user = await db.signUpUser(email, password, name);
+
+        const accessToken = jsonwebtoken.sign(
+          {
+            _id: user._id,
+          },
+          JWT_SECRET,
+          { expiresIn: 60 * 5 },
+        );
+        const refreshToken = jsonwebtoken.sign(
+          {
+            type: 'refresh',
+          },
+          JWT_SECRET,
+          { expiresIn: '30 days' },
+        );
+
+        return { profile: user, tokens: { accessToken, refreshToken } };
+      } catch (e) {
+        if (e.name === 'ValidationError') {
+          const userValidationErrors = {};
+
+          Object.entries(e.errors).forEach(([key, value]) => {
+            userValidationErrors[key] = value.message;
+          });
+
+          return new UserInputError(
+            'Failed to sign up due to validation errors',
+            { validationErrors: userValidationErrors },
+          );
+        }
+
+        return e;
+      }
+    },
+    loginUser: async (_, __, { user }) => {
+      await assertUser(user);
+
+      return db.loginUser(user._id);
     },
   },
 });

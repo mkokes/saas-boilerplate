@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import {
@@ -7,20 +7,25 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import DefaultLayout from 'layout';
+import { DefaultLayout, DashboardLayout } from 'layout';
 
+import AppLoadPage from 'components/AppLoadPage';
 import PrivateRoute from 'components/PrivateRoute/Loadable';
 import RouteAnalytics from 'components/RouteAnalytics';
 import ScrollToTop from 'components/ScrollToTop';
 import NotFoundPage from 'components/NotFoundPage/Loadable';
 
 import HomePage from 'containers/HomePage/Loadable';
-import ContactPage from 'containers/ContactPage/Loadable';
+// import ContactPage from 'containers/ContactPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
-import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
-import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
-import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
+// import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
+// import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
+// import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
+
+import MainPage from 'containers/Dashboard/User/MainPage';
+
+import { GlobalConsumer } from 'GlobalState';
 
 const Route = ({
   component: Component,
@@ -57,19 +62,37 @@ Route.propTypes = {
 
 export default function App() {
   return (
-    <Fragment>
-      <Helmet titleTemplate="%s - SaaS boilerplate" />
-      <Router>
-        <ScrollToTop>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/signup" component={SignupPage} />
-            <Route exact path="/auth/login" component={LoginPage} />
+    <GlobalConsumer>
+      {({ appLoadStatus }) => (
+        <>
+          {appLoadStatus ? (
+            <>
+              <Helmet titleTemplate="%s - SaaS boilerplate" />
+              <Router>
+                <ScrollToTop>
+                  <Switch>
+                    <Route exact path="/" component={HomePage} />
+                    <Route exact path="/signup" component={SignupPage} />
+                    <Route exact path="/auth/login" component={LoginPage} />
 
-            <Route component={NotFoundPage} />
-          </Switch>
-        </ScrollToTop>
-      </Router>
-    </Fragment>
+                    <Route
+                      protected
+                      exact
+                      path="/dashboard/index"
+                      component={MainPage}
+                      layout={DashboardLayout}
+                    />
+
+                    <Route component={NotFoundPage} />
+                  </Switch>
+                </ScrollToTop>
+              </Router>
+            </>
+          ) : (
+            <AppLoadPage />
+          )}
+        </>
+      )}
+    </GlobalConsumer>
   );
 }

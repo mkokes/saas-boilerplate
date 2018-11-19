@@ -1,2 +1,2 @@
-export const buildAuthHeaders = token =>
+export const buildAuthHeader = token =>
   token ? { Authorization: `Bearer ${token}` } : {};
