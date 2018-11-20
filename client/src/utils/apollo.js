@@ -55,7 +55,7 @@ export const transformApolloErr = e => {
     }
   } catch (exception) {
     // eslint-disable-next-line
-    console.error(exception);
+    console.error('transformApolloErr catch e:', exception);
   }
 
   if (transformedErr.message === null) {

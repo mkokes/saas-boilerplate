@@ -4,9 +4,8 @@
  *
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
 import ClipLoader from 'react-spinners/ClipLoader';
 
 const Container = styled.div`
@@ -28,17 +27,25 @@ const LoadingText = styled.h1`
 `;
 
 /* eslint-disable react/prefer-stateless-function */
-class AppLoadPage extends React.PureComponent {
-  render() {
-    return (
-      <Container>
-        <LoadingIconContainer>
-          <ClipLoader sizeUnit="em" size={7} />
-        </LoadingIconContainer>
-        <LoadingText>Loading App ...</LoadingText>
-      </Container>
-    );
-  }
+function AppLoadPage() {
+  const [display, setDisplay] = useState('none');
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDisplay('block'), 800); // show app load indicator only if it takes >800ms
+
+    return function cleanup() {
+      clearTimeout(timer);
+    };
+  });
+
+  return (
+    <Container style={{ display }}>
+      <LoadingIconContainer>
+        <ClipLoader sizeUnit="em" size={7} />
+      </LoadingIconContainer>
+      <LoadingText>Loading</LoadingText>
+    </Container>
+  );
 }
 
 export default AppLoadPage;

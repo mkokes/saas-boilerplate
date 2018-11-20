@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import Helmet from 'react-helmet';
 import {
   Container,
@@ -16,15 +16,18 @@ import {
   Button,
   Alert,
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { ReactstrapInput } from 'reactstrap-formik';
 import styled from 'styled-components';
+import { ApolloConsumer } from 'react-apollo';
 
 import { GlobalConsumer } from 'GlobalState';
+import { LoginUser } from 'graphql/mutations';
+import { transformApolloErr } from 'utils/apollo';
 
 const ForgotPasswordContainer = styled.div`
   margin-top: -10px;
@@ -34,19 +37,28 @@ const ForgotPasswordContainer = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export default class LoginPage extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loginErrorMessage: '',
+    };
+  }
+
   render() {
-    const formMsg = null;
+    const { loginErrorMessage } = this.state;
 
     return (
       <GlobalConsumer>
-        {({ loggedIn }) => (
-          <>
-            <Container tag="main">
-              <Helmet>
-                <title>Sign in</title>
-                <meta name="description" content="Description of LoginPage" />
-              </Helmet>
+        {({ setAuthTokens, setUserProfile, loggedIn }) => (
+          <Fragment>
+            {loggedIn && <Redirect to="/dashboard/index" />}
 
+            <Helmet>
+              <title>Sign in</title>
+              <meta name="description" content="Description of LoginPage" />
+            </Helmet>
+            <Container tag="main">
               <Row>
                 <Col md={{ size: 6, offset: 3 }}>
                   <Card>
@@ -56,71 +68,124 @@ export default class LoginPage extends React.PureComponent {
                     <CardBody>
                       <Row>
                         <Col className="text-center">
-                          {formMsg && (
-                            <Alert color={formMsg.color} role="alert">
-                              <strong>{formMsg.text}</strong>
+                          {loginErrorMessage && (
+                            <Alert color="danger" role="alert" fade={false}>
+                              <strong>{loginErrorMessage}</strong>
                             </Alert>
                           )}
                         </Col>
                       </Row>
                       <Row>
                         <Col>
-                          <Formik
-                            initialValues={{
-                              userIdentifier: '',
-                              password: '',
-                            }}
-                            validationSchema={Yup.object().shape({
-                              userIdentifier: Yup.string().required('Required'),
-                              password: Yup.string().required('Required'),
-                            })}
-                            onSubmit={this.signIn}
-                          >
-                            {({ isSubmitting }) => (
-                              <Form>
-                                <Field
-                                  component={ReactstrapInput}
-                                  name="userIdentifier"
-                                  type="userIdentifier"
-                                  label="Email address or username"
-                                  autoComplete="e-mail"
-                                />
-                                <Field
-                                  component={ReactstrapInput}
-                                  name="password"
-                                  type="password"
-                                  label="Password"
-                                  autoComplete="password"
-                                />
-                                <ForgotPasswordContainer className="text-right mb-3">
-                                  <Link
-                                    to="/auth/forgot_password"
-                                    className="text-muted"
-                                  >
-                                    forgot password?
-                                  </Link>
-                                </ForgotPasswordContainer>
-                                <div>
-                                  <Button
-                                    type="submit"
-                                    block
-                                    size="lg"
-                                    color="success"
-                                    disabled={isSubmitting}
-                                  >
-                                    <FontAwesomeIcon
-                                      pulse
-                                      icon={faSpinner}
-                                      className={
-                                        isSubmitting ? 'mr-2' : 'd-none'
+                          <ApolloConsumer>
+                            {client => (
+                              <Formik
+                                initialValues={{
+                                  email: '',
+                                  password: '',
+                                }}
+                                validationSchema={Yup.object().shape({
+                                  email: Yup.string()
+                                    .email('Invalid email')
+                                    .required('Required'),
+                                  password: Yup.string().required('Required'),
+                                })}
+                                onSubmit={async (values, formikBag) => {
+                                  this.setState({
+                                    loginErrorMessage: null,
+                                  });
+
+                                  try {
+                                    const { data } = await client.mutate({
+                                      mutation: LoginUser,
+                                      variables: {
+                                        ...values,
+                                      },
+                                    });
+
+                                    const { profile, tokens } = data.loginUser;
+                                    const {
+                                      accessToken,
+                                      refreshToken,
+                                    } = tokens;
+
+                                    await setAuthTokens({
+                                      accessToken,
+                                      refreshToken,
+                                    });
+                                    await setUserProfile(profile);
+                                  } catch (e) {
+                                    const err = transformApolloErr(e);
+
+                                    if (err.type === 'BAD_USER_INPUT') {
+                                      formikBag.setErrors(err.data);
+
+                                      if ('email' in err.data) {
+                                        this.setState(prevState => ({
+                                          alreadyTakenEmails: [
+                                            ...prevState.alreadyTakenEmails,
+                                            values.email,
+                                          ],
+                                        }));
                                       }
+                                    }
+
+                                    formikBag.setSubmitting(false);
+                                    this.setState({
+                                      loginErrorMessage: err.message,
+                                    });
+                                  }
+                                }}
+                              >
+                                {({ isSubmitting }) => (
+                                  <Form>
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="email"
+                                      type="email"
+                                      label="Email address or username"
+                                      autoComplete="e-mail"
+                                      required
                                     />
-                                    Log in to access
-                                  </Button>
-                                </div>
-                              </Form>
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="password"
+                                      type="password"
+                                      label="Password"
+                                      autoComplete="password"
+                                      required
+                                    />
+                                    <ForgotPasswordContainer className="text-right mb-3">
+                                      <Link
+                                        to="/auth/forgot_password"
+                                        className="text-muted"
+                                      >
+                                        forgot password?
+                                      </Link>
+                                    </ForgotPasswordContainer>
+                                    <div>
+                                      <Button
+                                        type="submit"
+                                        block
+                                        size="lg"
+                                        color="success"
+                                        disabled={isSubmitting}
+                                      >
+                                        <FontAwesomeIcon
+                                          pulse
+                                          icon={faSpinner}
+                                          className={
+                                            isSubmitting ? 'mr-2' : 'd-none'
+                                          }
+                                        />
+                                        Log in to access
+                                      </Button>
+                                    </div>
+                                  </Form>
+                                )}
+                              </Formik>
                             )}
-                          </Formik>
+                          </ApolloConsumer>
                         </Col>
                       </Row>
                     </CardBody>
@@ -133,16 +198,9 @@ export default class LoginPage extends React.PureComponent {
                 </Col>
               </Row>
             </Container>
-          </>
+          </Fragment>
         )}
       </GlobalConsumer>
     );
   }
-
-  signIn = (values, formikApi) => {
-    console.log(formikApi);
-    console.log(values);
-  };
 }
-
-LoginPage.propTypes = {};

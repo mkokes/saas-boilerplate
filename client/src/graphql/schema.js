@@ -8,7 +8,7 @@ const typeDefs = `
     refreshToken: String
   }
 
-  type SignUpResponse {
+  type AccessResponse {
     profile: UserProfile!
     tokens: AuthTokens!
   }

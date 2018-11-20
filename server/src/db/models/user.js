@@ -101,14 +101,9 @@ UserSchema.pre('save', function cb(next) {
 /**
  * Methods
  */
-UserSchema.method({
-  comparePassword: function cb(candidatePassword, next) {
-    bcrypt
-      .compare(candidatePassword, this.password)
-      .then(res => next(null, res))
-      .catch(err => next(err));
-  },
-});
+UserSchema.methods.comparePassword = async function cb(candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 /**
  * Statics

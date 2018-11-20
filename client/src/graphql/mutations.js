@@ -29,12 +29,35 @@ export const SignUpUser = gql`
   }
 `;
 
-// we use this one for checking if user is signed in
+export const LoginUser = gql`
+  ${ProfileFields}
+
+  mutation loginUser($email: String!, $password: String!) {
+    loginUser(email: $email, password: $password) @disableAuth {
+      profile {
+        ...ProfileFields
+      }
+      tokens {
+        accessToken
+        refreshToken
+      }
+    }
+  }
+`;
 export const LoginUserNoAuth = gql`
   ${ProfileFields}
-  mutation loginUser {
-    profile: loginUser @disableAuth {
+
+  mutation loginUserNoAuth {
+    profile: loginUserNoAuth @disableAuth {
       ...ProfileFields
+    }
+  }
+`;
+
+export const RefreshAccessToken = gql`
+  mutation refreshAccessToken($refreshToken: String!) {
+    refreshAccessToken(refreshToken: $refreshToken) {
+      accessToken
     }
   }
 `;

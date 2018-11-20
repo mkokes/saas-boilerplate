@@ -4,7 +4,10 @@ import { withApollo } from 'react-apollo';
 import jwtDecode from 'jwt-decode';
 
 import { LocalStorageApi } from 'api/vendors';
-import { LoginUserNoAuth } from 'graphql/mutations';
+import {
+  LoginUserNoAuth,
+  RefreshAccessToken as RefreshAccessTokenMutation,
+} from 'graphql/mutations';
 import { buildAuthHeader } from './utils/requests';
 
 const GlobalContext = createContext({});
@@ -112,20 +115,32 @@ class Provider extends Component {
       }));
 
       if (forceSignIn) {
-        // @TODO: go to login form
-
         // eslint-disable-next-line
         return signInPromise;
       }
     }
   };
 
-  renewAccessToken = async () => {
-    console.debug('Renewing access_token');
+  refreshAccessToken = async () => {
+    console.debug('Renewing access token');
 
     const refreshToken = this.authRefreshToken();
+    if (!refreshToken) throw new Error('no refresh token');
 
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YmYyOWZmM2UyNGY1ZjlhZWI2YWZjYWYiLCJpYXQiOjE1NDI2MjczMTUsImV4cCI6MTU0MjYyNzYxNX0.ogxvTqpDTBoGDnCcBtgPKw49v48PG0sYs1TJ-VzkwqYx';
+    const { data } = await this.apolloClient().mutate({
+      mutation: RefreshAccessTokenMutation,
+      variables: {
+        refreshToken,
+      },
+    });
+
+    const { accessToken } = data.refreshAccessToken;
+
+    console.debug('Got new access token', accessToken);
+
+    await this.setAuthTokens({ accessToken });
+
+    return accessToken;
   };
 
   setUserProfile = profile => {
@@ -143,7 +158,7 @@ class Provider extends Component {
     );
   };
 
-  setAuthTokens = ({ accessToken, refreshToken }) => {
+  setAuthTokens = async ({ accessToken, refreshToken }) => {
     if (accessToken) LocalStorageApi.setItem('access_token', accessToken);
     if (refreshToken) LocalStorageApi.setItem('refresh_token', refreshToken);
   };

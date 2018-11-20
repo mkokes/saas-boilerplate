@@ -90,10 +90,64 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         return e;
       }
     },
-    loginUser: async (_, __, { user }) => {
-      await assertUser(user);
+    loginUser: async (_, { email, password }) => {
+      const paramsValidationErrors = {};
+      const logInErr = new ApolloError('Invalid credentials', 'INVALID_LOGIN');
 
-      return db.loginUser(user._id);
+      if (!validator.isEmail(email)) {
+        paramsValidationErrors.email = 'Email is not valid';
+      }
+      if (validator.isEmpty(password)) {
+        paramsValidationErrors.password = 'Need password';
+      }
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw new UserInputError('Failed to log in due to validation errors', {
+          validationErrors: paramsValidationErrors,
+        });
+      }
+
+      try {
+        const user = await db.findUserByEmail(email);
+        if (!user) throw logInErr;
+
+        const isPasswordValid = await user.comparePassword(password);
+        if (!isPasswordValid) throw logInErr;
+
+        const userProfile = await db.loginUser(user._id);
+
+        const accessToken = jsonwebtoken.sign(
+          {
+            _id: user._id,
+          },
+          JWT_SECRET,
+          { expiresIn: 60 * 5 },
+        );
+        const refreshToken = jsonwebtoken.sign(
+          {
+            type: 'refresh',
+          },
+          JWT_SECRET,
+          { expiresIn: '30 days' },
+        );
+
+        return { profile: userProfile, tokens: { accessToken, refreshToken } };
+      } catch (e) {
+        throw logInErr;
+      }
     },
+    loginUserNoAuth: async (_, __, { user }) => {
+      console.log('---');
+      console.log(user);
+      try {
+        await assertUser(user);
+
+        return db.loginUser(user._id);
+      } catch (e) {
+        throw new ApolloError('Cannot log in user', 'INVALID_LOGIN');
+      }
+    },
+    refreshAccessToken: async (_, { refreshToken }) => ({
+      accessToken: refreshToken,
+    }),
   },
 });

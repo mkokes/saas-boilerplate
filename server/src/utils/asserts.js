@@ -1,6 +1,5 @@
 const safeGet = require('lodash.get');
 const ObjectId = require('mongoose');
-const { ApolloError } = require('apollo-server-koa');
 
 const assertObjectId = async id => {
   if (!ObjectId.Types.ObjectId.isValid(id)) {
@@ -16,7 +15,7 @@ const assertUser = async user => {
 
     await assertObjectId(user._id);
   } catch (e) {
-    throw new ApolloError('NEED LOGIN', 'UNAUTHENTICATED');
+    throw new Error('Invalid user');
   }
 };
 

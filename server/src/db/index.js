@@ -61,6 +61,10 @@ class Db extends EventEmitter {
     return this.getUserProfile(userId, true);
   }
 
+  async findUserByEmail(email) {
+    return User.findOne({ email }).exec();
+  }
+
   async getUserProfile(userId, canViewPrivateFields = false) {
     const user = await this._getUser(userId);
 
