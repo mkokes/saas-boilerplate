@@ -12,10 +12,13 @@ module.exports = ({ config: { JWT_SECRET }, server, log: parentLog }) => {
   );
 
   server.use(async (ctx, next) => {
-    try {
-      const { _id } = ctx.state; // got user id
-    } catch (e) {
-      log.debug(e);
+    if (ctx.state.user) {
+      try {
+        // @TODO: Validate user account ...
+      } catch (err) {
+        log.debug(err);
+        ctx.state.user = '';
+      }
     }
 
     await next();

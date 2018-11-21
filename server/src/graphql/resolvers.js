@@ -1,5 +1,5 @@
 const validator = require('validator');
-const jsonwebtoken = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
 
 const { assertUser } = require('../utils/asserts');
@@ -57,15 +57,17 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       try {
         const user = await db.signUpUser(email, password, name);
 
-        const accessToken = jsonwebtoken.sign(
+        const accessToken = jwt.sign(
           {
             _id: user._id,
+            type: 'access',
           },
           JWT_SECRET,
           { expiresIn: 60 * 5 },
         );
-        const refreshToken = jsonwebtoken.sign(
+        const refreshToken = jwt.sign(
           {
+            _id: user._id,
             type: 'refresh',
           },
           JWT_SECRET,
@@ -115,15 +117,17 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
 
         const userProfile = await db.loginUser(user._id);
 
-        const accessToken = jsonwebtoken.sign(
+        const accessToken = jwt.sign(
           {
             _id: user._id,
+            type: 'access',
           },
           JWT_SECRET,
-          { expiresIn: 60 * 5 },
+          { expiresIn: 60 * 1 },
         );
-        const refreshToken = jsonwebtoken.sign(
+        const refreshToken = jwt.sign(
           {
+            _id: user._id,
             type: 'refresh',
           },
           JWT_SECRET,
@@ -136,8 +140,6 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       }
     },
     loginUserNoAuth: async (_, __, { user }) => {
-      console.log('---');
-      console.log(user);
       try {
         await assertUser(user);
 
@@ -146,8 +148,23 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         throw new ApolloError('Cannot log in user', 'INVALID_LOGIN');
       }
     },
-    refreshAccessToken: async (_, { refreshToken }) => ({
-      accessToken: refreshToken,
-    }),
+    refreshAccessToken: async (_, { refreshToken }) => {
+      try {
+        const decodedRefreshToken = jwt.verify(refreshToken, JWT_SECRET);
+
+        const accessToken = jwt.sign(
+          {
+            _id: decodedRefreshToken._id,
+            type: 'access',
+          },
+          JWT_SECRET,
+          { expiresIn: 60 * 1 },
+        );
+
+        return { accessToken };
+      } catch (e) {
+        throw new ApolloError('Invalid refresh token', 'INVALID_REFRESH_TOKEN');
+      }
+    },
   },
 });

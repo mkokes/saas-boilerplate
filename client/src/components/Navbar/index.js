@@ -63,7 +63,7 @@ export class NavbarComponent extends React.PureComponent {
 
     return (
       <GlobalConsumer>
-        {({ loggedIn, userProfile }) => (
+        {({ loggedIn, logOut, userProfile }) => (
           <header>
             <Navbar color="dark" dark expand="sm">
               <Container>
@@ -125,7 +125,7 @@ export class NavbarComponent extends React.PureComponent {
                             </span>
                           </DropdownToggle>
                           <DropdownMenu right>
-                            <DropdownItem onClick={() => alert('LOGOUT')}>
+                            <DropdownItem onClick={() => logOut()}>
                               <FontAwesomeIcon
                                 icon={faUnlockAlt}
                                 className="align-text-top mr-1"

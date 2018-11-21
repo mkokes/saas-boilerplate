@@ -56,7 +56,7 @@ export const LoginUserNoAuth = gql`
 
 export const RefreshAccessToken = gql`
   mutation refreshAccessToken($refreshToken: String!) {
-    refreshAccessToken(refreshToken: $refreshToken) {
+    refreshAccessToken(refreshToken: $refreshToken) @disableAuth {
       accessToken
     }
   }

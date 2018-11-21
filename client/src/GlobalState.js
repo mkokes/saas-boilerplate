@@ -4,10 +4,7 @@ import { withApollo } from 'react-apollo';
 import jwtDecode from 'jwt-decode';
 
 import { LocalStorageApi } from 'api/vendors';
-import {
-  LoginUserNoAuth,
-  RefreshAccessToken as RefreshAccessTokenMutation,
-} from 'graphql/mutations';
+import { LoginUserNoAuth, RefreshAccessToken } from 'graphql/mutations';
 import { buildAuthHeader } from './utils/requests';
 
 const GlobalContext = createContext({});
@@ -79,32 +76,35 @@ class Provider extends Component {
     }
 
     try {
-      const accessToken = this.authAccessToken();
+      let accessToken = this.authAccessToken();
       const refreshToken = this.authRefreshToken();
 
-      const accessTokenStatus = validateJWT(accessToken);
+      let accessTokenStatus = validateJWT(accessToken);
       const refreshTokenStatus = validateJWT(refreshToken);
 
-      if (
-        accessTokenStatus !== 'INVALID_TOKEN' &&
-        refreshTokenStatus === 'OK'
-      ) {
-        const {
-          data: { profile },
-        } = await this.apolloClient().mutate({
-          mutation: LoginUserNoAuth,
-          context: {
-            headers: buildAuthHeader(accessToken),
-          },
-        });
-        console.debug('User is logged in and has a profile');
+      if (accessTokenStatus === 'EXPIRED' && refreshTokenStatus === 'OK') {
+        // @TODO: try to renew access token
+        accessToken = await this.refreshAccessTokenReq();
 
-        this.setUserProfile(profile);
-      } else {
+        accessTokenStatus = 'OK';
+      }
+      if (accessTokenStatus !== 'OK' && refreshTokenStatus !== 'OK') {
         throw new Error('User tokens are not valid');
       }
+
+      const {
+        data: { profile },
+      } = await this.apolloClient().mutate({
+        mutation: LoginUserNoAuth,
+        context: {
+          headers: buildAuthHeader(accessToken),
+        },
+      });
+      console.debug('User is logged in and has a profile');
+
+      this.setUserProfile(profile);
     } catch (err) {
-      console.debug(`User is not logged and/or does not exist in db`);
+      console.debug(`User is not logged`);
 
       this.setState(state => ({
         auth: {
@@ -121,14 +121,16 @@ class Provider extends Component {
     }
   };
 
-  refreshAccessToken = async () => {
+  refreshAccessTokenReq = async () => {
     console.debug('Renewing access token');
 
     const refreshToken = this.authRefreshToken();
-    if (!refreshToken) throw new Error('no refresh token');
+
+    if (!refreshToken)
+      throw new Error('no refresh token to renew access token');
 
     const { data } = await this.apolloClient().mutate({
-      mutation: RefreshAccessTokenMutation,
+      mutation: RefreshAccessToken,
       variables: {
         refreshToken,
       },
@@ -163,6 +165,21 @@ class Provider extends Component {
     if (refreshToken) LocalStorageApi.setItem('refresh_token', refreshToken);
   };
 
+  logOut = async () => {
+    LocalStorageApi.clear();
+
+    this.setState({
+      auth: {
+        accessToken: undefined,
+        refreshToken: undefined,
+        profile: null,
+        loggedIn: false,
+      },
+    });
+
+    console.debug('Logout user');
+  };
+
   async componentDidMount() {
     await this.signIn();
 
@@ -178,6 +195,7 @@ class Provider extends Component {
           userProfile: this.state.auth.profile,
           loggedIn: this.isLoggedIn(),
           signIn: this.signIn,
+          logOut: this.logOut,
           setAuthTokens: this.setAuthTokens,
           setUserProfile: this.setUserProfile,
         }}
