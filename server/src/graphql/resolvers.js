@@ -2,8 +2,27 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
 
-const { assertUser } = require('../utils/asserts');
+const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
+
+const createAccessToken = ({ JWT_SECRET, data }) =>
+  jwt.sign(
+    {
+      ...data,
+      type: 'access',
+    },
+    JWT_SECRET,
+    { expiresIn: 60 * 1 },
+  );
+const createRefreshToken = ({ JWT_SECRET, data }) =>
+  jwt.sign(
+    {
+      ...data,
+      type: 'refresh',
+    },
+    JWT_SECRET,
+    { expiresIn: '30 days' },
+  );
 
 module.exports = ({ config: { JWT_SECRET }, db }) => ({
   Query: {
@@ -57,22 +76,20 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       try {
         const user = await db.signUpUser(email, password, name);
 
-        const accessToken = jwt.sign(
-          {
-            _id: user._id,
-            type: 'access',
-          },
+        const accessToken = createAccessToken({
           JWT_SECRET,
-          { expiresIn: 60 * 5 },
-        );
-        const refreshToken = jwt.sign(
-          {
+          data: {
             _id: user._id,
-            type: 'refresh',
+            password: user.password,
           },
+        });
+        const refreshToken = createRefreshToken({
           JWT_SECRET,
-          { expiresIn: '30 days' },
-        );
+          data: {
+            _id: user._id,
+            password: user.password,
+          },
+        });
 
         return { profile: user, tokens: { accessToken, refreshToken } };
       } catch (e) {
@@ -94,7 +111,10 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
     },
     loginUser: async (_, { email, password }) => {
       const paramsValidationErrors = {};
-      const logInErr = new ApolloError('Invalid credentials', 'INVALID_LOGIN');
+      const logInErr = new ApolloError(
+        'Invalid credentials',
+        'INVALID_LOGIN_CREDENTIALS',
+      );
 
       if (!validator.isEmail(email)) {
         paramsValidationErrors.email = 'Email is not valid';
@@ -117,22 +137,20 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
 
         const userProfile = await db.loginUser(user._id);
 
-        const accessToken = jwt.sign(
-          {
-            _id: user._id,
-            type: 'access',
-          },
+        const accessToken = createAccessToken({
           JWT_SECRET,
-          { expiresIn: 60 * 1 },
-        );
-        const refreshToken = jwt.sign(
-          {
+          data: {
             _id: user._id,
-            type: 'refresh',
+            password: user.password,
           },
+        });
+        const refreshToken = createRefreshToken({
           JWT_SECRET,
-          { expiresIn: '30 days' },
-        );
+          data: {
+            _id: user._id,
+            password: user.password,
+          },
+        });
 
         return { profile: userProfile, tokens: { accessToken, refreshToken } };
       } catch (e) {
@@ -140,31 +158,36 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       }
     },
     loginUserNoAuth: async (_, __, { user }) => {
-      try {
-        await assertUser(user);
+      if (!user) {
+        throw new ApolloError('unauthenticated', 'UNAUTHENTICATED');
+      }
 
+      try {
         return db.loginUser(user._id);
       } catch (e) {
         throw new ApolloError('Cannot log in user', 'INVALID_LOGIN');
       }
     },
     refreshAccessToken: async (_, { refreshToken }) => {
+      let decodedPayload;
+
       try {
-        const decodedRefreshToken = jwt.verify(refreshToken, JWT_SECRET);
+        decodedPayload = jwt.verify(refreshToken, JWT_SECRET);
 
-        const accessToken = jwt.sign(
-          {
-            _id: decodedRefreshToken._id,
-            type: 'access',
-          },
-          JWT_SECRET,
-          { expiresIn: 60 * 1 },
-        );
-
-        return { accessToken };
+        assertRefreshTokenPayload(decodedPayload);
       } catch (e) {
         throw new ApolloError('Invalid refresh token', 'INVALID_REFRESH_TOKEN');
       }
+
+      const accessToken = createAccessToken({
+        JWT_SECRET,
+        data: {
+          _id: decodedPayload._id,
+          password: decodedPayload.password,
+        },
+      });
+
+      return { accessToken };
     },
   },
 });

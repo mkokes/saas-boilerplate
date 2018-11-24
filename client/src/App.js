@@ -34,23 +34,16 @@ const Route = ({
 }) => (
   <DefaultRoute
     {...rest}
-    render={props => {
-      let privateRoute = null;
-      if (rest.protected) {
-        privateRoute = <PrivateRoute exact path={rest.path} />;
-      }
-
-      return (
-        <React.Fragment>
-          {privateRoute}
-          <RouteAnalytics key={rest.path} {...props}>
-            <Layout>
-              <Component {...props} />
-            </Layout>
-          </RouteAnalytics>
-        </React.Fragment>
-      );
-    }}
+    render={props => (
+      <React.Fragment>
+        {rest.protected && <PrivateRoute exact path={rest.path} />}
+        <RouteAnalytics key={rest.path} {...props}>
+          <Layout>
+            <Component {...props} />
+          </Layout>
+        </RouteAnalytics>
+      </React.Fragment>
+    )}
   />
 );
 

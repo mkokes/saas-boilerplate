@@ -42,6 +42,11 @@ export const transformApolloErr = e => {
         transformedErr.type = 'BAD_USER_INPUT';
         transformedErr.data = validationErrors;
       }
+      if (code === 'INVALID_LOGIN_CREDENTIALS') {
+        transformedErr.message =
+          'You have entered an invalid email or password';
+        transformedErr.type = 'INVALID_LOGIN_CREDENTIALS';
+      }
       if (code === 'INTERNAL_SERVER_ERROR') {
         transformedErr.message =
           'An server error ocurred. Our developers have already been notified and will fix it shortly.';

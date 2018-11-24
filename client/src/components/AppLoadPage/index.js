@@ -31,7 +31,7 @@ function AppLoadPage() {
   const [display, setDisplay] = useState('none');
 
   useEffect(() => {
-    const timer = setTimeout(() => setDisplay('block'), 800); // show app load indicator only if it takes >800ms
+    const timer = setTimeout(() => setDisplay('block'), 300); // show app load indicator only if it takes >300ms
 
     return function cleanup() {
       clearTimeout(timer);
