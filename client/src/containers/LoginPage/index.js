@@ -157,7 +157,7 @@ export default class LoginPage extends React.PureComponent {
                                     />
                                     <ForgotPasswordContainer className="text-right mb-3">
                                       <Link
-                                        to="/auth/forgot_password"
+                                        to="/auth/forgot-password"
                                         className="text-muted"
                                       >
                                         forgot password?
@@ -191,9 +191,7 @@ export default class LoginPage extends React.PureComponent {
                     </CardBody>
                   </Card>
                   <div className="mt-5 text-center">
-                    <Link to="/register">
-                      Don&#39;t have an account? Sign up
-                    </Link>
+                    <Link to="/signup">Don&#39;t have an account? Sign up</Link>
                   </div>
                 </Col>
               </Row>

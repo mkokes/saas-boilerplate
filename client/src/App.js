@@ -19,8 +19,8 @@ import HomePage from 'containers/HomePage/Loadable';
 // import ContactPage from 'containers/ContactPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
-// import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
-// import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
+import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
+import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
 // import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 
 import MainPage from 'containers/Dashboard/User/MainPage';
@@ -66,7 +66,18 @@ export default function App() {
                   <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/signup" component={SignupPage} />
+
                     <Route exact path="/auth/login" component={LoginPage} />
+                    <Route
+                      exact
+                      path="/auth/forgot-password"
+                      component={ForgotPasswordPage}
+                    />
+                    <Route
+                      exact
+                      path="/auth/reset-password"
+                      component={ResetPasswordPage}
+                    />
 
                     <Route
                       protected

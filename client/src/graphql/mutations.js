@@ -17,7 +17,7 @@ export const SignUpUser = gql`
       email: $email
       password: $password
       name: $name
-    ) {
+    ) @disableAuth {
       profile {
         ...ProfileFields
       }
@@ -59,5 +59,17 @@ export const RefreshAccessToken = gql`
     refreshAccessToken(refreshToken: $refreshToken) @disableAuth {
       accessToken
     }
+  }
+`;
+
+export const ForgotPassword = gql`
+  mutation forgotPassword($email: String!) {
+    forgotPassword(email: $email) @disableAuth
+  }
+`;
+export const ResetPassword = gql`
+  mutation forgotPassword($resetToken: String!, $newPassword: String!) {
+    resetPassword(resetToken: $resetToken, newPassword: $newPassword)
+      @disableAuth
   }
 `;
