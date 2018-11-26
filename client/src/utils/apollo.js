@@ -47,15 +47,19 @@ export const transformApolloErr = e => {
           'You have entered an invalid email or password';
         transformedErr.type = 'INVALID_LOGIN_CREDENTIALS';
       }
-      if (code === 'INTERNAL_SERVER_ERROR') {
-        transformedErr.message =
-          'An server error ocurred. Our developers have already been notified and will fix it shortly.';
-        transformedErr.type = 'INTERNAL_SERVER_ERROR';
-      }
       if (code === 'INVALID_CAPTCHA') {
         transformedErr.message =
           'Our security system could not determine if the request was made by a human. Try it again.';
         transformedErr.type = 'INVALID_CAPTCHA';
+      }
+      if (code === 'INVALID_PASSWORD_RESET_TOKEN') {
+        transformedErr.message = 'Password reset link is invalid or expired.';
+        transformedErr.type = 'INVALID_PASSWORD_RESET_TOKEN';
+      }
+      if (code === 'INTERNAL_SERVER_ERROR') {
+        transformedErr.message =
+          'An unexpected server error ocurred. Our developers have already been notified and will fix it shortly.';
+        transformedErr.type = 'INTERNAL_SERVER_ERROR';
       }
     }
   } catch (exception) {

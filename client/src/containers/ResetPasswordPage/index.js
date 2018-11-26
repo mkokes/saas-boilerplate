@@ -18,7 +18,7 @@ import {
   Alert,
 } from 'reactstrap';
 import queryString from 'query-string';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
@@ -60,11 +60,20 @@ export default class ResetPasswordPage extends React.PureComponent {
     this.state = {
       gotResetTokenFromUrl: token || '',
       formMsg: null,
+      hideForm: false,
+      hideForgotPasswordPrompt: true,
+      hideLogInPrompt: true,
     };
   }
 
   render() {
-    const { gotResetTokenFromUrl, formMsg } = this.state;
+    const {
+      gotResetTokenFromUrl,
+      formMsg,
+      hideForm,
+      hideForgotPasswordPrompt,
+      hideLogInPrompt,
+    } = this.state;
 
     return (
       <GlobalConsumer>
@@ -90,13 +99,17 @@ export default class ResetPasswordPage extends React.PureComponent {
                       <Row>
                         <Col className="text-center">
                           {formMsg && (
-                            <Alert color={formMsg.color} role="alert">
+                            <Alert
+                              color={formMsg.color}
+                              role="alert"
+                              fade={false}
+                            >
                               <strong>{formMsg.text}</strong>
                             </Alert>
                           )}
                         </Col>
                       </Row>
-                      <Row>
+                      <Row hidden={hideForm}>
                         <Col>
                           <ApolloConsumer>
                             {client => (
@@ -124,26 +137,38 @@ export default class ResetPasswordPage extends React.PureComponent {
                                     await client.mutate({
                                       mutation: ResetPassword,
                                       variables: {
-                                        ...values,
+                                        resetToken: values.resetToken,
+                                        newPassword: values.newPassword,
                                       },
                                     });
 
                                     formikBag.setSubmitting(false);
+
                                     this.setState({
                                       formMsg: {
                                         color: 'success',
-                                        text: `If an account matches with provided email address (${
-                                          values.email
-                                        }), you should receive an email with instruction on how to reset your password shortly.`,
+                                        text:
+                                          'Password has been reset. Now you can log in.',
                                       },
+                                      hideLogInPrompt: false,
                                     });
 
-                                    formikBag.resetForm();
+                                    this.setState({ hideForm: true });
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 
                                     if (err.type === 'BAD_USER_INPUT') {
                                       formikBag.setErrors(err.data);
+                                    }
+                                    if (
+                                      err.type ===
+                                      'INVALID_PASSWORD_RESET_TOKEN'
+                                    ) {
+                                      // @TODO: Hide form. Ask user to re-issue forgot pw process.
+                                      this.setState({ hideForm: true });
+                                      this.setState({
+                                        hideForgotPasswordPrompt: false,
+                                      });
                                     }
 
                                     this.setState({
@@ -152,6 +177,7 @@ export default class ResetPasswordPage extends React.PureComponent {
                                         text: err.message,
                                       },
                                     });
+                                    formikBag.setSubmitting(false);
                                   }
                                 }}
                               >
@@ -163,6 +189,8 @@ export default class ResetPasswordPage extends React.PureComponent {
                                         name="resetToken"
                                         type="text"
                                         label="Reset token"
+                                        placeholder="(check received reset instructions email)"
+                                        autoComplete="off"
                                       />
                                     </div>
                                     <Field
@@ -170,13 +198,14 @@ export default class ResetPasswordPage extends React.PureComponent {
                                       name="newPassword"
                                       type="password"
                                       label="New password"
-                                      autoComplete="password"
+                                      autoComplete="new-password"
                                     />
                                     <Field
                                       component={ReactstrapInput}
                                       name="confirmNewPassword"
                                       type="password"
                                       label="Confirm password"
+                                      autoComplete="new-password"
                                     />
                                     <div>
                                       <Button
@@ -201,6 +230,22 @@ export default class ResetPasswordPage extends React.PureComponent {
                               </Formik>
                             )}
                           </ApolloConsumer>
+                        </Col>
+                      </Row>
+                      <Row hidden={hideForgotPasswordPrompt}>
+                        <Col className="text-center">
+                          <Link to="/auth/forgot-password">
+                            <Button color="secondary">
+                              Request new password link
+                            </Button>
+                          </Link>
+                        </Col>
+                      </Row>
+                      <Row hidden={hideLogInPrompt}>
+                        <Col className="text-center">
+                          <Link to="/auth/login">
+                            <Button color="secondary">Go to log in form</Button>
+                          </Link>
                         </Col>
                       </Row>
                     </CardBody>

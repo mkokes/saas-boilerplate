@@ -71,7 +71,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
                       <Row>
                         <Col className="text-center">
                           {formMsg && (
-                            <Alert color={formMsg.color} role="alert">
+                            <Alert color={formMsg.color} role="alert" fade={false}>
                               <strong>{formMsg.text}</strong>
                             </Alert>
                           )}
