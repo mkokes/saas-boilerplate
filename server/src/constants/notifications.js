@@ -1,4 +1,9 @@
-module.exports = ['VERIFY_EMAIL', 'WELCOME_EMAIL'].reduce((m, a) => {
+module.exports = [
+  'VERIFY_EMAIL',
+  'WELCOME_EMAIL',
+  'FORGOT_PASSWORD',
+  'PASSWORD_RESETED',
+].reduce((m, a) => {
   const k = m;
 
   k[a] = a;

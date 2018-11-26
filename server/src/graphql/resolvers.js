@@ -34,9 +34,8 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
   Mutation: {
     signUpUser: async (_, { recaptchaResponse, email, password, name }) => {
       const paramsValidationErrors = {};
-      const useRecaptcha = false;
 
-      if (useRecaptcha && validator.isEmpty(recaptchaResponse)) {
+      if (validator.isEmpty(recaptchaResponse)) {
         throw new ApolloError(
           'ReCaptcha response is required to continue',
           'INVALID_CAPTCHA',
@@ -61,17 +60,15 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         });
       }
 
-      if (useRecaptcha) {
-        const isRecaptchaValid = await validateRecaptchaResponse(
-          recaptchaResponse,
-        );
+      const isRecaptchaValid = await validateRecaptchaResponse(
+        recaptchaResponse,
+      );
 
-        if (!isRecaptchaValid)
-          throw new ApolloError(
-            'Submited reCaptcha response is not valid',
-            'INVALID_CAPTCHA',
-          );
-      }
+      if (!isRecaptchaValid)
+        throw new ApolloError(
+          'Submited reCaptcha response is not valid',
+          'INVALID_CAPTCHA',
+        );
 
       try {
         const user = await db.signUpUser(email, password, name);
@@ -129,7 +126,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       }
 
       try {
-        const user = await db.findUserByEmail(email);
+        const user = await db.getUserByEmail(email);
         if (!user) throw logInErr;
 
         const isPasswordValid = await user.comparePassword(password);
@@ -159,7 +156,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
     },
     loginUserNoAuth: async (_, __, { user }) => {
       if (!user) {
-        throw new ApolloError('unauthenticated', 'UNAUTHENTICATED');
+        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
       }
 
       try {
@@ -188,6 +185,58 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       });
 
       return { accessToken };
+    },
+    forgotPassword: async (_, { email }) => {
+      if (!validator.isEmail(email)) {
+        throw new UserInputError(
+          'Failed to process forgot password request due to validation errors',
+          {
+            validationErrors: { email: 'Invalid email' },
+          },
+        );
+      }
+
+      const user = await db.getUserByEmail(email);
+      if (!user) throw new ApolloError('User does not exists', '');
+
+      db.forgotPasswordRequest(user._id);
+
+      return true;
+    },
+    resetPassword: async (_, { resetToken, newPassword }) => {
+      const paramsValidationErrors = {};
+
+      if (validator.isEmpty(resetToken)) {
+        paramsValidationErrors.resetToken = 'Provided reset token is not valid';
+      }
+      if (validator.isEmpty(newPassword)) {
+        paramsValidationErrors.newPassword = 'Invalid password';
+      }
+
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw new UserInputError(
+          'Failed to reset password due to validation errors',
+          {
+            validationErrors: paramsValidationErrors,
+          },
+        );
+      }
+
+      try {
+        await db.resetPasswordRequest(resetToken, newPassword);
+      } catch (e) {
+        switch (e.message) {
+          case 'INVALID_PASSWORD_RESET_TOKEN':
+            throw new ApolloError(
+              'Password reset link is invalid or expired',
+              'INVALID_PASSWORD_RESET_TOKEN',
+            );
+          default:
+            throw e;
+        }
+      }
+
+      return true;
     },
   },
 });

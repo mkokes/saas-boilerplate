@@ -2,8 +2,13 @@ const EventEmitter = require('eventemitter3');
 
 const setupDb = require('./setup');
 const User = require('./models/user');
+const ResetPasswordToken = require('./models/resetPasswordToken');
 const { NOTIFICATION } = require('../constants/events');
-const { VERIFY_EMAIL } = require('../constants/notifications');
+const {
+  VERIFY_EMAIL,
+  FORGOT_PASSWORD,
+  PASSWORD_RESETED,
+} = require('../constants/notifications');
 
 class Db extends EventEmitter {
   constructor({ config, nativeDb, log: parentLog }) {
@@ -23,32 +28,37 @@ class Db extends EventEmitter {
     return user;
   }
 
-  async notifyUser(userId, type, data) {
-    const obj = {
-      _user: userId,
-      type,
-      data,
-      email_sent: false,
-      seen: false,
-    };
+  async getUserByEmail(email) {
+    return User.findOne({ email }).exec();
+  }
 
-    this.emit(NOTIFICATION, obj._id);
+  async getUserProfile(userId, canViewPrivateFields = false) {
+    const user = await this._getUser(userId);
+
+    if (!user) {
+      return {};
+    }
+
+    const { lastLoginAt, email, name } = user;
+
+    return {
+      lastLoginAt,
+      ...(canViewPrivateFields ? { email, name } : {}),
+    };
   }
 
   async signUpUser(email, password, name) {
-    const user = new User({
+    const user = await new User({
       email,
       password,
       name,
+    }).save();
+
+    this.notifyUser(user._id, VERIFY_EMAIL, {
+      email: user.email,
     });
 
-    const createdUser = await user.save();
-
-    this.notifyUser(createdUser._id, VERIFY_EMAIL, {
-      email: createdUser.email,
-    });
-
-    return createdUser;
+    return user;
   }
 
   async loginUser(userId) {
@@ -75,23 +85,61 @@ class Db extends EventEmitter {
     return true;
   }
 
-  async findUserByEmail(email) {
-    return User.findOne({ email }).exec();
-  }
-
-  async getUserProfile(userId, canViewPrivateFields = false) {
+  async forgotPasswordRequest(userId) {
     const user = await this._getUser(userId);
 
-    if (!user) {
-      return {};
+    const resetPasswordToken = await new ResetPasswordToken({
+      _user: user._id,
+    }).save();
+
+    this.notifyUser(user._id, FORGOT_PASSWORD, {
+      email: user.email,
+      resetToken: resetPasswordToken.token,
+    });
+  }
+
+  async resetPasswordRequest(resetToken, newPassword) {
+    const resetPasswordToken = await ResetPasswordToken.findOne({
+      token: resetToken,
+    })
+      .populate('_user', '_id password passwordResetedAt')
+      .exec();
+
+    if (!resetPasswordToken) {
+      throw new Error('INVALID_PASSWORD_RESET_TOKEN');
     }
 
-    const { lastLoginAt, email, name } = user;
+    const { _user, used, createdAt } = resetPasswordToken;
 
-    return {
-      lastLoginAt,
-      ...(canViewPrivateFields ? { email, name } : {}),
+    if (used || createdAt < Date.now() - 5 * 60 * 1000) {
+      throw new Error('INVALID_PASSWORD_RESET_TOKEN');
+    }
+
+    _user.password = newPassword;
+    _user.passwordResetedAt = Date.now();
+
+    resetPasswordToken.used = true;
+    resetPasswordToken.usedAt = Date.now();
+
+    await _user.save();
+    await resetPasswordToken.save();
+
+    this.notifyUser(_user._id, PASSWORD_RESETED, {
+      email: _user.email,
+      resetToken: resetPasswordToken.token,
+    });
+  }
+
+  async notifyUser(userId, type, data) {
+    const obj = {
+      _user: userId,
+      type,
+      data,
+      email_sent: false,
+      seen: false,
     };
+
+    this.emit(NOTIFICATION, obj._id);
   }
 }
 

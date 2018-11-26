@@ -27,5 +27,7 @@ module.exports = gql`
     loginUser(email: String!, password: String!): AccessResponse
     loginUserNoAuth: UserProfile
     refreshAccessToken(refreshToken: String!): AuthTokens
+    forgotPassword(email: String!): Boolean
+    resetPassword(resetToken: String!, newPassword: String!): Boolean
   }
 `;
