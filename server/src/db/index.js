@@ -39,11 +39,12 @@ class Db extends EventEmitter {
       return {};
     }
 
-    const { lastLoginAt, email, name } = user;
+    const { lastLoginAt, registeredAt, email, name, isEmailConfirmed } = user;
 
     return {
       lastLoginAt,
-      ...(canViewPrivateFields ? { email, name } : {}),
+      registeredAt,
+      ...(canViewPrivateFields ? { name, email, isEmailConfirmed } : {}),
     };
   }
 

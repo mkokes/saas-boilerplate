@@ -2,10 +2,19 @@ import gql from 'graphql-tag';
 
 import { ProfileFields } from './fragments';
 
-export const GetUserQuery = gql`
+export const UserProfileQuery = gql`
   ${ProfileFields}
+  query getUserProfile {
+    profile: userProfile @requireAuth {
+      ...ProfileFields
+    }
+  }
+`;
 
-  query getUser {
-    ...ProfileFields
+export const isUserEmailConfirmedQuery = gql`
+  query getUserProfile {
+    profile: userProfile @requireAuth {
+      isEmailConfirmed
+    }
   }
 `;

@@ -161,8 +161,24 @@ class Provider extends Component {
   };
 
   setAuthTokens = async ({ accessToken, refreshToken }) => {
-    if (accessToken) LocalStorageApi.setItem('access_token', accessToken);
-    if (refreshToken) LocalStorageApi.setItem('refresh_token', refreshToken);
+    if (accessToken) {
+      LocalStorageApi.setItem('access_token', accessToken);
+      this.setState(state => ({
+        auth: {
+          ...state.auth,
+          accessToken,
+        },
+      }));
+    }
+    if (refreshToken) {
+      LocalStorageApi.setItem('refresh_token', refreshToken);
+      this.setState(state => ({
+        auth: {
+          ...state.auth,
+          accessToken: refreshToken,
+        },
+      }));
+    }
   };
 
   logOut = async () => {

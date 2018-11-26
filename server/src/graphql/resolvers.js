@@ -26,10 +26,17 @@ const createRefreshToken = ({ JWT_SECRET, data }) =>
 
 module.exports = ({ config: { JWT_SECRET }, db }) => ({
   Query: {
-    tokens: () => ({
-      accessToken: { value: '1' },
-      refreshToken: { value: 'a' },
-    }),
+    userProfile: async (_, __, { user }) => {
+      if (!user) {
+        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+      }
+
+      const profile = await db.getUserProfile(user._id, true);
+
+      return {
+        ...profile,
+      };
+    },
   },
   Mutation: {
     signUpUser: async (_, { recaptchaResponse, email, password, name }) => {

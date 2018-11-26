@@ -12,10 +12,11 @@ module.exports = gql`
   type UserProfile {
     name: String
     email: String
+    isEmailConfirmed: Boolean
   }
 
   type Query {
-    tokens: AuthTokens
+    userProfile: UserProfile
   }
   type Mutation {
     signUpUser(
