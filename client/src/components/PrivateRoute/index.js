@@ -12,7 +12,7 @@ export class PrivateRoute extends React.PureComponent {
       <GlobalConsumer>
         {({ loggedIn }) => (
           <>
-            {!loggedIn ? (
+            {!loggedIn && rest.enable ? (
               <Route
                 {...rest}
                 render={props => (
@@ -24,7 +24,9 @@ export class PrivateRoute extends React.PureComponent {
                   />
                 )}
               />
-            ) : null}
+            ) : (
+              children
+            )}
           </>
         )}
       </GlobalConsumer>

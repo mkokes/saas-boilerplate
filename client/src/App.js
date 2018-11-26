@@ -10,7 +10,7 @@ import {
 import { DefaultLayout, DashboardLayout } from 'layout';
 
 import AppLoadPage from 'components/AppLoadPage';
-import PrivateRoute from 'components/PrivateRoute/Loadable';
+import PrivateRoute from 'components/PrivateRoute';
 import RouteAnalytics from 'components/RouteAnalytics';
 import ScrollToTop from 'components/ScrollToTop';
 import NotFoundPage from 'components/NotFoundPage/Loadable';
@@ -24,6 +24,7 @@ import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
 // import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 
 import MainPage from 'containers/Dashboard/User/MainPage';
+import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage';
 
 import { GlobalConsumer } from 'GlobalState';
 
@@ -36,12 +37,13 @@ const Route = ({
     {...rest}
     render={props => (
       <React.Fragment>
-        {rest.protected && <PrivateRoute exact path={rest.path} />}
-        <RouteAnalytics key={rest.path} {...props}>
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        </RouteAnalytics>
+        <PrivateRoute exact path={rest.path} enable={rest.protected || false}>
+          <RouteAnalytics key={rest.path} {...props}>
+            <Layout>
+              <Component {...props} />
+            </Layout>
+          </RouteAnalytics>
+        </PrivateRoute>
       </React.Fragment>
     )}
   />
@@ -84,6 +86,13 @@ export default function App() {
                       exact
                       path="/dashboard/index"
                       component={MainPage}
+                      layout={DashboardLayout}
+                    />
+                    <Route
+                      protected
+                      exact
+                      path="/dashboard/email-verification"
+                      component={EmailVerificationPage}
                       layout={DashboardLayout}
                     />
 
