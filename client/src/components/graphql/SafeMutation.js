@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo';
 
 import ErrorBox from 'components/ErrorBox';
 
-import { transformError } from 'utils/graphql';
+// import { transformError } from 'utils/graphql';
 
 export const DEFAULT_IS_LOADING = ({ loading }) => loading;
 export const DEFAULT_RENDER_ERROR = ({ error }) => {

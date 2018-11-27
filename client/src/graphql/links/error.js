@@ -6,7 +6,7 @@ import { buildAuthHeader } from 'utils/requests';
 /* eslint-disable no-console */
 const errorLink = () =>
   onError(({ graphQLErrors, networkError, operation, forward }) => {
-    if (networkError) console.error(`[Network error]: ${networkError}`);
+    if (networkError) return console.error(`[Network error]: ${networkError}`);
 
     if (graphQLErrors) {
       const { message, locations, path, extensions } = graphQLErrors[0];
@@ -22,7 +22,13 @@ const errorLink = () =>
             const { headers } = operation.getContext();
 
             const globalProvider = await getGlobalProvider();
-            await globalProvider.refreshAccessToken();
+
+            try {
+              await globalProvider.refreshAccessTokenReq();
+            } catch (e) {
+              // @TODO: Unable to get new access token so we force logout the user?
+              throw e;
+            }
 
             operation.setContext({
               headers: {

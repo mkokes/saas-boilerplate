@@ -21,17 +21,24 @@ export default class SafeQuery extends Component {
       renderLoading = DEFAULT_RENDER_LOADING,
       showError = false,
       showLoading = false,
+      keepExistingResultDuringRefetch = false,
       ...props
     } = this.props;
 
     return (
       <Query {...props}>
         {result => {
-          // if it's a polling refetch call then we still have the data from before so check that this isn't the case
-          if (!result.data) {
-            const { error } = result;
-            if (error && showError) return renderError(result);
-            if (isLoading(result) && showLoading) return renderLoading(result);
+          if (result.data && keepExistingResultDuringRefetch) {
+            return children(result);
+          }
+
+          if (isLoading(result) && showLoading) {
+            return renderLoading(result);
+          }
+
+          const { error } = result;
+          if (error && showError) {
+            return renderError(result);
           }
 
           return children(result);
