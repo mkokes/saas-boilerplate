@@ -21,7 +21,7 @@ import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
 import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
-// import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
+import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 
 import MainPage from 'containers/Dashboard/User/MainPage';
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage';
@@ -79,6 +79,11 @@ export default function App() {
                       exact
                       path="/auth/reset-password"
                       component={ResetPasswordPage}
+                    />
+                    <Route
+                      exact
+                      path="/auth/email-confirmation"
+                      component={EmailConfirmationPage}
                     />
 
                     <Route

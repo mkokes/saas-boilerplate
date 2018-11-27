@@ -58,7 +58,7 @@ export default class SignupPage extends React.PureComponent {
 
     return (
       <GlobalConsumer>
-        {({ setAuthTokens, setUserProfile, loggedIn }) => (
+        {({ setAuthTokens, signIn, loggedIn }) => (
           <Fragment>
             {loggedIn && <Redirect to="/dashboard/index" />}
 
@@ -129,17 +129,16 @@ export default class SignupPage extends React.PureComponent {
                                       },
                                     });
 
-                                    const { profile, tokens } = data.signUpUser;
                                     const {
                                       accessToken,
                                       refreshToken,
-                                    } = tokens;
+                                    } = data.signUpUser;
 
                                     await setAuthTokens({
                                       accessToken,
                                       refreshToken,
                                     });
-                                    await setUserProfile(profile);
+                                    await signIn();
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 

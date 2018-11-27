@@ -18,6 +18,7 @@ module.exports = ({ config: { JWT_SECRET }, server, db, log: parentLog }) => {
     if (ctx.state.user) {
       try {
         const decodedPayload = ctx.state.user;
+
         assertAccessTokenPayload(decodedPayload);
 
         const userId = decodedPayload._id;
@@ -32,7 +33,7 @@ module.exports = ({ config: { JWT_SECRET }, server, db, log: parentLog }) => {
           ctx.state.user = '';
         }
       } catch (err) {
-        log.debug(err);
+        // log.debug(err);
         ctx.state.user = '';
       }
     }

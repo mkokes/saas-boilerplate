@@ -5,10 +5,6 @@ module.exports = gql`
     accessToken: String
     refreshToken: String
   }
-  type AccessResponse {
-    profile: UserProfile!
-    tokens: AuthTokens!
-  }
   type UserProfile {
     name: String
     email: String
@@ -24,11 +20,12 @@ module.exports = gql`
       email: String!
       password: String!
       name: String!
-    ): AccessResponse
-    loginUser(email: String!, password: String!): AccessResponse
+    ): AuthTokens
+    loginUser(email: String!, password: String!): AuthTokens
     loginUserNoAuth: UserProfile
     refreshAccessToken(refreshToken: String!): AuthTokens
     forgotPassword(email: String!): Boolean
     resetPassword(resetToken: String!, newPassword: String!): Boolean
+    confirmUserEmail(confirmationToken: String!): Boolean
   }
 `;

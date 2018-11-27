@@ -39,7 +39,7 @@ export default class EmailVerificationPage extends React.PureComponent {
                     <SafeQuery
                       query={isUserEmailConfirmedQuery}
                       fetchPolicy="network-only"
-                      pollInterval={2000}
+                      pollInterval={3000}
                       keepExistingResultDuringRefetch
                     >
                       {({ data: { profile = {} } }) => {

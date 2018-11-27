@@ -95,7 +95,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
           },
         });
 
-        return { profile: user, tokens: { accessToken, refreshToken } };
+        return { accessToken, refreshToken };
       } catch (e) {
         if (e.name === 'ValidationError') {
           const userValidationErrors = {};
@@ -139,8 +139,6 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         const isPasswordValid = await user.comparePassword(password);
         if (!isPasswordValid) throw logInErr;
 
-        const userProfile = await db.loginUser(user._id);
-
         const accessToken = createAccessToken({
           JWT_SECRET,
           data: {
@@ -156,7 +154,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
           },
         });
 
-        return { profile: userProfile, tokens: { accessToken, refreshToken } };
+        return { accessToken, refreshToken };
       } catch (e) {
         throw logInErr;
       }
@@ -238,6 +236,29 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
               'Password reset link is invalid or expired',
               'INVALID_PASSWORD_RESET_TOKEN',
             );
+          default:
+            throw e;
+        }
+      }
+
+      return true;
+    },
+    confirmUserEmail: async (_, { confirmationToken }) => {
+      const invalidTokenErr = new ApolloError(
+        'This confirmation link is invalid or has already been confirmed',
+        'INVALID_EMAIL_CONFIRMATION_TOKEN',
+      );
+
+      if (validator.isEmpty(confirmationToken)) {
+        throw invalidTokenErr;
+      }
+
+      try {
+        await db.confirmUserEmail(confirmationToken);
+      } catch (e) {
+        switch (e.message) {
+          case 'INVALID_EMAIL_CONFIRMATION_TOKEN':
+            throw invalidTokenErr;
           default:
             throw e;
         }

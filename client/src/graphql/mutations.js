@@ -4,8 +4,6 @@ import { ProfileFields } from './fragments';
 
 // we use this one for checking if user is signed in
 export const SignUpUser = gql`
-  ${ProfileFields}
-
   mutation signUpUser(
     $recaptchaResponse: String
     $email: String!
@@ -18,29 +16,17 @@ export const SignUpUser = gql`
       password: $password
       name: $name
     ) @disableAuth {
-      profile {
-        ...ProfileFields
-      }
-      tokens {
-        accessToken
-        refreshToken
-      }
+      accessToken
+      refreshToken
     }
   }
 `;
 
 export const LoginUser = gql`
-  ${ProfileFields}
-
   mutation loginUser($email: String!, $password: String!) {
     loginUser(email: $email, password: $password) @disableAuth {
-      profile {
-        ...ProfileFields
-      }
-      tokens {
-        accessToken
-        refreshToken
-      }
+      accessToken
+      refreshToken
     }
   }
 `;
@@ -71,5 +57,11 @@ export const ResetPassword = gql`
   mutation forgotPassword($resetToken: String!, $newPassword: String!) {
     resetPassword(resetToken: $resetToken, newPassword: $newPassword)
       @disableAuth
+  }
+`;
+
+export const ConfirmUserEmail = gql`
+  mutation confirmUserEmail($confirmationToken: String!) {
+    confirmUserEmail(confirmationToken: $confirmationToken) @disableAuth
   }
 `;

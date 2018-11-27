@@ -8,6 +8,7 @@ const {
   VERIFY_EMAIL,
   FORGOT_PASSWORD,
   PASSWORD_RESETED,
+  WELCOME_EMAIL,
 } = require('../constants/notifications');
 
 class Db extends EventEmitter {
@@ -128,6 +129,26 @@ class Db extends EventEmitter {
     this.notifyUser(_user._id, PASSWORD_RESETED, {
       email: _user.email,
       resetToken: resetPasswordToken.token,
+    });
+  }
+
+  async confirmUserEmail(confirmationToken) {
+    const user = await User.findOne({
+      isEmailConfirmed: false,
+      emailConfirmationToken: confirmationToken,
+    }).exec();
+
+    if (!user) {
+      throw new Error('INVALID_EMAIL_CONFIRMATION_TOKEN');
+    }
+
+    user.isEmailConfirmed = true;
+    user.emailConfirmatedAt = Date.now();
+
+    await user.save();
+
+    this.notifyUser(user._id, WELCOME_EMAIL, {
+      email: user.email,
     });
   }
 

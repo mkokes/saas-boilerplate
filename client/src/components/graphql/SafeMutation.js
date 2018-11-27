@@ -4,23 +4,15 @@ import { Mutation } from 'react-apollo';
 
 import ErrorBox from 'components/ErrorBox';
 
-// import { transformError } from 'utils/graphql';
+import { transformApolloErr } from 'utils/apollo';
 
 export const DEFAULT_IS_LOADING = ({ loading }) => loading;
 export const DEFAULT_RENDER_ERROR = ({ error }) => {
   /* eslint-disable no-console */
   console.error(error);
-  // const transformedError = transformError(error);
+  const transformedError = transformApolloErr(error);
 
-  let errStr = `${error}`;
-  const errStrLowercase = errStr.toLowerCase();
-
-  if (errStrLowercase.includes('failed to fetch')) {
-    errStr =
-      'We were unable to connect to our backend server. Is your internet connection working?';
-  }
-
-  return <ErrorBox>{errStr}</ErrorBox>;
+  return <ErrorBox>{transformedError.message}</ErrorBox>;
 };
 export const DEFAULT_RENDER_LOADING = () => <div>Loading</div>;
 

@@ -56,6 +56,11 @@ export const transformApolloErr = e => {
         transformedErr.message = 'Password reset link is invalid or expired.';
         transformedErr.type = 'INVALID_PASSWORD_RESET_TOKEN';
       }
+      if (code === 'INVALID_EMAIL_CONFIRMATION_TOKEN') {
+        transformedErr.message =
+          'This confirmation link is invalid or has already been confirmed';
+        transformedErr.type = 'INVALID_EMAIL_CONFIRMATION_TOKEN';
+      }
       if (code === 'INTERNAL_SERVER_ERROR') {
         transformedErr.message =
           'An unexpected server error ocurred. Our developers have already been notified and will fix it shortly.';

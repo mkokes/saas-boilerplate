@@ -7,11 +7,6 @@ const typeDefs = `
     accessToken: String
     refreshToken: String
   }
-
-  type AccessResponse {
-    profile: UserProfile!
-    tokens: AuthTokens!
-  }
 `;
 
 export default typeDefs;

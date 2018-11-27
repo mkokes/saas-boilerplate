@@ -162,6 +162,7 @@ class Provider extends Component {
 
   setAuthTokens = async ({ accessToken, refreshToken }) => {
     if (accessToken) {
+      console.debug('Set access_token:', accessToken);
       LocalStorageApi.setItem('access_token', accessToken);
       this.setState(state => ({
         auth: {
@@ -171,11 +172,12 @@ class Provider extends Component {
       }));
     }
     if (refreshToken) {
+      console.debug('Set refresh_token:', refreshToken);
       LocalStorageApi.setItem('refresh_token', refreshToken);
       this.setState(state => ({
         auth: {
           ...state.auth,
-          accessToken: refreshToken,
+          refreshToken,
         },
       }));
     }
