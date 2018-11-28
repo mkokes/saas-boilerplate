@@ -141,7 +141,7 @@ export default class LoginPage extends React.PureComponent {
                                       component={ReactstrapInput}
                                       name="email"
                                       type="email"
-                                      label="Email address or username"
+                                      label="Email address"
                                       autoComplete="e-mail"
                                       required
                                     />
