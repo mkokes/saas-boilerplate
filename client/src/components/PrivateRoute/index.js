@@ -2,46 +2,49 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { GlobalConsumer } from 'GlobalState';
-
 export class PrivateRoute extends React.PureComponent {
   render() {
-    const { redirect: pathname, children, ...rest } = this.props;
+    const {
+      redirect: pathname,
+      children,
+      loggedIn,
+      enable,
+      ...rest
+    } = this.props;
 
     return (
-      <GlobalConsumer>
-        {({ loggedIn }) => (
-          <>
-            {!loggedIn && rest.enable ? (
-              <Route
-                {...rest}
-                render={props => (
-                  <Redirect
-                    to={{
-                      pathname,
-                      state: { from: props.location },
-                    }}
-                  />
-                )}
+      <>
+        {!loggedIn && enable ? (
+          <Route
+            {...rest}
+            render={props => (
+              <Redirect
+                to={{
+                  pathname,
+                  state: { from: props.location },
+                }}
               />
-            ) : (
-              children
             )}
-          </>
+          />
+        ) : (
+          children
         )}
-      </GlobalConsumer>
+      </>
     );
   }
 }
 
 PrivateRoute.defaultProps = {
   redirect: '/auth/login',
+  enable: false,
 };
 
 PrivateRoute.propTypes = {
   redirect: PropTypes.string,
   location: PropTypes.object,
   children: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  enable: PropTypes.bool,
 };
 
 export default PrivateRoute;

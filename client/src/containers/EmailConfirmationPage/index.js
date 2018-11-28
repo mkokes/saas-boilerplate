@@ -29,7 +29,7 @@ function EmailConfirmationPage(props) {
       try {
         await client.mutate({
           mutation: ConfirmUserEmail,
-          variables: { confirmationToken: token },
+          variables: { confirmationToken: token || '' },
         });
 
         setAlertMessage({

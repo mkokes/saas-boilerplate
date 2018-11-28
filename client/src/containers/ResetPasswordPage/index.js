@@ -18,7 +18,7 @@ import {
   Alert,
 } from 'reactstrap';
 import queryString from 'query-string';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
@@ -26,7 +26,6 @@ import * as Yup from 'yup';
 import { ReactstrapInput } from 'reactstrap-formik';
 import { ApolloConsumer } from 'react-apollo';
 
-import { GlobalConsumer } from 'GlobalState';
 import { ResetPassword } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 
@@ -76,186 +75,170 @@ export default class ResetPasswordPage extends React.PureComponent {
     } = this.state;
 
     return (
-      <GlobalConsumer>
-        {({ loggedIn }) => (
-          <Fragment>
-            {loggedIn && <Redirect to="/dashboard/index" />}
+      <Fragment>
+        <Helmet>
+          <title>Reset password</title>
+          <meta name="description" content="Description of ResetPasswordPage" />
+        </Helmet>
+        <Container tag="main">
+          <Row>
+            <Col md={{ size: 6, offset: 3 }}>
+              <Card>
+                <CardHeader>
+                  <h3 className="mb-0">Password Reset</h3>
+                </CardHeader>
+                <CardBody>
+                  <Row>
+                    <Col className="text-center">
+                      {formMsg && (
+                        <Alert color={formMsg.color} role="alert" fade={false}>
+                          <strong>{formMsg.text}</strong>
+                        </Alert>
+                      )}
+                    </Col>
+                  </Row>
+                  <Row hidden={hideForm}>
+                    <Col>
+                      <ApolloConsumer>
+                        {client => (
+                          <Formik
+                            initialValues={{
+                              resetToken: gotResetTokenFromUrl,
+                              newPassword: '',
+                              confirmNewPassword: '',
+                            }}
+                            validationSchema={Yup.object().shape({
+                              newPassword: Yup.string().required('Required'),
+                              confirmNewPassword: Yup.string()
+                                .equalTo(
+                                  Yup.ref('newPassword'),
+                                  'Password does not match',
+                                )
+                                .required('Required'),
+                            })}
+                            onSubmit={async (values, formikBag) => {
+                              this.setState({ formMsg: null });
 
-            <Helmet>
-              <title>Reset password</title>
-              <meta
-                name="description"
-                content="Description of ResetPasswordPage"
-              />
-            </Helmet>
-            <Container tag="main">
-              <Row>
-                <Col md={{ size: 6, offset: 3 }}>
-                  <Card>
-                    <CardHeader>
-                      <h3 className="mb-0">Password Reset</h3>
-                    </CardHeader>
-                    <CardBody>
-                      <Row>
-                        <Col className="text-center">
-                          {formMsg && (
-                            <Alert
-                              color={formMsg.color}
-                              role="alert"
-                              fade={false}
-                            >
-                              <strong>{formMsg.text}</strong>
-                            </Alert>
-                          )}
-                        </Col>
-                      </Row>
-                      <Row hidden={hideForm}>
-                        <Col>
-                          <ApolloConsumer>
-                            {client => (
-                              <Formik
-                                initialValues={{
-                                  resetToken: gotResetTokenFromUrl,
-                                  newPassword: '',
-                                  confirmNewPassword: '',
-                                }}
-                                validationSchema={Yup.object().shape({
-                                  newPassword: Yup.string().required(
-                                    'Required',
-                                  ),
-                                  confirmNewPassword: Yup.string()
-                                    .equalTo(
-                                      Yup.ref('newPassword'),
-                                      'Password does not match',
-                                    )
-                                    .required('Required'),
-                                })}
-                                onSubmit={async (values, formikBag) => {
-                                  this.setState({ formMsg: null });
+                              try {
+                                await client.mutate({
+                                  mutation: ResetPassword,
+                                  variables: {
+                                    resetToken: values.resetToken,
+                                    newPassword: values.newPassword,
+                                  },
+                                });
 
-                                  try {
-                                    await client.mutate({
-                                      mutation: ResetPassword,
-                                      variables: {
-                                        resetToken: values.resetToken,
-                                        newPassword: values.newPassword,
-                                      },
-                                    });
+                                formikBag.setSubmitting(false);
 
-                                    formikBag.setSubmitting(false);
+                                this.setState({
+                                  formMsg: {
+                                    color: 'success',
+                                    text:
+                                      'Password has been reset. Now you can log in.',
+                                  },
+                                  hideLogInPrompt: false,
+                                });
 
-                                    this.setState({
-                                      formMsg: {
-                                        color: 'success',
-                                        text:
-                                          'Password has been reset. Now you can log in.',
-                                      },
-                                      hideLogInPrompt: false,
-                                    });
+                                this.setState({ hideForm: true });
+                              } catch (e) {
+                                const err = transformApolloErr(e);
 
-                                    this.setState({ hideForm: true });
-                                  } catch (e) {
-                                    const err = transformApolloErr(e);
+                                if (err.type === 'BAD_USER_INPUT') {
+                                  formikBag.setErrors(err.data);
+                                }
+                                if (
+                                  err.type === 'INVALID_PASSWORD_RESET_TOKEN'
+                                ) {
+                                  // @TODO: Hide form. Ask user to re-issue forgot pw process.
+                                  this.setState({ hideForm: true });
+                                  this.setState({
+                                    hideForgotPasswordPrompt: false,
+                                  });
+                                }
 
-                                    if (err.type === 'BAD_USER_INPUT') {
-                                      formikBag.setErrors(err.data);
-                                    }
-                                    if (
-                                      err.type ===
-                                      'INVALID_PASSWORD_RESET_TOKEN'
-                                    ) {
-                                      // @TODO: Hide form. Ask user to re-issue forgot pw process.
-                                      this.setState({ hideForm: true });
-                                      this.setState({
-                                        hideForgotPasswordPrompt: false,
-                                      });
-                                    }
-
-                                    this.setState({
-                                      formMsg: {
-                                        color: 'danger',
-                                        text: err.message,
-                                      },
-                                    });
-                                    formikBag.setSubmitting(false);
-                                  }
-                                }}
-                              >
-                                {({ isSubmitting }) => (
-                                  <Form>
-                                    <div hidden={gotResetTokenFromUrl}>
-                                      <Field
-                                        component={ReactstrapInput}
-                                        name="resetToken"
-                                        type="text"
-                                        label="Reset token"
-                                        placeholder="(check received reset instructions email)"
-                                        autoComplete="off"
-                                      />
-                                    </div>
-                                    <Field
-                                      component={ReactstrapInput}
-                                      name="newPassword"
-                                      type="password"
-                                      label="New password"
-                                      autoComplete="new-password"
+                                this.setState({
+                                  formMsg: {
+                                    color: 'danger',
+                                    text: err.message,
+                                  },
+                                });
+                                formikBag.setSubmitting(false);
+                              }
+                            }}
+                          >
+                            {({ isSubmitting }) => (
+                              <Form>
+                                <div hidden={gotResetTokenFromUrl}>
+                                  <Field
+                                    component={ReactstrapInput}
+                                    name="resetToken"
+                                    type="text"
+                                    label="Reset token"
+                                    placeholder="(check received reset instructions email)"
+                                    autoComplete="off"
+                                  />
+                                </div>
+                                <Field
+                                  component={ReactstrapInput}
+                                  name="newPassword"
+                                  type="password"
+                                  label="New password"
+                                  autoComplete="new-password"
+                                />
+                                <Field
+                                  component={ReactstrapInput}
+                                  name="confirmNewPassword"
+                                  type="password"
+                                  label="Confirm password"
+                                  autoComplete="new-password"
+                                />
+                                <div>
+                                  <Button
+                                    type="submit"
+                                    block
+                                    size="lg"
+                                    color="success"
+                                    disabled={isSubmitting}
+                                  >
+                                    <FontAwesomeIcon
+                                      pulse
+                                      icon={faSpinner}
+                                      className={
+                                        isSubmitting ? 'mr-2' : 'd-none'
+                                      }
                                     />
-                                    <Field
-                                      component={ReactstrapInput}
-                                      name="confirmNewPassword"
-                                      type="password"
-                                      label="Confirm password"
-                                      autoComplete="new-password"
-                                    />
-                                    <div>
-                                      <Button
-                                        type="submit"
-                                        block
-                                        size="lg"
-                                        color="success"
-                                        disabled={isSubmitting}
-                                      >
-                                        <FontAwesomeIcon
-                                          pulse
-                                          icon={faSpinner}
-                                          className={
-                                            isSubmitting ? 'mr-2' : 'd-none'
-                                          }
-                                        />
-                                        Reset
-                                      </Button>
-                                    </div>
-                                  </Form>
-                                )}
-                              </Formik>
+                                    Reset
+                                  </Button>
+                                </div>
+                              </Form>
                             )}
-                          </ApolloConsumer>
-                        </Col>
-                      </Row>
-                      <Row hidden={hideForgotPasswordPrompt}>
-                        <Col className="text-center">
-                          <Link to="/auth/forgot-password">
-                            <Button color="secondary">
-                              Request new password link
-                            </Button>
-                          </Link>
-                        </Col>
-                      </Row>
-                      <Row hidden={hideLogInPrompt}>
-                        <Col className="text-center">
-                          <Link to="/auth/login">
-                            <Button color="secondary">Go to log in form</Button>
-                          </Link>
-                        </Col>
-                      </Row>
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-            </Container>
-          </Fragment>
-        )}
-      </GlobalConsumer>
+                          </Formik>
+                        )}
+                      </ApolloConsumer>
+                    </Col>
+                  </Row>
+                  <Row hidden={hideForgotPasswordPrompt}>
+                    <Col className="text-center">
+                      <Link to="/auth/forgot-password">
+                        <Button color="secondary">
+                          Request new password link
+                        </Button>
+                      </Link>
+                    </Col>
+                  </Row>
+                  <Row hidden={hideLogInPrompt}>
+                    <Col className="text-center">
+                      <Link to="/auth/login">
+                        <Button color="secondary">Go to log in form</Button>
+                      </Link>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </Fragment>
     );
   }
 }

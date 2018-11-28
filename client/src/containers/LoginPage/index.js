@@ -50,10 +50,8 @@ export default class LoginPage extends React.PureComponent {
 
     return (
       <GlobalConsumer>
-        {({ setAuthTokens, signIn, loggedIn }) => (
+        {({ setAuthTokens, signIn }) => (
           <Fragment>
-            {loggedIn && <Redirect to="/dashboard/index" />}
-
             <Helmet>
               <title>Sign in</title>
               <meta name="description" content="Description of LoginPage" />

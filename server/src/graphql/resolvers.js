@@ -245,7 +245,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
     },
     confirmUserEmail: async (_, { confirmationToken }) => {
       const invalidTokenErr = new ApolloError(
-        'This confirmation link is invalid or has already been confirmed',
+        'This confirmation link is invalid or has already been used',
         'INVALID_EMAIL_CONFIRMATION_TOKEN',
       );
 

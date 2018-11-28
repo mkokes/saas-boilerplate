@@ -7,13 +7,12 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { DefaultLayout, DashboardLayout } from 'layout';
-
 import AppLoadPage from 'components/AppLoadPage';
 import PrivateRoute from 'components/PrivateRoute';
 import RouteAnalytics from 'components/RouteAnalytics';
 import ScrollToTop from 'components/ScrollToTop';
 import NotFoundPage from 'components/NotFoundPage/Loadable';
+import Middleware from 'components/Middleware';
 
 import HomePage from 'containers/HomePage/Loadable';
 // import ContactPage from 'containers/ContactPage/Loadable';
@@ -23,8 +22,10 @@ import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
 import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
 import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 
-import MainPage from 'containers/Dashboard/User/MainPage';
-import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage';
+import MainPage from 'containers/Dashboard/User/MainPage/Loadable';
+import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
+
+import { DefaultLayout, MinimalDefaultLayout, DashboardLayout } from 'layout';
 
 import { GlobalConsumer } from 'GlobalState';
 
@@ -36,15 +37,19 @@ const Route = ({
   <DefaultRoute
     {...rest}
     render={props => (
-      <React.Fragment>
-        <PrivateRoute exact path={rest.path} enable={rest.protected || false}>
-          <RouteAnalytics key={rest.path} {...props}>
-            <Layout>
-              <Component {...props} />
-            </Layout>
-          </RouteAnalytics>
-        </PrivateRoute>
-      </React.Fragment>
+      <GlobalConsumer>
+        {({ loggedIn, userProfile }) => (
+          <PrivateRoute exact loggedIn={loggedIn} enable={rest.protected}>
+            <Middleware user={userProfile} path={rest.path}>
+              <RouteAnalytics {...props}>
+                <Layout>
+                  <Component {...props} />
+                </Layout>
+              </RouteAnalytics>
+            </Middleware>
+          </PrivateRoute>
+        )}
+      </GlobalConsumer>
     )}
   />
 );
@@ -67,23 +72,38 @@ export default function App() {
                 <ScrollToTop>
                   <Switch>
                     <Route exact path="/" component={HomePage} />
-                    <Route exact path="/signup" component={SignupPage} />
 
-                    <Route exact path="/auth/login" component={LoginPage} />
+                    <Route
+                      exact
+                      path="/signup"
+                      component={SignupPage}
+                      layout={MinimalDefaultLayout}
+                    />
+
+                    <Route
+                      exact
+                      path="/auth/login"
+                      component={LoginPage}
+                      layout={MinimalDefaultLayout}
+                    />
                     <Route
                       exact
                       path="/auth/forgot-password"
                       component={ForgotPasswordPage}
+                      layout={MinimalDefaultLayout}
                     />
                     <Route
                       exact
                       path="/auth/reset-password"
                       component={ResetPasswordPage}
+                      layout={MinimalDefaultLayout}
                     />
+
                     <Route
                       exact
-                      path="/auth/email-confirmation"
+                      path="/misc/email-confirmation"
                       component={EmailConfirmationPage}
+                      layout={MinimalDefaultLayout}
                     />
 
                     <Route

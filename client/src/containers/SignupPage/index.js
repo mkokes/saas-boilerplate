@@ -58,10 +58,8 @@ export default class SignupPage extends React.PureComponent {
 
     return (
       <GlobalConsumer>
-        {({ setAuthTokens, signIn, loggedIn }) => (
+        {({ setAuthTokens, signIn }) => (
           <Fragment>
-            {loggedIn && <Redirect to="/dashboard/index" />}
-
             <Helmet>
               <title>Sign up</title>
               <meta name="description" content="Description of SignupPage" />

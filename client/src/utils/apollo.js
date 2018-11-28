@@ -58,7 +58,7 @@ export const transformApolloErr = e => {
       }
       if (code === 'INVALID_EMAIL_CONFIRMATION_TOKEN') {
         transformedErr.message =
-          'This confirmation link is invalid or has already been confirmed';
+          'This confirmation link is invalid or has already been used';
         transformedErr.type = 'INVALID_EMAIL_CONFIRMATION_TOKEN';
       }
       if (code === 'INTERNAL_SERVER_ERROR') {
