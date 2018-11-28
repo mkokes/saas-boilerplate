@@ -17,12 +17,8 @@ export default class MainPage extends React.PureComponent {
   render() {
     return (
       <GlobalConsumer>
-        {({ userProfile }) => (
+        {() => (
           <Fragment>
-            {!userProfile.isEmailConfirmed && (
-              <Redirect to="/dashboard/email-verification" />
-            )}
-
             <Helmet>
               <title>Dashboard index</title>
               <meta
