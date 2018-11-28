@@ -9,6 +9,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink as RRNavLink } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 import {
   Container,
@@ -31,6 +32,7 @@ import {
   faUnlockAlt,
   faHome,
   faUserAlt,
+  faLifeRing,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { GlobalConsumer } from 'GlobalState';
@@ -58,8 +60,10 @@ export class NavbarComponent extends React.PureComponent {
   }
 
   render() {
-    const { navbarBrandLink } = this.props;
+    const { location, history, navbarBrandLink } = this.props;
     const { isOpen } = this.state;
+
+    const { pathname } = location;
 
     return (
       <GlobalConsumer>
@@ -78,11 +82,11 @@ export class NavbarComponent extends React.PureComponent {
                     <span className="beta-icon align-text-bottom">beta</span>
                   </NavbarBrand>
                 </NavLink>
-                <NavbarToggler key="navbar-toggler" onClick={this.toggle} />
-                <Collapse key="navbar-collapse" isOpen={isOpen} navbar>
-                  <Nav className="ml-auto align-items-center" navbar>
-                    {!loggedIn ? (
-                      <Fragment>
+                {!loggedIn ? (
+                  <Fragment>
+                    <NavbarToggler key="navbar-toggler" onClick={this.toggle} />
+                    <Collapse key="navbar-collapse" isOpen={isOpen} navbar>
+                      <Nav className="ml-auto align-items-center" navbar>
                         <NavItem key="register" onClick={this.handleClick}>
                           <NavLink
                             to="/signup"
@@ -106,38 +110,71 @@ export class NavbarComponent extends React.PureComponent {
                             Log In
                           </NavLink>
                         </NavItem>
-                      </Fragment>
-                    ) : (
-                      <Nav
-                        key="nav"
-                        className="ml-auto align-items-center"
-                        navbar
-                      >
-                        <UncontrolledDropdown key="user-options" nav>
-                          <DropdownToggle nav caret>
-                            <FontAwesomeIcon
-                              icon={faUserAlt}
-                              className="fa-lg navbar-user-icon"
-                            />
+                      </Nav>
+                    </Collapse>
+                  </Fragment>
+                ) : (
+                  <Nav className="ml-auto align-items-center" navbar>
+                    <UncontrolledDropdown key="user-options" nav>
+                      <DropdownToggle nav caret>
+                        <FontAwesomeIcon
+                          icon={faUserAlt}
+                          className="fa-lg navbar-user-icon"
+                        />
 
-                            <span className="navbar-user-username">
-                              {userProfile.name}
-                            </span>
-                          </DropdownToggle>
-                          <DropdownMenu right>
-                            <DropdownItem onClick={() => logOut()}>
+                        <span className="navbar-user-username">
+                          {userProfile.name}
+                        </span>
+                      </DropdownToggle>
+                      <DropdownMenu right>
+                        {pathname.indexOf('/dashboard') === 0 ? (
+                          <Fragment>
+                            {userProfile.isEmailConfirmed && (
+                              <DropdownItem
+                                onClick={() =>
+                                  history.push('/dashboard/user/settings')
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  icon={faCog}
+                                  className="align-text-top mr-1"
+                                />
+                                Settings
+                              </DropdownItem>
+                            )}
+                            <DropdownItem
+                              onClick={() => history.push('/support')}
+                            >
                               <FontAwesomeIcon
-                                icon={faUnlockAlt}
+                                icon={faLifeRing}
                                 className="align-text-top mr-1"
                               />
-                              Sign out
+                              Contact support
                             </DropdownItem>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </Nav>
-                    )}
+                          </Fragment>
+                        ) : (
+                          <DropdownItem
+                            onClick={() => history.push('/dashboard/index')}
+                          >
+                            <FontAwesomeIcon
+                              icon={faHome}
+                              className="align-text-top mr-1"
+                            />
+                            Go to Dashboard
+                          </DropdownItem>
+                        )}
+
+                        <DropdownItem onClick={() => logOut()}>
+                          <FontAwesomeIcon
+                            icon={faUnlockAlt}
+                            className="align-text-top mr-1"
+                          />
+                          Sign out
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
                   </Nav>
-                </Collapse>
+                )}
               </Container>
             </Navbar>
           </header>
@@ -147,11 +184,13 @@ export class NavbarComponent extends React.PureComponent {
   }
 }
 
+NavbarComponent.propTypes = {
+  navbarBrandLink: PropTypes.string,
+  location: PropTypes.object,
+  history: PropTypes.object,
+};
 NavbarComponent.defaultProps = {
   navbarBrandLink: '/',
 };
-NavbarComponent.propTypes = {
-  navbarBrandLink: PropTypes.string,
-};
 
-export default NavbarComponent;
+export default withRouter(NavbarComponent);
