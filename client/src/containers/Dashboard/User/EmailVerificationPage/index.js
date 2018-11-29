@@ -61,7 +61,7 @@ export default class EmailVerificationPage extends React.PureComponent {
                               <h4 className="alert-heading">
                                 {' '}
                                 Almost done... we need to{' '}
-                                <strong>verify your e-mail address</strong>{' '}
+                                <strong>verify your email address</strong>{' '}
                                 before you can continue
                               </h4>
                               <p>

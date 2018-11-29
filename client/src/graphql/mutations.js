@@ -65,3 +65,21 @@ export const ConfirmUserEmail = gql`
     confirmUserEmail(confirmationToken: $confirmationToken) @disableAuth
   }
 `;
+
+export const Contact = gql`
+  mutation contact(
+    $recaptchaResponse: String!
+    $name: String!
+    $email: String!
+    $subject: String!
+    $message: String!
+  ) {
+    contact(
+      recaptchaResponse: $recaptchaResponse
+      name: $name
+      email: $email
+      subject: $subject
+      message: $message
+    ) @disableAuth
+  }
+`;

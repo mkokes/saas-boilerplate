@@ -15,7 +15,7 @@ import NotFoundPage from 'components/NotFoundPage/Loadable';
 import Middleware from 'components/Middleware';
 
 import HomePage from 'containers/HomePage/Loadable';
-// import ContactPage from 'containers/ContactPage/Loadable';
+import ContactPage from 'containers/ContactPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
@@ -100,13 +100,6 @@ export default function App() {
                     />
 
                     <Route
-                      exact
-                      path="/misc/email-confirmation"
-                      component={EmailConfirmationPage}
-                      layout={MinimalDefaultLayout}
-                    />
-
-                    <Route
                       protected
                       exact
                       path="/dashboard/index"
@@ -120,6 +113,8 @@ export default function App() {
                       component={EmailVerificationPage}
                       layout={DashboardLayout}
                     />
+
+                    <Route exact path="/contact" component={ContactPage} />
 
                     <Route component={NotFoundPage} />
                   </Switch>

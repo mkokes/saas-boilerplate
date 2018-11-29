@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 const uuidv4 = require('uuid/v4');
+
+const { Schema } = mongoose;
 
 /**
  * resetPasswordToken Schema

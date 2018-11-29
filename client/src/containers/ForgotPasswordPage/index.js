@@ -22,7 +22,7 @@ import { faSpinner, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
-import { ReactstrapInput } from 'reactstrap-formik';
+import { ReactstrapInput } from 'utils/formiik';
 import { ApolloConsumer } from 'react-apollo';
 
 import { ForgotPassword } from 'graphql/mutations';
@@ -130,7 +130,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
                                   name="email"
                                   type="email"
                                   label="Email address"
-                                  autoComplete="e-mail"
+                                  autoComplete="email"
                                   required
                                 />
                                 <PasswordResetText>

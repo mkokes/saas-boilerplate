@@ -23,7 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { ReactstrapInput } from 'reactstrap-formik';
+import { ReactstrapInput } from 'utils/formiik';
 import { ApolloConsumer } from 'react-apollo';
 
 import { ResetPassword } from 'graphql/mutations';

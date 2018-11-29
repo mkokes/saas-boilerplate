@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { ReactstrapInput } from 'reactstrap-formik';
+import { ReactstrapInput } from 'utils/formiik';
 import styled from 'styled-components';
 import { ApolloConsumer } from 'react-apollo';
 
@@ -142,7 +142,7 @@ export default class LoginPage extends React.PureComponent {
                                       name="email"
                                       type="email"
                                       label="Email address"
-                                      autoComplete="e-mail"
+                                      autoComplete="email"
                                       required
                                     />
                                     <Field

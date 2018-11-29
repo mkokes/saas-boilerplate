@@ -2,6 +2,7 @@ const EventEmitter = require('eventemitter3');
 
 const setupDb = require('./setup');
 const User = require('./models/user');
+const Notification = require('./models/notification');
 const ResetPasswordToken = require('./models/resetPasswordToken');
 const { NOTIFICATION } = require('../constants/events');
 const {
@@ -56,7 +57,7 @@ class Db extends EventEmitter {
       name,
     }).save();
 
-    this.notifyUser(user._id, VERIFY_EMAIL, {
+    this.notify(user._id, VERIFY_EMAIL, {
       email: user.email,
     });
 
@@ -94,7 +95,7 @@ class Db extends EventEmitter {
       _user: user._id,
     }).save();
 
-    this.notifyUser(user._id, FORGOT_PASSWORD, {
+    this.notify(user._id, FORGOT_PASSWORD, {
       email: user.email,
       resetToken: resetPasswordToken.token,
     });
@@ -126,7 +127,7 @@ class Db extends EventEmitter {
     await _user.save();
     await resetPasswordToken.save();
 
-    this.notifyUser(_user._id, PASSWORD_RESETED, {
+    this.notify(_user._id, PASSWORD_RESETED, {
       email: _user.email,
       resetToken: resetPasswordToken.token,
     });
@@ -147,21 +148,19 @@ class Db extends EventEmitter {
 
     await user.save();
 
-    this.notifyUser(user._id, WELCOME_EMAIL, {
+    this.notify(user._id, WELCOME_EMAIL, {
       email: user.email,
     });
   }
 
-  async notifyUser(userId, type, data) {
-    const obj = {
+  async notify(userId, type, data) {
+    const notification = await new Notification({
       _user: userId,
       type,
       data,
-      email_sent: false,
-      seen: false,
-    };
+    }).save();
 
-    this.emit(NOTIFICATION, obj._id);
+    this.emit(NOTIFICATION, notification._id);
   }
 }
 

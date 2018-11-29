@@ -16,11 +16,11 @@ import {
   Button,
   Alert,
 } from 'reactstrap';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
-import { ReactstrapInput } from 'reactstrap-formik';
+import { ReactstrapInput } from 'utils/formiik';
 import * as Yup from 'yup';
 import { ApolloConsumer } from 'react-apollo';
 import Reaptcha from 'reaptcha';
@@ -168,7 +168,7 @@ export default class SignupPage extends React.PureComponent {
                                       name="email"
                                       type="email"
                                       placeholder="john@acme.com"
-                                      label="E-mail address"
+                                      label="Email address"
                                       autoComplete="email"
                                       required
                                     />

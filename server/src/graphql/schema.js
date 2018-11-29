@@ -27,5 +27,12 @@ module.exports = gql`
     forgotPassword(email: String!): Boolean
     resetPassword(resetToken: String!, newPassword: String!): Boolean
     confirmUserEmail(confirmationToken: String!): Boolean
+    contact(
+      recaptchaResponse: String!
+      name: String!
+      email: String!
+      subject: String!
+      message: String!
+    ): Boolean
   }
 `;
