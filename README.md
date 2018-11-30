@@ -1,3 +1,1 @@
-# WIP – WORK IN PROGRESS
-
-⚡️Boilerplate to launch SaaS projects quickly
+# [GO TO WIKI MAIN PAGE](https://github.com/AMGAVentures/saas-boilerplate/wiki)
