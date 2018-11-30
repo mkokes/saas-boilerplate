@@ -25,54 +25,31 @@ export const transformApolloErr = e => {
       }
     }
     if (err.graphQLErrors.length) {
+      const { message } = err.graphQLErrors[0];
       const { code } = err.graphQLErrors[0].extensions;
+      transformedErr.type = code;
+      transformedErr.message = message;
 
-      if (code === 'UNAUTHENTICATED') {
-        transformedErr.message = 'Authentication is required.';
-        transformedErr.type = 'UNAUTHENTICATED';
-      }
       if (code === 'FORBIDDEN') {
-        transformedErr.message = 'Forbidden.';
-        transformedErr.type = 'FORBIDDEN';
+        transformedErr.message = 'Access Forbidden';
       }
       if (code === 'BAD_USER_INPUT') {
         const { validationErrors } = err.graphQLErrors[0].extensions.exception;
 
-        transformedErr.message = 'Fix below validation errors to continue.';
-        transformedErr.type = 'BAD_USER_INPUT';
+        transformedErr.message = 'Fix below validation errors to continue';
         transformedErr.data = validationErrors;
-      }
-      if (code === 'INVALID_LOGIN_CREDENTIALS') {
-        transformedErr.message =
-          'You have entered an invalid email or password';
-        transformedErr.type = 'INVALID_LOGIN_CREDENTIALS';
-      }
-      if (code === 'INVALID_CAPTCHA') {
-        transformedErr.message =
-          'Our security system could not determine if the request was made by a human. Try it again.';
-        transformedErr.type = 'INVALID_CAPTCHA';
-      }
-      if (code === 'INVALID_PASSWORD_RESET_TOKEN') {
-        transformedErr.message = 'Password reset link is invalid or expired.';
-        transformedErr.type = 'INVALID_PASSWORD_RESET_TOKEN';
-      }
-      if (code === 'INVALID_EMAIL_CONFIRMATION_TOKEN') {
-        transformedErr.message =
-          'This confirmation link is invalid or has already been used';
-        transformedErr.type = 'INVALID_EMAIL_CONFIRMATION_TOKEN';
       }
       if (code === 'INTERNAL_SERVER_ERROR') {
         transformedErr.message =
           'An unexpected server error ocurred. Our developers have already been notified and will fix it shortly.';
-        transformedErr.type = 'INTERNAL_SERVER_ERROR';
       }
     }
   } catch (exception) {
     // eslint-disable-next-line
-    console.error('transformApolloErr catch e:', exception);
+    console.error('transformApolloErr catched exception:', exception);
   }
 
-  if (transformedErr.message === null) {
+  if (transformedErr.type === undefined || transformedErr.message === null) {
     transformedErr.message =
       'An unexpected error ocurred. Please try it again or refresh the page if the issue persists.';
   }

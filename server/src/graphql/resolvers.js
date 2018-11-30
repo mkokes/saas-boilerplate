@@ -45,7 +45,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
 
       if (validator.isEmpty(recaptchaResponse)) {
         throw new ApolloError(
-          'ReCaptcha response is required to continue',
+          'Our security system could not determine if the request was made by a human. Try it again.',
           'INVALID_CAPTCHA',
         );
       }
@@ -74,7 +74,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
 
       if (!isRecaptchaValid) {
         throw new ApolloError(
-          'Submited reCaptcha response is not valid',
+          'Our security system could not determine if the request was made by a human. Try it again.',
           'INVALID_CAPTCHA',
         );
       }
@@ -276,7 +276,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
 
       if (validator.isEmpty(recaptchaResponse)) {
         throw new ApolloError(
-          'ReCaptcha response is required to continue',
+          'Captcha is required to continue',
           'INVALID_CAPTCHA',
         );
       }
@@ -314,7 +314,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
 
       if (!isRecaptchaValid) {
         throw new ApolloError(
-          'Submited reCaptcha response is not valid',
+          'Our security system could not determine if the request was made by a human. Try it again.',
           'INVALID_CAPTCHA',
         );
       }

@@ -8,14 +8,17 @@ import {
 } from 'react-router-dom';
 
 import AppLoadPage from 'components/AppLoadPage';
-import PrivateRoute from 'components/PrivateRoute';
-import RouteAnalytics from 'components/RouteAnalytics';
 import ScrollToTop from 'components/ScrollToTop';
 import NotFoundPage from 'components/NotFoundPage/Loadable';
 import Middleware from 'components/Middleware';
+import PrivateRoute from 'components/PrivateRoute';
+import RouteAnalytics from 'components/RouteAnalytics';
+import AboutPage from 'components/AboutPage/Loadable';
+import LegalTermsPage from 'components/LegalTermsPage/Loadable';
 
 import HomePage from 'containers/HomePage/Loadable';
 import ContactPage from 'containers/ContactPage/Loadable';
+import PricingPage from 'containers/PricingPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
@@ -72,6 +75,14 @@ export default function App() {
                 <ScrollToTop>
                   <Switch>
                     <Route exact path="/" component={HomePage} />
+                    <Route exact path="/contact" component={ContactPage} />
+                    <Route exact path="/about" component={AboutPage} />
+                    <Route
+                      exact
+                      path="/legal/terms"
+                      component={LegalTermsPage}
+                    />
+                    <Route exact path="/pricing" component={PricingPage} />
 
                     <Route
                       exact
@@ -114,7 +125,11 @@ export default function App() {
                       layout={DashboardLayout}
                     />
 
-                    <Route exact path="/contact" component={ContactPage} />
+                    <Route
+                      exact
+                      path="/confirm-email"
+                      component={EmailConfirmationPage}
+                    />
 
                     <Route component={NotFoundPage} />
                   </Switch>

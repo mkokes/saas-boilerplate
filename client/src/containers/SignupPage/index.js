@@ -222,13 +222,12 @@ export default class SignupPage extends React.PureComponent {
                                       onError={() => this.resetCaptcha}
                                       size="invisible"
                                     />
-
-                                    <p className="mt-1 text-center text-muted small">
-                                      By signing up you agree to our{' '}
+                                    <p className="mt-1 pr-5 pl-5 text-center text-muted small">
+                                      By signing up, you agree to our{' '}
                                       <a href="/legal/terms#tos" target="popup">
                                         Terms of Service
                                       </a>{' '}
-                                      and{' '}
+                                      and that you have read our{' '}
                                       <a href="/legal/terms#pp" target="popup">
                                         Privacy Policy
                                       </a>
