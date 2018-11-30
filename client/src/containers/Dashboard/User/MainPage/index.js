@@ -7,7 +7,6 @@
 import React, { Fragment } from 'react';
 // import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
-import { Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import { GlobalConsumer } from 'GlobalState';

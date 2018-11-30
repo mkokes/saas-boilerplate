@@ -3,10 +3,10 @@ import { Observable } from 'apollo-link';
 import { getProvider as getGlobalProvider } from 'GlobalState';
 import { buildAuthHeader } from 'utils/requests';
 
-/* eslint-disable no-console */
+/* eslint-disable no-console, consistent-return */
 const errorLink = () =>
   onError(({ graphQLErrors, networkError, operation, forward }) => {
-    if (networkError) return console.error(`[Network error]: ${networkError}`);
+    if (networkError) console.error(`[Network error]: ${networkError}`);
 
     if (graphQLErrors) {
       const { message, locations, path, extensions } = graphQLErrors[0];
