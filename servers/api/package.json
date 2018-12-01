@@ -1,12 +1,12 @@
 {
   "name": "server",
   "private": true,
+  "version": "0.1.0",
   "scripts": {
     "start": "node index.js",
-    "deploy:live": "",
     "now": "now --team noblocknoparty --token $NOW_TOKEN",
     "test": "jest --no-cache",
-    "test:coverage": "yarn test --coverage"
+    "test:coverage": "npm test --coverage"
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",
