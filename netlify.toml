@@ -10,4 +10,4 @@
 [build]
   base    = "client"
   publish = "client/build"
-  command = "npm run build"
+  command = "pwd && npm run build"

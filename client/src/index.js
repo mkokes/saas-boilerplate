@@ -16,7 +16,7 @@ import { AnalyticsApi } from 'api/vendors';
 import { GlobalProvider } from 'GlobalState';
 import GlobalStyle from 'GlobalStyle';
 
-import App from 'app';
+import App from './app';
 import { clientInstance } from './graphql';
 import registerServiceWorker from './registerServiceWorker';
 
