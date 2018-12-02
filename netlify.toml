@@ -8,6 +8,5 @@
 #    that is where we will look for package.json/.nvmrc/etc not repo root!
 
 [build]
-  base    = "client"
   publish = "client/build"
-  command = "ls && pwd && npm run build"
+  command = "npm run build:client"
