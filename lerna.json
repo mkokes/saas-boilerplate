@@ -1,4 +1,4 @@
 {
-  "packages": ["client", "servers/api", "servers/worker"],
+  "packages": ["client", "servers/api", "servers/worker", "servers/analytics"],
   "version": "0.0.0"
 }

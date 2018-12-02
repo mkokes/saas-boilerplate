@@ -1,6 +1,6 @@
 {
-  "name": "kickback-analytics",
-  "alias": "analytics.kickback.events",
+  "name": "foo.name",
+  "alias": "foo.alias",
   "scale": {
     "bru1": {
       "min": 1,

@@ -10,21 +10,10 @@
     "release": "yarn deploy && yarn now rm kickback-analytics --safe --yes",
     "now": "now --team noblocknoparty --token $NOW_TOKEN"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/noblocknoparty/analytics.git"
-  },
   "keywords": [
-    "mixpanel",
     "proxy",
     "server"
   ],
-  "author": "Ramesh Nair <ram@hiddentao.com>",
-  "license": "AGPLv3",
-  "bugs": {
-    "url": "https://github.com/noblocknoparty/analytics/issues"
-  },
-  "homepage": "https://github.com/noblocknoparty/analytics#readme",
   "dependencies": {
     "@koa/cors": "^2.2.2",
     "global-tunnel-ng": "^2.6.0",

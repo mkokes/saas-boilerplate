@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "node index.js",
-    "now": "now --team noblocknoparty --token $NOW_TOKEN",
+    "deploy": "now",
     "test": "jest --no-cache",
     "test:coverage": "npm test --coverage"
   },
