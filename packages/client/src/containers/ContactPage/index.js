@@ -24,7 +24,6 @@ import * as Yup from 'yup';
 import { ApolloConsumer } from 'react-apollo';
 import Reaptcha from 'reaptcha';
 
-import config from 'config';
 import { ReactstrapInput } from 'utils/formiik';
 import { Contact } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
@@ -209,7 +208,9 @@ export default class ContactPage extends React.PureComponent {
                                     <Reaptcha
                                       // eslint-disable-next-line
                                       ref={e => (this.captcha = e)}
-                                      sitekey={config.RECAPTCHA_SITE_KEY}
+                                      sitekey={
+                                        process.env.REACT_APP_RECAPTCHA_SITE_KEY
+                                      }
                                       onVerify={res => {
                                         this.setState({
                                           recaptchaResponse: res,

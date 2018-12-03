@@ -25,7 +25,6 @@ import * as Yup from 'yup';
 import { ApolloConsumer } from 'react-apollo';
 import Reaptcha from 'reaptcha';
 
-import config from 'config';
 import { SignUpUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { GlobalConsumer } from 'GlobalState';
@@ -211,7 +210,9 @@ export default class SignupPage extends React.PureComponent {
                                     <Reaptcha
                                       // eslint-disable-next-line
                                       ref={e => (this.captcha = e)}
-                                      sitekey={config.RECAPTCHA_SITE_KEY}
+                                      sitekey={
+                                        process.env.REACT_APP_RECAPTCHA_SITE_KEY
+                                      }
                                       onVerify={res => {
                                         this.setState({
                                           recaptchaResponse: res,

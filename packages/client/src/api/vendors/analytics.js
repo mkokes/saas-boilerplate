@@ -1,13 +1,13 @@
-import config from 'config';
+const MIXPANEL_ID = process.env.REACT_APP_MIXPANEL_ID;
 
 export const AnalyticsApi = {
   setup() {
-    if (config.MIXPANEL_ID && window.mixpanel) {
-      window.mixpanel.init(config.MIXPANEL_ID);
+    if (MIXPANEL_ID && window.mixpanel) {
+      window.mixpanel.init(MIXPANEL_ID);
     }
   },
   track(event) {
-    if (config.MIXPANEL_ID) {
+    if (MIXPANEL_ID && window.mixpanel) {
       window.mixpanel.track(event);
     }
   },
