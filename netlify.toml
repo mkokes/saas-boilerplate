@@ -9,4 +9,4 @@
 
 [build]
   publish = "client/build"
-  command = "npm run build:client"
+  command = "yarn build:client"

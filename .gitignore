@@ -6,9 +6,6 @@ node_modules/*
 **/node_modules/*
 .DS_Store
 
-# Ignore yarn if yarn is used by accident, we use npm
-yarn.lock
 yarn-debug.log*
 yarn-error.log*
-
 npm-debug.log*

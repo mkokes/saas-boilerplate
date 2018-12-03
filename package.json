@@ -3,13 +3,16 @@
   "private": true,
   "version": "0.1.0",
   "description": "⚡️ Boilerplate to launch SaaS projects",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "start:client": "(cd client && npm run start)",
-    "start:api": "(cd servers/api && npm run start)",
-    "start:worker": "(cd servers/worker && npm run start)",
-    "start:analytics": "(cd servers/analytics && npm run start)",
-    "build:client": "(cd client && npm run build)",
-    "test:client": "(cd client && npm run test)"
+    "start:client": "(cd packages/client && npm run start)",
+    "start:api": "(cd packages/api && npm run start)",
+    "start:worker": "(cd packages/worker && npm run start)",
+    "start:analytics": "(cd packages/analytics && npm run start)",
+    "build:client": "(cd packages/client && npm run build)",
+    "test:client": "(cd packages/client && npm run test)"
   },
   "repository": {
     "type": "git",
