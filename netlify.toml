@@ -8,5 +8,5 @@
 #    that is where we will look for package.json/.nvmrc/etc not repo root!
 
 [build]
-  publish = "client/build"
+  publish = "packages/client/build"
   command = "yarn build:client"
