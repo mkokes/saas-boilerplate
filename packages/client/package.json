@@ -5,7 +5,7 @@
   "scripts": {
     "start": "env-cmd ./env/.env.dev react-app-rewired start",
     "prebuild": "npm run build:clean",
-    "build": "cross-env NODE_ENV=production NODE_PATH=./src react-app-rewired build",
+    "build": "env-cmd ./env/.env.prod react-app-rewired build",
     "build:clean": "rimraf ./build",
     "test:clean": "rimraf ./coverage",
     "pretest": "npm run lint",
