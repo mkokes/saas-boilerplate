@@ -1,5 +1,5 @@
 {
-  "name": "analytics",
+  "name": "api",
   "scale": {
     "bru1": {
       "min": 1,
