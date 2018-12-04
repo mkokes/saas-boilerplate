@@ -1,5 +1,5 @@
 {
-  "name": "scheduler",
+  "name": "worker",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -9,15 +9,12 @@
     "test:coverage": "npm test --coverage"
   },
   "dependencies": {
-    "@koa/cors": "^2.2.2",
-    "apollo-server-koa": "^2.1.0",
     "axios": "^0.18.0",
+    "bull": "^3.5.2",
     "bunyan": "^1.8.12",
     "envalid": "^4.1.4",
     "graphql": "^14.0.2",
-    "koa": "^2.6.1",
-    "koa-jwt": "^3.5.1",
-    "koa-router": "^7.4.0",
+    "ioredis": "3.2.2",
     "lodash.get": "^4.4.2",
     "now": "^11.4.6",
     "p-queue": "^3.0.0"
