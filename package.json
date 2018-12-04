@@ -9,10 +9,14 @@
   "scripts": {
     "start:client": "(cd packages/client && npm run start)",
     "start:api": "(cd packages/api && npm run start)",
-    "start:worker": "(cd packages/worker && npm run start)",
+    "start:scheduler": "(cd packages/scheduler && npm run start)",
     "start:analytics": "(cd packages/analytics && npm run start)",
     "build:client": "(cd packages/client && npm run build)",
-    "test:client": "(cd packages/client && npm run test)"
+    "test:client": "(cd packages/client && npm run test)",
+    "deploy:client": "(cd packages/client && netlify)",
+    "deploy:api": "(cd packages/api && now)",
+    "deploy:scheduler": "(cd packages/scheduler && now)",
+    "deploy:analytics": "(cd packages/analytics && now)"
   },
   "repository": {
     "type": "git",
