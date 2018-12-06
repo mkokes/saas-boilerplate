@@ -6,9 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "deploy": "yarn now -f --public && yarn now alias",
-    "release": "yarn deploy && yarn now rm kickback-analytics --safe --yes",
-    "now": "now --team noblocknoparty --token $NOW_TOKEN"
+    "deploy": "now -f --public"
   },
   "keywords": [
     "proxy",

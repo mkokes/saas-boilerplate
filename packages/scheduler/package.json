@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "scripts": {
     "start": "node index.js",
-    "deploy": "now",
     "test": "jest --no-cache",
-    "test:coverage": "npm test --coverage"
+    "test:coverage": "npm test --coverage",
+    "deploy": "now -f"
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",

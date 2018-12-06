@@ -1,18 +1,19 @@
 {
-  "name": "api",
+  "name": "scheduler",
   "private": true,
   "version": "0.1.0",
   "scripts": {
     "start": "node index.js",
+    "deploy": "now -f",
     "test": "jest --no-cache",
-    "test:coverage": "npm test --coverage",
-    "deploy": "now -f"
+    "test:coverage": "npm test --coverage"
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",
     "apollo-server-koa": "^2.1.0",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
+    "bull": "^3.5.2",
     "bunyan": "^1.8.12",
     "envalid": "^4.1.4",
     "graphql": "^14.0.2",
