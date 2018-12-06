@@ -20,8 +20,6 @@ import App from 'App';
 import { clientInstance } from './graphql';
 import registerServiceWorker from './registerServiceWorker';
 
-console.debug('envs: ', process.env);
-
 // Observe font loading
 /* const robotoFontObserver = new FontFaceObserver('Roboto', {});
 robotoFontObserver.load().then(() => {
