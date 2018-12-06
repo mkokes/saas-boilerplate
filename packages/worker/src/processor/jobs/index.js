@@ -16,8 +16,8 @@ const defaultJobOptions = pattern => ({
 */
 
 const processEmailDigest = () =>
-  // Every morning
-  processEmail.add(undefined, defaultJobOptions('0 6 * * 1'));
+  // Every morning at 6am
+  processEmail.add(undefined, defaultJobOptions('* * * * *'));
 
 module.exports = () => {
   processEmailDigest();

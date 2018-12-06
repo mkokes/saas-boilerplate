@@ -12,6 +12,5 @@ const init = async () => {
 
 init().catch(err => {
   log.error(err);
-  console.error(err);
   process.exit(-1);
 });
