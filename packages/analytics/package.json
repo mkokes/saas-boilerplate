@@ -1,17 +1,13 @@
 {
   "name": "analytics-server",
+  "description": "Analytics server which enables us to work around in-browser ad-blockers",
   "private": true,
   "version": "1.0.0",
-  "description": "Analytics server which enables us to work around in-browser ad-blockers",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "deploy": "now -f --public"
   },
-  "keywords": [
-    "proxy",
-    "server"
-  ],
   "dependencies": {
     "@koa/cors": "^2.2.2",
     "global-tunnel-ng": "^2.6.0",

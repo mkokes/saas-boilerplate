@@ -1,8 +1,10 @@
 {
   "name": "saas-boilerplate",
-  "private": true,
-  "version": "0.1.0",
   "description": "⚡️ Boilerplate to launch SaaS projects",
+  "homepage": "https://github.com/AMGAVentures/saas-boilerplate#readme",
+  "private": true,
+  "version": "0.0.1",
+  "license": "MIT",
   "workspaces": [
     "packages/*"
   ],
@@ -19,23 +21,18 @@
     "deploy:analytics": "(cd packages/analytics && yarn deploy)",
     "deploy:worker": "(cd packages/worker && yarn deploy)"
   },
+  "devDependencies": {
+    "lerna": "^3.5.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AMGAVentures/saas-boilerplate.git"
   },
-  "author": "AMGA Ventures <info@amgaventures.com>",
-  "contributors": [
-    "Alfonso Manuel García Astorga <alfon@amgaventures.com>"
-  ],
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/AMGAVentures/saas-boilerplate/issues"
   },
-  "homepage": "https://github.com/AMGAVentures/saas-boilerplate#readme",
-  "keywords": [
-    "AMGA Ventures"
-  ],
-  "devDependencies": {
-    "lerna": "^3.5.1"
-  }
+  "author": "AMGA Ventures <info@amgaventures.com>",
+  "contributors": [
+    "Alfonso Manuel García Astorga <alfon@amgaventures.com>"
+  ]
 }

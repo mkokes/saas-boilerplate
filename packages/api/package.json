@@ -1,5 +1,6 @@
 {
-  "name": "api",
+  "name": "api-server",
+  "description": "API Back-end",
   "private": true,
   "version": "0.1.0",
   "scripts": {
