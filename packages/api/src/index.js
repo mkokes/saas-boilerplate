@@ -3,21 +3,17 @@ const cors = require('@koa/cors');
 const Router = require('koa-router');
 
 const config = require('./config');
-const setupEventQueue = require('./eventQueue');
 const log = require('./log')(config);
 const connectDb = require('./db');
 const createProcessor = require('./processor');
 const setupAuthMiddleware = require('./auth');
 const setupGraphQLEndpoint = require('./graphql');
-const setupScheduler = require('./scheduler');
 
 const init = async () => {
   log.info(`app mode: ${config.APP_MODE}`);
 
   const db = await connectDb({ config, log });
-  const scheduler = setupScheduler({ log });
-  const eventQueue = setupEventQueue({ log });
-  await createProcessor({ config, log, eventQueue, scheduler, db });
+  await createProcessor({ config, log, db });
 
   const server = new Koa();
   const router = new Router();
