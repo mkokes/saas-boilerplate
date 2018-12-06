@@ -30,6 +30,4 @@ module.exports = ({ log: parentLog, eventQueue }) => {
     // prettier-ignore
     log.info(`💉 Healthcheck server running at ${server.address().address}:${server.address().port}`);
   });
-
-  log.info('started');
 };
