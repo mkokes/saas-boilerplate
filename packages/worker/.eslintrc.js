@@ -48,6 +48,7 @@ module.exports = {
     'prefer-template': 2,
     'require-yield': 0,
     'no-underscore-dangle': 0,
+    'global-require': 0,
   },
   settings: {
     'import/resolver': {

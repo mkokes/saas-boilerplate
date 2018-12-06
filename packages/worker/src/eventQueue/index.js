@@ -4,11 +4,11 @@ const createQueueClass = ({ log }) =>
   class Queue {
     constructor() {
       this._queue = [];
-      this._log = log.create('queue');
+      this._log = log.create('pqueue');
     }
 
     enqueue(fn, { name }) {
-      this._log.debug(`Adding job ${name} to queue ...`);
+      this._log.debug(`Adding job ${name} to event queue ...`);
       this._queue.push({ name, fn });
     }
 
@@ -16,7 +16,7 @@ const createQueueClass = ({ log }) =>
       const { name, fn } = this._queue.shift() || {};
 
       if (name) {
-        this._log.debug(`Running job ${name} from queue ...`);
+        this._log.debug(`Removing ${name} from event queue ...`);
       }
 
       return fn;

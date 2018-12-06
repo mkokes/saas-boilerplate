@@ -1,15 +1,16 @@
-const processJob = async job => {
-  console.log('job processed!');
-};
+module.exports = ({ log: parentLog, eventQueue }) => {
+  const log = parentLog.create('processEmail');
 
-const init = async job => {
-  try {
-    await processJob(job);
-  } catch (err) {
-    console.log('❌ Error in job:\n');
-    console.error(err);
-    // Raven.captureException(err);
-  }
+  return () =>
+    eventQueue.add(
+      async () => {
+        try {
+          log.info(`Running job`);
+        } catch (err) {
+          log.error(err);
+          // Raven.captureException(err);
+        }
+      },
+      { name: 'processEmail' },
+    );
 };
-
-module.exports = init;

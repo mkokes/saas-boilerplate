@@ -1,11 +1,14 @@
-const createWorker = require('./queues/create-worker');
 const { PROCESS_EMAIL } = require('../constants/queues');
-const processEmailDigest = require('./queues/digests/processEmail');
-const startJobs = require('./jobs');
 
-module.exports = ({ log: parentLog }) => {
+module.exports = ({ log: parentLog, eventQueue }) => {
   const log = parentLog.create('processor');
 
+  const processEmailDigest = require('./queues/digests/processEmail')({
+    log,
+    eventQueue,
+  });
+
+  const createWorker = require('./queues/create-worker')({ log });
   const server = createWorker(
     {
       [PROCESS_EMAIL]: processEmailDigest,
@@ -19,7 +22,8 @@ module.exports = ({ log: parentLog }) => {
     },
   );
 
-  startJobs();
+  const initDelayedJobs = require('./jobs')({ log });
+  initDelayedJobs();
 
   const PORT = parseInt(process.env.PORT, 10) || 3004;
   server.listen(PORT, 'localhost', 511, () => {
@@ -27,5 +31,5 @@ module.exports = ({ log: parentLog }) => {
     log.info(`💉 Healthcheck server running at ${server.address().address}:${server.address().port}`);
   });
 
-  log.info('processor started');
+  log.info('started');
 };

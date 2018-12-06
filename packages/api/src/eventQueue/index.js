@@ -4,7 +4,7 @@ const createQueueClass = ({ log }) =>
   class Queue {
     constructor() {
       this._queue = [];
-      this._log = log.create('queue');
+      this._log = log.create('pqueue');
     }
 
     enqueue(fn, { name }) {

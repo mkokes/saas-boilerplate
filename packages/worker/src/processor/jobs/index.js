@@ -1,24 +1,23 @@
-const { processEmail } = require('../queues');
+module.exports = ({ log: parentLog }) => {
+  const log = parentLog.create('producer');
 
-const defaultJobOptions = pattern => ({
-  removeOnComplete: true,
-  removeOnFail: true,
-  attempts: 1,
-  repeat: {
-    cron: pattern,
-    tz: 'America/Los_Angeles',
-  },
-});
+  const { processEmail } = require('../queues')({ log });
 
-/*
-  None of the cron-job initaliziers need data in the Job, so we pass undefined
-  as the data argument to the queue
-*/
+  const defaultJobOptions = pattern => ({
+    removeOnComplete: true,
+    removeOnFail: true,
+    attempts: 1,
+    repeat: {
+      cron: pattern,
+      tz: 'America/Los_Angeles',
+    },
+  });
 
-const processEmailDigest = () =>
-  // Every morning at 6am
-  processEmail.add(undefined, defaultJobOptions('* * * * *'));
+  /* We pass undefined because none of the cron-job initaliziers need data */
+  const processEmailDigest = () =>
+    processEmail.add(undefined, defaultJobOptions('* * * * *'));
 
-module.exports = () => {
-  processEmailDigest();
+  return () => {
+    processEmailDigest();
+  };
 };
