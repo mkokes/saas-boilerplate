@@ -7,7 +7,6 @@ export const AnalyticsApi = {
     }
   },
   track(event) {
-    console.log('track', event);
     if (MIXPANEL_ID && window.mixpanel) {
       window.mixpanel.track(event);
     }
