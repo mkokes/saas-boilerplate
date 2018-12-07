@@ -15,6 +15,7 @@ import { withApollo } from 'react-apollo';
 import LoadingIndicator from 'components/LoadingIndicator';
 import { ConfirmUserEmail } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
+import { AnalyticsApi } from 'api/vendors';
 
 function EmailConfirmationPage(props) {
   const [alertMessage, setAlertMessage] = useState({});
@@ -36,6 +37,7 @@ function EmailConfirmationPage(props) {
           color: 'success',
           text: 'YOUR EMAIL HAS BEEN VERIFIED!',
         });
+        AnalyticsApi.track('Email verified');
       } catch (e) {
         const err = transformApolloErr(e);
 

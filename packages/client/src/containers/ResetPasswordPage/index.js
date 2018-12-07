@@ -28,6 +28,7 @@ import { ApolloConsumer } from 'react-apollo';
 
 import { ResetPassword } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
+import { AnalyticsApi } from 'api/vendors';
 
 // @TODO: Export this to utils
 function equalTo(ref, msg) {
@@ -140,6 +141,7 @@ export default class ResetPasswordPage extends React.PureComponent {
                                 });
 
                                 this.setState({ hideForm: true });
+                                AnalyticsApi.track('Account password reseted');
                               } catch (e) {
                                 const err = transformApolloErr(e);
 

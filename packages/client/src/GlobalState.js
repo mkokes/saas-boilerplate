@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { withApollo } from 'react-apollo';
 import jwtDecode from 'jwt-decode';
 
-import { LocalStorageApi } from 'api/vendors';
+import { LocalStorageApi, AnalyticsApi } from 'api/vendors';
 import { LoginUserNoAuth, RefreshAccessToken } from 'graphql/mutations';
 import { buildAuthHeader } from './utils/requests';
 
@@ -195,6 +195,7 @@ class Provider extends Component {
       },
     });
 
+    AnalyticsApi.track('Log out');
     console.debug('Logout user');
   };
 

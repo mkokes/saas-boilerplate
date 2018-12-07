@@ -28,6 +28,7 @@ import Reaptcha from 'reaptcha';
 import { SignUpUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { GlobalConsumer } from 'GlobalState';
+import { AnalyticsApi } from 'api/vendors';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SignupPage extends React.PureComponent {
@@ -136,6 +137,7 @@ export default class SignupPage extends React.PureComponent {
                                       refreshToken,
                                     });
                                     await signIn();
+                                    AnalyticsApi.track('Signed up');
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 
