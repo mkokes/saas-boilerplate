@@ -12,14 +12,10 @@ import { AnalyticsApi } from 'api/vendors';
 
 /* eslint-disable react/prefer-stateless-function */
 class RouteAnalytics extends React.PureComponent {
-  componentDidMount() {
-    const { location } = this.props;
+  render() {
+    const { location, children } = this.props;
 
     AnalyticsApi.track(`Route ${location.pathname}`);
-  }
-
-  render() {
-    const { children } = this.props;
 
     return children;
   }
