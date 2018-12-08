@@ -28,6 +28,7 @@ import { ReactstrapInput } from 'utils/formiik';
 import { Contact } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { GlobalConsumer } from 'GlobalState';
+import { AnalyticsApi } from 'api/vendors';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class ContactPage extends React.PureComponent {
@@ -87,7 +88,7 @@ export default class ContactPage extends React.PureComponent {
                             {client => (
                               <Formik
                                 initialValues={{
-                                  name: loggedIn ? userProfile.name : '',
+                                  name: loggedIn ? userProfile.fullName : '',
                                   email: loggedIn ? userProfile.email : '',
                                   subject: '',
                                   message: '',
@@ -137,6 +138,9 @@ export default class ContactPage extends React.PureComponent {
                                       },
                                       hideForm: true,
                                     });
+                                    AnalyticsApi.track(
+                                      'Contact form submission',
+                                    );
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 

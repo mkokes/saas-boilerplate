@@ -40,7 +40,10 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
     },
   },
   Mutation: {
-    signUpUser: async (_, { recaptchaResponse, email, password, name }) => {
+    signUpUser: async (
+      _,
+      { recaptchaResponse, email, password, fullName, username },
+    ) => {
       const paramsValidationErrors = {};
 
       if (validator.isEmpty(recaptchaResponse)) {
@@ -55,11 +58,17 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       if (validator.isEmpty(password)) {
         paramsValidationErrors.password = 'Password must be set';
       }
-      if (validator.isEmpty(name)) {
-        paramsValidationErrors.name = 'What is your name?';
+      if (validator.isEmpty(fullName)) {
+        paramsValidationErrors.fullName = "What's your name?";
       }
-      if (!validator.isLength(name, { min: 2, max: undefined })) {
-        paramsValidationErrors.name = 'Too short!';
+      if (!validator.isLength(fullName, { min: 2, max: undefined })) {
+        paramsValidationErrors.fullName = 'Too short!';
+      }
+      if (validator.isEmpty(username)) {
+        paramsValidationErrors.username = 'Username is required';
+      }
+      if (!validator.isLength(username, { min: 2, max: undefined })) {
+        paramsValidationErrors.username = 'Too short!';
       }
 
       if (Object.keys(paramsValidationErrors).length > 0) {
@@ -80,7 +89,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       }
 
       try {
-        const user = await db.signUpUser(email, password, name);
+        const user = await db.signUpUser(email, password, fullName, username);
 
         const accessToken = createAccessToken({
           JWT_SECRET,
@@ -112,7 +121,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
           );
         }
 
-        return e;
+        throw e;
       }
     },
     loginUser: async (_, { email, password }) => {
@@ -162,14 +171,16 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       }
     },
     loginUserNoAuth: async (_, __, { user }) => {
+      const err = new ApolloError('Cannot log in user', 'INVALID_LOGIN');
+
       if (!user) {
-        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+        throw err;
       }
 
       try {
         return db.loginUser(user._id);
       } catch (e) {
-        throw new ApolloError('Cannot log in user', 'INVALID_LOGIN');
+        throw err;
       }
     },
     refreshAccessToken: async (_, { refreshToken }) => {

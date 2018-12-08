@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "jest --no-cache",
     "test:coverage": "npm test --coverage",
     "deploy": "now -f"
@@ -17,6 +18,7 @@
     "bunyan": "^1.8.12",
     "envalid": "^4.1.4",
     "graphql": "^14.0.2",
+    "identicon.js": "^2.3.3",
     "jsonwebtoken": "^8.4.0",
     "koa": "^2.6.1",
     "koa-jwt": "^3.5.1",

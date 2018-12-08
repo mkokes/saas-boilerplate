@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
 const uuidv4 = require('uuid/v4');
+const Identicon = require('identicon.js');
 
 const SALT_WORK_FACTOR = 10;
 
@@ -22,10 +23,21 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  name: {
+  fullName: {
     type: String,
     trim: true,
     required: true,
+  },
+  username: {
+    type: String,
+    trim: true,
+    unique: true,
+    index: true,
+    required: true,
+  },
+  avatar: {
+    type: String,
+    default: () => new Identicon(uuidv4(), { format: 'svg', size: '128' }),
   },
   passwordResetedAt: {
     type: Date,

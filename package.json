@@ -15,6 +15,7 @@
     "start:scheduler": "(cd packages/scheduler && yarn start)",
     "start:analytics": "(cd packages/analytics && yarn start)",
     "start:worker": "(cd packages/worker && yarn start)",
+    "dev:api": "(cd packages/api && yarn dev)",
     "build:client": "(cd packages/client && yarn build)",
     "build:api-docs": "(cd packages/api-docs && yarn build)",
     "test:client": "(cd packages/client && yarn test)",

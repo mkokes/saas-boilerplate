@@ -22,8 +22,19 @@ const GlobalStyle = createGlobalStyle`
     padding: 4px 9px;
     border-radius: 16px;
   }
+
+  /* Google reCAPTCHA */
   .grecaptcha-badge {
     display: none;
+  }
+
+  /* Headway.co */
+  #HW_badge {
+    top: -2px !important;
+    left: -6px !important;
+  }
+  #HW_badge_cont {
+    width: 0px !important;
   }
 `;
 

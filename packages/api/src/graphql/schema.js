@@ -6,8 +6,10 @@ module.exports = gql`
     refreshToken: String
   }
   type UserProfile {
-    name: String
+    fullName: String
+    username: String
     email: String
+    avatar: String
     isEmailConfirmed: Boolean
   }
 
@@ -19,7 +21,8 @@ module.exports = gql`
       recaptchaResponse: String
       email: String!
       password: String!
-      name: String!
+      fullName: String!
+      username: String!
     ): AuthTokens
     loginUser(email: String!, password: String!): AuthTokens
     loginUserNoAuth: UserProfile

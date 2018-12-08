@@ -41,20 +41,31 @@ class Db extends EventEmitter {
       return {};
     }
 
-    const { lastLoginAt, registeredAt, email, name, isEmailConfirmed } = user;
+    const {
+      lastLoginAt,
+      registeredAt,
+      email,
+      fullName,
+      username,
+      avatar,
+      isEmailConfirmed,
+    } = user;
 
     return {
       lastLoginAt,
       registeredAt,
-      ...(canViewPrivateFields ? { name, email, isEmailConfirmed } : {}),
+      ...(canViewPrivateFields
+        ? { fullName, username, email, avatar, isEmailConfirmed }
+        : {}),
     };
   }
 
-  async signUpUser(email, password, name) {
+  async signUpUser(email, password, fullName, username) {
     const user = await new User({
       email,
       password,
-      name,
+      fullName,
+      username,
     }).save();
 
     this.notify(user._id, VERIFY_EMAIL, {

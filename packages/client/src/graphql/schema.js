@@ -1,6 +1,10 @@
 const typeDefs = `
   type UserProfile {
-    name: String!
+    fullName: String!
+    username: String!
+    email: String!
+    avatar: String!
+    isEmailConfirmed: Boolean!
   }
 
   type AuthTokens {

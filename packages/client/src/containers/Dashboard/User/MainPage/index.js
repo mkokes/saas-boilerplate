@@ -22,7 +22,7 @@ export default class MainPage extends React.PureComponent {
               <title>Dashboard index</title>
               <meta
                 name="description"
-                content="Description of ForgotPasswordPage"
+                content="Description of User dashboard main page"
               />
             </Helmet>
             <Container tag="main">

@@ -29,15 +29,15 @@ const DashboardLayout = ({ children }) => (
 );
 
 DefaultLayout.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.node,
 };
 
 MinimalDefaultLayout.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.node,
 };
 
 DashboardLayout.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.node,
 };
 
 export default DefaultLayout;

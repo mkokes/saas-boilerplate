@@ -2,8 +2,10 @@ import gql from 'graphql-tag';
 
 export const ProfileFields = gql`
   fragment ProfileFields on UserProfile {
-    name
+    fullName
+    username
     email
+    avatar
     isEmailConfirmed
   }
 `;

@@ -39,6 +39,7 @@ export default class SignupPage extends React.PureComponent {
       recaptchaResponse: '',
       signUpErrorMessage: '',
       alreadyTakenEmails: [],
+      alreadyTakenUsernames: [],
     };
 
     this.captcha = null;
@@ -54,6 +55,7 @@ export default class SignupPage extends React.PureComponent {
       recaptchaResponse,
       signUpErrorMessage,
       alreadyTakenEmails,
+      alreadyTakenUsernames,
     } = this.state;
 
     return (
@@ -101,8 +103,15 @@ export default class SignupPage extends React.PureComponent {
                                         'Already in use, use another email',
                                       )
                                       .required('Required'),
-                                    name: Yup.string()
+                                    fullName: Yup.string()
                                       .min(2, 'Too short!')
+                                      .required('Required'),
+                                    username: Yup.string()
+                                      .min(2, 'Too short!')
+                                      .notOneOf(
+                                        alreadyTakenUsernames,
+                                        'Already in use, choose another username',
+                                      )
                                       .required('Required'),
                                     password: Yup.string().required('Required'),
                                   })
@@ -152,6 +161,14 @@ export default class SignupPage extends React.PureComponent {
                                           ],
                                         }));
                                       }
+                                      if ('username' in err.data) {
+                                        this.setState(prevState => ({
+                                          alreadyTakenUsernames: [
+                                            ...prevState.alreadyTakenUsernames,
+                                            values.username,
+                                          ],
+                                        }));
+                                      }
                                     }
 
                                     this.resetCaptcha();
@@ -175,11 +192,20 @@ export default class SignupPage extends React.PureComponent {
                                     />
                                     <Field
                                       component={ReactstrapInput}
-                                      name="name"
+                                      name="fullName"
                                       type="text"
                                       placeholder="John Doe"
-                                      label="Name"
+                                      label="What's your name?"
                                       autoComplete="name"
+                                      required
+                                    />
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="username"
+                                      type="text"
+                                      placeholder="John123"
+                                      label="Username"
+                                      autoComplete="username"
                                       required
                                     />
                                     <Field

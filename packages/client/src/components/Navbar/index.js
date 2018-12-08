@@ -10,7 +10,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { withRouter } from 'react-router';
-
+import styled from 'styled-components';
 import {
   Container,
   Collapse,
@@ -25,17 +25,40 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  UncontrolledTooltip,
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCog,
-  faUnlockAlt,
-  faHome,
-  faUserAlt,
-  faLifeRing,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUnlockAlt, faHome, faBell } from '@fortawesome/free-solid-svg-icons';
 
 import { GlobalConsumer } from 'GlobalState';
+import Avatar from 'components/Avatar';
+
+const DashboardNav = styled(Nav)`
+  flex-direction: row;
+`;
+const ChangelogNavItem = styled(NavItem)`
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+`;
+const UserBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px 50px;
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
+`;
+const DashboardDropdownItem = styled(DropdownItem)`
+  padding-left: 16px;
+  padding-right: 16px;
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export class NavbarComponent extends React.PureComponent {
@@ -47,6 +70,14 @@ export class NavbarComponent extends React.PureComponent {
     this.state = {
       isOpen: false,
     };
+  }
+
+  componentDidMount() {
+    window.Headway.init({
+      selector: '.headway',
+      trigger: '.headway-trigger',
+      account: 'xaEvgx',
+    });
   }
 
   toggle() {
@@ -114,66 +145,95 @@ export class NavbarComponent extends React.PureComponent {
                     </Collapse>
                   </Fragment>
                 ) : (
-                  <Nav className="ml-auto align-items-center" navbar>
-                    <UncontrolledDropdown key="user-options" nav>
-                      <DropdownToggle nav caret>
-                        <FontAwesomeIcon
-                          icon={faUserAlt}
-                          className="fa-lg navbar-user-icon"
-                        />
+                  <DashboardNav className="ml-auto align-items-center" navbar>
+                    <ChangelogNavItem
+                      className="headway-trigger mr-3"
+                      id="UncontrolledTooltipExample"
+                    >
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target="UncontrolledTooltipExample"
+                      >
+                        Product updates
+                      </UncontrolledTooltip>
 
-                        <span className="navbar-user-username">
-                          {userProfile.name}
+                      <FontAwesomeIcon icon={faBell} color="gray" size="lg" />
+                      <div className="headway" />
+                    </ChangelogNavItem>
+                    <UncontrolledDropdown key="user-options" nav inNavbar>
+                      <DropdownToggle nav caret>
+                        <Avatar
+                          src={`data:image/svg+xml;base64,${
+                            userProfile.avatar
+                          }`}
+                        />
+                        <span className="text-white ml-1 mr-1">
+                          {userProfile.username}
                         </span>
                       </DropdownToggle>
-                      <DropdownMenu right>
+                      <DropdownMenu
+                        style={{ minWidth: 260, position: 'absolute' }}
+                        right
+                      >
+                        <UserBox>
+                          <Avatar
+                            src={`data:image/svg+xml;base64,${
+                              userProfile.avatar
+                            }`}
+                          />
+                          <span className="mb-2" style={{ fontSize: 18 }}>
+                            {userProfile.fullName}
+                          </span>
+                          <span className="text-muted" style={{ fontSize: 14 }}>
+                            {userProfile.email}
+                          </span>
+                        </UserBox>
+
                         {pathname.indexOf('/dashboard') === 0 ? (
                           <Fragment>
                             {userProfile.isEmailConfirmed && (
-                              <DropdownItem
-                                onClick={() =>
-                                  history.push('/dashboard/user/settings')
-                                }
-                              >
-                                <FontAwesomeIcon
-                                  icon={faCog}
-                                  className="align-text-top mr-1"
-                                />
-                                Settings
-                              </DropdownItem>
+                              <Fragment>
+                                <DropdownItem divider />
+                                <DashboardDropdownItem
+                                  onClick={() =>
+                                    history.push('/dashboard/user/settings')
+                                  }
+                                >
+                                  Settings
+                                </DashboardDropdownItem>
+                              </Fragment>
                             )}
-                            <DropdownItem
+                            <DropdownItem divider />
+                            <DashboardDropdownItem
                               onClick={() => history.push('/support')}
                             >
-                              <FontAwesomeIcon
-                                icon={faLifeRing}
-                                className="align-text-top mr-1"
-                              />
                               Contact support
-                            </DropdownItem>
+                            </DashboardDropdownItem>
                           </Fragment>
                         ) : (
-                          <DropdownItem
+                          <DashboardDropdownItem
                             onClick={() => history.push('/dashboard/index')}
                           >
                             <FontAwesomeIcon
                               icon={faHome}
                               className="align-text-top mr-1"
                             />
-                            Go to Dashboard
-                          </DropdownItem>
+                            Dashboard
+                          </DashboardDropdownItem>
                         )}
-
-                        <DropdownItem onClick={() => logOut()}>
-                          <FontAwesomeIcon
-                            icon={faUnlockAlt}
-                            className="align-text-top mr-1"
-                          />
+                        <DropdownItem divider />
+                        <DashboardDropdownItem onClick={() => logOut()}>
+                          {pathname.indexOf('/dashboard') !== 0 && (
+                            <FontAwesomeIcon
+                              icon={faUnlockAlt}
+                              className="align-text-top mr-1"
+                            />
+                          )}
                           Sign out
-                        </DropdownItem>
+                        </DashboardDropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>
-                  </Nav>
+                  </DashboardNav>
                 )}
               </Container>
             </Navbar>
