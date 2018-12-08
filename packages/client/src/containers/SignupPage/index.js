@@ -91,7 +91,8 @@ export default class SignupPage extends React.PureComponent {
                               <Formik
                                 initialValues={{
                                   email: '',
-                                  name: '',
+                                  fullName: '',
+                                  username: '',
                                   password: '',
                                 }}
                                 validationSchema={() =>
@@ -214,7 +215,6 @@ export default class SignupPage extends React.PureComponent {
                                       type="password"
                                       placeholder="Password"
                                       label="Password"
-                                      autoComplete="off"
                                       required
                                     />
 

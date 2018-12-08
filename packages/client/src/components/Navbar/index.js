@@ -181,7 +181,7 @@ export class NavbarComponent extends React.PureComponent {
                               userProfile.avatar
                             }`}
                           />
-                          <span className="mb-2" style={{ fontSize: 18 }}>
+                          <span className="mb-1" style={{ fontSize: 18 }}>
                             {userProfile.fullName}
                           </span>
                           <span className="text-muted" style={{ fontSize: 14 }}>
@@ -211,15 +211,18 @@ export class NavbarComponent extends React.PureComponent {
                             </DashboardDropdownItem>
                           </Fragment>
                         ) : (
-                          <DashboardDropdownItem
-                            onClick={() => history.push('/dashboard/index')}
-                          >
-                            <FontAwesomeIcon
-                              icon={faHome}
-                              className="align-text-top mr-1"
-                            />
-                            Dashboard
-                          </DashboardDropdownItem>
+                          <Fragment>
+                            <DropdownItem divider />
+                            <DashboardDropdownItem
+                              onClick={() => history.push('/dashboard/index')}
+                            >
+                              <FontAwesomeIcon
+                                icon={faHome}
+                                className="align-text-top mr-1"
+                              />
+                              Dashboard
+                            </DashboardDropdownItem>
+                          </Fragment>
                         )}
                         <DropdownItem divider />
                         <DashboardDropdownItem onClick={() => logOut()}>
