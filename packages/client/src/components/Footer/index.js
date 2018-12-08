@@ -36,20 +36,14 @@ export class FooterComponent extends React.PureComponent {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/signup" className="text-light">
-                    Sign up
-                  </Link>
+                  <a
+                    href="https://changelog.domain.io"
+                    className="text-light"
+                    target="new"
+                  >
+                    Changelog
+                  </a>
                 </li>
-                <li>
-                  <Link to="/auth/login" className="text-light">
-                    Log in
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="col-6 col-md">
-              <h5 className="font-weight-bold">Developers</h5>
-              <ul className="list-unstyled text-small">
                 <li>
                   <a
                     href="https://status.domain.io"
@@ -59,6 +53,11 @@ export class FooterComponent extends React.PureComponent {
                     Status page
                   </a>
                 </li>
+              </ul>
+            </div>
+            <div className="col-6 col-md">
+              <h5 className="font-weight-bold">Developers</h5>
+              <ul className="list-unstyled text-small">
                 <li>
                   <a
                     href="https://docs.domain.io/api"
