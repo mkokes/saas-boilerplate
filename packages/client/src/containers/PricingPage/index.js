@@ -18,7 +18,7 @@ export default class PricingPage extends React.PureComponent {
           <title>PricingPage</title>
           <meta name="description" content="Description of PricingPage" />
         </Helmet>
-        <Container className="app-container">
+        <Container className="app-container flex flex-column justify-content-center">
           <div className="card-deck mb-3 text-center">
             <div className="card mb-4 shadow-sm">
               <div className="card-header">

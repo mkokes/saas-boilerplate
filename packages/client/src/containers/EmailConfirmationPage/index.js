@@ -57,7 +57,7 @@ function EmailConfirmationPage(props) {
           content="Description of EmailConfirmationPage"
         />
       </Helmet>
-      <Container tag="main">
+      <Container tag="main" className="flex flex-column justify-content-center">
         <Row>
           <Col md="12" className="text-center">
             {alertMessage ? (

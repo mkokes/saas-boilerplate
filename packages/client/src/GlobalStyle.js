@@ -7,11 +7,7 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100%;
   }
   #app {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #fafafa;
+    height: 100%;
   }
   .beta-icon {
     margin-left: 12px;
@@ -21,6 +17,12 @@ const GlobalStyle = createGlobalStyle`
     color: white;
     padding: 4px 9px;
     border-radius: 16px;
+  }
+  .flex {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
   }
 
   /* Google reCAPTCHA */

@@ -27,6 +27,7 @@ import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 
 import MainPage from 'containers/Dashboard/User/MainPage/Loadable';
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
+import SettingsPage from 'containers/Dashboard/User/SettingsPage/Loadable';
 
 import { DefaultLayout, MinimalDefaultLayout, DashboardLayout } from 'layout';
 
@@ -115,6 +116,13 @@ export default function App() {
                       exact
                       path="/dashboard/index"
                       component={MainPage}
+                      layout={DashboardLayout}
+                    />
+                     <Route
+                      protected
+                      exact
+                      path="/dashboard/user/settings"
+                      component={SettingsPage}
                       layout={DashboardLayout}
                     />
                     <Route

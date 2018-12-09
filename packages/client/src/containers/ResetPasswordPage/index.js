@@ -81,7 +81,10 @@ export default class ResetPasswordPage extends React.PureComponent {
           <title>Reset password</title>
           <meta name="description" content="Description of ResetPasswordPage" />
         </Helmet>
-        <Container tag="main">
+        <Container
+          tag="main"
+          className="flex flex-column justify-content-center"
+        >
           <Row>
             <Col md={{ size: 6, offset: 3 }}>
               <Card>

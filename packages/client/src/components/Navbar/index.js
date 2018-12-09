@@ -105,7 +105,7 @@ export class NavbarComponent extends React.PureComponent {
                 <NavLink
                   to={navbarBrandLink}
                   tag={RRNavLink}
-                  className="navbar-brand navbar-brandname"
+                  className="navbar-brand navbar-brandname p-0"
                   onClick={this.handleClick}
                 >
                   <NavbarBrand tag="span">

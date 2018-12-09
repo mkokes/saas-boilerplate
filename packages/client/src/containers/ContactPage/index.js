@@ -61,7 +61,10 @@ export default class ContactPage extends React.PureComponent {
               <meta name="description" content="Description of ContactPage" />
             </Helmet>
 
-            <Container tag="main">
+            <Container
+              tag="main"
+              className="flex flex-column justify-content-center"
+            >
               <Row>
                 <Col md={{ size: 6, offset: 3 }}>
                   <Card>

@@ -33,7 +33,10 @@ export default class EmailVerificationPage extends React.PureComponent {
             {userProfile.isEmailConfirmed ? (
               <Redirect to="/dashboard/index" />
             ) : (
-              <Container tag="main">
+              <Container
+                tag="main"
+                className="flex flex-column justify-content-center"
+              >
                 <Row className="justify-content-center">
                   <Col md="12" className="text-center">
                     <SafeQuery
