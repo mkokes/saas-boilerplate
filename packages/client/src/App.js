@@ -29,7 +29,12 @@ import MainPage from 'containers/Dashboard/User/MainPage/Loadable';
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SettingsPage from 'containers/Dashboard/User/SettingsPage/Loadable';
 
-import { DefaultLayout, MinimalDefaultLayout, DashboardLayout } from 'layout';
+import {
+  DefaultLayout,
+  MinimalDefaultLayout,
+  DashboardLayout,
+  DashboardSettingsLayout,
+} from 'layout';
 
 import { GlobalConsumer } from 'GlobalState';
 
@@ -118,12 +123,12 @@ export default function App() {
                       component={MainPage}
                       layout={DashboardLayout}
                     />
-                     <Route
+                    <Route
                       protected
                       exact
-                      path="/dashboard/user/settings"
+                      path="/dashboard/settings"
                       component={SettingsPage}
-                      layout={DashboardLayout}
+                      layout={DashboardSettingsLayout}
                     />
                     <Route
                       protected

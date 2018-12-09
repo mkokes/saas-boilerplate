@@ -6,7 +6,7 @@
 
 import React, { Fragment } from 'react';
 // import PropTypes from 'prop-types';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Card, Button, CardTitle, CardText } from 'reactstrap';
 import { Helmet } from 'react-helmet';
 
 import { GlobalConsumer } from 'GlobalState';
@@ -26,11 +26,18 @@ export default class MainPage extends React.PureComponent {
               />
             </Helmet>
             <Container tag="main">
-              <Row>
-                <Col>
-                  <span>TBC</span>
-                </Col>
-              </Row>
+              {/* <Card
+                body
+                inverse
+                style={{ backgroundColor: '#333', borderColor: '#333' }}
+              >
+                <CardTitle>Special Title Treatment</CardTitle>
+                <CardText>
+                  With supporting text below as a natural lead-in to additional
+                  content.
+                </CardText>
+                <Button>Button</Button>
+              </Card> */}
             </Container>
           </Fragment>
         )}

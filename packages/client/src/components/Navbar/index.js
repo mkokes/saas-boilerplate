@@ -196,7 +196,7 @@ export class NavbarComponent extends React.PureComponent {
                                 <DropdownItem divider />
                                 <DashboardDropdownItem
                                   onClick={() =>
-                                    history.push('/dashboard/user/settings')
+                                    history.push('/dashboard/settings')
                                   }
                                 >
                                   Settings

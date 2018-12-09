@@ -8,7 +8,6 @@ import React from 'react';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { Nav, Container, NavItem, NavLink as RSNavLink } from 'reactstrap';
-// import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faAlignCenter } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
@@ -24,6 +23,15 @@ const NavLink = styled(RSNavLink)`
 
   &.active {
     color: rgb(6, 103, 208);
+    border-bottom: 1px solid #0067c8;
+  }
+  &.active:hover {
+    color: rgb(6, 103, 208);
+    border-bottom: 1px solid #0067c8;
+  }
+
+  &:hover {
+    color: rgb(125, 149, 182);
   }
 `;
 
@@ -47,7 +55,7 @@ class DashboardNavbar extends React.PureComponent {
             </NavItem>
             <NavItem>
               <NavLink
-                to="/dashboard/user/settings"
+                to="/dashboard/settings"
                 exact
                 activeClassName="active"
                 tag={RRNavLink}
@@ -62,7 +70,5 @@ class DashboardNavbar extends React.PureComponent {
     );
   }
 }
-
-DashboardNavbar.propTypes = {};
 
 export default withRouter(DashboardNavbar);

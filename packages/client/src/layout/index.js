@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import Navbar from 'components/Navbar';
 import DashboardNavbar from 'components/DashboardNavbar';
+import DashboardSettingsWrapper from 'components/DashboardSettingsWrapper';
 import Footer from 'components/Footer';
 
 const LayoutContainer = styled.div`
@@ -51,6 +52,12 @@ const DashboardLayout = ({ children }) => (
   </React.Fragment>
 );
 
+const DashboardSettingsLayout = ({ children }) => (
+  <DashboardLayout>
+    <DashboardSettingsWrapper>{children}</DashboardSettingsWrapper>
+  </DashboardLayout>
+);
+
 DefaultLayout.propTypes = {
   children: PropTypes.node,
 };
@@ -63,5 +70,14 @@ DashboardLayout.propTypes = {
   children: PropTypes.node,
 };
 
+DashboardSettingsLayout.propTypes = {
+  children: PropTypes.node,
+};
+
 export default DefaultLayout;
-export { DefaultLayout, MinimalDefaultLayout, DashboardLayout };
+export {
+  DefaultLayout,
+  MinimalDefaultLayout,
+  DashboardLayout,
+  DashboardSettingsLayout,
+};
