@@ -104,6 +104,7 @@ export default class LoginPage extends React.PureComponent {
                                         ...values,
                                       },
                                     });
+                                    AnalyticsApi.track('Logged in');
 
                                     const {
                                       accessToken,
@@ -116,7 +117,6 @@ export default class LoginPage extends React.PureComponent {
                                     });
 
                                     signIn();
-                                    AnalyticsApi.track('Logged in');
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 

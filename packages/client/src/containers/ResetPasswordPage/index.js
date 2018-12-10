@@ -131,6 +131,7 @@ export default class ResetPasswordPage extends React.PureComponent {
                                     newPassword: values.newPassword,
                                   },
                                 });
+                                AnalyticsApi.track('Account password reseted');
 
                                 formikBag.setSubmitting(false);
 
@@ -144,7 +145,6 @@ export default class ResetPasswordPage extends React.PureComponent {
                                 });
 
                                 this.setState({ hideForm: true });
-                                AnalyticsApi.track('Account password reseted');
                               } catch (e) {
                                 const err = transformApolloErr(e);
 

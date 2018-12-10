@@ -56,7 +56,6 @@ class DashboardNavbar extends React.PureComponent {
             <NavItem>
               <NavLink
                 to="/dashboard/settings"
-                exact
                 activeClassName="active"
                 tag={RRNavLink}
               >

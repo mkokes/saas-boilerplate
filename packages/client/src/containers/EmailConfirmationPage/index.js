@@ -32,12 +32,12 @@ function EmailConfirmationPage(props) {
           mutation: ConfirmUserEmail,
           variables: { confirmationToken: token || '' },
         });
+        AnalyticsApi.track('Email verified');
 
         setAlertMessage({
           color: 'success',
           text: 'YOUR EMAIL HAS BEEN VERIFIED!',
         });
-        AnalyticsApi.track('Email verified');
       } catch (e) {
         const err = transformApolloErr(e);
 

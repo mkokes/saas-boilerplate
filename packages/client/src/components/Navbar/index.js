@@ -163,6 +163,8 @@ export class NavbarComponent extends React.PureComponent {
                     <UncontrolledDropdown key="user-options" nav inNavbar>
                       <DropdownToggle nav caret>
                         <Avatar
+                          width="32"
+                          height="32"
                           src={`data:image/svg+xml;base64,${
                             userProfile.avatar
                           }`}

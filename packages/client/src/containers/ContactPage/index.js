@@ -129,6 +129,9 @@ export default class ContactPage extends React.PureComponent {
                                         recaptchaResponse,
                                       },
                                     });
+                                    AnalyticsApi.track(
+                                      'Contact form submission',
+                                    );
 
                                     formikBag.setSubmitting(false);
                                     formikBag.resetForm();
@@ -141,9 +144,6 @@ export default class ContactPage extends React.PureComponent {
                                       },
                                       hideForm: true,
                                     });
-                                    AnalyticsApi.track(
-                                      'Contact form submission',
-                                    );
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 

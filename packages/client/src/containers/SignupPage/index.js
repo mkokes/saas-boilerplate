@@ -139,6 +139,7 @@ export default class SignupPage extends React.PureComponent {
                                         recaptchaResponse,
                                       },
                                     });
+                                    AnalyticsApi.track('Signed up');
 
                                     const {
                                       accessToken,
@@ -149,8 +150,8 @@ export default class SignupPage extends React.PureComponent {
                                       accessToken,
                                       refreshToken,
                                     });
+
                                     await signIn();
-                                    AnalyticsApi.track('Signed up');
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 
