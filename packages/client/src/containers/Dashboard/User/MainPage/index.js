@@ -15,18 +15,16 @@ import { GlobalConsumer } from 'GlobalState';
 export default class MainPage extends React.PureComponent {
   render() {
     return (
-      <GlobalConsumer>
-        {() => (
-          <Fragment>
-            <Helmet>
-              <title>Dashboard index</title>
-              <meta
-                name="description"
-                content="Description of User dashboard main page"
-              />
-            </Helmet>
-            <Container tag="main">
-              {/* <Card
+      <Fragment>
+        <Helmet>
+          <title>Dashboard index</title>
+          <meta
+            name="description"
+            content="Description of User dashboard main page"
+          />
+        </Helmet>
+        <Container tag="main">
+          {/* <Card
                 body
                 inverse
                 style={{ backgroundColor: '#333', borderColor: '#333' }}
@@ -38,10 +36,8 @@ export default class MainPage extends React.PureComponent {
                 </CardText>
                 <Button>Button</Button>
               </Card> */}
-            </Container>
-          </Fragment>
-        )}
-      </GlobalConsumer>
+        </Container>
+      </Fragment>
     );
   }
 }

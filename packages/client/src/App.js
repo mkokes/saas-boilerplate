@@ -24,11 +24,11 @@ import LoginPage from 'containers/LoginPage/Loadable';
 import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
 import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
 import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
-
 import MainPage from 'containers/Dashboard/User/MainPage/Loadable';
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SettingsPage from 'containers/Dashboard/User/SettingsPage/Loadable';
 import PreferencesPage from 'containers/Dashboard/User/PreferencesPage/Loadable';
+import SignOutPage from 'containers/SignOutPage/Loadable';
 
 import {
   DefaultLayout,
@@ -115,6 +115,13 @@ export default function App() {
                       path="/auth/reset-password"
                       component={ResetPasswordPage}
                       layout={MinimalDefaultLayout}
+                    />
+
+                    <Route
+                      protected
+                      exact
+                      path="/signout"
+                      component={SignOutPage}
                     />
 
                     <Route

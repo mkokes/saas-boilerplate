@@ -1,5 +1,3 @@
-// @TODO: Refactor this component
-
 /**
  *
  * Navbar
@@ -25,22 +23,16 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  UncontrolledTooltip,
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUnlockAlt, faHome, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faUnlockAlt, faHome } from '@fortawesome/free-solid-svg-icons';
 
 import { GlobalConsumer } from 'GlobalState';
 import Avatar from 'components/Avatar';
+import HeadWay from 'components/HeadWay';
 
 const DashboardNav = styled(Nav)`
   flex-direction: row;
-`;
-const ChangelogNavItem = styled(NavItem)`
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
 `;
 const UserBox = styled.div`
   display: flex;
@@ -58,6 +50,16 @@ const UserBox = styled.div`
 const DashboardDropdownItem = styled(DropdownItem)`
   padding-left: 16px;
   padding-right: 16px;
+
+  &.active {
+    color: #16181b;
+    text-decoration: none;
+    background-color: transparent;
+  }
+
+  &.active:hover {
+    background-color: #f8f9fa;
+  }
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -72,14 +74,6 @@ export class NavbarComponent extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    window.Headway.init({
-      selector: '.headway',
-      trigger: '.headway-trigger',
-      account: 'xaEvgx',
-    });
-  }
-
   toggle() {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   }
@@ -91,19 +85,19 @@ export class NavbarComponent extends React.PureComponent {
   }
 
   render() {
-    const { location, history, navbarBrandLink } = this.props;
+    const { location, brandNameLink } = this.props;
     const { isOpen } = this.state;
 
     const { pathname } = location;
 
     return (
       <GlobalConsumer>
-        {({ loggedIn, logOut, userProfile }) => (
+        {({ loggedIn, userProfile }) => (
           <header>
             <Navbar color="dark" dark expand="sm">
               <Container>
                 <NavLink
-                  to={navbarBrandLink}
+                  to={brandNameLink}
                   tag={RRNavLink}
                   className="navbar-brand navbar-brandname p-0"
                   onClick={this.handleClick}
@@ -146,20 +140,7 @@ export class NavbarComponent extends React.PureComponent {
                   </Fragment>
                 ) : (
                   <DashboardNav className="ml-auto align-items-center" navbar>
-                    <ChangelogNavItem
-                      className="headway-trigger mr-3"
-                      id="UncontrolledTooltipExample"
-                    >
-                      <UncontrolledTooltip
-                        placement="bottom"
-                        target="UncontrolledTooltipExample"
-                      >
-                        Product updates
-                      </UncontrolledTooltip>
-
-                      <FontAwesomeIcon icon={faBell} color="gray" size="lg" />
-                      <div className="headway" />
-                    </ChangelogNavItem>
+                    <HeadWay />
                     <UncontrolledDropdown key="user-options" nav inNavbar>
                       <DropdownToggle nav caret>
                         <Avatar
@@ -197,9 +178,8 @@ export class NavbarComponent extends React.PureComponent {
                               <Fragment>
                                 <DropdownItem divider />
                                 <DashboardDropdownItem
-                                  onClick={() =>
-                                    history.push('/dashboard/settings')
-                                  }
+                                  to="/dashboard/settings"
+                                  tag={RRNavLink}
                                 >
                                   Settings
                                 </DashboardDropdownItem>
@@ -207,7 +187,8 @@ export class NavbarComponent extends React.PureComponent {
                             )}
                             <DropdownItem divider />
                             <DashboardDropdownItem
-                              onClick={() => history.push('/support')}
+                              to="/support"
+                              tag={RRNavLink}
                             >
                               Contact support
                             </DashboardDropdownItem>
@@ -216,7 +197,8 @@ export class NavbarComponent extends React.PureComponent {
                           <Fragment>
                             <DropdownItem divider />
                             <DashboardDropdownItem
-                              onClick={() => history.push('/dashboard/index')}
+                              to="/dashboard/index"
+                              tag={RRNavLink}
                             >
                               <FontAwesomeIcon
                                 icon={faHome}
@@ -227,7 +209,7 @@ export class NavbarComponent extends React.PureComponent {
                           </Fragment>
                         )}
                         <DropdownItem divider />
-                        <DashboardDropdownItem onClick={() => logOut()}>
+                        <DashboardDropdownItem to="/signout" tag={RRNavLink}>
                           {pathname.indexOf('/dashboard') !== 0 && (
                             <FontAwesomeIcon
                               icon={faUnlockAlt}
@@ -250,12 +232,11 @@ export class NavbarComponent extends React.PureComponent {
 }
 
 NavbarComponent.propTypes = {
-  navbarBrandLink: PropTypes.string,
+  brandNameLink: PropTypes.string,
   location: PropTypes.object,
-  history: PropTypes.object,
 };
 NavbarComponent.defaultProps = {
-  navbarBrandLink: '/',
+  brandNameLink: '/',
 };
 
 export default withRouter(NavbarComponent);

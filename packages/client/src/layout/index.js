@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -11,45 +11,27 @@ const LayoutContainer = styled.div`
   min-height: 100vh;
 `;
 
-// @TODO: Refactor to avoid duplicate code.
-
-const DefaultLayout = ({ children }) => (
-  <React.Fragment>
+const DefaultLayout = ({ brandNameLink, minimal, children }) => (
+  <Fragment>
     <div className="flex flex-row">
       <LayoutContainer className="flex flex-column">
-        <Navbar />
+        <Navbar brandNameLink={brandNameLink} />
         <div className="flex flex-column">{children}</div>
-        <Footer />
+        <Footer minimal={minimal} />
       </LayoutContainer>
     </div>
-  </React.Fragment>
+  </Fragment>
 );
 
 const MinimalDefaultLayout = ({ children }) => (
-  <React.Fragment>
-    <div className="flex flex-row">
-      <LayoutContainer className="flex flex-column">
-        <Navbar />
-        <div className="flex flex-column">{children}</div>
-        <Footer minimal />
-      </LayoutContainer>
-    </div>
-  </React.Fragment>
+  <DefaultLayout minimal>{children}</DefaultLayout>
 );
 
 const DashboardLayout = ({ children }) => (
-  <React.Fragment>
-    <div className="flex flex-row">
-      <LayoutContainer className="flex flex-column">
-        <Navbar navbarBrandLink="/dashboard/index" />
-        <div className="flex flex-column">
-          <DashboardNavbar />
-          {children}
-        </div>
-        <Footer minimal />
-      </LayoutContainer>
-    </div>
-  </React.Fragment>
+  <DefaultLayout brandNameLink="/dashboard/index">
+    <DashboardNavbar />
+    {children}
+  </DefaultLayout>
 );
 
 const DashboardSettingsLayout = ({ children }) => (
@@ -59,7 +41,9 @@ const DashboardSettingsLayout = ({ children }) => (
 );
 
 DefaultLayout.propTypes = {
+  brandNameLink: PropTypes.string,
   children: PropTypes.node,
+  minimal: PropTypes.bool,
 };
 
 MinimalDefaultLayout.propTypes = {
