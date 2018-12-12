@@ -1,6 +1,6 @@
 {
   "name": "worker-server",
-  "description": "Run cronjob jobs and queue tasks",
+  "description": "Run queue tasks and cronjobs",
   "private": true,
   "version": "0.1.0",
   "scripts": {

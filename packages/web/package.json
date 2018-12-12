@@ -1,6 +1,6 @@
 {
   "name": "web-app",
-  "description": "Front-end client",
+  "description": "Website",
   "private": true,
   "version": "0.1.0",
   "scripts": {
