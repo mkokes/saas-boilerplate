@@ -1,6 +1,6 @@
 const { PROCESS_EMAIL } = require('../constants/queues');
 
-module.exports = ({ log: parentLog, eventQueue }) => {
+module.exports = ({ config, log: parentLog, eventQueue }) => {
   const log = parentLog.create('processor');
 
   const processEmailDigest = require('./queues/digests/processEmail')({
@@ -8,7 +8,7 @@ module.exports = ({ log: parentLog, eventQueue }) => {
     eventQueue,
   });
 
-  const createWorker = require('./queues/create-worker')({ log });
+  const createWorker = require('./queues/create-worker')({ config, log });
   const server = createWorker(
     {
       [PROCESS_EMAIL]: processEmailDigest,
@@ -22,10 +22,10 @@ module.exports = ({ log: parentLog, eventQueue }) => {
     },
   );
 
-  const initDelayedJobs = require('./jobs')({ log });
+  const initDelayedJobs = require('./jobs')({ config, log });
   initDelayedJobs();
 
-  const PORT = parseInt(process.env.PORT, 10) || 3004;
+  const PORT = parseInt(config.PORT, 10) || 3004;
   server.listen(PORT, 'localhost', 511, () => {
     // prettier-ignore
     log.info(`💉 Healthcheck server running at ${server.address().address}:${server.address().port}`);

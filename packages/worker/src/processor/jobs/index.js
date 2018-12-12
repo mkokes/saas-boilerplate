@@ -1,7 +1,7 @@
-module.exports = ({ log: parentLog }) => {
+module.exports = ({ config, log: parentLog }) => {
   const log = parentLog.create('producer');
 
-  const { processEmail } = require('../queues')({ log });
+  const { processEmail } = require('../queues')({ config, log });
 
   const defaultJobOptions = pattern => ({
     removeOnComplete: true,

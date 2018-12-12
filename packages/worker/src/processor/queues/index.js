@@ -1,7 +1,7 @@
 const { PROCESS_EMAIL } = require('../../constants/queues');
 
-module.exports = ({ log }) => {
-  const createQueue = require('./create-queue.js')({ log });
+module.exports = ({ config, log }) => {
+  const createQueue = require('./create-queue.js')({ config, log });
 
   // Normalize our (inconsistent) queue names to a set of JS compatible names
   exports.QUEUE_NAMES = {

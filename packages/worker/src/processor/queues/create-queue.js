@@ -1,7 +1,8 @@
 const Queue = require('bull');
-const createRedis = require('./create-redis');
 
-module.exports = ({ log }) => {
+module.exports = ({ config, log }) => {
+  const createRedis = require('./create-redis')({ config });
+
   const client = createRedis();
   const subscriber = createRedis();
 
