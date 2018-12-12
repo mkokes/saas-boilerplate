@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Navbar from 'components/Navbar';
-import DashboardNavbar from 'components/DashboardNavbar';
-import DashboardSettingsWrapper from 'components/DashboardSettingsWrapper';
 import Footer from 'components/Footer';
 
 const LayoutContainer = styled.div`
@@ -28,16 +26,9 @@ const MinimalDefaultLayout = ({ children }) => (
 );
 
 const DashboardLayout = ({ children }) => (
-  <DefaultLayout brandNameLink="/dashboard/index">
-    <DashboardNavbar />
+  <DefaultLayout brandNameLink="/dashboard/index" minimal>
     {children}
   </DefaultLayout>
-);
-
-const DashboardSettingsLayout = ({ children }) => (
-  <DashboardLayout>
-    <DashboardSettingsWrapper>{children}</DashboardSettingsWrapper>
-  </DashboardLayout>
 );
 
 DefaultLayout.propTypes = {
@@ -54,14 +45,5 @@ DashboardLayout.propTypes = {
   children: PropTypes.node,
 };
 
-DashboardSettingsLayout.propTypes = {
-  children: PropTypes.node,
-};
-
 export default DefaultLayout;
-export {
-  DefaultLayout,
-  MinimalDefaultLayout,
-  DashboardLayout,
-  DashboardSettingsLayout,
-};
+export { DefaultLayout, MinimalDefaultLayout, DashboardLayout };

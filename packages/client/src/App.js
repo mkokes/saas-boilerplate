@@ -26,17 +26,9 @@ import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
 import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 import MainPage from 'containers/Dashboard/User/MainPage/Loadable';
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
-import SettingsPage from 'containers/Dashboard/User/SettingsPage/Loadable';
-import PreferencesPage from 'containers/Dashboard/User/PreferencesPage/Loadable';
 import SignOutPage from 'containers/SignOutPage/Loadable';
 
-import {
-  DefaultLayout,
-  MinimalDefaultLayout,
-  DashboardLayout,
-  DashboardSettingsLayout,
-} from 'layout';
-
+import { DefaultLayout, MinimalDefaultLayout, DashboardLayout } from 'layout';
 import { GlobalConsumer } from 'GlobalState';
 
 const Route = ({
@@ -130,20 +122,6 @@ export default function App() {
                       path="/dashboard/index"
                       component={MainPage}
                       layout={DashboardLayout}
-                    />
-                    <Route
-                      protected
-                      exact
-                      path="/dashboard/settings"
-                      component={SettingsPage}
-                      layout={DashboardSettingsLayout}
-                    />
-                    <Route
-                      protected
-                      exact
-                      path="/dashboard/settings/preferences"
-                      component={PreferencesPage}
-                      layout={DashboardSettingsLayout}
                     />
                     <Route
                       protected
