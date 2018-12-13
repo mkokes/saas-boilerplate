@@ -192,7 +192,7 @@ export default class SignupPage extends React.PureComponent {
                                       type="text"
                                       placeholder="John Doe"
                                       label="Full name"
-                                      autoComplete="off"
+                                      autoComplete="full-name"
                                       required
                                     />
                                     <Field
@@ -210,7 +210,7 @@ export default class SignupPage extends React.PureComponent {
                                       type="email"
                                       placeholder="john@acme.com"
                                       label="Email address"
-                                      autoComplete="username" // auto-fill hack, browsers are ignoring "email" autocomplete for some reason
+                                      autoComplete="username" // using "username" forces browsers to use email when login
                                       required
                                     />
                                     <Field
