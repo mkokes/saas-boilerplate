@@ -14,7 +14,7 @@ export const UserProfileQuery = gql`
 export const isUserEmailConfirmedQuery = gql`
   query getUserProfile {
     profile: userProfile @requireAuth {
-      isEmailConfirmed
+      isSignUpEmailConfirmed
     }
   }
 `;

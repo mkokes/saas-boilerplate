@@ -30,7 +30,7 @@ export default class EmailVerificationPage extends React.PureComponent {
               />
             </Helmet>
 
-            {userProfile.isEmailConfirmed ? (
+            {userProfile.isSignUpEmailConfirmed ? (
               <Redirect to="/dashboard/index" />
             ) : (
               <Container
@@ -46,10 +46,10 @@ export default class EmailVerificationPage extends React.PureComponent {
                       keepExistingResultDuringRefetch
                     >
                       {({ data: { profile = {} } }) => {
-                        if (profile.isEmailConfirmed) {
+                        if (profile.isSignUpEmailConfirmed) {
                           const updatedUserProfile = userProfile;
 
-                          updatedUserProfile.isEmailConfirmed = true;
+                          updatedUserProfile.isSignUpEmailConfirmed = true;
                           setUserProfile(updatedUserProfile);
                         }
 

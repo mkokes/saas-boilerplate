@@ -1,4 +1,5 @@
 const EventEmitter = require('eventemitter3');
+const jwt = require('jsonwebtoken');
 
 const setupDb = require('./setup');
 const User = require('./models/user');
@@ -48,16 +49,28 @@ class Db extends EventEmitter {
       fullName,
       username,
       avatar,
-      isEmailConfirmed,
+      isSignUpEmailConfirmed,
     } = user;
 
     return {
       lastLoginAt,
       registeredAt,
       ...(canViewPrivateFields
-        ? { fullName, username, email, avatar, isEmailConfirmed }
+        ? { fullName, username, email, avatar, isSignUpEmailConfirmed }
         : {}),
     };
+  }
+
+  async existsUserWithEmail(email) {
+    const count = await User.countDocuments({ email }).exec();
+
+    return !!count;
+  }
+
+  async compareUserPassword(userId, password) {
+    const user = await this._getUser(userId, true);
+
+    return user.comparePassword(password);
   }
 
   async signUpUser(email, password, fullName, username) {
@@ -66,10 +79,17 @@ class Db extends EventEmitter {
       password,
       fullName,
       username,
+      emailConfirmationToken: jwt.sign(
+        {
+          type: 'signup',
+        },
+        this._config.JWT_SECRET,
+      ),
     }).save();
 
     this.notify(user._id, VERIFY_EMAIL, {
       email: user.email,
+      token: user.emailConfirmationToken,
     });
 
     return user;
@@ -91,6 +111,10 @@ class Db extends EventEmitter {
     const user = await this._getUser(_id, { mustExist: true });
     const { passwordUpdatedAt, accountStatus } = user;
 
+    /* console.log(iat);
+    console.log((new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0));
+    console.log('---'); */
+
     if (iat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
       throw new Error('token iat must be greater than passwordUpdatedAt');
     }
@@ -110,7 +134,7 @@ class Db extends EventEmitter {
 
     this.notify(user._id, FORGOT_PASSWORD, {
       email: user.email,
-      resetToken: resetPasswordToken.token,
+      token: resetPasswordToken.token,
     });
   }
 
@@ -141,28 +165,54 @@ class Db extends EventEmitter {
 
     this.notify(_user._id, PASSWORD_RESETED, {
       email: _user.email,
-      resetToken: resetPasswordToken.token,
+      token: resetPasswordToken.token,
     });
   }
 
   async confirmUserEmail(confirmationToken) {
     const user = await User.findOne({
-      isEmailConfirmed: false,
       emailConfirmationToken: confirmationToken,
     }).exec();
 
     if (!user) {
-      throw new Error('INVALID_EMAIL_CONFIRMATION_TOKEN');
+      throw new Error('UNABLE_EMAIL_CONFIRMATION');
     }
 
-    user.isEmailConfirmed = true;
-    user.emailConfirmatedAt = Date.now();
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(
+        user.emailConfirmationToken,
+        this._config.JWT_SECRET,
+      );
+    } catch (e) {
+      throw new Error('UNABLE_EMAIL_CONFIRMATION');
+    }
 
+    switch (decodedToken.type) {
+      case 'signup':
+        if (user.isSignUpEmailConfirmed) return;
+
+        user.isSignUpEmailConfirmed = true;
+        break;
+      case 'change':
+        if (await this.existsUserWithEmail(decodedToken.candidateEmail)) {
+          throw new Error('CANDIDATE_EMAIL_TAKEN');
+        }
+
+        user.email = decodedToken.candidateEmail;
+        break;
+      default:
+        break;
+    }
+
+    user.emailConfirmedAt = Date.now();
     await user.save();
 
-    this.notify(user._id, WELCOME_EMAIL, {
-      email: user.email,
-    });
+    if (decodedToken.type === 'signup') {
+      this.notify(user._id, WELCOME_EMAIL, {
+        email: user.email,
+      });
+    }
   }
 
   async changeUserPassword(userId, oldPassword, newPassword) {
@@ -175,6 +225,24 @@ class Db extends EventEmitter {
 
     user.password = newPassword;
     await user.save();
+  }
+
+  async changeUserEmail(userId, newEmail) {
+    const user = await this._getUser(userId, true);
+
+    user.emailConfirmationToken = jwt.sign(
+      {
+        type: 'change',
+        candidateEmail: newEmail,
+      },
+      this._config.JWT_SECRET,
+    );
+    await user.save();
+
+    this.notify(user._id, VERIFY_EMAIL, {
+      email: newEmail,
+      token: user.emailConfirmationToken,
+    });
   }
 
   async notify(userId, type, data) {

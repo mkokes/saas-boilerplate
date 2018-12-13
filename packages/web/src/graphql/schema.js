@@ -4,7 +4,7 @@ const typeDefs = `
     username: String!
     email: String!
     avatar: String!
-    isEmailConfirmed: Boolean!
+    isSignUpEmailConfirmed: Boolean!
   }
 
   type AuthTokens {

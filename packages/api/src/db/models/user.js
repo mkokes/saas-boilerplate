@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     index: true,
   },
+  emailConfirmationToken: {
+    type: String,
+    required: true,
+  },
   password: {
     type: String,
     required: true,
@@ -43,15 +47,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: () => new Identicon(uuidv4(), { format: 'svg', size: '128' }),
   },
-  emailConfirmationToken: {
-    type: String,
-    default: () => uuidv4(),
-  },
-  isEmailConfirmed: {
+  isSignUpEmailConfirmed: {
     type: Boolean,
     default: false,
   },
-  emailConfirmatedAt: {
+  emailConfirmedAt: {
     type: Date,
     default: null,
   },

@@ -33,7 +33,7 @@ class Middleware extends React.PureComponent {
       if (path.indexOf('/dashboard') === 0) {
         const EMAIL_VERIFICATION_PATH = '/dashboard/email-verification';
 
-        if (!user.isEmailConfirmed && path !== EMAIL_VERIFICATION_PATH) {
+        if (!user.isSignUpEmailConfirmed && path !== EMAIL_VERIFICATION_PATH) {
           return <Redirect to={EMAIL_VERIFICATION_PATH} />;
         }
       }

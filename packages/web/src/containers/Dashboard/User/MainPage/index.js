@@ -9,7 +9,7 @@ import React, { Fragment } from 'react';
 import { Container, Button } from 'reactstrap';
 import { Helmet } from 'react-helmet';
 
-import { ChangeUserPassword } from 'graphql/mutations';
+import { ChangeUserEmail } from 'graphql/mutations';
 
 // import { GlobalConsumer } from 'GlobalState';
 import SafeMutation from 'components/graphql/SafeMutation';
@@ -28,13 +28,13 @@ export default class MainPage extends React.PureComponent {
         </Helmet>
         <Container tag="main">
           <SafeMutation
-            mutation={ChangeUserPassword}
-            variables={{ oldPassword: 'foo2', newPassword: 'foo' }}
+            mutation={ChangeUserEmail}
+            variables={{ password: 'foo2', newEmail: 'foo@foo.com' }}
           >
-            {changeUserPassword => (
+            {changeUserEmail => (
               <Fragment>
-                <Button onClick={() => changeUserPassword()}>
-                  CHANGE MY PASSWORD!
+                <Button onClick={() => changeUserEmail()}>
+                  CHANGE MY EMAIL!
                 </Button>
               </Fragment>
             )}

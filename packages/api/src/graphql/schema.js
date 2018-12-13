@@ -10,7 +10,7 @@ module.exports = gql`
     username: String
     email: String
     avatar: String
-    isEmailConfirmed: Boolean
+    isSignUpEmailConfirmed: Boolean
   }
 
   type Query {
@@ -31,6 +31,7 @@ module.exports = gql`
     resetPassword(resetToken: String!, newPassword: String!): Boolean
     confirmUserEmail(confirmationToken: String!): Boolean
     changeUserPassword(oldPassword: String!, newPassword: String!): AuthTokens
+    changeUserEmail(password: String!, newEmail: String!): Boolean
     contact(
       recaptchaResponse: String!
       name: String!

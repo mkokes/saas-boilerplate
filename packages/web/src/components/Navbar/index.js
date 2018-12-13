@@ -174,7 +174,7 @@ export class NavbarComponent extends React.PureComponent {
 
                         {pathname.indexOf('/dashboard') === 0 ? (
                           <Fragment>
-                            {userProfile.isEmailConfirmed && (
+                            {userProfile.isSignUpEmailConfirmed && (
                               <Fragment>
                                 <DropdownItem divider />
                                 <DashboardDropdownItem

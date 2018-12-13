@@ -78,6 +78,12 @@ export const ChangeUserPassword = gql`
   }
 `;
 
+export const ChangeUserEmail = gql`
+  mutation changeUserEmail($password: String!, $newEmail: String!) {
+    changeUserEmail(password: $password, newEmail: $newEmail) @requireAuth
+  }
+`;
+
 export const Contact = gql`
   mutation contact(
     $recaptchaResponse: String!

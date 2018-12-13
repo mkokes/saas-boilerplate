@@ -6,6 +6,6 @@ export const ProfileFields = gql`
     username
     email
     avatar
-    isEmailConfirmed
+    isSignUpEmailConfirmed
   }
 `;

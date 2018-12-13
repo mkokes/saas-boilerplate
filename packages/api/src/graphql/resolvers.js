@@ -253,7 +253,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
     confirmUserEmail: async (_, { confirmationToken }) => {
       const invalidTokenErr = new ApolloError(
         'This confirmation link is invalid or has already been used',
-        'INVALID_EMAIL_CONFIRMATION_TOKEN',
+        'UNABLE_EMAIL_CONFIRMATION',
       );
 
       if (validator.isEmpty(confirmationToken)) {
@@ -264,8 +264,13 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         await db.confirmUserEmail(confirmationToken);
       } catch (e) {
         switch (e.message) {
-          case 'INVALID_EMAIL_CONFIRMATION_TOKEN':
+          case 'UNABLE_EMAIL_CONFIRMATION':
             throw invalidTokenErr;
+          case 'CANDIDATE_EMAIL_TAKEN':
+            throw new ApolloError(
+              'Oops! the email address you choosen was used by another user. Please try it again.',
+              'UNABLE_EMAIL_CONFIRMATION',
+            );
           default:
             throw e;
         }
@@ -291,7 +296,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       ) {
         paramsValidationErrors.name = 'Name is not valid';
       }
-      if (validator.isEmpty(email) || !validator.isEmail(email)) {
+      if (!validator.isEmail(email)) {
         paramsValidationErrors.email = 'Email is not valid';
       }
       if (validator.isEmpty(subject)) {
@@ -388,6 +393,46 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       });
 
       return { accessToken, refreshToken };
+    },
+    changeUserEmail: async (_, { password, newEmail }, { user }) => {
+      const userInputError = errors =>
+        new UserInputError('Failed to change email due to validation errors', {
+          validationErrors: errors,
+        });
+
+      if (!user) {
+        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+      }
+
+      const paramsValidationErrors = {};
+
+      if (validator.isEmpty(password)) {
+        paramsValidationErrors.password = 'Password required';
+      }
+      if (!validator.isEmail(newEmail)) {
+        paramsValidationErrors.newEmail = 'Invalid email';
+      }
+
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw userInputError(paramsValidationErrors);
+      }
+
+      const emailAlreadyTaken = await db.existsUserWithEmail(newEmail);
+      if (emailAlreadyTaken) {
+        throw userInputError({
+          newEmail: 'Email already in use by another user',
+        });
+      }
+      const passwordMatches = await db.compareUserPassword(user._id, newEmail);
+      if (passwordMatches) {
+        throw userInputError({
+          password: 'Password does not match your current account password',
+        });
+      }
+
+      await db.changeUserEmail(user._id, newEmail);
+
+      return true;
     },
   },
 });
