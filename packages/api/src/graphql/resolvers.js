@@ -268,7 +268,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
             throw invalidTokenErr;
           case 'CANDIDATE_EMAIL_TAKEN':
             throw new ApolloError(
-              'Oops! the email address you choosen was used by another user. Please try it again.',
+              'Oops! the email address you choosen was used by another user before you. Please try it again.',
               'UNABLE_EMAIL_CONFIRMATION',
             );
           default:
