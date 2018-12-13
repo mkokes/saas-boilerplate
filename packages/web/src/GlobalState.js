@@ -183,7 +183,7 @@ class Provider extends Component {
     }
   };
 
-  logOut = async () => {
+  logOut = async ({ forceLogOut = false } = {}) => {
     LocalStorageApi.clear();
 
     this.setState({
@@ -195,7 +195,8 @@ class Provider extends Component {
       },
     });
 
-    AnalyticsApi.track('Log out');
+    if (!forceLogOut) AnalyticsApi.track('Log out');
+
     console.debug('Logout user');
   };
 

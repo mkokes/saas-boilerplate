@@ -116,7 +116,7 @@ class Db extends EventEmitter {
     const resetPasswordToken = await ResetPasswordToken.findOne({
       token: resetToken,
     })
-      .populate('_user', '_id password passwordResetedAt')
+      .populate('_user', '_id password')
       .exec();
 
     if (!resetPasswordToken) {
@@ -130,7 +130,6 @@ class Db extends EventEmitter {
     }
 
     _user.password = newPassword;
-    _user.passwordResetedAt = Date.now();
 
     resetPasswordToken.used = true;
     resetPasswordToken.usedAt = Date.now();
@@ -162,6 +161,12 @@ class Db extends EventEmitter {
     this.notify(user._id, WELCOME_EMAIL, {
       email: user.email,
     });
+  }
+
+  async changeUserPassword(userId, oldPassword, newPassword) {
+    console.debug(userId);
+    console.debug(oldPassword);
+    console.debug(newPassword);
   }
 
   async notify(userId, type, data) {

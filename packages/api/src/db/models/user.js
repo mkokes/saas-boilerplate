@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  passwordUpdatedAt: {
+    type: Date,
+    default: null,
+  },
   fullName: {
     type: String,
     trim: true,
@@ -38,10 +42,6 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: () => new Identicon(uuidv4(), { format: 'svg', size: '128' }),
-  },
-  passwordResetedAt: {
-    type: Date,
-    default: null,
   },
   emailConfirmationToken: {
     type: String,
@@ -101,6 +101,7 @@ UserSchema.pre('save', function cb(next) {
     .hash(user.password, SALT_WORK_FACTOR)
     .then(hash => {
       user.password = hash;
+      user.passwordUpdatedAt = Date.now();
       return next();
     })
     .catch(next);

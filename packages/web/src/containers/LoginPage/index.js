@@ -155,7 +155,7 @@ export default class LoginPage extends React.PureComponent {
                                       name="password"
                                       type="password"
                                       label="Password"
-                                      autoComplete="password"
+                                      autoComplete="current-password"
                                       required
                                     />
                                     <ForgotPasswordContainer className="text-right mb-3">

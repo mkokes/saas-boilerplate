@@ -30,6 +30,7 @@ module.exports = gql`
     forgotPassword(email: String!): Boolean
     resetPassword(resetToken: String!, newPassword: String!): Boolean
     confirmUserEmail(confirmationToken: String!): Boolean
+    changeUserPassword(oldPassword: String!, newPassword: String!): Boolean
     contact(
       recaptchaResponse: String!
       name: String!

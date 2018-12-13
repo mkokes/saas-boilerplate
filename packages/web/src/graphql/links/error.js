@@ -26,8 +26,7 @@ const errorLink = () =>
             try {
               await globalProvider.refreshAccessTokenReq();
             } catch (e) {
-              // @TODO: Unable to get new access token so we force logout the user?
-              throw e;
+              return globalProvider.logOut({ forceLogOut: true });
             }
 
             operation.setContext({

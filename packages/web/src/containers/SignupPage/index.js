@@ -188,29 +188,29 @@ export default class SignupPage extends React.PureComponent {
                                   <Form>
                                     <Field
                                       component={ReactstrapInput}
-                                      name="email"
-                                      type="email"
-                                      placeholder="john@acme.com"
-                                      label="Email address"
-                                      autoComplete="email"
-                                      required
-                                    />
-                                    <Field
-                                      component={ReactstrapInput}
                                       name="fullName"
                                       type="text"
                                       placeholder="John Doe"
-                                      label="What's your name?"
-                                      autoComplete="name"
+                                      label="Full name"
+                                      autoComplete="off"
                                       required
                                     />
                                     <Field
                                       component={ReactstrapInput}
                                       name="username"
                                       type="text"
-                                      placeholder="John123"
+                                      placeholder="JohnDoe123"
                                       label="Username"
-                                      autoComplete="username"
+                                      autoComplete="off"
+                                      required
+                                    />
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="email"
+                                      type="email"
+                                      placeholder="john@acme.com"
+                                      label="Email address"
+                                      autoComplete="username" // auto-fill hack, browsers are ignoring "email" autocomplete for some reason
                                       required
                                     />
                                     <Field
@@ -219,6 +219,7 @@ export default class SignupPage extends React.PureComponent {
                                       type="password"
                                       placeholder="Password"
                                       label="Password"
+                                      autoComplete="new-password"
                                       required
                                     />
 

@@ -6,10 +6,13 @@
 
 import React, { Fragment } from 'react';
 // import PropTypes from 'prop-types';
-import { Container, Card, Button, CardTitle, CardText } from 'reactstrap';
+import { Container, Button } from 'reactstrap';
 import { Helmet } from 'react-helmet';
 
-import { GlobalConsumer } from 'GlobalState';
+import { ChangeUserPassword } from 'graphql/mutations';
+
+// import { GlobalConsumer } from 'GlobalState';
+import SafeMutation from 'components/graphql/SafeMutation';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class MainPage extends React.PureComponent {
@@ -24,18 +27,18 @@ export default class MainPage extends React.PureComponent {
           />
         </Helmet>
         <Container tag="main">
-          {/* <Card
-                body
-                inverse
-                style={{ backgroundColor: '#333', borderColor: '#333' }}
-              >
-                <CardTitle>Special Title Treatment</CardTitle>
-                <CardText>
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </CardText>
-                <Button>Button</Button>
-              </Card> */}
+          <SafeMutation
+            mutation={ChangeUserPassword}
+            variables={{ oldPassword: 'foo', newPassword: 'foo2' }}
+          >
+            {changeUserPassword => (
+              <Fragment>
+                <Button onClick={() => changeUserPassword()}>
+                  CHANGE MY PASSWORD!
+                </Button>
+              </Fragment>
+            )}
+          </SafeMutation>
         </Container>
       </Fragment>
     );

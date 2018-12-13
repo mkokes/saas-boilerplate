@@ -1,8 +1,8 @@
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
-const { WEBSITE_CONTACT_FORM } = require('../constants/notifications');
 
+const { WEBSITE_CONTACT_FORM } = require('../constants/notifications');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
@@ -336,6 +336,40 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         subject,
         message,
       });
+
+      return true;
+    },
+    changeUserPassword: async (_, { oldPassword, newPassword }, { user }) => {
+      if (!user) {
+        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+      }
+
+      const paramsValidationErrors = {};
+
+      if (validator.isEmpty(oldPassword)) {
+        paramsValidationErrors.oldPassword = 'Invalid old password';
+      }
+      if (validator.isEmpty(newPassword)) {
+        paramsValidationErrors.newPassword = 'Invalid password';
+      }
+
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw new UserInputError(
+          'Failed to change password due to validation errors',
+          {
+            validationErrors: paramsValidationErrors,
+          },
+        );
+      }
+
+      try {
+        await db.changeUserPassword(user._id, oldPassword, newPassword);
+      } catch (e) {
+        switch (e.message) {
+          default:
+            throw e;
+        }
+      }
 
       return true;
     },
