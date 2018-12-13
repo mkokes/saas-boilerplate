@@ -12,9 +12,6 @@ const assertAuthToken = token => {
     if (!safeGet(token, 'type')) {
       throw new Error('No type key found');
     }
-    if (!safeGet(token, 'passwordUpdatedAt')) {
-      throw new Error('No passwordUpdatedAt key found');
-    }
     if (!safeGet(token, '_id')) {
       throw new Error('No _id key found');
     }

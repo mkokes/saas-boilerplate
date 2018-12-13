@@ -95,14 +95,12 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
           JWT_SECRET,
           data: {
             _id: user._id,
-            passwordUpdatedAt: user.passwordUpdatedAt,
           },
         });
         const refreshToken = createRefreshToken({
           JWT_SECRET,
           data: {
             _id: user._id,
-            passwordUpdatedAt: user.passwordUpdatedAt,
           },
         });
 
@@ -154,14 +152,12 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
           JWT_SECRET,
           data: {
             _id: user._id,
-            passwordUpdatedAt: user.passwordUpdatedAt,
           },
         });
         const refreshToken = createRefreshToken({
           JWT_SECRET,
           data: {
             _id: user._id,
-            passwordUpdatedAt: user.passwordUpdatedAt,
           },
         });
 
@@ -197,7 +193,6 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         JWT_SECRET,
         data: {
           _id: decodedPayload._id,
-          passwordUpdatedAt: decodedPayload.passwordUpdatedAt,
         },
       });
 
@@ -365,6 +360,15 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         await db.changeUserPassword(user._id, oldPassword, newPassword);
       } catch (e) {
         switch (e.message) {
+          case 'INVALID_OLD_PASSWORD':
+            throw new UserInputError(
+              'Failed to change password due to validation errors',
+              {
+                validationErrors: {
+                  oldPassword: 'Password does not match',
+                },
+              },
+            );
           default:
             throw e;
         }

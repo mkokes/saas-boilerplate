@@ -29,7 +29,7 @@ export default class MainPage extends React.PureComponent {
         <Container tag="main">
           <SafeMutation
             mutation={ChangeUserPassword}
-            variables={{ oldPassword: 'foo', newPassword: 'foo2' }}
+            variables={{ oldPassword: 'foo2', newPassword: 'foo' }}
           >
             {changeUserPassword => (
               <Fragment>

@@ -85,10 +85,16 @@ class Db extends EventEmitter {
     return this.getUserProfile(userId, true);
   }
 
-  async loginChallenge(userId) {
-    const user = await this._getUser(userId, { mustExist: true });
+  async loginChallenge(decodedJWT) {
+    const { iat, _id } = decodedJWT;
 
-    if (user.accountStatus !== 'active') {
+    const user = await this._getUser(_id, { mustExist: true });
+    const { passwordUpdatedAt, accountStatus } = user;
+
+    if (iat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
+      throw new Error('token iat must be greater than passwordUpdatedAt');
+    }
+    if (accountStatus !== 'active') {
       return false;
     }
 
@@ -160,11 +166,15 @@ class Db extends EventEmitter {
   }
 
   async changeUserPassword(userId, oldPassword, newPassword) {
-    console.debug(userId);
-    console.debug(oldPassword);
-    console.debug(newPassword);
+    const user = await this._getUser(userId, true);
 
-    return 'new_password_hash';
+    const isOldPasswordValid = await user.comparePassword(oldPassword);
+    if (!isOldPasswordValid) {
+      throw new Error('INVALID_OLD_PASSWORD');
+    }
+
+    user.password = newPassword;
+    await user.save();
   }
 
   async notify(userId, type, data) {
