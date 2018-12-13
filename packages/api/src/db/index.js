@@ -85,14 +85,10 @@ class Db extends EventEmitter {
     return this.getUserProfile(userId, true);
   }
 
-  async loginChallenge(userId, tokenPasswordHash) {
+  async loginChallenge(userId) {
     const user = await this._getUser(userId, { mustExist: true });
 
     if (user.accountStatus !== 'active') {
-      return false;
-    }
-    // https://stackoverflow.com/questions/21978658/invalidating-json-web-tokens#comment45057142_23089839
-    if (user.password !== tokenPasswordHash) {
       return false;
     }
 
@@ -167,6 +163,8 @@ class Db extends EventEmitter {
     console.debug(userId);
     console.debug(oldPassword);
     console.debug(newPassword);
+
+    return 'new_password_hash';
   }
 
   async notify(userId, type, data) {

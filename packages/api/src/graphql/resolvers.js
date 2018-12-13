@@ -95,14 +95,14 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
           JWT_SECRET,
           data: {
             _id: user._id,
-            password: user.password,
+            passwordUpdatedAt: user.passwordUpdatedAt,
           },
         });
         const refreshToken = createRefreshToken({
           JWT_SECRET,
           data: {
             _id: user._id,
-            password: user.password,
+            passwordUpdatedAt: user.passwordUpdatedAt,
           },
         });
 
@@ -154,14 +154,14 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
           JWT_SECRET,
           data: {
             _id: user._id,
-            password: user.password,
+            passwordUpdatedAt: user.passwordUpdatedAt,
           },
         });
         const refreshToken = createRefreshToken({
           JWT_SECRET,
           data: {
             _id: user._id,
-            password: user.password,
+            passwordUpdatedAt: user.passwordUpdatedAt,
           },
         });
 
@@ -185,7 +185,6 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
     },
     refreshAccessToken: async (_, { refreshToken }) => {
       let decodedPayload;
-
       try {
         decodedPayload = jwt.verify(refreshToken, JWT_SECRET);
 
@@ -198,7 +197,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         JWT_SECRET,
         data: {
           _id: decodedPayload._id,
-          password: decodedPayload.password,
+          passwordUpdatedAt: decodedPayload.passwordUpdatedAt,
         },
       });
 
@@ -371,7 +370,20 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         }
       }
 
-      return true;
+      const accessToken = createAccessToken({
+        JWT_SECRET,
+        data: {
+          _id: user._id,
+        },
+      });
+      const refreshToken = createRefreshToken({
+        JWT_SECRET,
+        data: {
+          _id: user._id,
+        },
+      });
+
+      return { accessToken, refreshToken };
     },
   },
 });

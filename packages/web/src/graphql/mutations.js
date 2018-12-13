@@ -71,7 +71,10 @@ export const ConfirmUserEmail = gql`
 export const ChangeUserPassword = gql`
   mutation changeUserPassword($oldPassword: String!, $newPassword: String!) {
     changeUserPassword(oldPassword: $oldPassword, newPassword: $newPassword)
-      @requireAuth
+      @requireAuth {
+      accessToken
+      refreshToken
+    }
   }
 `;
 
