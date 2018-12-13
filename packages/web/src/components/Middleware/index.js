@@ -6,15 +6,28 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 /* eslint-disable react/prefer-stateless-function */
 class Middleware extends React.PureComponent {
   render() {
-    const { children, user, path } = this.props;
+    const { children, user, path, location } = this.props;
 
     if (path) {
-      if (path.indexOf('/auth') === 0 || path.indexOf('/signup') === 0) {
+      if (path.indexOf('/auth') === 0) {
+        let redirectTo = '/dashboard/index';
+
+        if (location.state && location.state.from) {
+          const { pathname, search, hash } = location.state.from;
+
+          if (pathname !== '/signout') {
+            redirectTo = `${pathname + search + hash}`;
+          }
+        }
+
+        if (user) return <Redirect to={redirectTo} />;
+      }
+      if (path.indexOf('/signup') === 0) {
         if (user) return <Redirect to="/dashboard/index" />;
       }
       if (path.indexOf('/dashboard') === 0) {
@@ -34,6 +47,7 @@ Middleware.propTypes = {
   children: PropTypes.object,
   user: PropTypes.object,
   path: PropTypes.string,
+  location: PropTypes.object,
 };
 
-export default Middleware;
+export default withRouter(Middleware);
