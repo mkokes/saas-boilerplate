@@ -151,7 +151,7 @@ export default class SignupPage extends React.PureComponent {
                                       refreshToken,
                                     });
 
-                                    await signIn();
+                                    await signIn({ forceSignIn: true });
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 

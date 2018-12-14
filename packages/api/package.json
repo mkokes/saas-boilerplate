@@ -8,7 +8,11 @@
     "dev": "nodemon index.js",
     "test": "jest --no-cache",
     "test:coverage": "npm test --coverage",
-    "deploy": "now -f"
+    "deploy": "now -f",
+    "lint": "npm run lint:js",
+    "lint:js": "npm run lint:eslint -- .",
+    "lint:eslint": "eslint --ignore-path .gitignore",
+    "lint:eslint:fix": "eslint --ignore-path .gitignore --fix"
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",
@@ -30,6 +34,21 @@
     "p-queue": "^3.0.0",
     "validator": "^10.9.0"
   },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint:eslint:fix",
+      "git add --force"
+    ],
+    "*.{json,md}": [
+      "prettier --config ../.prettierrc --write",
+      "git add --force"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "jest": {
     "testEnvironment": "node",
     "testMatch": [
@@ -45,6 +64,7 @@
     "setupTestFrameworkScriptFile": "<rootDir>/.jest/setupTestFrameworkScriptFile.js"
   },
   "devDependencies": {
+    "husky": "^1.1.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "9",
     "babel-jest": "^23.6.0",

@@ -6,9 +6,11 @@ const { WEBSITE_CONTACT_FORM } = require('../constants/notifications');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
+// We add our own JWT iat to avoid Clock skew issue: @URL: https://en.wikipedia.org/wiki/Clock_skew
 const createAccessToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {
+      iat: parseInt((Date.now() / 1000).toFixed(0), 10),
       ...data,
       type: 'access',
     },
@@ -18,6 +20,7 @@ const createAccessToken = ({ JWT_SECRET, data }) =>
 const createRefreshToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {
+      iat: parseInt((Date.now() / 1000).toFixed(0), 10),
       ...data,
       type: 'refresh',
     },

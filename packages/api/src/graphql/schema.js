@@ -6,6 +6,7 @@ module.exports = gql`
     refreshToken: String
   }
   type UserProfile {
+    _id: String
     fullName: String
     username: String
     email: String

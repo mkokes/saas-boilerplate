@@ -43,6 +43,7 @@ class Db extends EventEmitter {
     }
 
     const {
+      _id,
       lastLoginAt,
       registeredAt,
       email,
@@ -56,7 +57,14 @@ class Db extends EventEmitter {
       lastLoginAt,
       registeredAt,
       ...(canViewPrivateFields
-        ? { fullName, username, email, avatar, isSignUpEmailConfirmed }
+        ? {
+            _id: _id.toString(),
+            fullName,
+            username,
+            email,
+            avatar,
+            isSignUpEmailConfirmed,
+          }
         : {}),
     };
   }
@@ -110,10 +118,6 @@ class Db extends EventEmitter {
 
     const user = await this._getUser(_id, { mustExist: true });
     const { passwordUpdatedAt, accountStatus } = user;
-
-    /* console.log(iat);
-    console.log((new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0));
-    console.log('---'); */
 
     if (iat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
       throw new Error('token iat must be greater than passwordUpdatedAt');
@@ -205,6 +209,7 @@ class Db extends EventEmitter {
         break;
     }
 
+    user.confirmationToken = null;
     user.emailConfirmedAt = Date.now();
     await user.save();
 

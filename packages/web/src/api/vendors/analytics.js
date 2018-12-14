@@ -11,4 +11,14 @@ export const AnalyticsApi = {
       window.mixpanel.track(event);
     }
   },
+  alias(userId) {
+    if (MIXPANEL_ID && window.mixpanel) {
+      window.mixpanel.alias(userId);
+    }
+  },
+  identify(userId) {
+    if (MIXPANEL_ID && window.mixpanel) {
+      window.mixpanel.identify(userId);
+    }
+  },
 };

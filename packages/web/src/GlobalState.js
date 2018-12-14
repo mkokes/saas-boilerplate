@@ -55,9 +55,7 @@ class Provider extends Component {
   }
 
   signIn = async ({ forceSignIn = false } = {}) => {
-    if (this.state.loggedIn) {
-      return;
-    }
+    if (this.state.loggedIn) return;
 
     console.debug(`Checking if user is logged in ...`);
 
@@ -83,9 +81,7 @@ class Provider extends Component {
       const refreshTokenStatus = validateJWT(refreshToken);
 
       if (accessTokenStatus === 'EXPIRED' && refreshTokenStatus === 'OK') {
-        // @TODO: try to renew access token
         accessToken = await this.refreshAccessTokenReq();
-
         accessTokenStatus = 'OK';
       }
       if (accessTokenStatus !== 'OK' && refreshTokenStatus !== 'OK') {
@@ -121,6 +117,21 @@ class Provider extends Component {
     }
   };
 
+  setUserProfile = profile => {
+    console.debug('Current user', profile);
+
+    this.setState(
+      state => ({
+        auth: {
+          ...state.auth,
+          profile,
+          loggedIn: true,
+        },
+      }),
+      /* now we resolve the promise -> */ setSignedIn,
+    );
+  };
+
   refreshAccessTokenReq = async () => {
     console.debug('Renewing access token');
 
@@ -137,27 +148,11 @@ class Provider extends Component {
     });
 
     const { accessToken } = data.refreshAccessToken;
-
     console.debug('Got new access token', accessToken);
 
     await this.setAuthTokens({ accessToken });
 
     return accessToken;
-  };
-
-  setUserProfile = profile => {
-    console.debug('Current user', profile);
-
-    this.setState(
-      state => ({
-        auth: {
-          ...state.auth,
-          profile,
-          loggedIn: true,
-        },
-      }),
-      /* now we resolve the promise -> */ setSignedIn,
-    );
   };
 
   setAuthTokens = async ({ accessToken, refreshToken }) => {
