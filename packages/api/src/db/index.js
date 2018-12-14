@@ -53,6 +53,7 @@ class Db extends EventEmitter {
       isSignUpEmailConfirmed,
     } = user;
 
+    /* eslint-disable */
     return {
       lastLoginAt,
       registeredAt,
@@ -67,6 +68,7 @@ class Db extends EventEmitter {
           }
         : {}),
     };
+    /* eslint-enable */
   }
 
   async existsUserWithEmail(email) {
