@@ -1,7 +1,17 @@
 import { onError } from 'apollo-link-error';
 import { Observable } from 'apollo-link';
-import { getProvider as getGlobalProvider } from 'GlobalState';
+
 import { buildAuthHeader } from 'utils/requests';
+import { getProvider as getGlobalProvider } from 'GlobalState';
+
+let isFetchingToken = false;
+let tokenSubscribers = [];
+function subscribeTokenRefresh(cb) {
+  tokenSubscribers.push(cb);
+}
+function onTokenRefreshed(err) {
+  tokenSubscribers.map(cb => cb(err));
+}
 
 /* eslint-disable no-console, consistent-return */
 const errorLink = () =>
@@ -19,32 +29,58 @@ const errorLink = () =>
       if (extensions.code === 'UNAUTHENTICATED') {
         return new Observable(async observer => {
           try {
-            const { headers } = operation.getContext();
+            const retryRequest = () => {
+              operation.setContext({
+                headers: {
+                  ...headers,
+                  Authorization: buildAuthHeader(
+                    globalProvider.authAccessToken(),
+                  ).Authorization,
+                },
+              });
 
-            const globalProvider = await getGlobalProvider();
+              const subscriber = {
+                next: observer.next.bind(observer),
+                error: observer.error.bind(observer),
+                complete: observer.complete.bind(observer),
+              };
 
-            try {
-              await globalProvider.refreshAccessTokenReq();
-            } catch (e) {
-              return globalProvider.logOut({ forceLogOut: true });
-            }
-
-            operation.setContext({
-              headers: {
-                ...headers,
-                Authorization: buildAuthHeader(globalProvider.authAccessToken())
-                  .Authorization,
-              },
-            });
-
-            const subscriber = {
-              next: observer.next.bind(observer),
-              error: observer.error.bind(observer),
-              complete: observer.complete.bind(observer),
+              return forward(operation).subscribe(subscriber);
             };
 
-            // Retry last failed request
-            forward(operation).subscribe(subscriber);
+            const { headers } = operation.getContext();
+            const globalProvider = await getGlobalProvider();
+
+            if (!isFetchingToken) {
+              isFetchingToken = true;
+
+              try {
+                await globalProvider.refreshAccessTokenReq();
+
+                isFetchingToken = false;
+                onTokenRefreshed(null);
+                tokenSubscribers = [];
+
+                return retryRequest();
+              } catch (e) {
+                onTokenRefreshed(new Error('Unable to refresh access token'));
+
+                tokenSubscribers = [];
+                isFetchingToken = false;
+
+                return globalProvider.logOut({ forcedLogOut: true });
+              }
+            }
+
+            const tokenSubscriber = new Promise((resolve, reject) => {
+              subscribeTokenRefresh(errRefreshing => {
+                if (errRefreshing) return reject(errRefreshing);
+
+                return resolve(retryRequest());
+              });
+            });
+
+            return tokenSubscriber;
           } catch (e) {
             observer.error(e);
           }

@@ -5,14 +5,11 @@
  */
 
 import React, { Fragment } from 'react';
-// import PropTypes from 'prop-types';
 import { Container, Button } from 'reactstrap';
 import { Helmet } from 'react-helmet';
+import { ApolloConsumer } from 'react-apollo';
 
-import { ChangeUserEmail } from 'graphql/mutations';
-
-// import { GlobalConsumer } from 'GlobalState';
-import SafeMutation from 'components/graphql/SafeMutation';
+import { UserProfileQuery, isUserEmailConfirmedQuery } from 'graphql/queries';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class MainPage extends React.PureComponent {
@@ -27,18 +24,26 @@ export default class MainPage extends React.PureComponent {
           />
         </Helmet>
         <Container tag="main">
-          <SafeMutation
-            mutation={ChangeUserEmail}
-            variables={{ password: 'foo', newEmail: 'foo2@foo.com' }}
-          >
-            {changeUserEmail => (
-              <Fragment>
-                <Button onClick={() => changeUserEmail()}>
-                  CHANGE MY EMAIL!
-                </Button>
-              </Fragment>
+          <ApolloConsumer>
+            {client => (
+              <Button
+                size="lg"
+                onClick={async () => {
+                  console.debug('Fire!');
+                  client.query({
+                    query: UserProfileQuery,
+                    fetchPolicy: 'network-only',
+                  });
+                  client.query({
+                    query: isUserEmailConfirmedQuery,
+                    fetchPolicy: 'network-only',
+                  });
+                }}
+              >
+                Fire HTTP requests
+              </Button>
             )}
-          </SafeMutation>
+          </ApolloConsumer>
         </Container>
       </Fragment>
     );

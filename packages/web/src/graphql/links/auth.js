@@ -55,7 +55,7 @@ export default () =>
       if (!globalProvider.isLoggedIn() && requireAuth) {
         try {
           // try logging in
-          await globalProvider.signIn({ forceSignIn: true });
+          await globalProvider.signIn();
         } catch (err) {
           return makeError(observer, err.message);
         }

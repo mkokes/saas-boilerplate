@@ -16,11 +16,6 @@ const providerPromise = new Promise(resolve => {
   setProviderInstance = resolve;
 });
 
-let setSignedIn;
-const signInPromise = new Promise(resolve => {
-  setSignedIn = resolve;
-});
-
 export const getProvider = () => providerPromise;
 
 /* eslint-disable no-console */
@@ -54,7 +49,7 @@ class Provider extends Component {
     return this.state.auth.loggedIn;
   }
 
-  signIn = async ({ forceSignIn = false } = {}) => {
+  signIn = async () => {
     if (this.state.loggedIn) return;
 
     console.debug(`Checking if user is logged in ...`);
@@ -109,27 +104,33 @@ class Provider extends Component {
           loggedIn: false,
         },
       }));
-
-      if (forceSignIn) {
-        // eslint-disable-next-line
-        return signInPromise;
-      }
     }
+  };
+
+  signUp = async () => {
+    await this.signIn();
+    const { profile } = this.state.auth;
+
+    if (profile) AnalyticsApi.alias(profile._id);
+  };
+
+  logIn = async () => {
+    await this.signIn();
+    const { profile } = this.state.auth;
+
+    if (profile) AnalyticsApi.identify(profile._id);
   };
 
   setUserProfile = profile => {
     console.debug('Current user', profile);
 
-    this.setState(
-      state => ({
-        auth: {
-          ...state.auth,
-          profile,
-          loggedIn: true,
-        },
-      }),
-      /* now we resolve the promise -> */ setSignedIn,
-    );
+    this.setState(state => ({
+      auth: {
+        ...state.auth,
+        profile,
+        loggedIn: true,
+      },
+    }));
   };
 
   refreshAccessTokenReq = async () => {
@@ -178,8 +179,9 @@ class Provider extends Component {
     }
   };
 
-  logOut = async ({ forceLogOut = false } = {}) => {
-    LocalStorageApi.clear();
+  logOut = async ({ forcedLogOut = false } = {}) => {
+    LocalStorageApi.removeItem('access_token');
+    LocalStorageApi.removeItem('refresh_token');
 
     this.setState({
       auth: {
@@ -190,7 +192,7 @@ class Provider extends Component {
       },
     });
 
-    if (!forceLogOut) AnalyticsApi.track('Log out');
+    if (!forcedLogOut) AnalyticsApi.track('Log out');
 
     console.debug('Logout user');
   };
@@ -210,6 +212,8 @@ class Provider extends Component {
           userProfile: this.state.auth.profile,
           loggedIn: this.isLoggedIn(),
           signIn: this.signIn,
+          signUp: this.signUp,
+          logIn: this.logIn,
           logOut: this.logOut,
           setAuthTokens: this.setAuthTokens,
           setUserProfile: this.setUserProfile,

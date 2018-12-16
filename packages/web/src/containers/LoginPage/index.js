@@ -51,7 +51,7 @@ export default class LoginPage extends React.PureComponent {
 
     return (
       <GlobalConsumer>
-        {({ setAuthTokens, signIn, userProfile }) => (
+        {({ setAuthTokens, logIn }) => (
           <Fragment>
             <Helmet>
               <title>Sign in</title>
@@ -116,12 +116,7 @@ export default class LoginPage extends React.PureComponent {
                                       refreshToken,
                                     });
 
-                                    const foo = await signIn({
-                                      forceSignIn: true,
-                                    });
-
-                                    console.debug(foo);
-                                    console.debug('wow');
+                                    await logIn();
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 

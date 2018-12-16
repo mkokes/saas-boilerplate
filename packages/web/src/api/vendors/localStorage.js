@@ -18,6 +18,13 @@ export const LocalStorageApi = {
       return undefined;
     }
   },
+  removeItem(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (_) {
+      console.error(`Error removing item from localStorage`, key);
+    }
+  },
   clear() {
     try {
       localStorage.clear();

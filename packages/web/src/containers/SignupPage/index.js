@@ -60,7 +60,7 @@ export default class SignupPage extends React.PureComponent {
 
     return (
       <GlobalConsumer>
-        {({ setAuthTokens, signIn }) => (
+        {({ setAuthTokens, signUp }) => (
           <Fragment>
             <Helmet>
               <title>Sign up</title>
@@ -151,7 +151,7 @@ export default class SignupPage extends React.PureComponent {
                                       refreshToken,
                                     });
 
-                                    await signIn({ forceSignIn: true });
+                                    await signUp();
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 
