@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer';
+import DashboardSettingsNavbar from 'components/DashboardSettingsNavbar/Loadable';
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
@@ -26,8 +27,14 @@ const MinimalDefaultLayout = ({ children }) => (
 );
 
 const DashboardLayout = ({ children }) => (
-  <DefaultLayout brandNameLink="/dashboard/index" minimal>
+  <DefaultLayout brandNameLink="/dashboard" minimal>
     {children}
+  </DefaultLayout>
+);
+
+const DashboardSettingsLayout = ({ children }) => (
+  <DefaultLayout brandNameLink="/dashboard" minimal>
+    <DashboardSettingsNavbar>{children}</DashboardSettingsNavbar>
   </DefaultLayout>
 );
 
@@ -45,5 +52,14 @@ DashboardLayout.propTypes = {
   children: PropTypes.node,
 };
 
+DashboardSettingsLayout.propTypes = {
+  children: PropTypes.node,
+};
+
 export default DefaultLayout;
-export { DefaultLayout, MinimalDefaultLayout, DashboardLayout };
+export {
+  DefaultLayout,
+  MinimalDefaultLayout,
+  DashboardLayout,
+  DashboardSettingsLayout,
+};

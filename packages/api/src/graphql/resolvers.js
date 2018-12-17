@@ -6,7 +6,7 @@ const { WEBSITE_CONTACT_FORM } = require('../constants/notifications');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
-// We add our own JWT iat to avoid Clock skew issue: @URL: https://en.wikipedia.org/wiki/Clock_skew
+// We set our own JWT iat to avoid Clock skew issue: @URL: https://en.wikipedia.org/wiki/Clock_skew
 const createAccessToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {
@@ -183,19 +183,29 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       }
     },
     refreshAccessToken: async (_, { refreshToken }) => {
-      let decodedPayload;
+      let decodedJWT;
       try {
-        decodedPayload = jwt.verify(refreshToken, JWT_SECRET);
-
-        assertRefreshTokenPayload(decodedPayload);
+        decodedJWT = jwt.verify(refreshToken, JWT_SECRET);
+        assertRefreshTokenPayload(decodedJWT);
       } catch (e) {
         throw new ApolloError('Invalid refresh token', 'INVALID_REFRESH_TOKEN');
+      }
+
+      const challengeStatus = await db.authChallenge(
+        decodedJWT._id,
+        decodedJWT.iat,
+      );
+      if (!challengeStatus) {
+        throw new ApolloError(
+          'User did not pass auth challenge',
+          'INVALID_REFRESH_TOKEN',
+        );
       }
 
       const accessToken = createAccessToken({
         JWT_SECRET,
         data: {
-          _id: decodedPayload._id,
+          _id: decodedJWT._id,
         },
       });
 
@@ -373,7 +383,8 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
               'Failed to change password due to validation errors',
               {
                 validationErrors: {
-                  oldPassword: 'Password does not match',
+                  oldPassword:
+                    'Password does not match your current account password',
                 },
               },
             );

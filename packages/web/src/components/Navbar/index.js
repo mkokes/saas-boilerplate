@@ -197,7 +197,7 @@ export class NavbarComponent extends React.PureComponent {
                           <Fragment>
                             <DropdownItem divider />
                             <DashboardDropdownItem
-                              to="/dashboard/index"
+                              to="/dashboard"
                               tag={RRNavLink}
                             >
                               <FontAwesomeIcon

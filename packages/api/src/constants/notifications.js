@@ -3,6 +3,7 @@ module.exports = [
   'WELCOME_EMAIL',
   'FORGOT_PASSWORD',
   'PASSWORD_RESETED',
+  'PASSWORD_CHANGED',
   'WEBSITE_CONTACT_FORM',
 ].reduce((m, a) => {
   const k = m;

@@ -20,9 +20,12 @@ module.exports = ({ config, server, db, log: parentLog }) => {
         const decodedJWT = ctx.state.user;
         assertAccessTokenPayload(decodedJWT);
 
-        const challengeStatus = await db.loginChallenge(decodedJWT);
+        const challengeStatus = await db.authChallenge(
+          decodedJWT._id,
+          decodedJWT.iat,
+        );
         if (!challengeStatus) {
-          throw new Error('User did not pass loginChallenge');
+          throw new Error('User did not pass auth challenge');
         }
       } catch (err) {
         if (config.APP_MODE === 'dev') {

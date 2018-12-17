@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  isTwoFactorAuthenticationEnabled: {
+    type: Boolean,
+    default: false,
+  },
   fullName: {
     type: String,
     trim: true,
@@ -59,17 +63,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: 'active',
   },
-  tosAcceptedByIp: {
-    type: String,
-    default: null,
-  },
   roles: {
     type: Array,
     default: [],
-  },
-  ipinfo: {
-    type: Object,
-    default: null,
   },
   lastLoginAt: {
     type: Date,

@@ -5,11 +5,8 @@
  */
 
 import React, { Fragment } from 'react';
-import { Container, Button } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { Helmet } from 'react-helmet';
-import { ApolloConsumer } from 'react-apollo';
-
-import { UserProfileQuery, isUserEmailConfirmedQuery } from 'graphql/queries';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class MainPage extends React.PureComponent {
@@ -24,26 +21,7 @@ export default class MainPage extends React.PureComponent {
           />
         </Helmet>
         <Container tag="main">
-          <ApolloConsumer>
-            {client => (
-              <Button
-                size="lg"
-                onClick={async () => {
-                  console.debug('Fire!');
-                  client.query({
-                    query: UserProfileQuery,
-                    fetchPolicy: 'network-only',
-                  });
-                  client.query({
-                    query: isUserEmailConfirmedQuery,
-                    fetchPolicy: 'network-only',
-                  });
-                }}
-              >
-                Fire HTTP requests
-              </Button>
-            )}
-          </ApolloConsumer>
+          <h1>Main</h1>
         </Container>
       </Fragment>
     );

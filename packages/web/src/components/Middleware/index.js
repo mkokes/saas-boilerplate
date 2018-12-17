@@ -15,7 +15,7 @@ class Middleware extends React.PureComponent {
 
     if (path) {
       if (path.indexOf('/auth') === 0) {
-        let redirectTo = '/dashboard/index';
+        let redirectTo = '/dashboard';
 
         if (location.state && location.state.from) {
           const { pathname, search, hash } = location.state.from;
@@ -28,7 +28,7 @@ class Middleware extends React.PureComponent {
         if (user) return <Redirect to={redirectTo} />;
       }
       if (path.indexOf('/signup') === 0) {
-        if (user) return <Redirect to="/dashboard/index" />;
+        if (user) return <Redirect to="/dashboard" />;
       }
       if (path.indexOf('/dashboard') === 0) {
         const EMAIL_VERIFICATION_PATH = '/dashboard/email-verification';

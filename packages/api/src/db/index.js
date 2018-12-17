@@ -10,6 +10,7 @@ const {
   VERIFY_EMAIL,
   FORGOT_PASSWORD,
   PASSWORD_RESETED,
+  PASSWORD_CHANGED,
   WELCOME_EMAIL,
 } = require('../constants/notifications');
 
@@ -115,13 +116,11 @@ class Db extends EventEmitter {
     return this.getUserProfile(userId, true);
   }
 
-  async loginChallenge(decodedJWT) {
-    const { iat, _id } = decodedJWT;
-
-    const user = await this._getUser(_id, { mustExist: true });
+  async authChallenge(userId, JWTiat) {
+    const user = await this._getUser(userId, { mustExist: true });
     const { passwordUpdatedAt, accountStatus } = user;
 
-    if (iat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
+    if (JWTiat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
       throw new Error('token iat must be greater than passwordUpdatedAt');
     }
     if (accountStatus !== 'active') {
@@ -171,7 +170,6 @@ class Db extends EventEmitter {
 
     this.notify(_user._id, PASSWORD_RESETED, {
       email: _user.email,
-      token: resetPasswordToken.token,
     });
   }
 
@@ -232,6 +230,10 @@ class Db extends EventEmitter {
 
     user.password = newPassword;
     await user.save();
+
+    this.notify(user._id, PASSWORD_CHANGED, {
+      email: user.email,
+    });
   }
 
   async changeUserEmail(userId, newEmail) {

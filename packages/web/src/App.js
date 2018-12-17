@@ -25,10 +25,18 @@ import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
 import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
 import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 import MainPage from 'containers/Dashboard/User/MainPage/Loadable';
+import ProfilePage from 'containers/Dashboard/User/Settings/ProfilePage/Loadable';
+import PreferencesPage from 'containers/Dashboard/User/Settings/PreferencesPage/Loadable';
+import SecurityPage from 'containers/Dashboard/User/Settings/SecurityPage/Loadable';
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SignOutPage from 'containers/SignOutPage/Loadable';
 
-import { DefaultLayout, MinimalDefaultLayout, DashboardLayout } from 'layout';
+import {
+  DefaultLayout,
+  MinimalDefaultLayout,
+  DashboardLayout,
+  DashboardSettingsLayout,
+} from 'layout';
 import { GlobalConsumer } from 'GlobalState';
 
 const Route = ({
@@ -108,7 +116,6 @@ export default function App() {
                       component={ResetPasswordPage}
                       layout={MinimalDefaultLayout}
                     />
-
                     <Route
                       protected
                       exact
@@ -119,9 +126,30 @@ export default function App() {
                     <Route
                       protected
                       exact
-                      path="/dashboard/index"
+                      path="/dashboard"
                       component={MainPage}
                       layout={DashboardLayout}
+                    />
+                    <Route
+                      protected
+                      exact
+                      path="/dashboard/settings"
+                      component={ProfilePage}
+                      layout={DashboardSettingsLayout}
+                    />
+                    <Route
+                      protected
+                      exact
+                      path="/dashboard/settings/preferences"
+                      component={PreferencesPage}
+                      layout={DashboardSettingsLayout}
+                    />
+                    <Route
+                      protected
+                      exact
+                      path="/dashboard/settings/security"
+                      component={SecurityPage}
+                      layout={DashboardSettingsLayout}
                     />
                     <Route
                       protected

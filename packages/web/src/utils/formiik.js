@@ -3,7 +3,7 @@ import { FormFeedback, FormGroup, Input, Label } from 'reactstrap';
 
 export const ReactstrapInput = ({
   field: { ...fields },
-  form: { touched, errors },
+  form: { isSubmitting, touched, errors },
   ...props
 }) => (
   <FormGroup>
@@ -14,6 +14,7 @@ export const ReactstrapInput = ({
       {...props}
       {...fields}
       invalid={Boolean(touched[fields.name] && errors[fields.name])}
+      disabled={isSubmitting}
     />
     {touched[fields.name] && errors[fields.name] ? (
       <FormFeedback>{errors[fields.name]}</FormFeedback>

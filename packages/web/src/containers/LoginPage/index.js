@@ -94,7 +94,7 @@ export default class LoginPage extends React.PureComponent {
                                 })}
                                 onSubmit={async (values, formikBag) => {
                                   this.setState({
-                                    loginErrorMessage: null,
+                                    loginErrorMessage: '',
                                   });
 
                                   try {

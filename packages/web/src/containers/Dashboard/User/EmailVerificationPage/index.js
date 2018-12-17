@@ -31,7 +31,7 @@ export default class EmailVerificationPage extends React.PureComponent {
             </Helmet>
 
             {userProfile.isSignUpEmailConfirmed ? (
-              <Redirect to="/dashboard/index" />
+              <Redirect to="/dashboard" />
             ) : (
               <Container
                 tag="main"

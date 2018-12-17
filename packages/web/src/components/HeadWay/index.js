@@ -30,14 +30,8 @@ class HeadWay extends React.PureComponent {
 
   render() {
     return (
-      <ChangelogNavItem
-        className="headway-trigger mr-3"
-        id="UncontrolledTooltipExample"
-      >
-        <UncontrolledTooltip
-          placement="bottom"
-          target="UncontrolledTooltipExample"
-        >
+      <ChangelogNavItem className="headway-trigger mr-3" id="headway-tooltip">
+        <UncontrolledTooltip placement="bottom" target="headway-tooltip">
           Product updates
         </UncontrolledTooltip>
 
