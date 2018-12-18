@@ -425,7 +425,10 @@ export default class ProfilePage extends React.PureComponent {
                           validationSchema={Yup.object().shape({
                             fullName: Yup.string().required('Required'),
                           })}
-                          onSubmit={async (values, formikBag) => {}}
+                          onSubmit={async (values, formikBag) => {
+                            console.debug(values);
+                            console.debug(formikBag);
+                          }}
                         >
                           {({ isSubmitting }) => (
                             <Fragment>
