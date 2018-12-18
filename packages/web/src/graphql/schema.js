@@ -7,10 +7,13 @@ const typeDefs = `
     avatar: String
     isSignUpEmailConfirmed: Boolean
   }
-
   type AuthTokens {
     accessToken: String
     refreshToken: String
+  }
+
+  input UserProfileInput {
+    username: String
   }
 `;
 

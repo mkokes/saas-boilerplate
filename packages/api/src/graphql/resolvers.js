@@ -408,7 +408,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
 
       return { accessToken, refreshToken };
     },
-    changeUserEmail: async (_, { password, newEmail }, { user }) => {
+    changeUserEmail: async (_, { password, email }, { user }) => {
       const userInputError = errors =>
         new UserInputError('Failed to change email due to validation errors', {
           validationErrors: errors,
@@ -423,30 +423,37 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       if (validator.isEmpty(password)) {
         paramsValidationErrors.password = 'Password required';
       }
-      if (!validator.isEmail(newEmail)) {
-        paramsValidationErrors.newEmail = 'Invalid email';
+      if (!validator.isEmail(email)) {
+        paramsValidationErrors.email = 'Invalid email';
       }
 
       if (Object.keys(paramsValidationErrors).length > 0) {
         throw userInputError(paramsValidationErrors);
       }
 
-      const emailAlreadyTaken = await db.existsUserWithEmail(newEmail);
+      const emailAlreadyTaken = await db.existsUserWithEmail(email);
       if (emailAlreadyTaken) {
         throw userInputError({
-          newEmail: 'Email already in use by another user',
+          email: 'Email already in use by another user',
         });
       }
-      const passwordMatches = await db.compareUserPassword(user._id, newEmail);
+      const passwordMatches = await db.compareUserPassword(user._id, email);
       if (passwordMatches) {
         throw userInputError({
           password: 'Password does not match your current account password',
         });
       }
 
-      await db.changeUserEmail(user._id, newEmail);
+      await db.changeUserEmail(user._id, email);
 
       return true;
+    },
+    updateUserProfile: async (_, { profile }, { user }) => {
+      if (!user) {
+        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+      }
+
+      return db.updateUserProfile(user._id, profile);
     },
   },
 });

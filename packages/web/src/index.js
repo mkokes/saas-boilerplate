@@ -9,7 +9,9 @@ import ReactDOM from 'react-dom';
 import 'sanitize.css/sanitize.css';
 import { ApolloProvider } from 'react-apollo';
 // import FontFaceObserver from 'fontfaceobserver';
+import { ToastContainer } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { AnalyticsApi } from 'api/vendors';
 
@@ -31,6 +33,7 @@ AnalyticsApi.setup();
 ReactDOM.render(
   <ApolloProvider client={clientInstance}>
     <GlobalProvider>
+      <ToastContainer />
       <App />
       <GlobalStyle />
     </GlobalProvider>

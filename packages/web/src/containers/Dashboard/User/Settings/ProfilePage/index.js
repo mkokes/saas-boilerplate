@@ -23,10 +23,11 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { ApolloConsumer } from 'react-apollo';
+import { toast } from 'react-toastify';
 
 import { ReactstrapInput } from 'utils/formiik';
 import { GlobalConsumer } from 'GlobalState';
-import { ChangeUserPassword } from 'graphql/mutations';
+import { ChangeUserPassword, ChangeUserEmail } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import Avatar from 'components/Avatar';
 
@@ -52,7 +53,6 @@ export default class ProfilePage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      alertMessage: undefined,
       changePasswordErrMsg: '',
       changePasswordModal: false,
     };
@@ -67,7 +67,7 @@ export default class ProfilePage extends React.PureComponent {
   }
 
   render() {
-    const { changePasswordErrMsg, alertMessage } = this.state;
+    const { changePasswordErrMsg } = this.state;
 
     return (
       <Fragment>
@@ -80,18 +80,9 @@ export default class ProfilePage extends React.PureComponent {
             <GlobalConsumer>
               {({ setAuthTokens, userProfile }) => (
                 <Fragment>
-                  {alertMessage && (
-                    <Alert
-                      color={alertMessage.color}
-                      fade={false}
-                      className="text-center"
-                    >
-                      <strong>{alertMessage.text}</strong>
-                    </Alert>
-                  )}
-
                   <h1 className="mb-3">My Profile</h1>
                   <Card body>
+                    <legend>User Profile</legend>
                     <Row className="align-items-center">
                       <Col xs="auto">
                         <Avatar
@@ -183,9 +174,7 @@ export default class ProfilePage extends React.PureComponent {
                                   },
                                 } = await client.mutate({
                                   mutation: ChangeUserPassword,
-                                  variables: {
-                                    ...values,
-                                  },
+                                  variables: values,
                                 });
 
                                 await setAuthTokens({
@@ -196,17 +185,15 @@ export default class ProfilePage extends React.PureComponent {
                                 formikBag.resetForm();
 
                                 this.setState({
-                                  alertMessage: {
-                                    color: 'success',
-                                    text:
-                                      'Your account password has been successfully changed',
-                                  },
                                   changePasswordModal: false,
                                 });
 
-                                setTimeout(() => {
-                                  this.setState({ alertMessage: undefined });
-                                }, 3500);
+                                toast.success(
+                                  'Your account password has been successfully changed',
+                                  {
+                                    position: toast.POSITION.TOP_CENTER,
+                                  },
+                                );
                               } catch (e) {
                                 const err = transformApolloErr(e);
 
@@ -279,8 +266,8 @@ export default class ProfilePage extends React.PureComponent {
                                     </Button>{' '}
                                     <Button
                                       type="submit"
-                                      color="success"
                                       size="lg"
+                                      color="success"
                                       disabled={isSubmitting}
                                     >
                                       <FontAwesomeIcon
@@ -301,9 +288,175 @@ export default class ProfilePage extends React.PureComponent {
                       </Col>
                     </Row>
                     <hr />
-                    <span>Change email address</span>
-                    <hr />
-                    <span>Change personal details</span>
+                    <Row>
+                      <Col xs="12" sm="4">
+                        <p
+                          style={{
+                            fontWeight: 600,
+                            fontSize: 14,
+                          }}
+                          className="mb-0"
+                        >
+                          Change Email Address
+                        </p>
+                        <p style={{ fontWeight: 200, fontSize: 14 }}>
+                          An email will be sent to the new email address to
+                          confirm the address change
+                        </p>
+                      </Col>
+                      <Col xs="10" sm="8" lg="6">
+                        <Formik
+                          initialValues={{
+                            email: userProfile.email,
+                            password: '',
+                          }}
+                          validationSchema={Yup.object().shape({
+                            email: Yup.string()
+                              .email('Invalid email')
+                              .required('Required'),
+                            password: Yup.string().required('Required'),
+                          })}
+                          /* eslint-disable-next-line consistent-return */
+                          onSubmit={async (values, formikBag) => {
+                            if (
+                              values.email.toLowerCase().replace(/\s/g, '') ===
+                              userProfile.email
+                            ) {
+                              toast.success('Settings updated!', {
+                                position: toast.POSITION.TOP_CENTER,
+                              });
+
+                              return formikBag.setSubmitting(false);
+                            }
+
+                            try {
+                              await client.mutate({
+                                mutation: ChangeUserEmail,
+                                variables: values,
+                              });
+
+                              formikBag.resetForm();
+
+                              toast.success(
+                                `We've sent an email to ${
+                                  values.email
+                                } to confirm your email address. Click the link in that email to make the change effective.`,
+                                {
+                                  position: toast.POSITION.TOP_CENTER,
+                                  autoClose: 8000,
+                                },
+                              );
+                              formikBag.setSubmitting(false);
+                            } catch (e) {
+                              const err = transformApolloErr(e);
+
+                              if (err.type === 'BAD_USER_INPUT') {
+                                formikBag.setErrors(err.data);
+                              } else {
+                                toast.error(err.message, {
+                                  position: toast.POSITION.TOP_CENTER,
+                                });
+                              }
+
+                              formikBag.setSubmitting(false);
+                            }
+                          }}
+                        >
+                          {({ isSubmitting }) => (
+                            <Fragment>
+                              <Form>
+                                <Field
+                                  component={ReactstrapInput}
+                                  name="email"
+                                  label="Email address"
+                                  type="email"
+                                  autoComplete="off"
+                                  required
+                                />
+                                <Field
+                                  component={ReactstrapInput}
+                                  name="password"
+                                  label="Current password"
+                                  type="password"
+                                  autoComplete="current-password"
+                                  required
+                                />
+
+                                <Button
+                                  type="submit"
+                                  disabled={isSubmitting}
+                                  className="float-right"
+                                >
+                                  <FontAwesomeIcon
+                                    pulse
+                                    icon={faSpinner}
+                                    className={isSubmitting ? 'mr-2' : 'd-none'}
+                                  />
+                                  Save
+                                </Button>
+                              </Form>
+                            </Fragment>
+                          )}
+                        </Formik>
+                      </Col>
+                    </Row>
+                    <legend>Personal Details</legend>
+                    <Row>
+                      <Col xs="12" sm="4">
+                        <p
+                          style={{
+                            fontWeight: 600,
+                            fontSize: 14,
+                          }}
+                          className="mb-0"
+                        >
+                          Personal details
+                        </p>
+                        <p style={{ fontWeight: 200, fontSize: 14 }}>
+                          Your personal information is never shown to other
+                          users.
+                        </p>
+                      </Col>
+                      <Col>
+                        <Formik
+                          initialValues={{
+                            fullName: userProfile.fullName,
+                          }}
+                          validationSchema={Yup.object().shape({
+                            fullName: Yup.string().required('Required'),
+                          })}
+                          onSubmit={async (values, formikBag) => {}}
+                        >
+                          {({ isSubmitting }) => (
+                            <Fragment>
+                              <Form>
+                                <Field
+                                  component={ReactstrapInput}
+                                  name="fullName"
+                                  label="Full Name"
+                                  type="text"
+                                  autoComplete="off"
+                                  required
+                                />
+
+                                <Button
+                                  type="submit"
+                                  disabled={isSubmitting}
+                                  className="float-right"
+                                >
+                                  <FontAwesomeIcon
+                                    pulse
+                                    icon={faSpinner}
+                                    className={isSubmitting ? 'mr-2' : 'd-none'}
+                                  />
+                                  Save
+                                </Button>
+                              </Form>
+                            </Fragment>
+                          )}
+                        </Formik>
+                      </Col>
+                    </Row>
                   </Card>
                 </Fragment>
               )}
