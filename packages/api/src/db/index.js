@@ -53,23 +53,23 @@ class Db extends EventEmitter {
       registeredAt,
       email,
       fullName,
-      username,
+      nickname,
       avatar,
       isSignUpEmailConfirmed,
     } = user;
 
     /* eslint-disable */
     return {
-      lastLoginAt,
-      registeredAt,
+      nickname,
+      avatar,
       ...(canViewPrivateFields
         ? {
             _id: _id.toString(),
             fullName,
-            username,
             email,
-            avatar,
             isSignUpEmailConfirmed,
+            lastLoginAt,
+            registeredAt,
           }
         : {}),
     };
@@ -88,12 +88,23 @@ class Db extends EventEmitter {
     return user.comparePassword(password);
   }
 
-  async signUpUser(email, password, fullName, username) {
+  async signUpUser(email, password, fullName) {
+    let fullNameInitials = fullName.match(/\b\w/g) || [];
+    fullNameInitials = (
+      (fullNameInitials.shift() || '') + (fullNameInitials.pop() || '')
+    ).toUpperCase();
+
+    let defaultNickname =
+      fullNameInitials.length > 1 ? fullNameInitials : fullName;
+    if (defaultNickname.length > 16) {
+      defaultNickname = `${defaultNickname.substr(0, 13)}…`;
+    }
+
     const user = await new User({
       email,
       password,
       fullName,
-      username,
+      nickname: defaultNickname,
       emailConfirmationToken: jwt.sign(
         {
           type: 'signup',
@@ -256,6 +267,32 @@ class Db extends EventEmitter {
       email: newEmail,
       token: user.emailConfirmationToken,
     });
+  }
+
+  async updateUserProfile(userId, profile) {
+    const { nickname } = profile;
+
+    const user = await this._getUser(userId, { mustExist: true });
+    const { nickname: existingNickname } = user;
+
+    user.nickname = (nickname || existingNickname).toLowerCase();
+    await user.save();
+
+    return this.getUserProfile(userId, true);
+  }
+
+  async updateUserPersonalDetails(userId, profile) {
+    const { fullName } = profile;
+
+    const user = await this._getUser(userId, { mustExist: true });
+    const { fullName: existingFullName } = user;
+
+    const finalFullName = fullName || existingFullName;
+
+    user.fullName = finalFullName;
+    await user.save();
+
+    return this.getUserProfile(userId, true);
   }
 
   async notify(userId, type, data) {

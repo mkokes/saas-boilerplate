@@ -27,7 +27,12 @@ import { toast } from 'react-toastify';
 
 import { ReactstrapInput } from 'utils/formiik';
 import { GlobalConsumer } from 'GlobalState';
-import { ChangeUserPassword, ChangeUserEmail } from 'graphql/mutations';
+import {
+  ChangeUserPassword,
+  UpdateUserProfile,
+  UpdateUserPersonalDetails,
+  ChangeUserEmail,
+} from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import Avatar from 'components/Avatar';
 
@@ -78,7 +83,7 @@ export default class ProfilePage extends React.PureComponent {
         <ApolloConsumer>
           {client => (
             <GlobalConsumer>
-              {({ setAuthTokens, userProfile }) => (
+              {({ setAuthTokens, setUserProfile, userProfile }) => (
                 <Fragment>
                   <h1 className="mb-3">My Profile</h1>
                   <Card body>
@@ -104,7 +109,7 @@ export default class ProfilePage extends React.PureComponent {
                           Change Picture
                         </p>
                         <p style={{ fontWeight: 200, fontSize: 14 }}>
-                          Max file size is 20Mb
+                          Max file size is 20Mb.
                         </p>
                       </Col>
                       <Col xs="2">
@@ -297,11 +302,99 @@ export default class ProfilePage extends React.PureComponent {
                           }}
                           className="mb-0"
                         >
+                          Nick Name
+                        </p>
+                        <p style={{ fontWeight: 200, fontSize: 14 }}>
+                          This name will be part of your public profile.
+                        </p>
+                      </Col>
+                      <Col xs="10" sm="8" lg="6">
+                        <Formik
+                          initialValues={{
+                            nickname: userProfile.nickname,
+                          }}
+                          validationSchema={Yup.object().shape({
+                            nickname: Yup.string().required('Required'),
+                          })}
+                          /* eslint-disable-next-line consistent-return */
+                          onSubmit={async (values, formikBag) => {
+                            try {
+                              const {
+                                data: { profile },
+                              } = await client.mutate({
+                                mutation: UpdateUserProfile,
+                                variables: {
+                                  profile: values,
+                                },
+                              });
+
+                              setUserProfile(profile);
+
+                              formikBag.resetForm();
+                              toast.success(`Profile updated!`, {
+                                position: toast.POSITION.TOP_CENTER,
+                                autoClose: 3000,
+                              });
+                            } catch (e) {
+                              const err = transformApolloErr(e);
+
+                              if (err.type === 'BAD_USER_INPUT') {
+                                formikBag.setErrors(err.data);
+                              } else {
+                                toast.error(err.message, {
+                                  position: toast.POSITION.TOP_CENTER,
+                                });
+                              }
+
+                              formikBag.setSubmitting(false);
+                            }
+                          }}
+                        >
+                          {({ isSubmitting }) => (
+                            <Fragment>
+                              <Form>
+                                <Field
+                                  component={ReactstrapInput}
+                                  name="nickname"
+                                  label="Nick name"
+                                  type="text"
+                                  autoComplete="off"
+                                  required
+                                />
+
+                                <Button
+                                  type="submit"
+                                  disabled={isSubmitting}
+                                  className="float-right"
+                                >
+                                  <FontAwesomeIcon
+                                    pulse
+                                    icon={faSpinner}
+                                    className={isSubmitting ? 'mr-2' : 'd-none'}
+                                  />
+                                  Save
+                                </Button>
+                              </Form>
+                            </Fragment>
+                          )}
+                        </Formik>
+                      </Col>
+                    </Row>
+                    <hr />
+                    <Row>
+                      <Col xs="12" sm="4">
+                        <p
+                          style={{
+                            fontWeight: 600,
+                            fontSize: 14,
+                          }}
+                          className="mb-0"
+                        >
                           Change Email Address
                         </p>
                         <p style={{ fontWeight: 200, fontSize: 14 }}>
                           An email will be sent to the new email address to
-                          confirm the address change
+                          confirm the address change.
                         </p>
                       </Col>
                       <Col xs="10" sm="8" lg="6">
@@ -322,7 +415,7 @@ export default class ProfilePage extends React.PureComponent {
                               values.email.toLowerCase().replace(/\s/g, '') ===
                               userProfile.email
                             ) {
-                              toast.success('Settings updated!', {
+                              toast.success('Email address updated!', {
                                 position: toast.POSITION.TOP_CENTER,
                               });
 
@@ -346,7 +439,6 @@ export default class ProfilePage extends React.PureComponent {
                                   autoClose: 8000,
                                 },
                               );
-                              formikBag.setSubmitting(false);
                             } catch (e) {
                               const err = transformApolloErr(e);
 
@@ -417,7 +509,7 @@ export default class ProfilePage extends React.PureComponent {
                           users.
                         </p>
                       </Col>
-                      <Col>
+                      <Col xs="10" sm="8" lg="6">
                         <Formik
                           initialValues={{
                             fullName: userProfile.fullName,
@@ -425,9 +517,38 @@ export default class ProfilePage extends React.PureComponent {
                           validationSchema={Yup.object().shape({
                             fullName: Yup.string().required('Required'),
                           })}
+                          /* eslint-disable-next-line consistent-return */
                           onSubmit={async (values, formikBag) => {
-                            console.debug(values);
-                            console.debug(formikBag);
+                            try {
+                              const {
+                                data: { profile },
+                              } = await client.mutate({
+                                mutation: UpdateUserPersonalDetails,
+                                variables: {
+                                  profile: values,
+                                },
+                              });
+
+                              setUserProfile(profile);
+
+                              formikBag.resetForm();
+                              toast.success(`Personal details updated!`, {
+                                position: toast.POSITION.TOP_CENTER,
+                                autoClose: 3000,
+                              });
+                            } catch (e) {
+                              const err = transformApolloErr(e);
+
+                              if (err.type === 'BAD_USER_INPUT') {
+                                formikBag.setErrors(err.data);
+                              } else {
+                                toast.error(err.message, {
+                                  position: toast.POSITION.TOP_CENTER,
+                                });
+                              }
+
+                              formikBag.setSubmitting(false);
+                            }
                           }}
                         >
                           {({ isSubmitting }) => (

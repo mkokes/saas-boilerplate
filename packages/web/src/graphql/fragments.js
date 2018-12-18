@@ -4,7 +4,7 @@ export const ProfileFields = gql`
   fragment ProfileFields on UserProfile {
     _id
     fullName
-    username
+    nickname
     email
     avatar
     isSignUpEmailConfirmed

@@ -1,3 +1,4 @@
+const safeGet = require('lodash.get');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
@@ -28,12 +29,16 @@ const createRefreshToken = ({ JWT_SECRET, data }) =>
     { expiresIn: '30 days' },
   );
 
+const assertUser = async user => {
+  if (!safeGet(user, '_id')) {
+    throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+  }
+};
+
 module.exports = ({ config: { JWT_SECRET }, db }) => ({
   Query: {
     userProfile: async (_, __, { user }) => {
-      if (!user) {
-        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
-      }
+      await assertUser(user);
 
       const profile = await db.getUserProfile(user._id, true);
 
@@ -43,10 +48,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
     },
   },
   Mutation: {
-    signUpUser: async (
-      _,
-      { recaptchaResponse, email, password, fullName, username },
-    ) => {
+    signUpUser: async (_, { recaptchaResponse, email, password, fullName }) => {
       const paramsValidationErrors = {};
 
       if (validator.isEmpty(recaptchaResponse)) {
@@ -67,12 +69,6 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       if (!validator.isLength(fullName, { min: 2, max: undefined })) {
         paramsValidationErrors.fullName = 'Too short!';
       }
-      if (validator.isEmpty(username)) {
-        paramsValidationErrors.username = 'Username is required';
-      }
-      if (!validator.isLength(username, { min: 2, max: undefined })) {
-        paramsValidationErrors.username = 'Too short!';
-      }
 
       if (Object.keys(paramsValidationErrors).length > 0) {
         throw new UserInputError('Failed to sign up due to validation errors', {
@@ -92,7 +88,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       }
 
       try {
-        const user = await db.signUpUser(email, password, fullName, username);
+        const user = await db.signUpUser(email, password, fullName);
 
         const accessToken = createAccessToken({
           JWT_SECRET,
@@ -352,9 +348,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       return true;
     },
     changeUserPassword: async (_, { oldPassword, newPassword }, { user }) => {
-      if (!user) {
-        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
-      }
+      await assertUser(user);
 
       const paramsValidationErrors = {};
 
@@ -409,14 +403,12 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       return { accessToken, refreshToken };
     },
     changeUserEmail: async (_, { password, email }, { user }) => {
+      await assertUser(user);
+
       const userInputError = errors =>
         new UserInputError('Failed to change email due to validation errors', {
           validationErrors: errors,
         });
-
-      if (!user) {
-        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
-      }
 
       const paramsValidationErrors = {};
 
@@ -449,11 +441,62 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       return true;
     },
     updateUserProfile: async (_, { profile }, { user }) => {
-      if (!user) {
-        throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+      await assertUser(user);
+
+      const { nickname } = profile;
+
+      const userInputError = errors =>
+        new UserInputError(
+          'Failed to update user profile due to validation errors',
+          {
+            validationErrors: errors,
+          },
+        );
+      const paramsValidationErrors = {};
+
+      if (
+        typeof nickname !== 'string' ||
+        !nickname ||
+        !/^[A-Za-z0-9_]{2,16}$/.test(nickname)
+      ) {
+        paramsValidationErrors.nickname =
+          'Nickname must be between 2 and 16 characters and only contains letters, numbers and underscores.';
+      }
+
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw userInputError(paramsValidationErrors);
       }
 
       return db.updateUserProfile(user._id, profile);
+    },
+    updateUserPersonalDetails: async (_, { profile }, { user }) => {
+      await assertUser(user);
+
+      const { fullName } = profile;
+
+      const userInputError = errors =>
+        new UserInputError(
+          'Failed to update user personal details due to validation errors',
+          {
+            validationErrors: errors,
+          },
+        );
+      const paramsValidationErrors = {};
+
+      if (
+        typeof fullName !== 'string' ||
+        !fullName ||
+        !/^[^0-9_]{2,48}$/.test(fullName)
+      ) {
+        paramsValidationErrors.fullName =
+          'Full Name must be between 2 and 48 characters and not contain numbers or underscores.';
+      }
+
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw userInputError(paramsValidationErrors);
+      }
+
+      return db.updateUserPersonalDetails(user._id, profile);
     },
   },
 });

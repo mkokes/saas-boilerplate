@@ -151,7 +151,7 @@ export class NavbarComponent extends React.PureComponent {
                           }`}
                         />
                         <span className="text-white ml-1 mr-1">
-                          {userProfile.username}
+                          {userProfile.nickname}
                         </span>
                       </DropdownToggle>
                       <DropdownMenu

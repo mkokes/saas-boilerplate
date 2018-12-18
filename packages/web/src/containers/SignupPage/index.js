@@ -39,7 +39,6 @@ export default class SignupPage extends React.PureComponent {
       recaptchaResponse: '',
       signUpErrorMessage: '',
       alreadyTakenEmails: [],
-      alreadyTakenUsernames: [],
     };
 
     this.captcha = null;
@@ -55,7 +54,6 @@ export default class SignupPage extends React.PureComponent {
       recaptchaResponse,
       signUpErrorMessage,
       alreadyTakenEmails,
-      alreadyTakenUsernames,
     } = this.state;
 
     return (
@@ -95,7 +93,6 @@ export default class SignupPage extends React.PureComponent {
                                 initialValues={{
                                   email: '',
                                   fullName: '',
-                                  username: '',
                                   password: '',
                                 }}
                                 validationSchema={() =>
@@ -109,13 +106,6 @@ export default class SignupPage extends React.PureComponent {
                                       .required('Required'),
                                     fullName: Yup.string()
                                       .min(2, 'Too short!')
-                                      .required('Required'),
-                                    username: Yup.string()
-                                      .min(2, 'Too short!')
-                                      .notOneOf(
-                                        alreadyTakenUsernames,
-                                        'Already in use, choose another username',
-                                      )
                                       .required('Required'),
                                     password: Yup.string().required('Required'),
                                   })
@@ -166,14 +156,6 @@ export default class SignupPage extends React.PureComponent {
                                           ],
                                         }));
                                       }
-                                      if ('username' in err.data) {
-                                        this.setState(prevState => ({
-                                          alreadyTakenUsernames: [
-                                            ...prevState.alreadyTakenUsernames,
-                                            values.username,
-                                          ],
-                                        }));
-                                      }
                                     }
 
                                     this.resetCaptcha();
@@ -193,15 +175,6 @@ export default class SignupPage extends React.PureComponent {
                                       placeholder="John Doe"
                                       label="Full name"
                                       autoComplete="full-name"
-                                      required
-                                    />
-                                    <Field
-                                      component={ReactstrapInput}
-                                      name="username"
-                                      type="text"
-                                      placeholder="JohnDoe123"
-                                      label="Username"
-                                      autoComplete="off"
                                       required
                                     />
                                     <Field

@@ -9,14 +9,12 @@ export const SignUpUser = gql`
     $email: String!
     $password: String!
     $fullName: String!
-    $username: String!
   ) {
     signUpUser(
       recaptchaResponse: $recaptchaResponse
       email: $email
       password: $password
       fullName: $fullName
-      username: $username
     ) @disableAuth {
       accessToken
       refreshToken
@@ -74,6 +72,24 @@ export const ChangeUserPassword = gql`
       @requireAuth {
       accessToken
       refreshToken
+    }
+  }
+`;
+
+export const UpdateUserProfile = gql`
+  ${ProfileFields}
+  mutation updateUserProfile($profile: UserProfileInput!) {
+    profile: updateUserProfile(profile: $profile) @requireAuth {
+      ...ProfileFields
+    }
+  }
+`;
+
+export const UpdateUserPersonalDetails = gql`
+  ${ProfileFields}
+  mutation updateUserProfile($profile: UserPersonalDetailsInput!) {
+    profile: updateUserPersonalDetails(profile: $profile) @requireAuth {
+      ...ProfileFields
     }
   }
 `;

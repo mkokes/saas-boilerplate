@@ -2,7 +2,7 @@ const typeDefs = `
   type UserProfile {
     _id: String
     fullName: String
-    username: String
+    nickname: String
     email: String
     avatar: String
     isSignUpEmailConfirmed: Boolean
@@ -13,7 +13,10 @@ const typeDefs = `
   }
 
   input UserProfileInput {
-    username: String
+    nickname: String!
+  }
+  input UserPersonalDetailsInput {
+    fullName: String!
   }
 `;
 

@@ -40,10 +40,9 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
-  username: {
+  nickname: {
     type: String,
     trim: true,
-    unique: true,
     index: true,
     required: true,
   },
@@ -66,6 +65,14 @@ const UserSchema = new mongoose.Schema({
   roles: {
     type: Array,
     default: [],
+  },
+  legal: {
+    type: Array,
+    default: [
+      { type: 'TERMS_AND_CONDITIONS', accepted: true },
+      { type: 'PRIVACY_POLICY', accepted: true },
+      { type: 'MARKETING_INFO', accepted: true },
+    ],
   },
   lastLoginAt: {
     type: Date,

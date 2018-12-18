@@ -8,14 +8,17 @@ module.exports = gql`
   type UserProfile {
     _id: String
     fullName: String
-    username: String
+    nickname: String
     email: String
     avatar: String
     isSignUpEmailConfirmed: Boolean
   }
 
   input UserProfileInput {
-    username: String
+    nickname: String!
+  }
+  input UserPersonalDetailsInput {
+    fullName: String!
   }
 
   type Query {
@@ -27,7 +30,6 @@ module.exports = gql`
       email: String!
       password: String!
       fullName: String!
-      username: String!
     ): AuthTokens
     loginUser(email: String!, password: String!): AuthTokens
     loginUserNoAuth: UserProfile
@@ -37,7 +39,8 @@ module.exports = gql`
     confirmUserEmail(confirmationToken: String!): Boolean
     changeUserPassword(oldPassword: String!, newPassword: String!): AuthTokens
     changeUserEmail(password: String!, email: String!): Boolean
-    updateUserProfile(profile: UserProfileInput!): Boolean
+    updateUserProfile(profile: UserProfileInput!): UserProfile
+    updateUserPersonalDetails(profile: UserPersonalDetailsInput!): UserProfile
     contact(
       recaptchaResponse: String!
       name: String!
