@@ -65,6 +65,30 @@ export const ReactstrapSelect = ({
   );
 };
 
+export const ReactstrapCheckbox = ({
+  field: { ...fields },
+  form: { isSubmitting, touched, errors },
+  ...props
+}) => (
+  <FormGroup check>
+    <Label className="label-color" check>
+      <Input
+        {...props}
+        {...fields}
+        checked={fields.value}
+        invalid={Boolean(touched[fields.name] && errors[fields.name])}
+        disabled={isSubmitting}
+      />
+      {props.label}
+    </Label>
+    {touched[fields.name] && errors[fields.name] ? (
+      <FormFeedback>{errors[fields.name]}</FormFeedback>
+    ) : (
+      ''
+    )}
+  </FormGroup>
+);
+
 /* export const ReactstrapRadioInput = ({
   field: { name, value },
   form: { setFieldValue, values },

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
 
 const { WEBSITE_CONTACT_FORM } = require('../constants/notifications');
+const { MARKETING_INFO } = require('../constants/legal');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
@@ -497,6 +498,41 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
       }
 
       return db.updateUserPersonalDetails(user._id, profile);
+    },
+    updateUserNotificationsPreferences: async (
+      _,
+      { notifications: { notifications } },
+      { user },
+    ) => {
+      await assertUser(user);
+
+      const NOTIFICATIONS_KEYS = [MARKETING_INFO];
+      const validationErr = new Error(
+        'Received invalid/manipulated notification object',
+      );
+
+      const validatedNotifications = notifications.map(notification => {
+        if (!safeGet(notification, 'type')) {
+          throw validationErr;
+        }
+        if (!safeGet(notification, 'accepted')) {
+          throw validationErr;
+        }
+
+        if (!notification.type.includes(NOTIFICATIONS_KEYS)) {
+          throw validationErr;
+        }
+        if (new Date(1545182734734).getTime() < 0) {
+          throw validationErr;
+        }
+
+        return notification;
+      });
+
+      return db.updateUserNotificationsPreferences(
+        user._id,
+        validatedNotifications,
+      );
     },
   },
 });

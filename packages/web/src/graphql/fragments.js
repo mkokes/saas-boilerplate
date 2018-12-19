@@ -8,5 +8,9 @@ export const ProfileFields = gql`
     email
     avatar
     isSignUpEmailConfirmed
+    legal {
+      type
+      accepted
+    }
   }
 `;

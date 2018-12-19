@@ -100,6 +100,18 @@ export const ChangeUserEmail = gql`
   }
 `;
 
+export const UpdateUserNotificationsPreferences = gql`
+  ${ProfileFields}
+  mutation updateUserNotificationsPreferences(
+    $notifications: UserNotificationsPreferencesInput!
+  ) {
+    profile: updateUserNotificationsPreferences(notifications: $notifications)
+      @requireAuth {
+      ...ProfileFields
+    }
+  }
+`;
+
 export const Contact = gql`
   mutation contact(
     $recaptchaResponse: String!

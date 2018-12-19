@@ -69,9 +69,9 @@ const UserSchema = new mongoose.Schema({
   legal: {
     type: Array,
     default: [
-      { type: 'TERMS_AND_CONDITIONS', accepted: true },
-      { type: 'PRIVACY_POLICY', accepted: true },
-      { type: 'MARKETING_INFO', accepted: true },
+      { type: 'TERMS_AND_CONDITIONS', accepted: Date.now().toString() },
+      { type: 'PRIVACY_POLICY', accepted: Date.now().toString() },
+      { type: 'MARKETING_INFO', accepted: Date.now().toString() },
     ],
   },
   lastLoginAt: {

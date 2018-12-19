@@ -12,13 +12,31 @@ module.exports = gql`
     email: String
     avatar: String
     isSignUpEmailConfirmed: Boolean
+    legal: [LegalAgreement]
+  }
+  type LegalAgreement {
+    type: LegalAgreementType!
+    accepted: String!
   }
 
+  enum LegalAgreementType {
+    TERMS_AND_CONDITIONS
+    PRIVACY_POLICY
+    MARKETING_INFO
+  }
+
+  input LegalAgreementInput {
+    type: LegalAgreementType!
+    accepted: String!
+  }
   input UserProfileInput {
     nickname: String!
   }
   input UserPersonalDetailsInput {
     fullName: String!
+  }
+  input UserNotificationsPreferencesInput {
+    notifications: [LegalAgreementInput]!
   }
 
   type Query {
@@ -41,6 +59,9 @@ module.exports = gql`
     changeUserEmail(password: String!, email: String!): Boolean
     updateUserProfile(profile: UserProfileInput!): UserProfile
     updateUserPersonalDetails(profile: UserPersonalDetailsInput!): UserProfile
+    updateUserNotificationsPreferences(
+      notifications: UserNotificationsPreferencesInput!
+    ): UserProfile
     contact(
       recaptchaResponse: String!
       name: String!

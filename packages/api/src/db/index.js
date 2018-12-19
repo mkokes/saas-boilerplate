@@ -6,6 +6,7 @@ const User = require('./models/user');
 const Notification = require('./models/notification');
 const ResetPasswordToken = require('./models/resetPasswordToken');
 const { NOTIFICATION } = require('../constants/events');
+const { MARKETING_INFO } = require('../constants/legal');
 const {
   VERIFY_EMAIL,
   FORGOT_PASSWORD,
@@ -56,6 +57,7 @@ class Db extends EventEmitter {
       nickname,
       avatar,
       isSignUpEmailConfirmed,
+      legal,
     } = user;
 
     /* eslint-disable */
@@ -70,6 +72,7 @@ class Db extends EventEmitter {
             isSignUpEmailConfirmed,
             lastLoginAt,
             registeredAt,
+            legal,
           }
         : {}),
     };
@@ -290,6 +293,27 @@ class Db extends EventEmitter {
     const finalFullName = fullName || existingFullName;
 
     user.fullName = finalFullName;
+    await user.save();
+
+    return this.getUserProfile(userId, true);
+  }
+
+  async updateUserNotificationsPreferences(userId, notifications) {
+    const NOTIFICATIONS_KEYS = [MARKETING_INFO];
+
+    const user = await this._getUser(userId, { mustExist: true });
+
+    const { legal: existingLegal } = user;
+
+    const existingLegalFiltered = existingLegal.filter(value => {
+      if (value.type.includes(NOTIFICATIONS_KEYS)) return false;
+
+      return true;
+    });
+
+    const finalLegal = existingLegalFiltered.concat(notifications);
+    user.legal = finalLegal;
+
     await user.save();
 
     return this.getUserProfile(userId, true);
