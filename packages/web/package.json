@@ -4,14 +4,13 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "start": "cross-env NODE_ENV=development NODE_PATH=./src env-cmd ./env/dev.env react-app-rewired start",
+    "start": "cross-env NODE_ENV=development NODE_PATH=./src env-cmd ./env/dev.env react-scripts start",
     "prebuild": "npm run build:clean",
-    "build": "cross-env NODE_ENV=production NODE_PATH=./src env-cmd ./env/prod.env react-app-rewired build  && cp build/index.html build/404.html",
+    "build": "cross-env NODE_ENV=production NODE_PATH=./src env-cmd ./env/prod.env react-scripts build  && cp build/index.html build/404.html",
     "build:clean": "rimraf ./build",
-    "test:clean": "rimraf ./coverage",
     "pretest": "npm run lint",
-    "test": "cross-env NODE_ENV=test NODE_PATH=./src react-app-rewired test --coverage",
-    "test:watch": "cross-env NODE_ENV=test NODE_PATH=./src react-app-rewired test --watchAll",
+    "test": "cross-env NODE_ENV=test NODE_PATH=./src react-scripts test",
+    "test:watch": "cross-env NODE_ENV=test NODE_PATH=./src react-scripts test --watchAll",
     "eject": "react-scripts eject",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "npm run lint:eslint -- .",
@@ -36,7 +35,6 @@
     }
   },
   "jest": {
-    "coverageDirectory": "./coverage",
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}"
     ],
@@ -47,16 +45,7 @@
         "lines": 1,
         "statements": 1
       }
-    },
-    "setupFiles": [
-      "<rootDir>/internals/testing/enzyme-setup.js"
-    ],
-    "testMatch": [
-      "tests/.*\\.test\\.js$"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
+    }
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
@@ -79,6 +68,7 @@
     "jwt-decode": "^2.2.0",
     "loadable-components": "^2.2.3",
     "lodash": "^4.17.10",
+    "qrcode.react": "^0.8.0",
     "query-string": "^6.2.0",
     "react": "^16.7.0-alpha.2",
     "react-apollo": "^2.2.4",
@@ -99,9 +89,6 @@
     "babel-eslint": "9",
     "babel-plugin-styled-components": "^1.8.0",
     "env-cmd": "^8.0.2",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "1.6.0",
-    "enzyme-to-json": "3.3.4",
     "eslint": "5.6.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-airbnb-base": "13.1.0",
@@ -115,8 +102,6 @@
     "lint-staged": "^8.0.3",
     "plop": "^2.1.0",
     "prettier": "1.14.3",
-    "react-app-rewire-styled-components": "^3.0.2",
-    "react-app-rewired": "^1.6.2",
     "stylelint": "9.3.0",
     "stylelint-config-recommended": "2.1.0",
     "stylelint-config-styled-components": "0.1.1",

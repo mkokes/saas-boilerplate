@@ -85,12 +85,14 @@ export default class LoginPage extends React.PureComponent {
                                 initialValues={{
                                   email: '',
                                   password: '',
+                                  token: '',
                                 }}
                                 validationSchema={Yup.object().shape({
                                   email: Yup.string()
                                     .email('Invalid email')
                                     .required('Required'),
                                   password: Yup.string().required('Required'),
+                                  token: Yup.string(),
                                 })}
                                 onSubmit={async (values, formikBag) => {
                                   this.setState({
@@ -131,12 +133,13 @@ export default class LoginPage extends React.PureComponent {
                                           ],
                                         }));
                                       }
+                                    } else {
+                                      this.setState({
+                                        loginErrorMessage: err.message,
+                                      });
                                     }
 
                                     formikBag.setSubmitting(false);
-                                    this.setState({
-                                      loginErrorMessage: err.message,
-                                    });
                                   }
                                 }}
                               >
@@ -158,7 +161,7 @@ export default class LoginPage extends React.PureComponent {
                                       autoComplete="current-password"
                                       required
                                     />
-                                    <ForgotPasswordContainer className="text-right mb-3">
+                                    <ForgotPasswordContainer className="text-right">
                                       <Link
                                         to="/auth/forgot-password"
                                         className="text-muted"
@@ -166,6 +169,14 @@ export default class LoginPage extends React.PureComponent {
                                         forgot password?
                                       </Link>
                                     </ForgotPasswordContainer>
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="token"
+                                      type="text"
+                                      label="Two-Factor Token (if enabled)"
+                                      placeholder="Google Authenticator or Authy"
+                                      autoComplete="off"
+                                    />
                                     <div>
                                       <Button
                                         type="submit"

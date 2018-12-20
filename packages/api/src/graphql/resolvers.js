@@ -122,7 +122,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         throw e;
       }
     },
-    loginUser: async (_, { email, password }) => {
+    loginUser: async (_, { email, password, token }) => {
       const paramsValidationErrors = {};
       const logInErr = new ApolloError(
         'Invalid credentials',
@@ -141,30 +141,42 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         });
       }
 
+      const user = await db.getUserByEmail(email);
+
       try {
-        const user = await db.getUserByEmail(email);
         if (!user) throw logInErr;
 
         const isPasswordValid = await user.comparePassword(password);
         if (!isPasswordValid) throw logInErr;
-
-        const accessToken = createAccessToken({
-          JWT_SECRET,
-          data: {
-            _id: user._id,
-          },
-        });
-        const refreshToken = createRefreshToken({
-          JWT_SECRET,
-          data: {
-            _id: user._id,
-          },
-        });
-
-        return { accessToken, refreshToken };
       } catch (e) {
         throw logInErr;
       }
+
+      if (user.isTwoFactorAuthenticationEnabled) {
+        const is2FAValid = await db.check2FAUser(user._id, token);
+        if (!is2FAValid) {
+          throw new UserInputError('Failed to log in', {
+            validationErrors: {
+              token: 'Provided code is not valid, please try it again',
+            },
+          });
+        }
+      }
+
+      const accessToken = createAccessToken({
+        JWT_SECRET,
+        data: {
+          _id: user._id,
+        },
+      });
+      const refreshToken = createRefreshToken({
+        JWT_SECRET,
+        data: {
+          _id: user._id,
+        },
+      });
+
+      return { accessToken, refreshToken };
     },
     loginUserNoAuth: async (_, __, { user }) => {
       const err = new ApolloError('Cannot log in user', 'INVALID_LOGIN');
@@ -430,8 +442,8 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
           email: 'Email already in use by another user',
         });
       }
-      const passwordMatches = await db.compareUserPassword(user._id, email);
-      if (passwordMatches) {
+      const passwordMatches = await db.compareUserPassword(user._id, password);
+      if (!passwordMatches) {
         throw userInputError({
           password: 'Password does not match your current account password',
         });
@@ -533,6 +545,64 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         user._id,
         validatedNotifications,
       );
+    },
+    requestEnable2FA: async (_, __, { user }) => {
+      await assertUser(user);
+
+      return db.generate2FAUser(user._id);
+    },
+    confirmEnable2FA: async (_, { password, token }, { user }) => {
+      await assertUser(user);
+
+      const userInputError = errors =>
+        new UserInputError('Failed to enable 2FA due to validation errors', {
+          validationErrors: errors,
+        });
+
+      const passwordMatches = await db.compareUserPassword(user._id, password);
+      if (!passwordMatches) {
+        throw userInputError({
+          password: 'Password does not match your current account password',
+        });
+      }
+
+      try {
+        await db.confirmEnable2FAUser(user._id, token);
+      } catch (e) {
+        switch (e.message) {
+          case 'INVALID_TOKEN':
+            throw userInputError({
+              token: 'Provided code is not valid, please try it again',
+            });
+          default:
+            throw e;
+        }
+      }
+
+      return true;
+    },
+    disable2FA: async (_, { token }, { user }) => {
+      await assertUser(user);
+
+      const userInputError = errors =>
+        new UserInputError('Failed to enable 2FA due to validation errors', {
+          validationErrors: errors,
+        });
+
+      try {
+        await db.disable2FA(user._id, token);
+      } catch (e) {
+        switch (e.message) {
+          case 'INVALID_TOKEN':
+            throw userInputError({
+              token: 'Provided code is not valid, please try it again',
+            });
+          default:
+            throw e;
+        }
+      }
+
+      return true;
     },
   },
 });

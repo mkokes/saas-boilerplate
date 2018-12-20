@@ -1,5 +1,7 @@
 const EventEmitter = require('eventemitter3');
 const jwt = require('jsonwebtoken');
+const otplib = require('otplib');
+const authenticator = require('otplib/authenticator');
 
 const setupDb = require('./setup');
 const User = require('./models/user');
@@ -57,6 +59,7 @@ class Db extends EventEmitter {
       nickname,
       avatar,
       isSignUpEmailConfirmed,
+      isTwoFactorAuthenticationEnabled,
       legal,
     } = user;
 
@@ -69,9 +72,10 @@ class Db extends EventEmitter {
             _id: _id.toString(),
             fullName,
             email,
-            isSignUpEmailConfirmed,
             lastLoginAt,
             registeredAt,
+            isSignUpEmailConfirmed,
+            isTwoFactorAuthenticationEnabled,
             legal,
           }
         : {}),
@@ -278,7 +282,7 @@ class Db extends EventEmitter {
     const user = await this._getUser(userId, { mustExist: true });
     const { nickname: existingNickname } = user;
 
-    user.nickname = (nickname || existingNickname).toLowerCase();
+    user.nickname = nickname || existingNickname;
     await user.save();
 
     return this.getUserProfile(userId, true);
@@ -317,6 +321,69 @@ class Db extends EventEmitter {
     await user.save();
 
     return this.getUserProfile(userId, true);
+  }
+
+  async generate2FAUser(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    const secret = authenticator.generateSecret();
+
+    user.twoFactorAuthenticationSecret = secret;
+    await user.save();
+
+    return {
+      secret,
+      qrcode: otplib.authenticator.keyuri(
+        user.email,
+        'MY_SERVICE_NAME',
+        secret,
+      ),
+    };
+  }
+
+  async check2FAUser(userId, token) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    const isValid = otplib.authenticator.check(
+      token,
+      user.twoFactorAuthenticationSecret,
+    );
+    if (!isValid) {
+      return false;
+    }
+
+    return true;
+  }
+
+  async confirmEnable2FAUser(userId, token) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    const isValid = otplib.authenticator.check(
+      token,
+      user.twoFactorAuthenticationSecret,
+    );
+    if (!isValid) {
+      throw new Error('INVALID_TOKEN');
+    }
+
+    user.isTwoFactorAuthenticationEnabled = true;
+    await user.save();
+  }
+
+  async disable2FA(userId, token) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    const isValid = otplib.authenticator.check(
+      token,
+      user.twoFactorAuthenticationSecret,
+    );
+    if (!isValid) {
+      throw new Error('INVALID_TOKEN');
+    }
+
+    user.isTwoFactorAuthenticationEnabled = false;
+    user.twoFactorAuthenticationSecret = null;
+    await user.save();
   }
 
   async notify(userId, type, data) {

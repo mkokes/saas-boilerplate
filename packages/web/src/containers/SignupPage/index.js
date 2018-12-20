@@ -156,13 +156,14 @@ export default class SignupPage extends React.PureComponent {
                                           ],
                                         }));
                                       }
+                                    } else {
+                                      this.setState({
+                                        signUpErrorMessage: err.message,
+                                      });
                                     }
 
                                     this.resetCaptcha();
                                     formikBag.setSubmitting(false);
-                                    this.setState({
-                                      signUpErrorMessage: err.message,
-                                    });
                                   }
                                 }}
                               >

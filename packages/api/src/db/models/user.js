@@ -35,6 +35,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  twoFactorAuthenticationSecret: {
+    type: String,
+    default: null,
+  },
   fullName: {
     type: String,
     trim: true,

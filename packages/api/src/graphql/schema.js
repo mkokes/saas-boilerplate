@@ -12,11 +12,16 @@ module.exports = gql`
     email: String
     avatar: String
     isSignUpEmailConfirmed: Boolean
+    isTwoFactorAuthenticationEnabled: Boolean
     legal: [LegalAgreement]
   }
   type LegalAgreement {
     type: LegalAgreementType!
     accepted: String!
+  }
+  type TwoFactorAuthentication {
+    secret: String!
+    qrcode: String!
   }
 
   enum LegalAgreementType {
@@ -49,7 +54,7 @@ module.exports = gql`
       password: String!
       fullName: String!
     ): AuthTokens
-    loginUser(email: String!, password: String!): AuthTokens
+    loginUser(email: String!, password: String!, token: String): AuthTokens
     loginUserNoAuth: UserProfile
     refreshAccessToken(refreshToken: String!): AuthTokens
     forgotPassword(email: String!): Boolean
@@ -62,6 +67,9 @@ module.exports = gql`
     updateUserNotificationsPreferences(
       notifications: UserNotificationsPreferencesInput!
     ): UserProfile
+    requestEnable2FA: TwoFactorAuthentication
+    confirmEnable2FA(password: String!, token: String!): Boolean
+    disable2FA(token: String!): Boolean
     contact(
       recaptchaResponse: String!
       name: String!

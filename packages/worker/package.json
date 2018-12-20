@@ -35,7 +35,7 @@
     "setupTestFrameworkScriptFile": "<rootDir>/.jest/setupTestFrameworkScriptFile.js"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9",
     "babel-jest": "^23.6.0",
     "babel-jest-assertions": "^0.1.0",

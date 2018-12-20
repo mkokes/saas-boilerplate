@@ -23,8 +23,8 @@ export const SignUpUser = gql`
 `;
 
 export const LoginUser = gql`
-  mutation loginUser($email: String!, $password: String!) {
-    loginUser(email: $email, password: $password) @disableAuth {
+  mutation loginUser($email: String!, $password: String!, $token: String) {
+    loginUser(email: $email, password: $password, token: $token) @disableAuth {
       accessToken
       refreshToken
     }
@@ -109,6 +109,27 @@ export const UpdateUserNotificationsPreferences = gql`
       @requireAuth {
       ...ProfileFields
     }
+  }
+`;
+
+export const RequestEnable2FA = gql`
+  mutation requestEnable2FA {
+    requestEnable2FA @requireAuth {
+      secret
+      qrcode
+    }
+  }
+`;
+
+export const ConfirmEnable2FA = gql`
+  mutation confirmEnable2FA($password: String!, $token: String!) {
+    confirmEnable2FA(password: $password, token: $token) @requireAuth
+  }
+`;
+
+export const Disable2F = gql`
+  mutation disable2FA($token: String!) {
+    disable2FA(token: $token) @requireAuth
   }
 `;
 

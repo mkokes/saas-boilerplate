@@ -10,11 +10,16 @@ const typeDefs = `
     email: String
     avatar: String
     isSignUpEmailConfirmed: Boolean
+    isTwoFactorAuthenticationEnabled: Boolean
     legal: [LegalAgreement]
   }
   type LegalAgreement {
     type: LegalAgreementType!
     accepted: String!
+  }
+  type TwoFactorAuthentication {
+    secret: String!
+    qrcode: String!
   }
 
   enum LegalAgreementType {

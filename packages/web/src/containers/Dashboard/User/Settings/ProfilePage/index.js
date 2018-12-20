@@ -272,7 +272,7 @@ export default class ProfilePage extends React.PureComponent {
                                     <Button
                                       type="submit"
                                       size="lg"
-                                      color="success"
+                                      color="primary"
                                       disabled={isSubmitting}
                                     >
                                       <FontAwesomeIcon
