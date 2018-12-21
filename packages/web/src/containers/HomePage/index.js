@@ -35,7 +35,7 @@ export default class HomePage extends React.PureComponent {
               <p>
                 <Link to="/signup">
                   <Button color="primary" size="lg">
-                    <strong>Sign up free</strong>
+                    <strong>Get Started</strong>
                   </Button>
                 </Link>
               </p>

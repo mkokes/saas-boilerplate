@@ -32,6 +32,16 @@ import { GlobalConsumer } from 'GlobalState';
 import Avatar from 'components/Avatar';
 import HeadWay from 'components/HeadWay';
 
+const NavbarNotLoggedNav = styled(Nav)`
+  &&& .nav-link > button {
+    display: block;
+    width: 100%;
+  }
+
+  @media (min-width: 576px) {
+    align-items: center;
+  }
+`;
 const UserBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -187,10 +197,25 @@ export class NavbarComponent extends React.PureComponent {
                               isOpen={isOpen}
                               navbar
                             >
-                              <Nav
-                                className="ml-auto align-items-center"
-                                navbar
-                              >
+                              <NavbarNotLoggedNav className="ml-auto" navbar>
+                                <NavItem key="login" onClick={this.handleClick}>
+                                  <NavLink
+                                    to="/auth/login"
+                                    exact
+                                    activeClassName="active"
+                                    tag={RRNavLink}
+                                  >
+                                    <Button
+                                      color="link"
+                                      style={{
+                                        color: '#f8f9fa',
+                                        textDecoration: 'none',
+                                      }}
+                                    >
+                                      Sign In
+                                    </Button>
+                                  </NavLink>
+                                </NavItem>
                                 <NavItem
                                   key="register"
                                   onClick={this.handleClick}
@@ -202,22 +227,11 @@ export class NavbarComponent extends React.PureComponent {
                                     tag={RRNavLink}
                                   >
                                     <Button color="primary">
-                                      <strong>Sign up</strong>
+                                      <strong>Get Started</strong>
                                     </Button>
                                   </NavLink>
                                 </NavItem>
-                                <NavItem key="login" onClick={this.handleClick}>
-                                  <NavLink
-                                    to="/auth/login"
-                                    exact
-                                    activeClassName="active"
-                                    className="text-light"
-                                    tag={RRNavLink}
-                                  >
-                                    Log In
-                                  </NavLink>
-                                </NavItem>
-                              </Nav>
+                              </NavbarNotLoggedNav>
                             </Collapse>
                           </Fragment>
                         ) : (

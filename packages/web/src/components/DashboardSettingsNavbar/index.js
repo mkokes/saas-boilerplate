@@ -51,6 +51,15 @@ class DashboardSettingsNavbar extends React.PureComponent {
                 </NavItem>
                 <NavItem>
                   <NavLink
+                    to="/dashboard/settings/billing"
+                    exact
+                    tag={RRNavLink}
+                  >
+                    Billing
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink
                     to="/dashboard/settings/preferences"
                     exact
                     tag={RRNavLink}

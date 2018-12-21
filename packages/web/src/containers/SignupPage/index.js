@@ -37,6 +37,7 @@ export default class SignupPage extends React.PureComponent {
 
     this.state = {
       recaptchaResponse: '',
+      recaptchaRendered: false,
       signUpErrorMessage: '',
       alreadyTakenEmails: [],
     };
@@ -52,6 +53,7 @@ export default class SignupPage extends React.PureComponent {
   render() {
     const {
       recaptchaResponse,
+      recaptchaRendered,
       signUpErrorMessage,
       alreadyTakenEmails,
     } = this.state;
@@ -115,9 +117,15 @@ export default class SignupPage extends React.PureComponent {
                                     signUpErrorMessage: null,
                                   });
 
+                                  if (!recaptchaRendered)
+                                    await this.captcha.renderExplicitly();
+
                                   if (!recaptchaResponse) {
-                                    formikBag.setSubmitting(false);
-                                    this.captcha.execute();
+                                    await this.captcha.execute();
+                                    setTimeout(
+                                      () => formikBag.setSubmitting(false),
+                                      2000,
+                                    );
                                     return;
                                   }
 
@@ -167,7 +175,7 @@ export default class SignupPage extends React.PureComponent {
                                   }
                                 }}
                               >
-                                {({ submitForm, isSubmitting }) => (
+                                {({ submitForm, isSubmitting, touched }) => (
                                   <Form>
                                     <Field
                                       component={ReactstrapInput}
@@ -228,7 +236,13 @@ export default class SignupPage extends React.PureComponent {
                                       }}
                                       onExpire={() => this.resetCaptcha}
                                       onError={() => this.resetCaptcha}
+                                      onRender={() =>
+                                        this.setState({
+                                          recaptchaRendered: true,
+                                        })
+                                      }
                                       size="invisible"
+                                      explicit
                                     />
                                     <p className="mt-1 pr-5 pl-5 text-center text-muted small">
                                       By signing up, you agree to our{' '}
