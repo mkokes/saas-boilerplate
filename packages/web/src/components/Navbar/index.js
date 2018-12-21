@@ -6,9 +6,11 @@
 
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUnlockAlt, faHome, faCog } from '@fortawesome/free-solid-svg-icons';
 import {
   Container,
   Collapse,
@@ -24,16 +26,12 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUnlockAlt, faHome } from '@fortawesome/free-solid-svg-icons';
+import MediaQuery from 'react-responsive';
 
 import { GlobalConsumer } from 'GlobalState';
 import Avatar from 'components/Avatar';
 import HeadWay from 'components/HeadWay';
 
-const DashboardNav = styled(Nav)`
-  flex-direction: row;
-`;
 const UserBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -52,13 +50,25 @@ const DashboardDropdownItem = styled(DropdownItem)`
   padding-right: 16px;
 
   &.active {
-    color: #16181b;
+    color: unset;
     text-decoration: none;
     background-color: transparent;
   }
 
   &.active:hover {
     background-color: #f8f9fa;
+  }
+`;
+const DashboardNavbar = styled(Navbar)`
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(218, 225, 233);
+
+  font-size: 18px;
+  font-weight: 500;
+
+  &&& .nav-link.active {
+    color: rgb(6, 103, 208);
   }
 `;
 
@@ -84,159 +94,289 @@ export class NavbarComponent extends React.PureComponent {
     if (isOpen) this.toggle();
   }
 
+  renderDashboardNavItems() {
+    return (
+      <Fragment>
+        <Nav navbar>
+          <NavItem
+            key="dashboard-navbar-home"
+            onClick={this.handleClick}
+            className="mr-1"
+          >
+            <NavLink
+              to="/dashboard"
+              exact
+              activeClassName="active"
+              tag={RRNavLink}
+            >
+              <FontAwesomeIcon icon={faHome} className="align-text-top mr-1" />
+              Dashboard
+            </NavLink>
+          </NavItem>
+          <NavItem key="dashboard" onClick={this.handleClick} className="mr-1">
+            <NavLink
+              to="/dashboard/settings"
+              exact
+              activeClassName="active"
+              tag={RRNavLink}
+            >
+              <FontAwesomeIcon icon={faCog} className="align-text-top mr-1" />
+              Settings
+            </NavLink>
+          </NavItem>
+        </Nav>
+      </Fragment>
+    );
+  }
+
   render() {
-    const { location, brandNameLink } = this.props;
+    const {
+      location,
+      expand,
+      brandNameLink,
+      dashboardNavbarHidden,
+    } = this.props;
     const { isOpen } = this.state;
 
     const { pathname } = location;
+    const isDashboardRoute = pathname.indexOf('/dashboard') === 0;
 
     return (
-      <GlobalConsumer>
-        {({ loggedIn, userProfile }) => (
-          <header>
-            <Navbar color="dark" dark expand="sm">
-              <Container>
-                <NavLink
-                  to={brandNameLink}
-                  tag={RRNavLink}
-                  className="navbar-brand navbar-brandname p-0"
-                  onClick={this.handleClick}
-                >
-                  <NavbarBrand tag="span">
-                    Domain.io
-                    <span className="beta-icon align-text-bottom">beta</span>
-                  </NavbarBrand>
-                </NavLink>
-                {!loggedIn ? (
+      <Fragment>
+        <GlobalConsumer>
+          {({ loggedIn, userProfile }) => (
+            <header>
+              <MediaQuery minWidth={768}>
+                {matchesMediaQuery => (
                   <Fragment>
-                    <NavbarToggler key="navbar-toggler" onClick={this.toggle} />
-                    <Collapse key="navbar-collapse" isOpen={isOpen} navbar>
-                      <Nav className="ml-auto align-items-center" navbar>
-                        <NavItem key="register" onClick={this.handleClick}>
-                          <NavLink
-                            to="/signup"
-                            exact
-                            activeClassName="active"
-                            tag={RRNavLink}
-                          >
-                            <Button color="primary">
-                              <strong>Sign up</strong>
-                            </Button>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem key="login" onClick={this.handleClick}>
-                          <NavLink
-                            to="/auth/login"
-                            exact
-                            activeClassName="active"
-                            className="text-light"
-                            tag={RRNavLink}
-                          >
-                            Log In
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                    </Collapse>
-                  </Fragment>
-                ) : (
-                  <DashboardNav className="ml-auto align-items-center" navbar>
-                    <HeadWay />
-                    <UncontrolledDropdown key="user-options" nav inNavbar>
-                      <DropdownToggle nav caret>
-                        <Avatar
-                          width="32"
-                          height="32"
-                          src={`data:image/svg+xml;base64,${
-                            userProfile.avatar
-                          }`}
-                        />
-                        <span className="text-white ml-1 mr-1">
-                          {userProfile.nickname}
-                        </span>
-                      </DropdownToggle>
-                      <DropdownMenu
-                        style={{ minWidth: 260, position: 'absolute' }}
-                        right
-                      >
-                        <UserBox>
-                          <Avatar
-                            src={`data:image/svg+xml;base64,${
-                              userProfile.avatar
-                            }`}
-                          />
-                          <span className="mb-1" style={{ fontSize: 18 }}>
-                            {userProfile.fullName}
-                          </span>
-                          <span className="text-muted" style={{ fontSize: 14 }}>
-                            {userProfile.email}
-                          </span>
-                        </UserBox>
-
-                        {pathname.indexOf('/dashboard') === 0 ? (
-                          <Fragment>
-                            {userProfile.isSignUpEmailConfirmed && (
-                              <Fragment>
-                                <DropdownItem divider />
-                                <DashboardDropdownItem
-                                  to="/dashboard/settings"
-                                  tag={RRNavLink}
-                                >
-                                  Settings
-                                </DashboardDropdownItem>
-                              </Fragment>
+                    <Navbar color="dark" dark expand={expand}>
+                      <Container>
+                        {!dashboardNavbarHidden && (
+                          <>
+                            {!matchesMediaQuery && (
+                              <NavbarToggler
+                                key="navbar-toggler"
+                                onClick={this.toggle}
+                                className="mr-1"
+                              />
                             )}
-                            <DropdownItem divider />
-                            <DashboardDropdownItem
-                              to="/support"
-                              tag={RRNavLink}
+                          </>
+                        )}
+
+                        <NavLink
+                          to={brandNameLink}
+                          tag={RRNavLink}
+                          className="mr-auto navbar-brand navbar-brandname pl-2"
+                          onClick={this.handleClick}
+                        >
+                          <NavbarBrand tag="span">
+                            Domain.io
+                            <span className="beta-icon align-text-bottom">
+                              beta
+                            </span>
+                          </NavbarBrand>
+                        </NavLink>
+                        {!loggedIn ? (
+                          <Fragment>
+                            <NavbarToggler
+                              key="navbar-toggler"
+                              onClick={this.toggle}
+                            />
+                            <Collapse
+                              key="navbar-collapse"
+                              isOpen={isOpen}
+                              navbar
                             >
-                              Contact support
-                            </DashboardDropdownItem>
+                              <Nav
+                                className="ml-auto align-items-center"
+                                navbar
+                              >
+                                <NavItem
+                                  key="register"
+                                  onClick={this.handleClick}
+                                >
+                                  <NavLink
+                                    to="/signup"
+                                    exact
+                                    activeClassName="active"
+                                    tag={RRNavLink}
+                                  >
+                                    <Button color="primary">
+                                      <strong>Sign up</strong>
+                                    </Button>
+                                  </NavLink>
+                                </NavItem>
+                                <NavItem key="login" onClick={this.handleClick}>
+                                  <NavLink
+                                    to="/auth/login"
+                                    exact
+                                    activeClassName="active"
+                                    className="text-light"
+                                    tag={RRNavLink}
+                                  >
+                                    Log In
+                                  </NavLink>
+                                </NavItem>
+                              </Nav>
+                            </Collapse>
                           </Fragment>
                         ) : (
                           <Fragment>
-                            <DropdownItem divider />
-                            <DashboardDropdownItem
-                              to="/dashboard"
-                              tag={RRNavLink}
-                            >
-                              <FontAwesomeIcon
-                                icon={faHome}
-                                className="align-text-top mr-1"
-                              />
-                              Dashboard
-                            </DashboardDropdownItem>
+                            <Nav navbar className="flex-row">
+                              <HeadWay />
+                              <UncontrolledDropdown
+                                key="user-options"
+                                nav
+                                inNavbar
+                              >
+                                <DropdownToggle nav caret>
+                                  <Avatar
+                                    width="32"
+                                    height="32"
+                                    src={`data:image/svg+xml;base64,${
+                                      userProfile.avatar
+                                    }`}
+                                  />
+                                  <span className="text-white ml-1 mr-1">
+                                    {userProfile.nickname}
+                                  </span>
+                                </DropdownToggle>
+                                <DropdownMenu
+                                  style={{
+                                    minWidth: 260,
+                                    position: 'absolute',
+                                  }}
+                                  right
+                                >
+                                  <UserBox>
+                                    <Avatar
+                                      src={`data:image/svg+xml;base64,${
+                                        userProfile.avatar
+                                      }`}
+                                    />
+                                    <span
+                                      className="mb-1"
+                                      style={{ fontSize: 18 }}
+                                    >
+                                      {userProfile.fullName}
+                                    </span>
+                                    <span
+                                      className="text-muted"
+                                      style={{ fontSize: 14 }}
+                                    >
+                                      {userProfile.email}
+                                    </span>
+                                  </UserBox>
+
+                                  {isDashboardRoute ? (
+                                    <Fragment>
+                                      {userProfile.isSignUpEmailConfirmed && (
+                                        <Fragment>
+                                          <DropdownItem divider />
+                                          <DashboardDropdownItem
+                                            to="/dashboard/settings"
+                                            tag={RRNavLink}
+                                          >
+                                            Settings
+                                          </DashboardDropdownItem>
+                                        </Fragment>
+                                      )}
+                                      <DropdownItem divider />
+                                      <DashboardDropdownItem
+                                        to="/support"
+                                        tag={RRNavLink}
+                                      >
+                                        Contact support
+                                      </DashboardDropdownItem>
+                                    </Fragment>
+                                  ) : (
+                                    <Fragment>
+                                      <DropdownItem divider />
+                                      <DashboardDropdownItem
+                                        to="/dashboard"
+                                        tag={RRNavLink}
+                                      >
+                                        <FontAwesomeIcon
+                                          icon={faHome}
+                                          className="align-text-top mr-1"
+                                        />
+                                        Dashboard
+                                      </DashboardDropdownItem>
+                                    </Fragment>
+                                  )}
+                                  <DropdownItem divider />
+                                  <DashboardDropdownItem
+                                    to="/signout"
+                                    tag={RRNavLink}
+                                  >
+                                    {isDashboardRoute && (
+                                      <FontAwesomeIcon
+                                        icon={faUnlockAlt}
+                                        className="align-text-top mr-1"
+                                      />
+                                    )}
+                                    Sign out
+                                  </DashboardDropdownItem>
+                                </DropdownMenu>
+                              </UncontrolledDropdown>
+                            </Nav>
+
+                            {!dashboardNavbarHidden && (
+                              <>
+                                {!matchesMediaQuery && (
+                                  <Collapse
+                                    key="navbar-collapse"
+                                    isOpen={isOpen}
+                                    navbar
+                                  >
+                                    <Container>
+                                      {this.renderDashboardNavItems()}
+                                    </Container>
+                                  </Collapse>
+                                )}
+                              </>
+                            )}
                           </Fragment>
                         )}
-                        <DropdownItem divider />
-                        <DashboardDropdownItem to="/signout" tag={RRNavLink}>
-                          {pathname.indexOf('/dashboard') !== 0 && (
-                            <FontAwesomeIcon
-                              icon={faUnlockAlt}
-                              className="align-text-top mr-1"
-                            />
-                          )}
-                          Sign out
-                        </DashboardDropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </DashboardNav>
+                      </Container>
+                    </Navbar>
+                    {!dashboardNavbarHidden && (
+                      <>
+                        {matchesMediaQuery && (
+                          <DashboardNavbar light expand="xs">
+                            <Container
+                              style={{
+                                paddingLeft: '15px',
+                                paddingRight: '15px',
+                              }}
+                            >
+                              {this.renderDashboardNavItems()}
+                            </Container>
+                          </DashboardNavbar>
+                        )}
+                      </>
+                    )}
+                  </Fragment>
                 )}
-              </Container>
-            </Navbar>
-          </header>
-        )}
-      </GlobalConsumer>
+              </MediaQuery>
+            </header>
+          )}
+        </GlobalConsumer>
+      </Fragment>
     );
   }
 }
 
 NavbarComponent.propTypes = {
+  expand: PropTypes.string,
   brandNameLink: PropTypes.string,
   location: PropTypes.object,
+  dashboardNavbarHidden: PropTypes.bool,
 };
 NavbarComponent.defaultProps = {
+  expand: 'sm',
   brandNameLink: '/',
+  dashboardNavbarHidden: true,
 };
 
 export default withRouter(NavbarComponent);

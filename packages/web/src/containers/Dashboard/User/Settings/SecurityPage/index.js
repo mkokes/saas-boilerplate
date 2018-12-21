@@ -280,7 +280,7 @@ export default class SecurityPage extends React.PureComponent {
                                         size={196}
                                       />
                                     </Col>
-                                    <Col>
+                                    <Col sm={{ size: 8, offset: 2 }}>
                                       <Formik
                                         initialValues={{
                                           password: '',
@@ -354,8 +354,8 @@ export default class SecurityPage extends React.PureComponent {
                                               <Field
                                                 component={ReactstrapInput}
                                                 name="token"
-                                                label="To verify, please enter your
-                                                    one-time password:"
+                                                label="Enter your
+                                                    one-time authentication password:"
                                                 type="text"
                                                 autoComplete="off"
                                                 required

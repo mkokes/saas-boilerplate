@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -8,18 +8,27 @@ import DashboardSettingsNavbar from 'components/DashboardSettingsNavbar/Loadable
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
+  background-color: rgb(244, 247, 250);
 `;
 
-const DefaultLayout = ({ brandNameLink, minimal, children }) => (
-  <Fragment>
-    <div className="flex flex-row">
-      <LayoutContainer className="flex flex-column">
-        <Navbar brandNameLink={brandNameLink} />
-        <div className="flex flex-column">{children}</div>
-        <Footer minimal={minimal} />
-      </LayoutContainer>
-    </div>
-  </Fragment>
+const DefaultLayout = ({
+  dashboardNavbarHidden,
+  navbarExpand,
+  brandNameLink,
+  minimal,
+  children,
+}) => (
+  <div className="flex flex-row">
+    <LayoutContainer className="flex flex-column">
+      <Navbar
+        dashboardNavbarHidden={dashboardNavbarHidden}
+        expand={navbarExpand}
+        brandNameLink={brandNameLink}
+      />
+      <div className="flex flex-column">{children}</div>
+      <Footer minimal={minimal} />
+    </LayoutContainer>
+  </div>
 );
 
 const MinimalDefaultLayout = ({ children }) => (
@@ -27,18 +36,25 @@ const MinimalDefaultLayout = ({ children }) => (
 );
 
 const DashboardLayout = ({ children }) => (
-  <DefaultLayout brandNameLink="/dashboard" minimal>
-    {children}
+  <DefaultLayout
+    dashboardNavbarHidden={false}
+    navbarExpand="md"
+    brandNameLink="/dashboard"
+    minimal
+  >
+    <div style={{ paddingTop: '25px', paddingBottom: '25px' }}>{children}</div>
   </DefaultLayout>
 );
 
 const DashboardSettingsLayout = ({ children }) => (
-  <DefaultLayout brandNameLink="/dashboard" minimal>
+  <DashboardLayout>
     <DashboardSettingsNavbar>{children}</DashboardSettingsNavbar>
-  </DefaultLayout>
+  </DashboardLayout>
 );
 
 DefaultLayout.propTypes = {
+  dashboardNavbarHidden: PropTypes.bool,
+  navbarExpand: PropTypes.string,
   brandNameLink: PropTypes.string,
   children: PropTypes.node,
   minimal: PropTypes.bool,
@@ -56,7 +72,6 @@ DashboardSettingsLayout.propTypes = {
   children: PropTypes.node,
 };
 
-export default DefaultLayout;
 export {
   DefaultLayout,
   MinimalDefaultLayout,

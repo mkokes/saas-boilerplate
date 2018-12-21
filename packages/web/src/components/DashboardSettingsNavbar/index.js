@@ -38,7 +38,7 @@ class DashboardSettingsNavbar extends React.PureComponent {
     const { children } = this.props;
 
     return (
-      <Container style={{ marginTop: '2rem' }}>
+      <Container>
         <Row>
           <Col md={{ size: 3, order: 2 }} tag="main">
             <SideNav>
