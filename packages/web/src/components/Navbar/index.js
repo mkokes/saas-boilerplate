@@ -21,7 +21,7 @@ import {
   NavItem,
   NavLink,
   Button,
-  UncontrolledDropdown,
+  Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -81,27 +81,34 @@ const DashboardNavbar = styled(Navbar)`
     color: rgb(6, 103, 208);
   }
 `;
+const Backdrop = styled.div`
+  position: fixed;
+  top: 65px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: rgba(26, 54, 80, 0.0980392);
+  opacity: 1;
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export class NavbarComponent extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
-    this.handleClick = this.handleClick.bind(this);
     this.state = {
-      isOpen: false,
+      isNavbarCollapseOpen: false,
+      isDropdownOpen: false,
     };
+
+    this.toggle = this.toggle.bind(this);
   }
 
-  toggle() {
-    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
-  }
-
-  handleClick() {
-    const { isOpen } = this.state;
-
-    if (isOpen) this.toggle();
+  toggle(item) {
+    this.setState(prevState => ({
+      [item]: !prevState[item],
+    }));
   }
 
   renderDashboardNavItems() {
@@ -110,7 +117,7 @@ export class NavbarComponent extends React.PureComponent {
         <Nav navbar>
           <NavItem
             key="dashboard-navbar-home"
-            onClick={this.handleClick}
+            onClick={() => this.setState({ isNavbarCollapseOpen: false })}
             className="mr-1"
           >
             <NavLink
@@ -123,10 +130,13 @@ export class NavbarComponent extends React.PureComponent {
               Dashboard
             </NavLink>
           </NavItem>
-          <NavItem key="dashboard" onClick={this.handleClick} className="mr-1">
+          <NavItem
+            key="dashboard"
+            onClick={() => this.setState({ isNavbarCollapseOpen: false })}
+            className="mr-1"
+          >
             <NavLink
               to="/dashboard/settings"
-              exact
               activeClassName="active"
               tag={RRNavLink}
             >
@@ -146,7 +156,7 @@ export class NavbarComponent extends React.PureComponent {
       brandNameLink,
       dashboardNavbarHidden,
     } = this.props;
-    const { isOpen } = this.state;
+    const { isNavbarCollapseOpen, isDropdownOpen } = this.state;
 
     const { pathname } = location;
     const isDashboardRoute = pathname.indexOf('/dashboard') === 0;
@@ -166,7 +176,9 @@ export class NavbarComponent extends React.PureComponent {
                             {!matchesMediaQuery && (
                               <NavbarToggler
                                 key="navbar-toggler"
-                                onClick={this.toggle}
+                                onClick={() =>
+                                  this.toggle('isNavbarCollapseOpen')
+                                }
                                 className="mr-1"
                               />
                             )}
@@ -177,7 +189,10 @@ export class NavbarComponent extends React.PureComponent {
                           to={brandNameLink}
                           tag={RRNavLink}
                           className="mr-auto navbar-brand navbar-brandname pl-2"
-                          onClick={this.handleClick}
+                          onClick={() =>
+                            this.setState({ isNavbarCollapseOpen: false })
+                          }
+                          style={{ zIndex: '1050' }}
                         >
                           <NavbarBrand tag="span">
                             Domain.io
@@ -190,15 +205,24 @@ export class NavbarComponent extends React.PureComponent {
                           <Fragment>
                             <NavbarToggler
                               key="navbar-toggler"
-                              onClick={this.toggle}
+                              onClick={() =>
+                                this.toggle('isNavbarCollapseOpen')
+                              }
                             />
                             <Collapse
                               key="navbar-collapse"
-                              isOpen={isOpen}
+                              isOpen={isNavbarCollapseOpen}
                               navbar
                             >
                               <NavbarNotLoggedNav className="ml-auto" navbar>
-                                <NavItem key="login" onClick={this.handleClick}>
+                                <NavItem
+                                  key="login"
+                                  onClick={() =>
+                                    this.setState({
+                                      isNavbarCollapseOpen: false,
+                                    })
+                                  }
+                                >
                                   <NavLink
                                     to="/auth/login"
                                     exact
@@ -218,7 +242,11 @@ export class NavbarComponent extends React.PureComponent {
                                 </NavItem>
                                 <NavItem
                                   key="register"
-                                  onClick={this.handleClick}
+                                  onClick={() =>
+                                    this.setState({
+                                      isNavbarCollapseOpen: false,
+                                    })
+                                  }
                                 >
                                   <NavLink
                                     to="/signup"
@@ -237,11 +265,14 @@ export class NavbarComponent extends React.PureComponent {
                         ) : (
                           <Fragment>
                             <Nav navbar className="flex-row">
-                              <HeadWay />
-                              <UncontrolledDropdown
+                              <HeadWay style={{ zIndex: '1050' }} />
+                              <Dropdown
+                                isOpen={isDropdownOpen}
                                 key="user-options"
                                 nav
                                 inNavbar
+                                toggle={() => this.toggle('isDropdownOpen')}
+                                style={{ zIndex: '1050' }}
                               >
                                 <DropdownToggle nav caret>
                                   <Avatar
@@ -332,7 +363,8 @@ export class NavbarComponent extends React.PureComponent {
                                     Sign out
                                   </DashboardDropdownItem>
                                 </DropdownMenu>
-                              </UncontrolledDropdown>
+                              </Dropdown>
+                              <Backdrop hidden={!isDropdownOpen} />
                             </Nav>
 
                             {!dashboardNavbarHidden && (
@@ -340,7 +372,7 @@ export class NavbarComponent extends React.PureComponent {
                                 {!matchesMediaQuery && (
                                   <Collapse
                                     key="navbar-collapse"
-                                    isOpen={isOpen}
+                                    isOpen={isNavbarCollapseOpen}
                                     navbar
                                   >
                                     <Container>
