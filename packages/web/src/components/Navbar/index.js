@@ -90,6 +90,7 @@ const Backdrop = styled.div`
   z-index: 1040;
   background-color: rgba(26, 54, 80, 0.0980392);
   opacity: 1;
+  cursor: pointer;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -192,7 +193,6 @@ export class NavbarComponent extends React.PureComponent {
                           onClick={() =>
                             this.setState({ isNavbarCollapseOpen: false })
                           }
-                          style={{ zIndex: '1050' }}
                         >
                           <NavbarBrand tag="span">
                             Domain.io
@@ -265,7 +265,7 @@ export class NavbarComponent extends React.PureComponent {
                         ) : (
                           <Fragment>
                             <Nav navbar className="flex-row">
-                              <HeadWay style={{ zIndex: '1050' }} />
+                              <HeadWay />
                               <Dropdown
                                 isOpen={isDropdownOpen}
                                 key="user-options"
