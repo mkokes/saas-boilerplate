@@ -20,6 +20,7 @@
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "bunyan": "^1.8.12",
+    "crypto": "^1.0.1",
     "envalid": "^4.1.4",
     "graphql": "^14.0.2",
     "identicon.js": "^2.3.3",
@@ -33,6 +34,7 @@
     "now": "^11.4.6",
     "otplib": "^10.0.1",
     "p-queue": "^3.0.0",
+    "php-serialize": "^2.0.1",
     "validator": "^10.9.0"
   },
   "lint-staged": {

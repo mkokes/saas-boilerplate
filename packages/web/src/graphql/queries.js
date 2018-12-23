@@ -18,3 +18,15 @@ export const isUserEmailConfirmedQuery = gql`
     }
   }
 `;
+
+export const UserSubscriptionQuery = gql`
+  query getUserSubscription {
+    userSubscription @requireAuth {
+      _id
+      _plan {
+        displayName
+      }
+      status
+    }
+  }
+`;

@@ -9,6 +9,8 @@ export const ProfileFields = gql`
     avatar
     isSignUpEmailConfirmed
     isTwoFactorAuthenticationEnabled
+    isInTrialPeriod
+    trialPeriodStartedAt
     legal {
       type
       accepted

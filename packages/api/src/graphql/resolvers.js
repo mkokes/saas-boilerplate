@@ -47,6 +47,15 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         ...profile,
       };
     },
+    userSubscription: async (_, __, { user }) => {
+      await assertUser(user);
+
+      const subscription = await db.getUserSubscription(user._id);
+
+      return {
+        ...subscription,
+      };
+    },
   },
   Mutation: {
     signUpUser: async (_, { recaptchaResponse, email, password, fullName }) => {

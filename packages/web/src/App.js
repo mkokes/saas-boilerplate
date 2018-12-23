@@ -27,6 +27,7 @@ import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
 import MainPage from 'containers/Dashboard/User/MainPage/Loadable';
 import ProfilePage from 'containers/Dashboard/User/Settings/ProfilePage/Loadable';
 import PreferencesPage from 'containers/Dashboard/User/Settings/PreferencesPage/Loadable';
+import BillingPage from 'containers/Dashboard/User/Settings/BillingPage/Loadable';
 import SecurityPage from 'containers/Dashboard/User/Settings/SecurityPage/Loadable';
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SignOutPage from 'containers/SignOutPage/Loadable';
@@ -142,6 +143,13 @@ export default function App() {
                       exact
                       path="/dashboard/settings/preferences"
                       component={PreferencesPage}
+                      layout={DashboardSettingsLayout}
+                    />
+                    <Route
+                      protected
+                      exact
+                      path="/dashboard/settings/billing"
+                      component={BillingPage}
                       layout={DashboardSettingsLayout}
                     />
                     <Route

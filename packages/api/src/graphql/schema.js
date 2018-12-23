@@ -13,7 +13,20 @@ module.exports = gql`
     avatar: String
     isSignUpEmailConfirmed: Boolean
     isTwoFactorAuthenticationEnabled: Boolean
+    isInTrialPeriod: Boolean
+    trialPeriodStartedAt: String
     legal: [LegalAgreement]
+  }
+  type Plan {
+    _id: String
+    displayName: String
+    amount: Int
+    billingInterval: String
+  }
+  type Subscription {
+    _id: String
+    _plan: Plan
+    status: String
   }
   type LegalAgreement {
     type: LegalAgreementType!
@@ -46,6 +59,7 @@ module.exports = gql`
 
   type Query {
     userProfile: UserProfile
+    userSubscription: Subscription
   }
   type Mutation {
     signUpUser(

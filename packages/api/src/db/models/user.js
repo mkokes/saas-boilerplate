@@ -5,12 +5,19 @@ const bcrypt = require('bcryptjs');
 const uuidv4 = require('uuid/v4');
 const Identicon = require('identicon.js');
 
+const { Schema } = mongoose;
 const SALT_WORK_FACTOR = 10;
 
 /**
  * User Schema
  */
 const UserSchema = new mongoose.Schema({
+  _subscription: {
+    type: Schema.Types.ObjectId,
+    ref: 'Subscription',
+    default: null,
+    index: true,
+  },
   email: {
     type: String,
     trim: true,
@@ -65,6 +72,14 @@ const UserSchema = new mongoose.Schema({
   accountStatus: {
     type: String,
     default: 'active',
+  },
+  isInTrialPeriod: {
+    type: Boolean,
+    default: true,
+  },
+  trialPeriodStartedAt: {
+    type: Date,
+    default: Date.now,
   },
   roles: {
     type: Array,

@@ -10,8 +10,10 @@ import 'sanitize.css/sanitize.css';
 import { ApolloProvider } from 'react-apollo';
 // import FontFaceObserver from 'fontfaceobserver';
 import { ToastContainer } from 'react-toastify';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-table/react-table.css';
 
 import { AnalyticsApi } from 'api/vendors';
 

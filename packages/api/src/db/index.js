@@ -5,6 +5,9 @@ const authenticator = require('otplib/authenticator');
 
 const setupDb = require('./setup');
 const User = require('./models/user');
+const Plan = require('./models/plan');
+const Subscription = require('./models/subscription');
+const Payment = require('./models/payment');
 const Notification = require('./models/notification');
 const ResetPasswordToken = require('./models/resetPasswordToken');
 const { NOTIFICATION } = require('../constants/events');
@@ -60,6 +63,8 @@ class Db extends EventEmitter {
       avatar,
       isSignUpEmailConfirmed,
       isTwoFactorAuthenticationEnabled,
+      isInTrialPeriod,
+      trialPeriodStartedAt,
       legal,
     } = user;
 
@@ -76,11 +81,25 @@ class Db extends EventEmitter {
             registeredAt,
             isSignUpEmailConfirmed,
             isTwoFactorAuthenticationEnabled,
+            isInTrialPeriod,
+            trialPeriodStartedAt,
             legal,
           }
         : {}),
     };
     /* eslint-enable */
+  }
+
+  async getUserSubscription(userId) {
+    const user = await this._getUser(userId);
+
+    if (!user) {
+      return {};
+    }
+
+    await user.populate('_subscription').execPopulate();
+
+    return user._subscription;
   }
 
   async existsUserWithEmail(email) {
@@ -384,6 +403,28 @@ class Db extends EventEmitter {
     user.isTwoFactorAuthenticationEnabled = false;
     user.twoFactorAuthenticationSecret = null;
     await user.save();
+  }
+
+  async getPlanIdByPaddleId(paddlePlanId) {
+    return Plan.findOne({ _paddleProductId: paddlePlanId }).select('_id');
+  }
+
+  async subscriptionCreated(data) {
+    return new Subscription({
+      ...data,
+    }).save();
+  }
+
+  async subscriptionUpdated(id, data) {
+    return Subscription.findByIdAndUpdate(id, {
+      ...data,
+    });
+  }
+
+  async cancelSubscription(id) {
+    return Subscription.findByIdAndUpdate(id, {
+      status: 'deleted',
+    });
   }
 
   async notify(userId, type, data) {

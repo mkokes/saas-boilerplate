@@ -50,7 +50,7 @@ export default class EmailVerificationPage extends React.PureComponent {
                           const updatedUserProfile = userProfile;
 
                           updatedUserProfile.isSignUpEmailConfirmed = true;
-                          setUserProfile(updatedUserProfile);
+                          return setUserProfile(updatedUserProfile);
                         }
 
                         return (
