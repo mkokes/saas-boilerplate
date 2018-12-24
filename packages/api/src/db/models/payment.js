@@ -18,11 +18,9 @@ const Payment = new mongoose.Schema({
     default: null,
     index: true,
   },
-  _plan: {
-    type: Schema.Types.ObjectId,
-    ref: 'Plan',
+  _paddlePlanId: {
+    type: String,
     default: null,
-    index: true,
   },
   _paddleOrderId: {
     type: String,
@@ -33,10 +31,6 @@ const Payment = new mongoose.Schema({
     default: null,
   },
   _paddleUserId: {
-    type: String,
-    default: null,
-  },
-  status: {
     type: String,
     default: null,
   },
@@ -92,7 +86,7 @@ const Payment = new mongoose.Schema({
     type: String,
     default: null,
   },
-  usedCoupon: {
+  coupon: {
     type: String,
     default: null,
   },

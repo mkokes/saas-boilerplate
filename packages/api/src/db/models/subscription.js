@@ -28,15 +28,7 @@ const Subscription = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  unitPrice: {
-    type: Number,
-    required: true,
+    default: 'active',
   },
   currency: {
     type: String,
@@ -57,6 +49,14 @@ const Subscription = new mongoose.Schema({
   subscribedAt: {
     type: Date,
     default: Date.now,
+  },
+  cancelledAt: {
+    type: Date,
+    default: null,
+  },
+  lastUpdatedAt: {
+    type: Date,
+    default: null,
   },
 });
 

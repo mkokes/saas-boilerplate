@@ -41,8 +41,9 @@ const init = async () => {
     const {
       p_signature: paddleSignature,
       alert_name: eventName,
-      passthrough: userData,
       status,
+      subscription_id: paddleSubscriptionId,
+      passthrough: userData,
     } = paddleEvent;
     const user = JSON.parse(userData);
 
@@ -85,10 +86,7 @@ const init = async () => {
       case 'subscription_created': {
         const {
           subscription_plan_id: subscriptionPlanId,
-          subscription_id: subscriptionId,
           checkout_id: checkoutId,
-          quantity,
-          unit_price: unitPrice,
           currency,
           update_url: updateURL,
           cancel_url: cancelURL,
@@ -96,14 +94,11 @@ const init = async () => {
         } = paddleEvent;
 
         const plan = await db.getPlanIdByPaddleId(subscriptionPlanId);
-        await db.subscriptionCreated({
+        await db.createSubscription({
           _plan: plan._id,
           _user: user._id,
-          _paddleSubscriptionId: subscriptionId,
+          _paddleSubscriptionId: paddleSubscriptionId,
           _paddleCheckoutId: checkoutId,
-          status,
-          quantity,
-          unitPrice,
           currency,
           updateURL,
           cancelURL,
@@ -113,23 +108,90 @@ const init = async () => {
         break;
       }
       case 'subscription_updated': {
-        switch (paddleEvent.status) {
+        const subscription = await db.getSubscriptionByPaddleId(
+          paddleSubscriptionId,
+        );
+        switch (status) {
           case 'past_due': {
-            // Suspend the customer's license whenever their subscription is past due.
+            await db.subscriptionPastDue(subscription._id);
             break;
           }
           case 'active': {
-            // Handle upgrade and downgrade subscription
+            const {
+              subscription_plan_id: subscriptionPlanId,
+              checkout_id: checkoutId,
+              update_url: updateURL,
+              cancel_url: cancelURL,
+              next_bill_date: nextBillDateAt,
+            } = paddleEvent;
+
+            const plan = await db.getPlanIdByPaddleId(subscriptionPlanId);
+            await db.subscriptionUpdated(subscription._id, {
+              _plan: plan._id,
+              _paddleCheckoutId: checkoutId,
+              updateURL,
+              cancelURL,
+              nextBillDateAt,
+            });
             break;
           }
         }
         break;
       }
       case 'subscription_cancelled': {
-        // Revoke the customer's license whenever they cancel their subscription.
+        await db.cancelSubscription(paddleSubscriptionId);
         break;
       }
       case 'subscription_payment_succeeded': {
+        const {
+          subscription_plan_id: subscriptionPlanId,
+          order_id: orderId,
+          checkout_id: checkoutId,
+          user_id: userId,
+          quantity,
+          unit_price: unitPrice,
+          sale_gross: saleGross,
+          fee,
+          earnings,
+          payment_tax: tax,
+          payment_method: paymentMethod,
+          coupon,
+          receipt_url: receiptUrl,
+          customer_name: customerName,
+          country: customerCountry,
+          currency,
+          next_bill_date: nextBillDateAt,
+        } = paddleEvent;
+
+        const subscription = await db.getSubscriptionByPaddleId(
+          paddleSubscriptionId,
+        );
+
+        await db.receivedSubscriptionPayment({
+          _user: user._id,
+          _subscription: subscription._id,
+          _paddlePlanId: subscriptionPlanId,
+          _paddleOrderId: orderId,
+          _paddleCheckoutId: checkoutId,
+          _paddleUserId: userId,
+          quantity,
+          unitPrice,
+          saleGross,
+          fee,
+          earnings,
+          tax,
+          paymentMethod,
+          coupon,
+          receiptUrl,
+          customerName,
+          customerCountry,
+          currency,
+          nextBillDateAt,
+        });
+
+        break;
+      }
+      case 'subscription_payment_refunded': {
         break;
       }
     }

@@ -409,22 +409,48 @@ class Db extends EventEmitter {
     return Plan.findOne({ _paddleProductId: paddlePlanId }).select('_id');
   }
 
-  async subscriptionCreated(data) {
+  async getSubscriptionByPaddleId(paddleSubscriptionId) {
+    return Subscription.findOne({
+      _paddleSubscriptionId: paddleSubscriptionId,
+    }).select('_id');
+  }
+
+  async createSubscription(data) {
     return new Subscription({
       ...data,
     }).save();
   }
 
+  async subscriptionPastDue(id) {
+    return Subscription.findByIdAndUpdate(id, {
+      status: 'past_due',
+    });
+  }
+
   async subscriptionUpdated(id, data) {
     return Subscription.findByIdAndUpdate(id, {
+      status: 'active',
+      lastUpdatedAt: Date.now,
       ...data,
     });
   }
 
-  async cancelSubscription(id) {
-    return Subscription.findByIdAndUpdate(id, {
-      status: 'deleted',
-    });
+  async cancelSubscription(paddleSubscriptionId) {
+    return Subscription.findOne(
+      {
+        _paddleSubscriptionId: paddleSubscriptionId,
+      },
+      {
+        status: 'deleted',
+        cancelledAt: Date.now,
+      },
+    );
+  }
+
+  async subscriptionPayment(data) {
+    return new Payment({
+      ...data,
+    }).save();
   }
 
   async notify(userId, type, data) {
