@@ -1,0 +1,16 @@
+{
+  "name": "api-prod",
+  "alias": "prod.api",
+  "scale": {
+    "bru1": {
+      "min": 1,
+      "max": "auto"
+    }
+  },
+  "env": {
+    "NODE_ENV": "production",
+    "APP_MODE": "live",
+    "DB_CONNECTION_URI": "@db_connection_uri"
+  },
+  "version": 1
+}

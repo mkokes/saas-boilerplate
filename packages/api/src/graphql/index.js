@@ -1,5 +1,4 @@
 const { ApolloServer } = require('apollo-server-koa');
-const createGraphQLLogger = require('graphql-log');
 
 const schema = require('./schema');
 const createResolvers = require('./resolvers');
@@ -9,6 +8,8 @@ module.exports = ({ config, db, server: app, log: parentLog }) => {
 
   const resolvers = createResolvers({ config, db });
   if (config.APP_MODE === 'dev') {
+    /* eslint-disable-next-line */
+    const createGraphQLLogger = require('graphql-log');
     const logExecutions = createGraphQLLogger({
       logger: log.debug,
     });
