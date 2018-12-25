@@ -29,5 +29,4 @@ module.exports = ({ config, db, server: app, log: parentLog }) => {
   });
 
   server.applyMiddleware({ app });
-  log.info('initiated');
 };

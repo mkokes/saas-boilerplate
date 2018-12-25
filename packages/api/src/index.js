@@ -1,4 +1,5 @@
 const Koa = require('koa');
+const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
 const Router = require('koa-router');
 const Serialize = require('php-serialize');
@@ -12,7 +13,7 @@ const setupAuthMiddleware = require('./auth');
 const setupGraphQLEndpoint = require('./graphql');
 
 const init = async () => {
-  log.info(`app mode: ${config.APP_MODE}`);
+  log.info(`App mode: ${config.APP_MODE}`);
 
   const db = await connectDb({ config, log });
   await createProcessor({ config, log, db });
@@ -36,10 +37,10 @@ const init = async () => {
   setupAuthMiddleware({ config, db, server, log });
   setupGraphQLEndpoint({ config, db, server, log });
 
-  router.get('/paddle-webhooks', async ctx => {
-    log.info(JSON.stringify(paddleEvent));
-
+  router.post('/paddle-webhooks', async ctx => {
+    console.log(JSON.stringify(ctx));
     const { body: paddleEvent } = ctx;
+
     const {
       p_signature: paddleSignature,
       alert_name: eventName,
@@ -243,13 +244,12 @@ const init = async () => {
     }
   });
 
+  server.use(bodyParser());
   server.use(router.routes());
   server.listen(config.PORT, err => {
     if (err) {
       throw err;
     }
-
-    log.info('server started');
   });
 };
 

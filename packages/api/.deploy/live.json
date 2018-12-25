@@ -1,6 +1,6 @@
 {
-  "name": "api-prod",
-  "alias": "prod.api",
+  "name": "productname-api-live",
+  "alias": "live.api.domain.io",
   "scale": {
     "bru1": {
       "min": 1,
@@ -8,9 +8,13 @@
     }
   },
   "env": {
+    "LOG": "debug",
     "NODE_ENV": "production",
     "APP_MODE": "live",
-    "DB_CONNECTION_URI": "@db_connection_uri"
+    "DB_CONNECTION_URI": "@db_connection_uri",
+    "JWT_SECRET": "@jwt_secret",
+    "RECAPTCHA_SECRET_KEY": "@recaptcha_secret_key",
+    "LOGDNA_API_KEY": "@logdna_api_key"
   },
   "version": 1
 }

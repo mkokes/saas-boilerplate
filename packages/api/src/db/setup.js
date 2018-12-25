@@ -8,7 +8,5 @@ module.exports = async ({ config: { DB_CONNECTION_URI }, log: parentLog }) => {
     { useCreateIndex: true, useNewUrlParser: true },
   );
 
-  log.info('connected');
-
   return db;
 };
