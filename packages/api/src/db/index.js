@@ -204,7 +204,7 @@ class Db extends EventEmitter {
     _user.password = newPassword;
 
     resetPasswordToken.used = true;
-    resetPasswordToken.usedAt = Date.now();
+    resetPasswordToken.usedAt = Date.now;
 
     await _user.save();
     await resetPasswordToken.save();
@@ -251,7 +251,7 @@ class Db extends EventEmitter {
     }
 
     user.confirmationToken = null;
-    user.emailConfirmedAt = Date.now();
+    user.emailConfirmedAt = Date.now;
     await user.save();
 
     if (decodedToken.type === 'signup') {
@@ -424,6 +424,7 @@ class Db extends EventEmitter {
   async subscriptionPastDue(id) {
     return Subscription.findByIdAndUpdate(id, {
       status: 'past_due',
+      pastDueAt: Date.now,
     });
   }
 
@@ -436,7 +437,7 @@ class Db extends EventEmitter {
   }
 
   async cancelSubscription(paddleSubscriptionId) {
-    return Subscription.findOne(
+    return Subscription.findOneAndUpdate(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
       },
@@ -447,10 +448,23 @@ class Db extends EventEmitter {
     );
   }
 
-  async subscriptionPayment(data) {
+  async receivedSubscriptionPayment(data) {
     return new Payment({
       ...data,
     }).save();
+  }
+
+  async SubscriptionPaymentRefunded(paddleOrderId, data) {
+    return Payment.findOneAndUpdate(
+      {
+        _paddleOrderId: paddleOrderId,
+      },
+      {
+        status: 'refunded',
+        refundedAt: Date.now,
+        ...data,
+      },
+    );
   }
 
   async notify(userId, type, data) {

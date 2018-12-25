@@ -37,6 +37,8 @@ const init = async () => {
   setupGraphQLEndpoint({ config, db, server, log });
 
   router.get('/paddle-webhooks', async ctx => {
+    log.info(JSON.stringify(paddleEvent));
+
     const { body: paddleEvent } = ctx;
     const {
       p_signature: paddleSignature,
@@ -47,7 +49,6 @@ const init = async () => {
     } = paddleEvent;
     const user = JSON.parse(userData);
 
-    /*
     try {
       const serialize = Serialize.serialize(
         Object.keys(paddleSignature)
@@ -79,13 +80,13 @@ const init = async () => {
       }
     } catch (e) {
       ctx.throw(403, e.message);
-    } */
+    }
 
     /* eslint-disable default-case */
     switch (eventName) {
       case 'subscription_created': {
         const {
-          subscription_plan_id: subscriptionPlanId,
+          subscription_plan_id: paddleSubscriptionPlanId,
           checkout_id: checkoutId,
           currency,
           update_url: updateURL,
@@ -93,11 +94,17 @@ const init = async () => {
           next_bill_date: nextBillDateAt,
         } = paddleEvent;
 
-        const plan = await db.getPlanIdByPaddleId(subscriptionPlanId);
+        const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
+        if (!plan) {
+          throw new Error(
+            `Plan not found: Paddle ID. ${paddleSubscriptionPlanId}`,
+          );
+        }
+
         await db.createSubscription({
           _plan: plan._id,
           _user: user._id,
-          _paddleSubscriptionId: paddleSubscriptionId,
+          _paddlePlanId: paddleSubscriptionPlanId,
           _paddleCheckoutId: checkoutId,
           currency,
           updateURL,
@@ -111,6 +118,12 @@ const init = async () => {
         const subscription = await db.getSubscriptionByPaddleId(
           paddleSubscriptionId,
         );
+        if (!subscription) {
+          throw new Error(
+            `Subscription not found: Paddle ID. ${paddleSubscriptionId}`,
+          );
+        }
+
         switch (status) {
           case 'past_due': {
             await db.subscriptionPastDue(subscription._id);
@@ -118,16 +131,23 @@ const init = async () => {
           }
           case 'active': {
             const {
-              subscription_plan_id: subscriptionPlanId,
+              subscription_plan_id: paddleSubscriptionPlanId,
               checkout_id: checkoutId,
               update_url: updateURL,
               cancel_url: cancelURL,
               next_bill_date: nextBillDateAt,
             } = paddleEvent;
 
-            const plan = await db.getPlanIdByPaddleId(subscriptionPlanId);
+            const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
+            if (!plan) {
+              throw new Error(
+                `Plan not found: Paddle ID. ${paddleSubscriptionPlanId}`,
+              );
+            }
+
             await db.subscriptionUpdated(subscription._id, {
               _plan: plan._id,
+              _paddlePlanId: paddleSubscriptionPlanId,
               _paddleCheckoutId: checkoutId,
               updateURL,
               cancelURL,
@@ -144,7 +164,7 @@ const init = async () => {
       }
       case 'subscription_payment_succeeded': {
         const {
-          subscription_plan_id: subscriptionPlanId,
+          subscription_plan_id: paddleSubscriptionPlanId,
           order_id: orderId,
           checkout_id: checkoutId,
           user_id: userId,
@@ -166,11 +186,23 @@ const init = async () => {
         const subscription = await db.getSubscriptionByPaddleId(
           paddleSubscriptionId,
         );
+        if (!subscription) {
+          throw new Error(
+            `Subscription not found: Paddle ID. ${paddleSubscriptionId}`,
+          );
+        }
+        const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
+        if (!plan) {
+          throw new Error(
+            `Plan not found: Paddle ID. ${paddleSubscriptionPlanId}`,
+          );
+        }
 
         await db.receivedSubscriptionPayment({
           _user: user._id,
           _subscription: subscription._id,
-          _paddlePlanId: subscriptionPlanId,
+          _plan: plan._id,
+          _paddlePlanId: paddleSubscriptionPlanId,
           _paddleOrderId: orderId,
           _paddleCheckoutId: checkoutId,
           _paddleUserId: userId,
@@ -182,16 +214,30 @@ const init = async () => {
           tax,
           paymentMethod,
           coupon,
-          receiptUrl,
           customerName,
           customerCountry,
           currency,
+          receiptUrl,
           nextBillDateAt,
         });
 
         break;
       }
       case 'subscription_payment_refunded': {
+        const {
+          order_id: orderId,
+          amount: amountRefund,
+          gross_refund: saleGrossRefund,
+          tax_refund: taxRefund,
+          fee_refund: feeRefund,
+        } = paddleEvent;
+
+        await db.SubscriptionPaymentRefunded(orderId, {
+          amountRefund,
+          saleGrossRefund,
+          feeRefund,
+          taxRefund,
+        });
         break;
       }
     }

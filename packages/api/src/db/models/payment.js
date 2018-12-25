@@ -18,6 +18,12 @@ const Payment = new mongoose.Schema({
     default: null,
     index: true,
   },
+  _plan: {
+    type: Schema.Types.ObjectId,
+    ref: 'Plan',
+    default: null,
+    index: true,
+  },
   _paddlePlanId: {
     type: String,
     default: null,
@@ -33,6 +39,10 @@ const Payment = new mongoose.Schema({
   _paddleUserId: {
     type: String,
     default: null,
+  },
+  status: {
+    type: String,
+    default: 'ok',
   },
   quantity: {
     type: Number,
@@ -54,6 +64,14 @@ const Payment = new mongoose.Schema({
     type: Number,
     default: null,
   },
+  earnings: {
+    type: Number,
+    default: null,
+  },
+  amountRefund: {
+    type: Number,
+    default: null,
+  },
   saleGrossRefund: {
     type: Number,
     default: null,
@@ -63,10 +81,6 @@ const Payment = new mongoose.Schema({
     default: null,
   },
   taxRefund: {
-    type: Number,
-    default: null,
-  },
-  earnings: {
     type: Number,
     default: null,
   },
@@ -97,6 +111,10 @@ const Payment = new mongoose.Schema({
   receivedAt: {
     type: Date,
     default: Date.now,
+  },
+  refundedAt: {
+    type: Date,
+    default: null,
   },
 });
 

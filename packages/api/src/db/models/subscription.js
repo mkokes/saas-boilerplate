@@ -22,6 +22,10 @@ const Subscription = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  _paddlePlanId: {
+    type: Number,
+    required: true,
+  },
   _paddleCheckoutId: {
     type: String,
     required: true,
@@ -49,6 +53,10 @@ const Subscription = new mongoose.Schema({
   subscribedAt: {
     type: Date,
     default: Date.now,
+  },
+  pastDueAt: {
+    type: Date,
+    default: null,
   },
   cancelledAt: {
     type: Date,
