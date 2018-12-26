@@ -52,9 +52,7 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
 
       const subscription = await db.getUserSubscription(user._id);
 
-      return {
-        ...subscription,
-      };
+      return subscription;
     },
   },
   Mutation: {

@@ -1,7 +1,7 @@
 const Koa = require('koa');
-const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
 const Router = require('koa-router');
+const koaBody = require('koa-body');
 const Serialize = require('php-serialize');
 const crypto = require('crypto');
 
@@ -19,6 +19,14 @@ const init = async () => {
   await createProcessor({ config, log, db });
 
   const server = new Koa();
+
+  server.use(koaBody());
+  server.use(async (ctx, next) => {
+    ctx.body = ctx.request.body;
+
+    await next();
+  });
+
   const router = new Router();
 
   server.use(
@@ -34,54 +42,80 @@ const init = async () => {
     await nextHandler();
   });
 
-  setupAuthMiddleware({ config, db, server, log });
-  setupGraphQLEndpoint({ config, db, server, log });
-
   router.post('/paddle-webhooks', async ctx => {
-    console.log(JSON.stringify(ctx));
-    const { body: paddleEvent } = ctx;
-
     const {
       p_signature: paddleSignature,
       alert_name: eventName,
       status,
       subscription_id: paddleSubscriptionId,
       passthrough: userData,
-    } = paddleEvent;
-    const user = JSON.parse(userData);
+    } = ctx.body;
 
     try {
-      const serialize = Serialize.serialize(
-        Object.keys(paddleSignature)
-          .sort()
-          // eslint-disable-next-line
-          .reduce((r, k) => ((r[k] = paddleSignature[k]), r), {}),
-      );
-      const verify = crypto.createVerify('RSA-SHA1');
-      verify.write(serialize);
-      verify.end();
+      /* eslint-disable */
+      function ksort(obj) {
+        const keys = Object.keys(obj).sort();
+        const sortedObj = {};
+
+        for (const i in keys) {
+          sortedObj[keys[i]] = obj[keys[i]];
+        }
+
+        return sortedObj;
+      }
 
       const PADDLE_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
-      3jiasSIDJojosda/asjdnFJSUHISABIiansfisauIUSH93hjiuJSNFiuhn3akmsf
-      8F/pZDYQDZeS/LZvWnorXTb7uamCsNuYOgh0/bmBDYOAIkoYvUrSadWHcBQj1hDy
-      BTScQKi/yY5J3aEv9syDgZcfxMdsjewiDJdhfIWnsnj4o0mRlNNQTb4QMWzShSSR
-      DrmoD5qelV/CJCZH9wmYy3oOpAZffFVTK+g+ouqVyBKViVH5Zum+opvx9Jz85XXN
-      IMVD+nkOUJTgC+MLftEF+8J6u7h8LBHaMyFzaY+O2gWhyPn7rkg5GJvXFmTpuXFc
-      6DZCxyzDwKG7YliJmgwcFRJaFJ6EPeeG+qUTsHoSVIikI0w2yunVFoFWCxKASVJM
-      6mYTM0Vtrhb/96mXY5jJQ4d3Zp3VL/o6SxDPkIo+bWAh4kt66/BPvUFY5bxItLmE
-      M6Z6ulQwNdAIz2TuIgj0efxGIzkXAvpzYYD/kUB789ObkDmfMKp/APW5vZT1UhqL
-      yV9xtIn7gIwAZxcQP6IxxvrZeZMAlF6vJpJkf1qyZgwlJmpWtJdXArA4gIU7VXe4
-      sYmVatElS/gM/V+83uDHisokqnc382uJshud802801jKNsshuhu9u09iJSDNuwjs
-      moil4WBGxur9OPADy8JGcOl4OdTETMoMMR1157iD8bTep6ZGD268ijPfpL6Kt7hB
-      rxovOHTh9+jrBNnnsIhbFp8CAwEAAQ==
-      -----END PUBLIC KEY-----`;
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyI5uVjrlEEIeyFcUkTMo
+LkKaZ/410F4jPFkUYRYsokFlaUvt1M/EAl3++GaLoQb7cwZ4oCxEvjBjdBFegCjr
+1l/u1uBul0frrJT9xZQy0vxIslEVZTMg1vTEjtzLbRkkJGb1azec+sHJViVXmFL2
+YeI1fjKG3nioDILz+72H9xLUi21Bij/ChA6imWISdC4Br8NmZkOz/LP3GcaKIQtE
+7NJSHrmF6N0E7p7R/+SHR6KBO1aIrA2YCBhenJ3nC780Jg7/AFNGqwj0ltx02PUC
+88QhIDmuOn6Q+QGSiDyAD+yrzsbC4DKYzYMcKTCHPK4KpaJsmFkQHyGqAhu4cbnF
+ewd2zvwC/nZTJsZ2J+3ycLTNNQegGwrxTZ7/4SpNsNp46A/Lb+vXu1cPNXHePjwc
+AyZQk9Hu6OTyo0MvwXa1+mhI2IwXh2n72Dgbo8C/krWD2MhwCl1oe0MvNEvs+3Y6
+7uP0jxFfyMBc0mEBY+zHgCNqJBsE9zsKOkrRNUbHm9DuN3PHuPLfRPE7NskbA8dO
+QYgnv0qmRy3ZdgZoZc/XoP3LlShNQawxeDbLwk5yZg333JI5bkWsG8Mlw6Z8MaZh
+sAwMAnGXfJpNDrLt3jS2wbhu2XFQKoAXc8uPE5XK1NFhNdOWdxrWZUkLO4QjkAcH
+agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
+-----END PUBLIC KEY-----`;
 
-      if (!verify.verify(PADDLE_PUBLIC_KEY, paddleSignature, 'base64')) {
-        throw new Error('INVALID_PADDLE_SIGNATURE');
+      let params = ctx.body;
+
+      const mySig = Buffer.from(params.p_signature, 'base64');
+      delete params.p_signature;
+      // Need to serialize array and assign to data object
+      params = ksort(params);
+      for (const property in params) {
+        if (
+          params.hasOwnProperty(property) &&
+          typeof params[property] !== 'string'
+        ) {
+          if (Array.isArray(params[property])) {
+            // is it an array
+            params[property] = params[property].toString();
+          } else {
+            // if its not an array and not a string, then it is a JSON obj
+            params[property] = JSON.stringify(params[property]);
+          }
+        }
       }
+      const serialized = Serialize.serialize(params);
+      // End serialize data object
+      const verifier = crypto.createVerify('sha1');
+      verifier.update(serialized);
+      verifier.end();
+
+      const verification = verifier.verify(PADDLE_PUBLIC_KEY, mySig);
+      if (!verification) {
+        throw new Error('INVALID_SIGNATURE');
+      }
+
+      /* eslint-enable */
     } catch (e) {
       ctx.throw(403, e.message);
     }
+
+    const user = JSON.parse(userData);
 
     /* eslint-disable default-case */
     switch (eventName) {
@@ -89,11 +123,13 @@ const init = async () => {
         const {
           subscription_plan_id: paddleSubscriptionPlanId,
           checkout_id: checkoutId,
+          quantity,
+          unit_price: unitPrice,
           currency,
           update_url: updateURL,
           cancel_url: cancelURL,
           next_bill_date: nextBillDateAt,
-        } = paddleEvent;
+        } = ctx.body;
 
         const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
         if (!plan) {
@@ -102,11 +138,14 @@ const init = async () => {
           );
         }
 
-        await db.createSubscription({
+        await db.createSubscription(user._id, {
           _plan: plan._id,
           _user: user._id,
+          _paddleSubscriptionId: paddleSubscriptionId,
           _paddlePlanId: paddleSubscriptionPlanId,
           _paddleCheckoutId: checkoutId,
+          quantity,
+          unitPrice,
           currency,
           updateURL,
           cancelURL,
@@ -137,7 +176,7 @@ const init = async () => {
               update_url: updateURL,
               cancel_url: cancelURL,
               next_bill_date: nextBillDateAt,
-            } = paddleEvent;
+            } = ctx.body;
 
             const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
             if (!plan) {
@@ -182,7 +221,7 @@ const init = async () => {
           country: customerCountry,
           currency,
           next_bill_date: nextBillDateAt,
-        } = paddleEvent;
+        } = ctx.body;
 
         const subscription = await db.getSubscriptionByPaddleId(
           paddleSubscriptionId,
@@ -231,7 +270,7 @@ const init = async () => {
           gross_refund: saleGrossRefund,
           tax_refund: taxRefund,
           fee_refund: feeRefund,
-        } = paddleEvent;
+        } = ctx.body;
 
         await db.SubscriptionPaymentRefunded(orderId, {
           amountRefund,
@@ -244,8 +283,11 @@ const init = async () => {
     }
   });
 
-  server.use(bodyParser());
   server.use(router.routes());
+
+  setupAuthMiddleware({ config, db, server, log });
+  setupGraphQLEndpoint({ config, db, server, log });
+
   server.listen(config.PORT, err => {
     if (err) {
       throw err;

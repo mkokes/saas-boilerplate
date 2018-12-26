@@ -31,6 +31,7 @@ const Payment = new mongoose.Schema({
   _paddleOrderId: {
     type: String,
     default: null,
+    unique: true,
   },
   _paddleCheckoutId: {
     type: String,

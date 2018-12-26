@@ -91,15 +91,11 @@ class Db extends EventEmitter {
   }
 
   async getUserSubscription(userId) {
-    const user = await this._getUser(userId);
+    const subscription = await Subscription.findOne({ _user: userId }).select(
+      '-_id status updateURL cancelURL',
+    );
 
-    if (!user) {
-      return {};
-    }
-
-    await user.populate('_subscription').execPopulate();
-
-    return user._subscription;
+    return subscription;
   }
 
   async existsUserWithEmail(email) {
@@ -415,17 +411,21 @@ class Db extends EventEmitter {
     }).select('_id');
   }
 
-  async createSubscription(data) {
-    return new Subscription({
+  async createSubscription(userId, data) {
+    const subscription = await new Subscription({
       ...data,
     }).save();
+
+    await User.findByIdAndUpdate(userId, {
+      _subscription: subscription._id,
+    }).exec();
   }
 
   async subscriptionPastDue(id) {
     return Subscription.findByIdAndUpdate(id, {
       status: 'past_due',
       pastDueAt: Date.now,
-    });
+    }).exec();
   }
 
   async subscriptionUpdated(id, data) {
@@ -433,11 +433,11 @@ class Db extends EventEmitter {
       status: 'active',
       lastUpdatedAt: Date.now,
       ...data,
-    });
+    }).exec();
   }
 
   async cancelSubscription(paddleSubscriptionId) {
-    return Subscription.findOneAndUpdate(
+    const subscription = Subscription.findOneAndUpdate(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
       },
@@ -445,7 +445,11 @@ class Db extends EventEmitter {
         status: 'deleted',
         cancelledAt: Date.now,
       },
-    );
+    ).exec();
+
+    await User.findByIdAndUpdate(subscription._user, {
+      _subscription: null,
+    }).exec();
   }
 
   async receivedSubscriptionPayment(data) {
@@ -464,7 +468,7 @@ class Db extends EventEmitter {
         refundedAt: Date.now,
         ...data,
       },
-    );
+    ).exec();
   }
 
   async notify(userId, type, data) {

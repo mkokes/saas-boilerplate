@@ -21,14 +21,24 @@ const Subscription = new mongoose.Schema({
   _paddleSubscriptionId: {
     type: Number,
     required: true,
+    unique: true,
   },
   _paddlePlanId: {
+    type: Number,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  unitPrice: {
     type: Number,
     required: true,
   },
   _paddleCheckoutId: {
     type: String,
     required: true,
+    unique: true,
   },
   status: {
     type: String,

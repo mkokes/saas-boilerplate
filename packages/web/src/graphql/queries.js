@@ -21,12 +21,10 @@ export const isUserEmailConfirmedQuery = gql`
 
 export const UserSubscriptionQuery = gql`
   query getUserSubscription {
-    userSubscription @requireAuth {
-      _id
-      _plan {
-        displayName
-      }
+    subscription: userSubscription @requireAuth {
       status
+      updateURL
+      cancelURL
     }
   }
 `;

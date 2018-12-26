@@ -22,9 +22,9 @@ const typeDefs = `
     billingInterval: String
   }
   type Subscription {
-    _id: String
-    _plan: Plan
     status: String
+    updateUrl: String
+    cancelUrl: String
   }
   type LegalAgreement {
     type: LegalAgreementType!

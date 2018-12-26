@@ -7,6 +7,7 @@ const Plan = new mongoose.Schema({
   _paddleProductId: {
     type: Number,
     required: true,
+    unique: true,
   },
   status: {
     type: String,
@@ -20,7 +21,7 @@ const Plan = new mongoose.Schema({
     type: String,
     required: true,
   },
-  amount: {
+  price: {
     type: Number,
     required: true,
   },

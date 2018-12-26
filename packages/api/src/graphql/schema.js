@@ -24,9 +24,9 @@ module.exports = gql`
     billingInterval: String
   }
   type Subscription {
-    _id: String
-    _plan: Plan
     status: String
+    updateURL: String
+    cancelURL: String
   }
   type LegalAgreement {
     type: LegalAgreementType!
