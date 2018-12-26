@@ -29,7 +29,9 @@ class Db extends EventEmitter {
   }
 
   async _getUser(userId, { mustExist = false } = {}) {
-    const user = await User.findOne({ _id: userId }).exec();
+    const user = await User.findOne({ _id: userId })
+      .populate('_subscription', '_id _plan')
+      .exec();
 
     if (mustExist && !user) {
       throw new Error(`User not found: ${userId}`);
@@ -55,6 +57,7 @@ class Db extends EventEmitter {
 
     const {
       _id,
+      _subscription,
       lastLoginAt,
       registeredAt,
       email,
@@ -75,6 +78,9 @@ class Db extends EventEmitter {
       ...(canViewPrivateFields
         ? {
             _id: _id.toString(),
+            _subscription: {
+              _id: _subscription ? _subscription.toString() : null,
+            },
             fullName,
             email,
             lastLoginAt,
@@ -91,11 +97,30 @@ class Db extends EventEmitter {
   }
 
   async getUserSubscription(userId) {
-    const subscription = await Subscription.findOne({ _user: userId }).select(
-      '-_id status updateURL cancelURL',
-    );
+    const subscription = await Subscription.findOne({ _user: userId })
+      .select('-_id status unitPrice updateURL cancelURL nextBillDateAt')
+      .populate('_plan', '_id name billingInterval');
 
     return subscription;
+  }
+
+  async getUserPayments(userId) {
+    const payments = await Payment.find({ _user: userId });
+
+    return payments;
+  }
+
+  async getActiveSubscriptionPlans() {
+    const _plans = await Plan.find({ status: 'active' });
+
+    const plans = _plans.map(obj => {
+      const plan = obj.toObject();
+      plan._id = plan._id.toString();
+
+      return plan;
+    });
+
+    return plans;
   }
 
   async existsUserWithEmail(email) {
@@ -418,6 +443,7 @@ class Db extends EventEmitter {
 
     await User.findByIdAndUpdate(userId, {
       _subscription: subscription._id,
+      isInTrialPeriod: false, // suspend trial period if user decided to upgrade
     }).exec();
   }
 

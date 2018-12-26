@@ -108,7 +108,7 @@ export default class PreferencesPage extends React.PureComponent {
                                   component={ReactstrapCheckbox}
                                   name="MARKETING_INFO"
                                   value={values.MARKETING_INFO}
-                                  label="I agree to receive news and announcements"
+                                  label="News and announcements"
                                   type="checkbox"
                                 />
 

@@ -13,10 +13,6 @@ const Plan = new mongoose.Schema({
     type: String,
     default: 'active',
   },
-  displayName: {
-    type: String,
-    required: true,
-  },
   name: {
     type: String,
     required: true,

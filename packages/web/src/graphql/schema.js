@@ -5,6 +5,7 @@ const typeDefs = `
   }
   type UserProfile {
     _id: String
+    _subscription: Subscription
     fullName: String
     nickname: String
     email: String
@@ -15,16 +16,26 @@ const typeDefs = `
     trialPeriodStartedAt: String
     legal: [LegalAgreement]
   }
+  type UserPaymentReceipts {
+    saleGross: String
+    receiptURL: String
+    receivedAt: String
+  }
   type Plan {
     _id: String
-    displayName: String
-    amount: Int
+    _paddleProductId: Int
+    name: String
+    price: Int
     billingInterval: String
   }
   type Subscription {
+    _id: String
+    _plan: Plan
     status: String
-    updateUrl: String
-    cancelUrl: String
+    unitPrice: Int
+    updateURL: String
+    cancelURL: String
+    nextBillDateAt: String
   }
   type LegalAgreement {
     type: LegalAgreementType!

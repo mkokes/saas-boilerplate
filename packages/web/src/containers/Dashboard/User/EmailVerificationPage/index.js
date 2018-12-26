@@ -41,9 +41,10 @@ export default class EmailVerificationPage extends React.PureComponent {
                   <Col md="12" className="text-center">
                     <SafeQuery
                       query={isUserEmailConfirmedQuery}
-                      fetchPolicy="network-only"
+                      fetchPolicy="cache-and-network"
                       pollInterval={3000}
                       keepExistingResultDuringRefetch
+                      showError
                     >
                       {({ data: { profile = {} } }) => {
                         if (profile.isSignUpEmailConfirmed) {

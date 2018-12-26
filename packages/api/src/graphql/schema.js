@@ -7,6 +7,7 @@ module.exports = gql`
   }
   type UserProfile {
     _id: String
+    _subscription: Subscription
     fullName: String
     nickname: String
     email: String
@@ -17,16 +18,26 @@ module.exports = gql`
     trialPeriodStartedAt: String
     legal: [LegalAgreement]
   }
+  type UserPaymentReceipts {
+    saleGross: String
+    receiptURL: String
+    receivedAt: String
+  }
   type Plan {
     _id: String
-    displayName: String
-    amount: Int
+    _paddleProductId: Int
+    name: String
+    price: Int
     billingInterval: String
   }
   type Subscription {
+    _id: String
+    _plan: Plan
     status: String
+    unitPrice: Int
     updateURL: String
     cancelURL: String
+    nextBillDateAt: String
   }
   type LegalAgreement {
     type: LegalAgreementType!
@@ -60,6 +71,8 @@ module.exports = gql`
   type Query {
     userProfile: UserProfile
     userSubscription: Subscription
+    userPaymentReceipts: [UserPaymentReceipts]
+    activeSubscriptionPlans: [Plan]
   }
   type Mutation {
     signUpUser(
