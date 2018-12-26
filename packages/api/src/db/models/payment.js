@@ -27,19 +27,23 @@ const Payment = new mongoose.Schema({
   _paddlePlanId: {
     type: String,
     default: null,
+    index: true,
   },
   _paddleOrderId: {
     type: String,
     default: null,
     unique: true,
+    index: true,
   },
   _paddleCheckoutId: {
     type: String,
     default: null,
+    index: true,
   },
   _paddleUserId: {
     type: String,
     default: null,
+    index: true,
   },
   status: {
     type: String,

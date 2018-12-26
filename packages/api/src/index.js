@@ -216,7 +216,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
           payment_tax: tax,
           payment_method: paymentMethod,
           coupon,
-          receipt_url: receiptUrl,
+          receipt_url: receiptURL,
           customer_name: customerName,
           country: customerCountry,
           currency,
@@ -257,7 +257,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
           customerName,
           customerCountry,
           currency,
-          receiptUrl,
+          receiptURL,
           nextBillDateAt,
         });
 

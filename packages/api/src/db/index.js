@@ -17,6 +17,7 @@ const {
   FORGOT_PASSWORD,
   PASSWORD_RESETED,
   PASSWORD_CHANGED,
+  EMAIL_CHANGED,
   WELCOME_EMAIL,
 } = require('../constants/notifications');
 
@@ -29,9 +30,7 @@ class Db extends EventEmitter {
   }
 
   async _getUser(userId, { mustExist = false } = {}) {
-    const user = await User.findOne({ _id: userId })
-      .populate('_subscription', '_id _plan')
-      .exec();
+    const user = await User.findOne({ _id: userId }).exec();
 
     if (mustExist && !user) {
       throw new Error(`User not found: ${userId}`);
@@ -54,6 +53,17 @@ class Db extends EventEmitter {
     if (!user) {
       return {};
     }
+
+    await user
+      .populate({
+        path: '_subscription',
+        select: '_id',
+        populate: {
+          path: '_plan',
+          select: '_id',
+        },
+      })
+      .execPopulate();
 
     const {
       _id,
@@ -79,7 +89,10 @@ class Db extends EventEmitter {
         ? {
             _id: _id.toString(),
             _subscription: {
-              _id: _subscription ? _subscription.toString() : null,
+              _id: _subscription ? _subscription._id.toString() : null,
+              _plan: {
+                _id: _subscription ? _subscription._plan._id.toString() : null,
+              },
             },
             fullName,
             email,
@@ -254,9 +267,13 @@ class Db extends EventEmitter {
       throw new Error('UNABLE_EMAIL_CONFIRMATION');
     }
 
+    const oldUserEmail = user.email;
+
     switch (decodedToken.type) {
       case 'signup':
-        if (user.isSignUpEmailConfirmed) return;
+        if (user.isSignUpEmailConfirmed) {
+          throw new Error('SIGNUP_EMAIL_ALREADY_VERIFIED');
+        }
 
         user.isSignUpEmailConfirmed = true;
         break;
@@ -275,10 +292,20 @@ class Db extends EventEmitter {
     user.emailConfirmedAt = Date.now;
     await user.save();
 
-    if (decodedToken.type === 'signup') {
-      this.notify(user._id, WELCOME_EMAIL, {
-        email: user.email,
-      });
+    switch (decodedToken.type) {
+      case 'signup':
+        this.notify(user._id, WELCOME_EMAIL, {
+          email: user.email,
+        });
+        break;
+      case 'change':
+        this.notify(user._id, EMAIL_CHANGED, {
+          email: oldUserEmail,
+          newEmail: user.email,
+        });
+        break;
+      default:
+        break;
     }
   }
 
@@ -366,6 +393,10 @@ class Db extends EventEmitter {
   async generate2FAUser(userId) {
     const user = await this._getUser(userId, { mustExist: true });
 
+    if (user.isTwoFactorAuthenticationEnabled) {
+      throw new Error('2FA_ALREADY_ENABLED');
+    }
+
     const secret = authenticator.generateSecret();
 
     user.twoFactorAuthenticationSecret = secret;
@@ -398,6 +429,10 @@ class Db extends EventEmitter {
   async confirmEnable2FAUser(userId, token) {
     const user = await this._getUser(userId, { mustExist: true });
 
+    if (user.isTwoFactorAuthenticationEnabled) {
+      throw new Error('2FA_ALREADY_ENABLED');
+    }
+
     const isValid = otplib.authenticator.check(
       token,
       user.twoFactorAuthenticationSecret,
@@ -412,6 +447,10 @@ class Db extends EventEmitter {
 
   async disable2FA(userId, token) {
     const user = await this._getUser(userId, { mustExist: true });
+
+    if (!user.isTwoFactorAuthenticationEnabled) {
+      throw new Error('2FA_ALREADY_DISABLED');
+    }
 
     const isValid = otplib.authenticator.check(
       token,

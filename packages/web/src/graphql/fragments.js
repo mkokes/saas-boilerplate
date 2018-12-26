@@ -5,6 +5,9 @@ export const ProfileFields = gql`
     _id
     _subscription {
       _id
+      _plan {
+        _id
+      }
     }
     fullName
     nickname

@@ -23,7 +23,6 @@ const NotificationSchema = new mongoose.Schema({
   emailSent: {
     type: Boolean,
     default: false,
-    index: true,
   },
   generatedAt: {
     type: Date,

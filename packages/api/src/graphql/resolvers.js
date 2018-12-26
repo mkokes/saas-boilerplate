@@ -8,7 +8,7 @@ const { MARKETING_INFO } = require('../constants/legal');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
-// We set our own JWT iat to avoid Clock skew issue: @URL: https://en.wikipedia.org/wiki/Clock_skew
+// We set our own JWT iat to avoid the Clock skew issue: @URL: https://en.wikipedia.org/wiki/Clock_skew
 const createAccessToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {

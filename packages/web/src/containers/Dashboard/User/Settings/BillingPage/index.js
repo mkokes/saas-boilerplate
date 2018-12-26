@@ -170,18 +170,24 @@ export default class BillingPage extends React.PureComponent {
                                     getTdProps: () => ({
                                       className: 'text-center',
                                     }),
+                                    Cell: row => (
+                                      <Moment
+                                        format="L"
+                                        date={Number(row.value)}
+                                      />
+                                    ),
                                   },
                                   {
                                     Header: 'Amount',
                                     accessor: 'saleGross',
+                                    Cell: row => <span>${row.value}</span>,
                                   },
                                   {
                                     Header: 'View receipt',
-                                    accessor: 'receiptUrl',
+                                    accessor: 'receiptURL',
                                     Cell: row => (
                                       <a
-                                        href="#download"
-                                        onClick={() => alert(row.value)}
+                                        href={row.value}
                                         style={{ color: '#808080' }}
                                       >
                                         <FontAwesomeIcon
