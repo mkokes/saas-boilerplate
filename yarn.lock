@@ -11333,6 +11333,12 @@ react-spinners@^0.4.7:
     react-emotion "^9.1.1"
     recompose "0.27.1 - 0.30.0"
 
+react-switch@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-3.0.4.tgz#52958b2736b4d21b4f0050997955c5365019ca7b"
+  dependencies:
+    prop-types "^15.6.1"
+
 react-table@^6.8.6:
   version "6.8.6"
   resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.8.6.tgz#a0ad8b4839319052d5befc012603fb161e52ede3"

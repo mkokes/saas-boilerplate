@@ -7,12 +7,13 @@
 import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 
-import { Row, Col, Card, Button, Alert } from 'reactstrap';
+import { Row, Col, Card, Button, Alert, UncontrolledTooltip } from 'reactstrap';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ApolloConsumer } from 'react-apollo';
 import ReactTable from 'react-table';
 import Moment from 'react-moment';
+import Switch from 'react-switch';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
@@ -25,8 +26,49 @@ import { PaddleCheckoutAPI } from 'api/vendors';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class BillingPage extends React.PureComponent {
+  constructor() {
+    super();
+
+    this.state = { checked: true };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(checked) {
+    this.setState({ checked });
+  }
+
   render() {
-    const renderPlanIdActionButton = (planId, userCurrentPlanId) => {};
+    const { checked } = this.state;
+
+    const renderPlanActionButton = (plan, user) => {
+      const { _subscription } = user;
+
+      if (!_subscription) {
+        return (
+          <Button
+            color="primary"
+            onClick={() => PaddleCheckoutAPI.checkout(plan._paddleProductId)}
+          >
+            Subscribe
+          </Button>
+        );
+      }
+
+      if (_subscription && _subscription._plan._id === plan._id) {
+        return <span>Your current plan</span>;
+      }
+
+      return (
+        <Button
+          color="primary"
+          onClick={() => {
+            alert('change plan req');
+          }}
+        >
+          Change Plan
+        </Button>
+      );
+    };
 
     return (
       <Fragment>
@@ -75,6 +117,22 @@ export default class BillingPage extends React.PureComponent {
                                       </Alert>
                                     )}
 
+                                    <span className="float-right">
+                                      <a href={subscription.updateURL}>
+                                        <Button className="mr-2">
+                                          Update Payment Method
+                                        </Button>
+                                      </a>
+                                      <a href={subscription.cancelURL}>
+                                        <Button
+                                          color="link"
+                                          size="sm"
+                                          className="d-block"
+                                        >
+                                          Cancel Subscription
+                                        </Button>
+                                      </a>
+                                    </span>
                                     <p>
                                       Current plan:{' '}
                                       <strong>{subscription._plan.name}</strong>
@@ -87,7 +145,7 @@ export default class BillingPage extends React.PureComponent {
                                       </strong>
                                     </p>
                                     <p>
-                                      Next bill date at:{' '}
+                                      Next payment date at:{' '}
                                       <strong>
                                         <Moment
                                           format="LL"
@@ -97,18 +155,6 @@ export default class BillingPage extends React.PureComponent {
                                         />
                                       </strong>
                                     </p>
-                                    <div className="float-right">
-                                      <a href={subscription.updateURL}>
-                                        <Button className="mr-2">
-                                          Update Payment Method
-                                        </Button>
-                                      </a>
-                                      <a href={subscription.cancelURL}>
-                                        <Button color="danger">
-                                          Cancel Subscription
-                                        </Button>
-                                      </a>
-                                    </div>
                                   </Fragment>
                                 )}
                               </SafeQuery>
@@ -123,7 +169,33 @@ export default class BillingPage extends React.PureComponent {
                         )}
                       </Col>
                     </Row>
-                    <legend>Subscription plans</legend>
+                    <legend>
+                      Subscription plans{' '}
+                      <label
+                        htmlFor="normal-switch"
+                        id="billing-switch"
+                        className="d-flex align-items-center float-right"
+                      >
+                        <Switch
+                          onChange={this.handleChange}
+                          checked={this.state.checked}
+                          onColor="#7EB6FF"
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          id="normal-switch"
+                          className="mr-1"
+                        />
+
+                        <small>{checked ? 'Yearly' : 'Monthly'}</small>
+                      </label>
+                      <UncontrolledTooltip
+                        placement="top"
+                        target="billing-switch"
+                      >
+                        Switch to {checked ? 'monthly' : 'yearly'} billing
+                      </UncontrolledTooltip>
+                    </legend>
+
                     <Row>
                       <Col>
                         <SafeQuery
@@ -135,13 +207,14 @@ export default class BillingPage extends React.PureComponent {
                           {({ data: { plans = [] } }) => (
                             <Fragment>
                               {plans.map(plan => (
-                                <Row>
+                                <Row key={plan._id}>
                                   <Col>{plan.name}</Col>
                                   <Col>
-                                    ${plan.price}/{plan.billingInterval}
+                                    ${plan.price.toFixed(2)}/
+                                    {plan.billingInterval}
                                   </Col>
                                   <Col>
-                                    {renderPlanIdActionButton(plan._id, 123)}
+                                    {renderPlanActionButton(plan, userProfile)}
                                   </Col>
                                 </Row>
                               ))}

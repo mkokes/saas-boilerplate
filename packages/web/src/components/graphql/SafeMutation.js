@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 
 import ErrorBox from 'components/ErrorBox';
-
+import Loader from 'components/Loader';
 import { transformApolloErr } from 'utils/apollo';
 
 export const DEFAULT_IS_LOADING = ({ loading }) => loading;
@@ -14,7 +14,7 @@ export const DEFAULT_RENDER_ERROR = ({ error }) => {
 
   return <ErrorBox>{transformedError.message}</ErrorBox>;
 };
-export const DEFAULT_RENDER_LOADING = () => <div>Loading</div>;
+export const DEFAULT_RENDER_LOADING = () => <Loader />;
 
 DEFAULT_RENDER_ERROR.propTypes = {
   error: PropTypes.string,
