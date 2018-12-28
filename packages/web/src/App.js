@@ -7,7 +7,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import AppLoadPage from 'components/AppLoadPage';
+import AppLoader from 'components/AppLoader';
 import ScrollToTop from 'components/ScrollToTop';
 import NotFoundPage from 'components/NotFoundPage/Loadable';
 import Middleware from 'components/Middleware';
@@ -179,7 +179,7 @@ export default function App() {
               </Router>
             </>
           ) : (
-            <AppLoadPage />
+            <AppLoader />
           )}
         </>
       )}

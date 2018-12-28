@@ -8,7 +8,7 @@ const LoaderContainer = styled('div')`
   align-items: center;
 `;
 
-const LoaderWrapper = ({ large }) => (
+const Loader = ({ large }) => (
   <LoaderContainer>
     <svg
       width={large ? '80' : '40'}
@@ -43,8 +43,8 @@ const LoaderWrapper = ({ large }) => (
   </LoaderContainer>
 );
 
-LoaderWrapper.propTypes = {
+Loader.propTypes = {
   large: PropTypes.bool,
 };
 
-export default LoaderWrapper;
+export default Loader;

@@ -12,10 +12,10 @@ import { Container, Row, Col, Alert } from 'reactstrap';
 import queryString from 'query-string';
 import { withApollo } from 'react-apollo';
 
-import LoadingIndicator from 'components/LoadingIndicator';
 import { ConfirmUserEmail } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { AnalyticsApi } from 'api/vendors';
+import Loader from 'components/Loader';
 
 function EmailConfirmationPage(props) {
   const [alertMessage, setAlertMessage] = useState({});
@@ -65,7 +65,7 @@ function EmailConfirmationPage(props) {
                 <strong>{alertMessage.text}</strong>
               </Alert>
             ) : (
-              <LoadingIndicator />
+              <Loader />
             )}
           </Col>
         </Row>

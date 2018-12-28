@@ -1,17 +1,22 @@
 /**
  *
- * AppLoadPage
+ * AppLoader
  *
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 const Container = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 `;
 const LoadingIconContainer = styled.div`
   div {
@@ -27,25 +32,17 @@ const LoadingText = styled.h1`
 `;
 
 /* eslint-disable react/prefer-stateless-function */
-function AppLoadPage() {
-  const [display, setDisplay] = useState('none');
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDisplay('block'), 300); // show app load indicator only if it takes >300ms
-
-    return function cleanup() {
-      clearTimeout(timer);
-    };
-  });
-
+function AppLoader() {
   return (
-    <Container style={{ display }}>
+    <Container>
       <LoadingIconContainer>
         <ClipLoader sizeUnit="em" size={7} />
       </LoadingIconContainer>
-      <LoadingText>Loading</LoadingText>
+      <span>
+        <LoadingText>Loading</LoadingText>
+      </span>
     </Container>
   );
 }
 
-export default AppLoadPage;
+export default AppLoader;
