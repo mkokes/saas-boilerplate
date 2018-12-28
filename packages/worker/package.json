@@ -15,7 +15,7 @@
     "bunyan": "^1.8.12",
     "envalid": "^4.1.4",
     "graphql": "^14.0.2",
-    "ioredis": "3.2.2",
+    "ioredis": "4.3.0",
     "lodash.get": "^4.4.2",
     "now": "^11.4.6",
     "p-queue": "^3.0.0"
