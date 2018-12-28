@@ -111,7 +111,15 @@ class Provider extends Component {
     await this.signIn();
     const { profile } = this.state.auth;
 
-    if (profile) AnalyticsApi.alias(profile._id);
+    if (profile) {
+      AnalyticsApi.alias(profile._id);
+
+      AnalyticsApi.people.set({
+        $email: profile.email,
+        $created: new Date(),
+        $last_login: new Date(),
+      });
+    }
   };
 
   logIn = async () => {

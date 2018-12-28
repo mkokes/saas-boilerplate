@@ -2,11 +2,11 @@
   ☐ User Dashboard
     ☐ Settings
       ☐ Profile
-        ☐ Fix buttons layout grid
+        ✔ Fix buttons layout grid @started(18-12-28 19:03) @done(18-12-28 19:22) @lasted(19m27s)
       ☐ Preferences
         ☐ User timezone
       ☐ Billing
-        ☐ Refactor GraphQL
+        ☐ Refactor GraphQL @started(18-12-28 20:48)
         ☐ On subscription subscribed or subscription cancellation update the UI
         ☐ Handle plans upgrade/downgrade
   ☐ Change Toastify alerts design @low

@@ -54,17 +54,6 @@ class Db extends EventEmitter {
       return {};
     }
 
-    await user
-      .populate({
-        path: '_subscription',
-        select: '_id',
-        populate: {
-          path: '_plan',
-          select: '_id',
-        },
-      })
-      .execPopulate();
-
     const {
       _id,
       _subscription,
@@ -88,12 +77,7 @@ class Db extends EventEmitter {
       ...(canViewPrivateFields
         ? {
             _id: _id.toString(),
-            _subscription: {
-              _id: _subscription ? _subscription._id.toString() : null,
-              _plan: {
-                _id: _subscription ? _subscription._plan._id.toString() : null,
-              },
-            },
+            _subscription: _subscription ? _subscription.toString() : null,
             fullName,
             email,
             lastLoginAt,

@@ -112,7 +112,7 @@ export default class ProfilePage extends React.PureComponent {
                           Max file size is 20Mb.
                         </p>
                       </Col>
-                      <Col xs="2">
+                      <Col xs="4">
                         <Button disabled>Upload</Button>
                       </Col>
                     </Row>
@@ -136,7 +136,7 @@ export default class ProfilePage extends React.PureComponent {
                           .
                         </p>
                       </Col>
-                      <Col sm="2">
+                      <Col sm="5">
                         <Button onClick={this.toggleChangePasswordModal}>
                           Change Password
                         </Button>

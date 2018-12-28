@@ -21,4 +21,11 @@ export const AnalyticsApi = {
       window.mixpanel.identify(userId);
     }
   },
+  people: {
+    set(data) {
+      if (MIXPANEL_ID && window.mixpanel) {
+        window.mixpanel.people.set({ ...data });
+      }
+    },
+  },
 };
