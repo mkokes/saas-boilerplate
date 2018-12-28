@@ -8,14 +8,14 @@ const GlobalStyle = createGlobalStyle`
   }
   legend {
     display: block;
-width: 100%;
-padding: 0;
-margin-bottom: 20px;
-font-size: 21px;
-line-height: 40px;
-color: #333;
-border: 0;
-border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: 40px;
+    color: #333;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
   }
   #app {
     height: 100%;
