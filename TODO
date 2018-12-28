@@ -1,11 +1,23 @@
 ☐ Website
   ☐ User Dashboard
     ☐ Settings
+      ☐ Profile
+        ☐ Fix buttons layout grid
       ☐ Preferences
+        ☐ User timezone
       ☐ Billing
+        ☐ Refactor GraphQL
+        ☐ On subscription subscribed or subscription cancellation update the UI
+        ☐ Handle plans upgrade/downgrade
+  ☐ Change Toastify alerts design @low
 ☐ API Back-end
-☐ Analytics Server
+✔ Analytics Server @done(18-12-28 05:33)
 ☐ API Docs
 ☐ Blog
+  ☐ Use Dependabot blog
+    https://github.com/alfonmga/website
 ☐ Scheduler Server
 ☐ Worker Server
+☐ Misc
+  ✔ Stage server @done(18-12-28 05:32)
+  ☐ Test Mixpanel.com
