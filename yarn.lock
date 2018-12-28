@@ -13421,9 +13421,9 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
-use-async-effect@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/use-async-effect/-/use-async-effect-1.1.1.tgz#9b35e362363aad389ba8e34597fd7185bc100fb2"
+use-async-effect@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/use-async-effect/-/use-async-effect-2.0.0.tgz#fbb1504b467cd35d89496f49ae57b0d2a0367c8b"
 
 use@^3.1.0:
   version "3.1.1"
