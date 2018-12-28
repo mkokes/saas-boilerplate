@@ -27,14 +27,14 @@ module.exports = gql`
     _id: String
     _paddleProductId: Int
     name: String
-    price: Int
+    price: Float
     billingInterval: String
   }
   type Subscription {
     _id: String
     _plan: Plan
     status: String
-    unitPrice: Int
+    unitPrice: Float
     updateURL: String
     cancelURL: String
     nextBillDateAt: String

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+mongoose.set('useFindAndModify', false);
+
 module.exports = async ({ config: { DB_CONNECTION_URI }, log: parentLog }) => {
   const log = parentLog.create('db/setup');
 

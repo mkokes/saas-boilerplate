@@ -80,9 +80,9 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
 -----END PUBLIC KEY-----`;
 
       let params = ctx.body;
-
-      const mySig = Buffer.from(params.p_signature, 'base64');
       delete params.p_signature;
+
+      const mySig = Buffer.from(paddleSignature, 'base64');
       // Need to serialize array and assign to data object
       params = ksort(params);
       for (const property in params) {
@@ -223,25 +223,12 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
           next_bill_date: nextBillDateAt,
         } = ctx.body;
 
-        const subscription = await db.getSubscriptionByPaddleId(
-          paddleSubscriptionId,
-        );
-        if (!subscription) {
-          throw new Error(
-            `Subscription not found: Paddle ID. ${paddleSubscriptionId}`,
-          );
-        }
         const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
-        if (!plan) {
-          throw new Error(
-            `Plan not found: Paddle ID. ${paddleSubscriptionPlanId}`,
-          );
-        }
 
         await db.receivedSubscriptionPayment({
           _user: user._id,
-          _subscription: subscription._id,
-          _plan: plan._id,
+          _plan: plan ? plan._id : null,
+          _paddleSubscriptionId: paddleSubscriptionId,
           _paddlePlanId: paddleSubscriptionPlanId,
           _paddleOrderId: orderId,
           _paddleCheckoutId: checkoutId,

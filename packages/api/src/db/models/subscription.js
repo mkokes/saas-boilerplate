@@ -32,7 +32,6 @@ const Subscription = new mongoose.Schema({
   _paddleCheckoutId: {
     type: String,
     required: true,
-    unique: true,
     index: true,
   },
   quantity: {

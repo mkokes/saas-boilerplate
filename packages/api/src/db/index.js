@@ -110,7 +110,10 @@ class Db extends EventEmitter {
   }
 
   async getUserSubscription(userId) {
-    const subscription = await Subscription.findOne({ _user: userId })
+    const subscription = await Subscription.findOne({
+      _user: userId,
+      status: 'active',
+    })
       .select('-_id status unitPrice updateURL cancelURL nextBillDateAt')
       .populate('_plan', '_id name billingInterval');
 
@@ -238,7 +241,7 @@ class Db extends EventEmitter {
     _user.password = newPassword;
 
     resetPasswordToken.used = true;
-    resetPasswordToken.usedAt = Date.now;
+    resetPasswordToken.usedAt = Date.now();
 
     await _user.save();
     await resetPasswordToken.save();
@@ -289,7 +292,7 @@ class Db extends EventEmitter {
     }
 
     user.confirmationToken = null;
-    user.emailConfirmedAt = Date.now;
+    user.emailConfirmedAt = Date.now();
     await user.save();
 
     switch (decodedToken.type) {
@@ -489,26 +492,26 @@ class Db extends EventEmitter {
   async subscriptionPastDue(id) {
     return Subscription.findByIdAndUpdate(id, {
       status: 'past_due',
-      pastDueAt: Date.now,
+      pastDueAt: Date.now(),
     }).exec();
   }
 
   async subscriptionUpdated(id, data) {
     return Subscription.findByIdAndUpdate(id, {
       status: 'active',
-      lastUpdatedAt: Date.now,
+      lastUpdatedAt: Date.now(),
       ...data,
     }).exec();
   }
 
   async cancelSubscription(paddleSubscriptionId) {
-    const subscription = Subscription.findOneAndUpdate(
+    const subscription = await Subscription.findOneAndUpdate(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
       },
       {
         status: 'deleted',
-        cancelledAt: Date.now,
+        cancelledAt: Date.now(),
       },
     ).exec();
 
@@ -530,7 +533,7 @@ class Db extends EventEmitter {
       },
       {
         status: 'refunded',
-        refundedAt: Date.now,
+        refundedAt: Date.now(),
         ...data,
       },
     ).exec();

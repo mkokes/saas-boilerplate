@@ -12,16 +12,15 @@ const Payment = new mongoose.Schema({
     default: null,
     index: true,
   },
-  _subscription: {
-    type: Schema.Types.ObjectId,
-    ref: 'Subscription',
-    default: null,
-    index: true,
-  },
   _plan: {
     type: Schema.Types.ObjectId,
     ref: 'Plan',
     default: null,
+    index: true,
+  },
+  _paddleSubscriptionId: {
+    type: Number,
+    required: true,
     index: true,
   },
   _paddlePlanId: {
@@ -32,7 +31,6 @@ const Payment = new mongoose.Schema({
   _paddleOrderId: {
     type: String,
     default: null,
-    unique: true,
     index: true,
   },
   _paddleCheckoutId: {

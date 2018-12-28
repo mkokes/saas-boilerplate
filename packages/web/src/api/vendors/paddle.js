@@ -19,4 +19,11 @@ export const PaddleCheckoutAPI = {
       });
     }
   },
+  async open(paddleUrl) {
+    if (window.Paddle) {
+      window.Paddle.Checkout.open({
+        override: paddleUrl,
+      });
+    }
+  },
 };

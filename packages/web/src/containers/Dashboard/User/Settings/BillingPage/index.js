@@ -29,45 +29,57 @@ export default class BillingPage extends React.PureComponent {
   constructor() {
     super();
 
-    this.state = { checked: true };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(checked) {
-    this.setState({ checked });
+    this.state = { billingSwitchChecked: true };
   }
 
   render() {
-    const { checked } = this.state;
+    const { billingSwitchChecked } = this.state;
 
-    const renderPlanActionButton = (plan, user) => {
-      const { _subscription } = user;
+    const PlansList = props => {
+      const _renderPlanActionButton = plan => {
+        if (!_subscription._id) {
+          return (
+            <Button
+              color="primary"
+              onClick={() => PaddleCheckoutAPI.checkout(plan._paddleProductId)}
+            >
+              Subscribe
+            </Button>
+          );
+        }
 
-      if (!_subscription) {
+        if (_subscription._id && _subscription._plan._id === plan._id) {
+          return <strong>Your current plan</strong>;
+        }
+
         return (
           <Button
             color="primary"
-            onClick={() => PaddleCheckoutAPI.checkout(plan._paddleProductId)}
+            onClick={() => {
+              alert('change plan req');
+            }}
           >
-            Subscribe
+            Change Plan
           </Button>
         );
-      }
+      };
 
-      if (_subscription && _subscription._plan._id === plan._id) {
-        return <span>Your current plan</span>;
-      }
+      const { plans, user } = props;
+      const { _subscription } = user;
 
-      return (
-        <Button
-          color="primary"
-          onClick={() => {
-            alert('change plan req');
-          }}
-        >
-          Change Plan
-        </Button>
+      const filteredPlans = plans.filter(
+        plan => (plan.billingInterval === 'year') === billingSwitchChecked,
       );
+
+      return filteredPlans.map(plan => (
+        <Row key={plan._id} className="mb-2">
+          <Col>{plan.name}</Col>
+          <Col>
+            ${plan.price.toFixed(2)}/{plan.billingInterval}
+          </Col>
+          <Col>{_renderPlanActionButton(plan)}</Col>
+        </Row>
+      ));
     };
 
     return (
@@ -118,20 +130,28 @@ export default class BillingPage extends React.PureComponent {
                                     )}
 
                                     <span className="float-right">
-                                      <a href={subscription.updateURL}>
-                                        <Button className="mr-2">
-                                          Update Payment Method
-                                        </Button>
-                                      </a>
-                                      <a href={subscription.cancelURL}>
-                                        <Button
-                                          color="link"
-                                          size="sm"
-                                          className="d-block"
-                                        >
-                                          Cancel Subscription
-                                        </Button>
-                                      </a>
+                                      <Button
+                                        onClick={() =>
+                                          PaddleCheckoutAPI.open(
+                                            subscription.updateURL,
+                                          )
+                                        }
+                                        className="mr-2"
+                                      >
+                                        Update Payment Method
+                                      </Button>
+                                      <Button
+                                        onClick={() =>
+                                          PaddleCheckoutAPI.open(
+                                            subscription.cancelURL,
+                                          )
+                                        }
+                                        color="link"
+                                        size="sm"
+                                        className="d-block"
+                                      >
+                                        Cancel Subscription
+                                      </Button>
                                     </span>
                                     <p>
                                       Current plan:{' '}
@@ -177,8 +197,12 @@ export default class BillingPage extends React.PureComponent {
                         className="d-flex align-items-center float-right"
                       >
                         <Switch
-                          onChange={this.handleChange}
-                          checked={this.state.checked}
+                          onChange={checked => {
+                            this.setState({
+                              billingSwitchChecked: checked,
+                            });
+                          }}
+                          checked={this.state.billingSwitchChecked}
                           onColor="#7EB6FF"
                           uncheckedIcon={false}
                           checkedIcon={false}
@@ -186,13 +210,16 @@ export default class BillingPage extends React.PureComponent {
                           className="mr-1"
                         />
 
-                        <small>{checked ? 'Yearly' : 'Monthly'}</small>
+                        <small>
+                          {billingSwitchChecked ? 'Yearly' : 'Monthly'}
+                        </small>
                       </label>
                       <UncontrolledTooltip
                         placement="top"
                         target="billing-switch"
                       >
-                        Switch to {checked ? 'monthly' : 'yearly'} billing
+                        Switch to {billingSwitchChecked ? 'monthly' : 'yearly'}{' '}
+                        billing
                       </UncontrolledTooltip>
                     </legend>
 
@@ -206,18 +233,7 @@ export default class BillingPage extends React.PureComponent {
                         >
                           {({ data: { plans = [] } }) => (
                             <Fragment>
-                              {plans.map(plan => (
-                                <Row key={plan._id}>
-                                  <Col>{plan.name}</Col>
-                                  <Col>
-                                    ${plan.price.toFixed(2)}/
-                                    {plan.billingInterval}
-                                  </Col>
-                                  <Col>
-                                    {renderPlanActionButton(plan, userProfile)}
-                                  </Col>
-                                </Row>
-                              ))}
+                              <PlansList plans={plans} user={userProfile} />
                             </Fragment>
                           )}
                         </SafeQuery>
@@ -261,6 +277,7 @@ export default class BillingPage extends React.PureComponent {
                                     Cell: row => (
                                       <a
                                         href={row.value}
+                                        target="_new"
                                         style={{ color: '#808080' }}
                                       >
                                         <FontAwesomeIcon
