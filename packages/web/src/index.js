@@ -15,6 +15,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-table/react-table.css';
 
+import * as serviceWorker from 'serviceWorker';
+
 import { AnalyticsApi } from 'api/vendors';
 
 import { GlobalProvider } from 'GlobalState';
@@ -22,7 +24,6 @@ import GlobalStyle from 'GlobalStyle';
 
 import App from 'App';
 import { clientInstance } from './graphql';
-import registerServiceWorker from './registerServiceWorker';
 
 // Observe font loading
 /* const robotoFontObserver = new FontFaceObserver('Roboto', {});
@@ -43,4 +44,4 @@ ReactDOM.render(
   document.getElementById('app'),
 );
 
-registerServiceWorker();
+serviceWorker.unregister();
