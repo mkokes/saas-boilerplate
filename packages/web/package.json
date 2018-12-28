@@ -91,7 +91,7 @@
     "yup": "^0.26.6"
   },
   "devDependencies": {
-    "babel-eslint": "9",
+    "babel-eslint": "10",
     "babel-plugin-styled-components": "^1.8.0",
     "env-cmd": "^8.0.2",
     "eslint": "5.6.0",
