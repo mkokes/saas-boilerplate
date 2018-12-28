@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "deploy": "now -f --public"
+    "deploy": "yarn now -f --local-config=.deploy/live.json && yarn now --local-config=.deploy/live.json alias",
+    "release": "yarn deploy && yarn now rm dcabot-analytics --safe --yes"
+
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",
@@ -24,6 +26,6 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1",
-    "now": "^11.4.6"
+    "now": "^12.1.1"
   }
 }
