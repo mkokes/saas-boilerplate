@@ -72,7 +72,7 @@
     "jwt-decode": "^2.2.0",
     "loadable-components": "^2.2.3",
     "lodash": "^4.17.10",
-    "qrcode.react": "^0.8.0",
+    "qrcode.react": "^0.9.1",
     "query-string": "^6.2.0",
     "react-apollo": "^2.2.4",
     "react-helmet": "^5.2.0",
