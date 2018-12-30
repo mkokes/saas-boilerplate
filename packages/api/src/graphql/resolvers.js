@@ -2,6 +2,7 @@ const safeGet = require('lodash.get');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
+const axios = require('axios');
 
 const { WEBSITE_CONTACT_FORM } = require('../constants/notifications');
 const { MARKETING_INFO } = require('../constants/legal');
@@ -36,7 +37,11 @@ const assertUser = async user => {
   }
 };
 
-module.exports = ({ config: { JWT_SECRET }, db }) => ({
+module.exports = ({
+  config: { JWT_SECRET, PADDLE_VENDOR_ID, PADDLE_VENDOR_AUTH_CODE },
+  db,
+  log,
+}) => ({
   Query: {
     userProfile: async (_, __, { user }) => {
       await assertUser(user);
@@ -566,6 +571,58 @@ module.exports = ({ config: { JWT_SECRET }, db }) => ({
         user._id,
         validatedNotifications,
       );
+    },
+    chageUserSubscriptionPlan: async (_, { planId }, { user }) => {
+      assertUser(user);
+
+      if (!planId) {
+        throw new ApolloError('Request validation failed', 'NEED_PLANID_INPUT');
+      }
+
+      const currentUserSubscription = await db.getUserSubscription(user._id);
+      if (!currentUserSubscription) {
+        throw new ApolloError(
+          'Not active subscription found',
+          'USER_NOT_ACTIVE_SUBSCRIPTION',
+        );
+      }
+      if (currentUserSubscription._plan === planId) {
+        throw new Error('CANNOT_CHANGE_SAME_PLAN');
+      }
+
+      const plan = await db.getPlanById(planId);
+      if (!plan) {
+        throw new ApolloError('Requested plan was not found', 'PLAN_NOT_FOUND');
+      }
+      if (plan.status !== 'active') {
+        throw new ApolloError(
+          'Requested plan is not active',
+          'PLAN_NOT_ACTIVE',
+        );
+      }
+
+      try {
+        const response = await axios.post(
+          'https://vendors.paddle.com/api/2.0/subscription/users/update',
+          {
+            vendor_id: PADDLE_VENDOR_ID,
+            vendor_auth_code: PADDLE_VENDOR_AUTH_CODE,
+            subscription_id: currentUserSubscription._paddleSubscriptionId,
+            plan_id: plan._paddleProductId,
+            quantity: 1,
+            bill_immediately: true,
+          },
+        );
+        const paddleResponse = response.data;
+        if (!paddleResponse.success) {
+          throw new Error(paddleResponse.error.message);
+        }
+      } catch (e) {
+        log.error(e);
+        throw e;
+      }
+
+      return true;
     },
     requestEnable2FA: async (_, __, { user }) => {
       await assertUser(user);

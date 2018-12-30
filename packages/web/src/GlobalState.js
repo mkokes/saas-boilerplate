@@ -113,7 +113,6 @@ class Provider extends Component {
 
     if (profile) {
       AnalyticsApi.alias(profile._id);
-
       AnalyticsApi.people.set({
         $email: profile.email,
         $created: new Date(),

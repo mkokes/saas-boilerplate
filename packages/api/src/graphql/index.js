@@ -4,9 +4,9 @@ const schema = require('./schema');
 const createResolvers = require('./resolvers');
 
 module.exports = ({ config, db, server: app, log: parentLog }) => {
-  const log = parentLog.create('apollo');
+  const log = parentLog.create('graphql');
 
-  const resolvers = createResolvers({ config, db });
+  const resolvers = createResolvers({ config, db, log });
   if (config.APP_MODE === 'dev') {
     /* eslint-disable-next-line */
     const createGraphQLLogger = require('graphql-log');

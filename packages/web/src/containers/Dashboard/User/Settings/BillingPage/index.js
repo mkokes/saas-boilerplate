@@ -6,13 +6,14 @@
 
 import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
-
 import { Row, Col, Card, Button, Alert, UncontrolledTooltip } from 'reactstrap';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTable from 'react-table';
 import Moment from 'react-moment';
 import Switch from 'react-switch';
+import { ApolloConsumer } from 'react-apollo';
+import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
@@ -22,6 +23,8 @@ import {
   ActiveSubscriptionPlans,
 } from 'graphql/queries';
 import { PaddleCheckoutAPI } from 'api/vendors';
+import { ChageUserSubscriptionPlan } from 'graphql/mutations';
+import { transformApolloErr } from 'utils/apollo';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class BillingPage extends React.PureComponent {
@@ -29,6 +32,80 @@ export default class BillingPage extends React.PureComponent {
     super();
 
     this.state = { billingSwitchChecked: true };
+    this.renderSubscriptionPlans = this.renderSubscriptionPlans.bind(this);
+  }
+
+  renderSubscriptionPlans(currentPlan, plans) {
+    const _renderPlanActionButton = plan => {
+      if (!currentPlan) {
+        return (
+          <Button
+            color="primary"
+            onClick={() => PaddleCheckoutAPI.checkout(plan._paddleProductId)}
+          >
+            Subscribe
+          </Button>
+        );
+      }
+
+      if (
+        currentPlan &&
+        currentPlan._plan._paddleProductId === plan._paddleProductId
+      ) {
+        return <strong>Your current plan</strong>;
+      }
+
+      return (
+        <ApolloConsumer>
+          {client => (
+            <Button
+              color="primary"
+              onClick={async () => {
+                try {
+                  await client.mutate({
+                    mutation: ChageUserSubscriptionPlan,
+                    variables: {
+                      planId: plan._id,
+                    },
+                  });
+
+                  toast.success(
+                    'Your subscription plan was changed successfully!',
+                    {
+                      position: toast.POSITION.TOP_CENTER,
+                    },
+                  );
+                } catch (e) {
+                  const err = transformApolloErr(e);
+
+                  toast.error(err.message, {
+                    position: toast.POSITION.TOP_CENTER,
+                  });
+                }
+              }}
+            >
+              Change Plan
+            </Button>
+          )}
+        </ApolloConsumer>
+      );
+    };
+
+    const { billingSwitchChecked } = this.state;
+
+    const filteredPlans = plans.filter(
+      plan => (plan.billingInterval === 'year') === billingSwitchChecked,
+    );
+
+    return filteredPlans.map(plan => (
+      <Row key={plan._id} className="mb-2">
+        <Col>{plan.name}</Col>
+        <Col>
+          ${plan.price.toFixed(2)}/{plan.billingInterval}
+        </Col>
+        <Col>{_renderPlanActionButton(plan)}</Col>
+      </Row>
+    ));
   }
 
   render() {
@@ -60,73 +137,14 @@ export default class BillingPage extends React.PureComponent {
                       <Fragment>
                         <SafeQuery
                           query={UserSubscriptionQuery}
+                          keepExistingResultDuringRefetch
                           fetchPolicy="network-only"
                           showLoading
                           showError
                         >
-                          {({ data: { subscription = {} } }) => (
-                            <Fragment>
-                              {subscription ? (
-                                <Fragment>
-                                  {subscription.status === 'past_due' && (
-                                    <Alert color="danger">
-                                      <strong>
-                                        IMPORTANT: Unfortunately, we could not
-                                        bill you again. Please, update your
-                                        payment method before it is too late and
-                                        we cancel your current subscription.
-                                      </strong>
-                                    </Alert>
-                                  )}
-
-                                  <span className="float-right">
-                                    <Button
-                                      onClick={() =>
-                                        PaddleCheckoutAPI.open(
-                                          subscription.updateURL,
-                                        )
-                                      }
-                                      className="mr-2"
-                                    >
-                                      Update Payment Method
-                                    </Button>
-                                    <Button
-                                      onClick={() =>
-                                        PaddleCheckoutAPI.open(
-                                          subscription.cancelURL,
-                                        )
-                                      }
-                                      color="link"
-                                      size="sm"
-                                      className="d-block"
-                                    >
-                                      Cancel Subscription
-                                    </Button>
-                                  </span>
-                                  <p>
-                                    Current plan:{' '}
-                                    <strong>{subscription._plan.name}</strong>
-                                  </p>
-                                  <p>
-                                    Price:{' '}
-                                    <strong>
-                                      ${subscription.unitPrice.toFixed(2)}/
-                                      {subscription._plan.billingInterval}
-                                    </strong>
-                                  </p>
-                                  <p>
-                                    Next payment date at:{' '}
-                                    <strong>
-                                      <Moment
-                                        format="LL"
-                                        date={Number(
-                                          subscription.nextBillDateAt,
-                                        )}
-                                      />
-                                    </strong>
-                                  </p>
-                                </Fragment>
-                              ) : (
+                          {({ data: { subscription } }) => {
+                            if (!subscription) {
+                              return (
                                 <Alert
                                   color="warning"
                                   className="text-center"
@@ -137,9 +155,69 @@ export default class BillingPage extends React.PureComponent {
                                     this time
                                   </strong>
                                 </Alert>
-                              )}
-                            </Fragment>
-                          )}
+                              );
+                            }
+
+                            return (
+                              <Fragment>
+                                {subscription.status === 'past_due' && (
+                                  <Alert color="danger">
+                                    <strong>
+                                      IMPORTANT: Unfortunately, we could not
+                                      bill you again. Please, update your
+                                      payment method before it is too late and
+                                      we cancel your current subscription.
+                                    </strong>
+                                  </Alert>
+                                )}
+
+                                <span className="float-right">
+                                  <Button
+                                    onClick={() =>
+                                      PaddleCheckoutAPI.open(
+                                        subscription.updateURL,
+                                      )
+                                    }
+                                    className="mr-2"
+                                  >
+                                    Update Payment Method
+                                  </Button>
+                                  <Button
+                                    onClick={() =>
+                                      PaddleCheckoutAPI.open(
+                                        subscription.cancelURL,
+                                      )
+                                    }
+                                    color="link"
+                                    size="sm"
+                                    className="d-block"
+                                  >
+                                    Cancel Subscription
+                                  </Button>
+                                </span>
+                                <p>
+                                  Current plan:{' '}
+                                  <strong>{subscription._plan.name}</strong>
+                                </p>
+                                <p>
+                                  Price:{' '}
+                                  <strong>
+                                    ${subscription.unitPrice.toFixed(2)}/
+                                    {subscription._plan.billingInterval}
+                                  </strong>
+                                </p>
+                                <p>
+                                  Next payment date at:{' '}
+                                  <strong>
+                                    <Moment
+                                      format="LL"
+                                      date={Number(subscription.nextBillDateAt)}
+                                    />
+                                  </strong>
+                                </p>
+                              </Fragment>
+                            );
+                          }}
                         </SafeQuery>
                       </Fragment>
                     )}
@@ -179,10 +257,15 @@ export default class BillingPage extends React.PureComponent {
                     <SafeQuery
                       query={ActiveSubscriptionPlans}
                       fetchPolicy="network-only"
+                      keepExistingResultDuringRefetch
                       showLoading
                       showError
                     >
-                      {({ data: { plans = [] } }) => <Fragment />}
+                      {({ data: { currentPlan, plans = [] } }) => (
+                        <Fragment>
+                          {this.renderSubscriptionPlans(currentPlan, plans)}
+                        </Fragment>
+                      )}
                     </SafeQuery>
                   </Col>
                 </Row>
@@ -191,7 +274,8 @@ export default class BillingPage extends React.PureComponent {
                   <Col>
                     <SafeQuery
                       query={UserPaymentReceipts}
-                      fetchPolicy="cache-and-network"
+                      fetchPolicy="network-only"
+                      keepExistingResultDuringRefetch
                       showLoading
                       showError
                     >

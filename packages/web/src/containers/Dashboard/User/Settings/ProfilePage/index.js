@@ -117,7 +117,7 @@ export default class ProfilePage extends React.PureComponent {
                       </Col>
                     </Row>
                     <hr />
-                    <Row>
+                    <Row className="align-items-center">
                       <Col xs="12" sm="4">
                         <p
                           style={{
@@ -293,7 +293,7 @@ export default class ProfilePage extends React.PureComponent {
                       </Col>
                     </Row>
                     <hr />
-                    <Row>
+                    <Row >
                       <Col xs="12" sm="4">
                         <p
                           style={{

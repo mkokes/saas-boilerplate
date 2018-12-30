@@ -98,14 +98,19 @@ class Db extends EventEmitter {
       _user: userId,
       status: 'active',
     })
-      .select('-_id status unitPrice updateURL cancelURL nextBillDateAt')
-      .populate('_plan', '_id name billingInterval');
+      .select(
+        '_id _paddleSubscriptionId status unitPrice updateURL cancelURL nextBillDateAt',
+      )
+      .populate('_plan', '_id name billingInterval _paddleProductId')
+      .exec();
 
     return subscription;
   }
 
   async getUserPayments(userId) {
-    const payments = await Payment.find({ _user: userId });
+    const payments = await Payment.find({ _user: userId }).sort({
+      receivedAt: -1,
+    });
 
     return payments;
   }
@@ -450,6 +455,10 @@ class Db extends EventEmitter {
     user.isTwoFactorAuthenticationEnabled = false;
     user.twoFactorAuthenticationSecret = null;
     await user.save();
+  }
+
+  async getPlanById(planId) {
+    return Plan.findById(planId).exec();
   }
 
   async getPlanIdByPaddleId(paddlePlanId) {

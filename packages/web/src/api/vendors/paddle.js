@@ -11,11 +11,7 @@ export const PaddleCheckoutAPI = {
         email: user.email,
         passthrough: JSON.stringify({ _id: user._id }),
         disableLogout: true,
-        successCallback: data => {
-          console.debug(data);
-          alert(JSON.stringify(data));
-          // redirect to /dashboard/order_verification?checkoutId=123
-        },
+        success: '/dashboard/settings/billing',
       });
     }
   },

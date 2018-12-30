@@ -112,6 +112,12 @@ export const UpdateUserNotificationsPreferences = gql`
   }
 `;
 
+export const ChageUserSubscriptionPlan = gql`
+  mutation chageUserSubscriptionPlan($planId: String!) {
+    success: chageUserSubscriptionPlan(planId: $planId) @requireAuth
+  }
+`;
+
 export const RequestEnable2FA = gql`
   mutation requestEnable2FA {
     requestEnable2FA @requireAuth {

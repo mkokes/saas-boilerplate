@@ -27,6 +27,7 @@
     "deploy:analytics": "(cd packages/analytics && yarn deploy)",
     "deploy:worker": "(cd packages/worker && yarn deploy)",
     "release:api": "(cd packages/api && yarn release:live)",
+    "release:api:stage": "(cd packages/api && yarn release:stage)",
     "release:scheduler": "(cd packages/scheduler && yarn release)",
     "release:analytics": "(cd packages/analytics && yarn release)",
     "release:worker": "(cd packages/worker && yarn release)"

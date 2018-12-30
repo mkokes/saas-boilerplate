@@ -94,6 +94,7 @@ module.exports = gql`
     updateUserNotificationsPreferences(
       notifications: UserNotificationsPreferencesInput!
     ): UserProfile
+    chageUserSubscriptionPlan(planId: String!): Boolean
     requestEnable2FA: TwoFactorAuthentication
     confirmEnable2FA(password: String!, token: String!): Boolean
     disable2FA(token: String!): Boolean

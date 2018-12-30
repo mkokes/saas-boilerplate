@@ -23,20 +23,17 @@ export const UserPaymentReceipts = gql`
 
 export const ActiveSubscriptionPlans = gql`
   query getActiveSubscriptionPlans {
+    currentPlan: userSubscription @requireAuth {
+      _plan {
+        _paddleProductId
+      }
+    }
     plans: activeSubscriptionPlans @requireAuth {
       _id
       _paddleProductId
       name
       price
       billingInterval
-    }
-  }
-`;
-
-export const isUserEmailConfirmedQuery = gql`
-  query getUserProfile {
-    profile: userProfile @requireAuth {
-      isSignUpEmailConfirmed
     }
   }
 `;
@@ -53,6 +50,14 @@ export const UserSubscriptionQuery = gql`
       updateURL
       cancelURL
       nextBillDateAt
+    }
+  }
+`;
+
+export const isUserEmailConfirmedQuery = gql`
+  query getUserProfile {
+    profile: userProfile @requireAuth {
+      isSignUpEmailConfirmed
     }
   }
 `;

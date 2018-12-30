@@ -10,6 +10,8 @@ const env = envalid.cleanEnv(
     APP_MODE: str({ default: 'dev' }),
     LOG: str({ default: 'debug' }),
     LOGDNA_API_KEY: str({ default: '' }),
+    PADDLE_VENDOR_ID: str({ default: '' }),
+    PADDLE_VENDOR_AUTH_CODE: str({ default: '' }),
   },
   {
     dotEnvPath: '.env',

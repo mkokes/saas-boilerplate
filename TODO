@@ -6,10 +6,13 @@
       ☐ Preferences
         ☐ User timezone
       ☐ Billing
-        ☐ Refactor GraphQL @started(18-12-28 20:48)
-        ☐ On subscription subscribed or subscription cancellation update the UI
-        ☐ Handle plans upgrade/downgrade
+        ✔ Refactor GraphQL @started(18-12-30 11:15) @done(18-12-30 12:03) @lasted(48m35s)
+        ✔ On subscription subscribed success redirect @done(18-12-30 20:16)
+        ☐ Handle plans upgrade/downgrade @started(18-12-30 21:04)
+          ✔ Confirm if Paddle.com allows billing freq downgrade e.g. from `annual` plan to `monthly` @done(18-12-30 21:04) @lasted(2m26s)
   ☐ Change Toastify alerts design @low
+  ☐ Email confirmation design page
+  ☐ Refactor analytics to use GA
 ☐ API Back-end
 ✔ Analytics Server @done(18-12-28 05:33)
 ☐ API Docs
