@@ -167,7 +167,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
 
         switch (status) {
           case 'past_due': {
-            await db.subscriptionPastDue(subscription._id);
+            await db.subscriptionPaymentPastDue(subscription._id);
             break;
           }
           case 'active': {
@@ -207,7 +207,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
         break;
       }
       case 'subscription_cancelled': {
-        await db.cancelSubscription(paddleSubscriptionId);
+        await db.cancelSubscriptionPayment(paddleSubscriptionId);
         break;
       }
       case 'subscription_payment_succeeded': {

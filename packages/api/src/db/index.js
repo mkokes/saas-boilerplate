@@ -482,7 +482,7 @@ class Db extends EventEmitter {
     }).exec();
   }
 
-  async subscriptionPastDue(id) {
+  async subscriptionPaymentPastDue(id) {
     return Subscription.findByIdAndUpdate(id, {
       status: 'past_due',
       pastDueAt: Date.now(),
@@ -497,20 +497,16 @@ class Db extends EventEmitter {
     }).exec();
   }
 
-  async cancelSubscription(paddleSubscriptionId) {
-    const subscription = await Subscription.findOneAndUpdate(
+  async cancelSubscriptionPayment(paddleSubscriptionId) {
+    await Subscription.updateOne(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
       },
       {
-        status: 'deleted',
+        paymentStatus: 'deleted',
         cancelledAt: Date.now(),
       },
     ).exec();
-
-    await User.findByIdAndUpdate(subscription._user, {
-      _subscription: null,
-    }).exec();
   }
 
   async receivedSubscriptionPayment(data) {

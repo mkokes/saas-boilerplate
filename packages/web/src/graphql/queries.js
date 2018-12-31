@@ -46,6 +46,8 @@ export const UserSubscriptionQuery = gql`
         billingInterval
       }
       status
+      accessUntil
+      paymentStatus
       unitPrice
       updateURL
       cancelURL

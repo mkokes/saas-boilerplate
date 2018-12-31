@@ -238,13 +238,7 @@ export default class BillingPage extends React.PureComponent {
                                   Current plan:{' '}
                                   <strong>{subscription._plan.name}</strong>
                                 </p>
-                                <p>
-                                  Price:{' '}
-                                  <strong>
-                                    ${subscription.unitPrice.toFixed(2)}/
-                                    {subscription._plan.billingInterval}
-                                  </strong>
-                                </p>
+
                                 <p>
                                   Access until:{' '}
                                   <strong>
@@ -255,12 +249,22 @@ export default class BillingPage extends React.PureComponent {
                                   </strong>
                                 </p>
                                 <p>
+                                  Renew subscription status:{' '}
+                                  <strong>{subscription.paymentStatus}</strong>
+                                </p>
+                                <p>
                                   Next payment date at:{' '}
                                   <strong>
                                     <Moment
                                       format="LL"
                                       date={Number(subscription.nextBillDateAt)}
                                     />
+                                  </strong>
+                                </p>
+                                <p>
+                                  Payment amount:{' '}
+                                  <strong>
+                                    ${subscription.unitPrice.toFixed(2)}
                                   </strong>
                                 </p>
                               </Fragment>
