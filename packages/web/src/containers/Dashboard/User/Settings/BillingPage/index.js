@@ -37,6 +37,7 @@ export default class BillingPage extends React.PureComponent {
     const { location } = props;
 
     const urlParams = queryString.parse(location.search);
+    console.debug(urlParams);
     const { success } = urlParams;
 
     // eslint-disable-next-line default-case
