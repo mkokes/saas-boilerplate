@@ -174,6 +174,7 @@ export default function App() {
                     />
 
                     <Route component={NotFoundPage} />
+                    <Route path="/reload" component={null}/>
                   </Switch>
                 </ScrollToTop>
               </Router>

@@ -72,6 +72,7 @@ export default class BillingPage extends React.PureComponent {
             color="primary"
             onClick={() =>
               PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
+                history.push(`/reload`);
                 history.push('/dashboard/settings/billing?success=subscribed');
               })
             }
@@ -104,6 +105,7 @@ export default class BillingPage extends React.PureComponent {
                     },
                   });
 
+                  history.push(`/reload`);
                   history.push(
                     '/dashboard/settings/billing?success=plan_change',
                   );
