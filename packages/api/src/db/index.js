@@ -44,7 +44,7 @@ class Db extends EventEmitter {
   }
 
   async getUserById(id) {
-    return User.findById({ id }).exec();
+    return User.findById(id).exec();
   }
 
   async getUserProfile(userId, canViewPrivateFields = false) {
@@ -94,17 +94,17 @@ class Db extends EventEmitter {
   }
 
   async getUserSubscription(userId) {
-    const subscription = await Subscription.findOne({
-      _user: userId,
-      status: 'active',
-    })
-      .select(
-        '_id _paddleSubscriptionId status unitPrice updateURL cancelURL nextBillDateAt',
-      )
-      .populate('_plan', '_id name billingInterval _paddleProductId')
-      .exec();
+    const user = await this.getUserById(userId);
 
-    return subscription;
+    if (!user._subscription) {
+      return null;
+    }
+
+    await user
+      .populate({ path: '_subscription', populate: { path: '_plan' } })
+      .execPopulate();
+
+    return user._subscription;
   }
 
   async getUserPayments(userId) {

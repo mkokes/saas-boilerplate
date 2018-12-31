@@ -246,6 +246,15 @@ export default class BillingPage extends React.PureComponent {
                                   </strong>
                                 </p>
                                 <p>
+                                  Access until:{' '}
+                                  <strong>
+                                    <Moment
+                                      format="LL"
+                                      date={Number(subscription.accessUntil)}
+                                    />
+                                  </strong>
+                                </p>
+                                <p>
                                   Next payment date at:{' '}
                                   <strong>
                                     <Moment

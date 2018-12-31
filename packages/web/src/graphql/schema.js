@@ -32,6 +32,8 @@ const typeDefs = `
     _id: String
     _plan: Plan
     status: String
+    accessUntil: String
+    paymentStatus: String
     unitPrice: Float
     updateURL: String
     cancelURL: String

@@ -46,6 +46,10 @@ const Subscription = new mongoose.Schema({
     type: String,
     default: 'active',
   },
+  paymentStatus: {
+    type: String,
+    default: 'active',
+  },
   currency: {
     type: String,
     required: true,
@@ -56,6 +60,10 @@ const Subscription = new mongoose.Schema({
   },
   cancelURL: {
     type: String,
+    required: true,
+  },
+  accessUntil: {
+    type: Date,
     required: true,
   },
   nextBillDateAt: {

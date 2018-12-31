@@ -150,6 +150,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
           updateURL,
           cancelURL,
           nextBillDateAt,
+          accessUntil: nextBillDateAt,
         });
 
         break;
@@ -198,6 +199,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
               quantity,
               unitPrice,
               nextBillDateAt,
+              accessUntil: nextBillDateAt,
             });
             break;
           }
