@@ -35,6 +35,7 @@ export default class BillingPage extends React.PureComponent {
     super(props);
 
     const { location } = props;
+
     const urlParams = queryString.parse(location.search);
     const { success } = urlParams;
 
