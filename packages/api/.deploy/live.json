@@ -14,7 +14,9 @@
     "DB_CONNECTION_URI": "@db_connection_uri",
     "JWT_SECRET": "@jwt_secret",
     "RECAPTCHA_SECRET_KEY": "@recaptcha_secret_key",
-    "LOGDNA_API_KEY": "@logdna_api_key"
+    "LOGDNA_API_KEY": "@logdna_api_key",
+    "PADDLE_VENDOR_ID": "@paddle_vendor_id",
+    "PADDLE_VENDOR_AUTH_CODE": "@paddle_vendor_auth_code"
   },
   "version": 1
 }

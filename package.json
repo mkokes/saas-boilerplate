@@ -23,6 +23,7 @@
     "build:blog": "(cd packages/blog && yarn build)",
     "test:web": "(cd packages/web && yarn test)",
     "deploy:api": "(cd packages/api && yarn deploy:live)",
+    "deploy:api:stage": "(cd packages/api && yarn deploy:stage)",
     "deploy:scheduler": "(cd packages/scheduler && yarn deploy)",
     "deploy:analytics": "(cd packages/analytics && yarn deploy)",
     "deploy:worker": "(cd packages/worker && yarn deploy)",

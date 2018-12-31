@@ -69,12 +69,7 @@ export default class BillingPage extends React.PureComponent {
                     },
                   });
 
-                  toast.success(
-                    'Your subscription plan was changed successfully!',
-                    {
-                      position: toast.POSITION.TOP_CENTER,
-                    },
-                  );
+                  window.location.reload();
                 } catch (e) {
                   const err = transformApolloErr(e);
 
