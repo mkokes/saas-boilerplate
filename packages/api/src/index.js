@@ -175,6 +175,8 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
               checkout_id: checkoutId,
               update_url: updateURL,
               cancel_url: cancelURL,
+              new_quantity: quantity,
+              new_unit_price: unitPrice,
               next_bill_date: nextBillDateAt,
             } = ctx.body;
 
@@ -193,6 +195,8 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
               _paddleCheckoutId: checkoutId,
               updateURL,
               cancelURL,
+              quantity,
+              unitPrice,
               nextBillDateAt,
             });
             break;
