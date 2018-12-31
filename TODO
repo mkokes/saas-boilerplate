@@ -9,8 +9,6 @@
         ✔ Refactor GraphQL @started(18-12-30 11:15) @done(18-12-30 12:03) @lasted(48m35s)
         ✔ On subscription subscribed success redirect @done(18-12-30 20:16)
         ☐ Handle plans upgrade/downgrade @started(18-12-30 21:04)
-          Handle errors when user access tokens expires and user tries to change plan
-          Should return no authenticated error but it is throwing some unexpected error (cannot find _id?).
           ☐ Disable button on loading
           ✔ Confirm if Paddle.com allows billing freq downgrade e.g. from `annual` plan to `monthly` @done(18-12-30 21:04) @lasted(2m26s)
   ☐ Change Toastify alerts design @low

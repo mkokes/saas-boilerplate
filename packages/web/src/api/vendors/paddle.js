@@ -1,7 +1,7 @@
 import { getProvider as getGlobalProvider } from 'GlobalState';
 
 export const PaddleCheckoutAPI = {
-  async checkout(productId) {
+  async checkout(productId, cb) {
     if (window.Paddle) {
       const globalProvider = await getGlobalProvider();
       const user = await globalProvider.state.auth.profile;
@@ -11,7 +11,9 @@ export const PaddleCheckoutAPI = {
         email: user.email,
         passthrough: JSON.stringify({ _id: user._id }),
         disableLogout: true,
-        success: '/dashboard/settings/billing',
+        successCallback: () => {
+          cb();
+        },
       });
     }
   },

@@ -5,6 +5,7 @@
  */
 
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Card, Button, Alert, UncontrolledTooltip } from 'reactstrap';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
@@ -14,9 +15,11 @@ import Moment from 'react-moment';
 import Switch from 'react-switch';
 import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
+import queryString from 'query-string';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
+import Loader from 'components/Loader';
 import {
   UserSubscriptionQuery,
   UserPaymentReceipts,
@@ -28,20 +31,48 @@ import { transformApolloErr } from 'utils/apollo';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class BillingPage extends React.PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.state = { billingSwitchChecked: true };
+    const { location } = props;
+    const urlParams = queryString.parse(location.search);
+    const { success } = urlParams;
+
+    // eslint-disable-next-line default-case
+    switch (success) {
+      case 'subscribed':
+        toast.success('New subscription created successfully!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        break;
+      case 'plan_change':
+        toast.success('Plan changed successfully!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+
+        break;
+    }
+
+    this.state = {
+      billingSwitchChecked: true,
+      subscriptionPlansLoading: false,
+    };
     this.renderSubscriptionPlans = this.renderSubscriptionPlans.bind(this);
   }
 
   renderSubscriptionPlans(currentPlan, plans) {
+    const { history } = this.props;
+
     const _renderPlanActionButton = plan => {
       if (!currentPlan) {
         return (
           <Button
             color="primary"
-            onClick={() => PaddleCheckoutAPI.checkout(plan._paddleProductId)}
+            onClick={() =>
+              PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
+                history.push('/dashboard/settings/billing?success=subscribed');
+              })
+            }
           >
             Subscribe
           </Button>
@@ -61,6 +92,8 @@ export default class BillingPage extends React.PureComponent {
             <Button
               color="primary"
               onClick={async () => {
+                this.setState({ subscriptionPlansLoading: true });
+
                 try {
                   await client.mutate({
                     mutation: ChageUserSubscriptionPlan,
@@ -69,7 +102,9 @@ export default class BillingPage extends React.PureComponent {
                     },
                   });
 
-                  window.location.reload();
+                  history.push(
+                    '/dashboard/settings/billing?success=plan_change',
+                  );
                 } catch (e) {
                   const err = transformApolloErr(e);
 
@@ -77,6 +112,8 @@ export default class BillingPage extends React.PureComponent {
                     position: toast.POSITION.TOP_CENTER,
                   });
                 }
+
+                this.setState({ subscriptionPlansLoading: false });
               }}
             >
               Change Plan
@@ -104,7 +141,7 @@ export default class BillingPage extends React.PureComponent {
   }
 
   render() {
-    const { billingSwitchChecked } = this.state;
+    const { billingSwitchChecked, subscriptionPlansLoading } = this.state;
 
     return (
       <Fragment>
@@ -248,7 +285,7 @@ export default class BillingPage extends React.PureComponent {
                 </legend>
 
                 <Row>
-                  <Col>
+                  <Col hidden={subscriptionPlansLoading}>
                     <SafeQuery
                       query={ActiveSubscriptionPlans}
                       fetchPolicy="network-only"
@@ -262,6 +299,9 @@ export default class BillingPage extends React.PureComponent {
                         </Fragment>
                       )}
                     </SafeQuery>
+                  </Col>
+                  <Col hidden={!subscriptionPlansLoading}>
+                    <Loader />
                   </Col>
                 </Row>
                 <legend>Receipts</legend>
@@ -334,4 +374,7 @@ export default class BillingPage extends React.PureComponent {
   }
 }
 
-BillingPage.propTypes = {};
+BillingPage.propTypes = {
+  location: PropTypes.object,
+  history: PropTypes.object,
+};

@@ -573,7 +573,7 @@ module.exports = ({
       );
     },
     chageUserSubscriptionPlan: async (_, { planId }, { user }) => {
-      assertUser(user);
+      await assertUser(user);
 
       if (!planId) {
         throw new ApolloError('Request validation failed', 'NEED_PLANID_INPUT');
@@ -586,7 +586,7 @@ module.exports = ({
           'USER_NOT_ACTIVE_SUBSCRIPTION',
         );
       }
-      if (currentUserSubscription._plan === planId) {
+      if (currentUserSubscription._plan._id.toString() === planId) {
         throw new Error('CANNOT_CHANGE_SAME_PLAN');
       }
 
