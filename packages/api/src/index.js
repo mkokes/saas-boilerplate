@@ -178,6 +178,8 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
               next_bill_date: nextBillDateAt,
             } = ctx.body;
 
+            log.info(ctx.body);
+
             const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
             if (!plan) {
               throw new Error(
