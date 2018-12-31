@@ -11,6 +11,10 @@ const LayoutContainer = styled.div`
   background-color: rgb(244, 247, 250);
 `;
 
+const BaseLayout = ({ children }) => (
+  <LayoutContainer className="flex flex-column">{children}</LayoutContainer>
+);
+
 const DefaultLayout = ({
   dashboardNavbarHidden,
   navbarExpand,
@@ -19,7 +23,7 @@ const DefaultLayout = ({
   children,
 }) => (
   <div className="flex flex-row">
-    <LayoutContainer className="flex flex-column">
+    <BaseLayout>
       <Navbar
         dashboardNavbarHidden={dashboardNavbarHidden}
         expand={navbarExpand}
@@ -27,7 +31,7 @@ const DefaultLayout = ({
       />
       <div className="flex flex-column">{children}</div>
       <Footer minimal={minimal} />
-    </LayoutContainer>
+    </BaseLayout>
   </div>
 );
 
@@ -52,6 +56,10 @@ const DashboardSettingsLayout = ({ children }) => (
   </DashboardLayout>
 );
 
+BaseLayout.propTypes = {
+  children: PropTypes.node,
+};
+
 DefaultLayout.propTypes = {
   dashboardNavbarHidden: PropTypes.bool,
   navbarExpand: PropTypes.string,
@@ -73,6 +81,7 @@ DashboardSettingsLayout.propTypes = {
 };
 
 export {
+  BaseLayout,
   DefaultLayout,
   MinimalDefaultLayout,
   DashboardLayout,

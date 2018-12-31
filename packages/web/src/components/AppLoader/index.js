@@ -8,6 +8,8 @@ import React from 'react';
 import styled from 'styled-components';
 import ClipLoader from 'react-spinners/ClipLoader';
 
+import { BaseLayout } from 'layout';
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -26,22 +28,18 @@ const LoadingIconContainer = styled.div`
     margin: 0 auto;
   }
 `;
-const LoadingText = styled.h1`
-  padding-top: 20px;
-  display: block;
-`;
 
 /* eslint-disable react/prefer-stateless-function */
 function AppLoader() {
   return (
-    <Container>
-      <LoadingIconContainer>
-        <ClipLoader sizeUnit="em" size={7} />
-      </LoadingIconContainer>
-      <span>
-        <LoadingText>Loading</LoadingText>
-      </span>
-    </Container>
+    <BaseLayout>
+      <Container>
+        <LoadingIconContainer>
+          <ClipLoader sizeUnit="em" size={7} />
+        </LoadingIconContainer>
+        <h1 className="mt-4">Loading Application</h1>
+      </Container>
+    </BaseLayout>
   );
 }
 

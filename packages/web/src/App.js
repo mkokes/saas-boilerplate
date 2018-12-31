@@ -31,14 +31,18 @@ import BillingPage from 'containers/Dashboard/User/Settings/BillingPage/Loadable
 import SecurityPage from 'containers/Dashboard/User/Settings/SecurityPage/Loadable';
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SignOutPage from 'containers/SignOutPage/Loadable';
+import ProcessingPage from 'containers/ProcessingPage/Loadable';
+
 
 import {
   DefaultLayout,
   MinimalDefaultLayout,
   DashboardLayout,
   DashboardSettingsLayout,
+  BaseLayout,
 } from 'layout';
 import { GlobalConsumer } from 'GlobalState';
+import Loader from 'components/Loader';
 
 const Route = ({
   component: Component,
@@ -166,6 +170,12 @@ export default function App() {
                       component={EmailVerificationPage}
                       layout={DashboardLayout}
                     />
+                    <Route
+                      exact
+                      path="/processing"
+                      component={ProcessingPage}
+                      layout={BaseLayout}
+                    />
 
                     <Route
                       exact
@@ -174,7 +184,6 @@ export default function App() {
                     />
 
                     <Route component={NotFoundPage} />
-                    <Route path="/reload" component={null}/>
                   </Switch>
                 </ScrollToTop>
               </Router>

@@ -36,9 +36,7 @@ export default class BillingPage extends React.PureComponent {
 
     const { location } = props;
 
-    const urlParams = queryString.parse(location.search);
-    console.debug(urlParams);
-    const { success } = urlParams;
+    const { success } = queryString.parse(location.search);
 
     // eslint-disable-next-line default-case
     switch (success) {
@@ -72,8 +70,12 @@ export default class BillingPage extends React.PureComponent {
             color="primary"
             onClick={() =>
               PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
-                history.push(`/reload`);
-                history.push('/dashboard/settings/billing?success=subscribed');
+                history.replace(`/processing`);
+                setTimeout(() => {
+                  history.replace(
+                    '/dashboard/settings/billing?success=subscribed',
+                  );
+                }, 3000);
               })
             }
           >
@@ -105,19 +107,20 @@ export default class BillingPage extends React.PureComponent {
                     },
                   });
 
-                  history.push(`/reload`);
-                  history.push(
-                    '/dashboard/settings/billing?success=plan_change',
-                  );
+                  history.replace(`/processing`);
+                  setTimeout(() => {
+                    history.replace(
+                      '/dashboard/settings/billing?success=plan_change',
+                    );
+                  }, 3000);
                 } catch (e) {
                   const err = transformApolloErr(e);
 
                   toast.error(err.message, {
                     position: toast.POSITION.TOP_CENTER,
                   });
+                  this.setState({ subscriptionPlansLoading: false });
                 }
-
-                this.setState({ subscriptionPlansLoading: false });
               }}
             >
               Change Plan
