@@ -1,0 +1,75 @@
+.ViewPullRequests {
+  padding: 2px 7px 3px;
+  font-size: 9px;
+  border: 1px solid rgba(124, 131, 180, 0.31);
+  border-radius: 4px;
+  white-space: nowrap;
+  position: relative;
+  top: -5px;
+
+  @media only screen and (min-width: 768px) {
+    top: 5px;
+    font-size: 14px;
+    padding: 3px 9px 4px;
+  }
+}
+
+.ViewPullRequests:hover {
+  cursor: pointer;
+  background-color: rgba(124, 130, 182, 0.1);
+}
+
+.ViewPullRequests-Icon {
+  width: 7px;
+  height: auto;
+  position: relative;
+  top: 1px;
+  margin-left: 5px;
+
+  @media only screen and (min-width: 768px) {
+    width: 9px;
+    top: 2px;
+  }
+}
+
+.CustomerLogos {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: -20px -20px 0;
+
+  @media only screen and (min-width: 768px) {
+    margin: 0 auto;
+  }
+}
+
+.CustomerLogos-Item {
+  padding-top: 25px;
+  display: flex;
+  flex-direction: column;
+  margin: 23px 0px;
+  text-align: center;
+  width: 120px;
+  height: 50px;
+  position: relative;
+  float: none;
+  padding: 0 20px 0;
+
+  @media only screen and (min-width: 768px) {
+    height: 80px;
+    width: 155px;
+    padding: 0 40px;
+    margin: 35px 0px;
+  }
+}
+
+.CustomerLogos-Item-Content {
+  height: 100%;
+}
+
+.CustomerLogos-Item-Logo {
+  position: relative;
+  top: auto;
+  width: 100%;
+  height: 100%;
+}

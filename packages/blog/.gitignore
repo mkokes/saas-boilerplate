@@ -1,2 +1,13 @@
+# Project dependencies
+.cache
+node_modules
+yarn-error.log
+
+# Build directory
+/public
 .DS_Store
-public
+
+# Cypress test output
+cypress/videos
+cypress/screenshots
+cypress/results

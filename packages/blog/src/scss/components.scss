@@ -1,0 +1,38 @@
+@import "variables";
+
+.button {
+  display: inline-block;
+  border: 2px solid $primary;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 18px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media only screen and (min-width : 768px) {
+  .button {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 26px;
+    border-radius: 22px;
+  }
+}
+
+.button.compact {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 18px;
+  border-radius: 18px;
+}
+
+.button.primary, .button:hover {
+  background: $primary;
+  color: #ffffff;
+}
+
+.button.primary:hover {
+  background: darken($primary, 10%);
+  border-color: darken($primary, 10%);
+}

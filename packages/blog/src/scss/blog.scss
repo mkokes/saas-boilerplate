@@ -1,0 +1,128 @@
+@import "variables";
+
+.blog {
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  font-weight: 400;
+  color: #222;
+}
+
+.blog .nav-item {
+  padding-left: 10px;
+}
+
+.blog .container {
+  max-width: 500px;
+  padding: 0 20px;
+  @media only screen and (min-width: 768px) {
+    padding: 0 30px;
+    max-width: 700px;
+  }
+}
+
+.blog .page-wrapper {
+  @media only screen and (min-width: 768px) {
+    margin-top: 1.5rem;
+  }
+}
+
+.blog h2 {
+  margin-bottom: 1rem;
+}
+
+.blog h3 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  @media only screen and (min-width : 768px) {
+    font-size: 1.5rem;
+  }
+}
+
+.blog .post-date {
+  color: $text-muted;
+}
+
+.blog .entry {
+  margin-top: 1.5rem;
+}
+
+.blog .entry img {
+  margin: 1.5rem 0 0.5rem 0;
+  width: 100%;
+}
+
+.blog .cta {
+  color: $text-muted;
+  margin: 2rem 0;
+
+  .button {
+    margin-right: 5px;
+  }
+}
+
+.blog .footer {
+  @media only screen and (max-width : 767px) {
+    margin: 0;
+  }
+}
+
+.blog .footer .footer-right {
+  @media only screen and (max-width : 767px) {
+    display: none;
+  }
+}
+
+.blog-preview-list {
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  h3 {
+    margin-bottom: 0;
+  }
+
+  h3 a {
+    color: $text-main;
+  }
+
+  p {
+    margin-top: 1rem;
+  }
+}
+
+.blog-preview {
+  margin: 3rem 0;
+}
+
+.blog {
+  table {
+    margin: 0 auto 2rem auto;
+  }
+
+  th, td {
+    text-align: right;
+    padding: 0.2rem 0.6rem;
+  }
+
+  td:first-child {
+    text-align: left;
+  }
+
+  @media only screen and (max-width : 767px) {
+    table {
+      font-size: 0.9rem;
+      line-height: 1.2rem;
+    }
+
+    th, td {
+      padding: 0.6rem;
+    }
+  }
+
+  .image-medium {
+    text-align: center;
+  }
+  .image-medium img {
+    max-width: 500px;
+  }
+}

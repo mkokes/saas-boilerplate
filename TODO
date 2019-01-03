@@ -6,25 +6,26 @@
       ☐ Preferences
         ☐ User timezone
       ☐ Billing
+        We allow upgrade at any time but we only allow downgrades only at the end of the contract.
+        If an user decides to re-subscribe and new plan tier is same to current tier then we add the
+        left days of current subscription to the new one or if it s a higher tier then we
+        calculate how many
         ☐ Layout grid
           ☐ Current subscription
           ☐ Subscription plans
-        ☐ How to handle user downgrading from annual to monthly
-          Paddle just throws out an error. User should cancel his subscription then.
-        ☐
         ✔ Refactor GraphQL @started(18-12-30 11:15) @done(18-12-30 12:03) @lasted(48m35s)
         ✔ On subscription subscribed success redirect @done(18-12-30 20:16)
         ✔ Handle plans upgrade/downgrade @started(18-12-30 21:04) @done(18-12-31 11:13) @lasted(14h9m9s)
           ✔ Disable button on loading @done(18-12-31 11:13)
           ✔ Confirm if Paddle.com allows billing freq downgrade e.g. from `annual` plan to `monthly` @done(18-12-30 21:04) @lasted(2m26s)
-  ☐ Change Toastify alerts design @low
+  ☐ Change Toastify alerts design
   ☐ Email confirmation design page
   ☐ Refactor analytics to use GA
 ☐ API Back-end
 ✔ Analytics Server @done(18-12-28 05:33)
 ☐ API Docs
 ☐ Blog
-  ☐ Use Dependabot blog
+  ☐ Use Dependabot blog @started(19-01-02 17:58)
     https://github.com/alfonmga/website
 ☐ Scheduler Server
 ☐ Worker Server

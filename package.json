@@ -36,6 +36,9 @@
   "devDependencies": {
     "lerna": "^3.5.1"
   },
+  "resolutions": {
+    "graphql": "^0.13.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AMGAVentures/saas-boilerplate.git"

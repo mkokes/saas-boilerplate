@@ -1,0 +1,29 @@
+@import "variables";
+
+.u-fillWhite > * {
+  fill: #fff !important;
+}
+
+.u-fillBlack > * {
+  fill: #000 !important;
+}
+
+.u-fillRepoForked > * {
+  fill: $repo-forked-hex !important;
+}
+
+.u-backgroundColorRepoForked {
+  background-color: $repo-forked-hex !important;
+}
+
+.u-backgroundColorPrOpen {
+  background-color: $pr-open-hex !important;
+}
+
+.u-backgroundColorPrClosed {
+  background-color: $pr-closed-hex !important;
+}
+
+.u-backgroundColorPrMerged {
+  background-color: $pr-merged-hex !important;
+}
