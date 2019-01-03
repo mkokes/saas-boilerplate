@@ -1,3 +1,0 @@
-[submodule "lanyon-hugo"]
-	path = packages/blog/themes/lanyon-hugo
-	url = https://github.com/tummychow/lanyon-hugo.git

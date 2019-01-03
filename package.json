@@ -9,19 +9,17 @@
     "packages/*"
   ],
   "scripts": {
-    "start:web": "(cd packages/web && yarn start)",
+    "start:app": "(cd packages/app && yarn start)",
     "start:api": "(cd packages/api && yarn start)",
-    "start:api-docs": "(cd packages/api-docs && yarn start)",
     "start:blog": "(cd packages/blog && yarn start)",
     "start:scheduler": "(cd packages/scheduler && yarn start)",
     "start:analytics": "(cd packages/analytics && yarn start)",
     "start:worker": "(cd packages/worker && yarn start)",
     "dev:api": "(cd packages/api && yarn dev)",
-    "build:web:stage": "(cd packages/web && yarn build:stage)",
-    "build:web": "(cd packages/web && yarn build:live)",
-    "build:api-docs": "(cd packages/api-docs && yarn build)",
+    "build:app:stage": "(cd packages/app && yarn build:stage)",
+    "build:app": "(cd packages/app && yarn build:live)",
     "build:blog": "(cd packages/blog && yarn build)",
-    "test:web": "(cd packages/web && yarn test)",
+    "test:app": "(cd packages/app && yarn test)",
     "deploy:api": "(cd packages/api && yarn deploy:live)",
     "deploy:api:stage": "(cd packages/api && yarn deploy:stage)",
     "deploy:scheduler": "(cd packages/scheduler && yarn deploy)",
@@ -35,9 +33,6 @@
   },
   "devDependencies": {
     "lerna": "^3.5.1"
-  },
-  "resolutions": {
-    "graphql": "^0.13.2"
   },
   "repository": {
     "type": "git",
