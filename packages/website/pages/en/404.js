@@ -1,5 +1,4 @@
 const React = require('react');
-// const siteConfig = require(`${process.cwd()}/siteConfig.js`);
 
 class ErrorPage extends React.Component {
   render() {
