@@ -11,6 +11,9 @@
       "api/information": {
         "title": "Request access"
       },
+      "faq": {
+        "title": "Frequently asked questions"
+      },
       "legal/privacy-policy": {
         "title": "Privacy Policy"
       },
@@ -24,8 +27,9 @@
       "Blog": "Blog"
     },
     "categories": {
-      "About": "About",
+      "Getting Started": "Getting Started",
       "API": "API",
+      "About": "About",
       "Legal": "Legal"
     }
   },
