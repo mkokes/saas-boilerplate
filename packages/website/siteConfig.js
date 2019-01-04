@@ -1,4 +1,5 @@
 const siteConfig = {
+  customDocsPath: 'website/docs',
   title: 'Brand name',
   tagline: 'Tagline',
   url: 'https://domain.io',
