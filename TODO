@@ -1,4 +1,6 @@
-☐ UI Front-end Application
+✔ Website @done(19-01-04 05:56)
+  ☐ Blog
+☐ App
   ☐ User Dashboard
     ☐ Settings
       ☐ Profile
@@ -23,9 +25,6 @@
   ☐ Refactor analytics to use GA
 ☐ API Back-end
 ✔ Analytics Server @done(18-12-28 05:33)
-☐ API Docs
-☐ Blog
-  ☐ Find a solution @critical
 ☐ Scheduler Server
 ☐ Worker Server
 ☐ Misc

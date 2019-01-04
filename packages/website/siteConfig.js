@@ -6,6 +6,7 @@ const siteConfig = {
   baseUrl: '/',
   appUrl: process.env.APP_URL,
   docsUrl: '',
+  projectName: '',
   headerLinks: [
     { href: `${process.env.APP_URL}/auth/login`, label: 'Sign In' },
     { href: `${process.env.APP_URL}/signup`, label: 'Get Started' },
