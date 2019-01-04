@@ -95,6 +95,37 @@
   }
 }
 
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.error-page-container {
+  text-align: center;
+}
+.error-page-container > span {
+  color: $primaryColor;
+  font-size: 8.8em;
+  font-weight: 700;
+  display: inline-block;
+  margin-top: 10vh;
+  text-align: center;
+  display: block;
+}
+.error-page-container > p {
+  color: #000;
+  margin-top: 50px;
+  font-size: 1.6em;
+  text-align: center;
+}
+.error-page-container > a {
+  margin-bottom: 50px;
+  font-size: 1.6em;
+  text-align: center;
+  display: block;
+  text-decoration: underline;
+}
+
 @media only screen and (max-width: 1023px) {
 }
 
