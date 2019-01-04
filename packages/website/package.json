@@ -1,0 +1,16 @@
+{
+  "name": "website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=development NODE_PATH=./src env-cmd ./env/dev.env docusaurus-start",
+    "build:dev": "cross-env NODE_ENV=development NODE_PATH=./src env-cmd ./env/dev.env docusaurus-build",
+    "build:stage": "cross-env NODE_ENV=production NODE_PATH=./src env-cmd ./env/stage.env docusaurus-build",
+    "build:live": "cross-env NODE_ENV=production NODE_PATH=./src env-cmd ./env/prod.env docusaurus-build"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "docusaurus": "^1.6.2",
+    "env-cmd": "^8.0.2"
+  }
+}

@@ -1,0 +1,101 @@
+.post article a {
+  /* add underlines to links in blocks of text for a11y */
+  color: $primaryColor;
+  text-decoration: underline;
+  overflow: hidden;
+  position: relative;
+  transition: outline-offset 0.2s ease-in-out;
+}
+.post article .hash-link {
+  /* add underlines to links in blocks of text for a11y */
+  color: $accentColor1;
+  transition: outline-offset 0.2s ease-in-out;
+  opacity: 1;
+}
+.post article blockquote a {
+  /* add underlines to links in blocks of text for a11y */
+  color: black;
+  text-decoration: underline;
+  overflow: hidden;
+  position: relative;
+  transition: outline-offset 0.2s ease-in-out;
+}
+.post article blockquote a {
+  /* add underlines to links in blocks of text for a11y */
+  color: black;
+  text-decoration: underline;
+  overflow: hidden;
+  position: relative;
+  transition: outline-offset 0.2s ease-in-out;
+}
+.post article .hash-link {
+  /* add underlines to links in blocks of text for a11y */
+  color: $accentColor1;
+  transition: outline-offset 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.button.hero {
+  font-size: 30px;
+  padding: 0.5em 1.25em;
+  font-weight: 700;
+}
+.button.hero,
+.button.hero:visited {
+  background-color: $primaryColor;
+  color: #fff;
+}
+.button.hero:hover {
+  background-color: #fff;
+  color: $primaryColor;
+}
+
+.navigationSlider .slidingNav ul.nav-site a {
+  color: white;
+  font-weight: 400;
+}
+.navigationSlider .slidingNav ul.nav-site a:hover,
+.navigationSlider .slidingNav ul.nav-site a:focus,
+.navigationSlider .slidingNav ul.nav-site a:active {
+  color: white;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.nav-footer .copyright,
+.nav-footer .sitemap a {
+  /* increase link contrast */
+  color: white;
+}
+
+.navigationSlider .slidingNav ul a[href*='signup'] {
+  font-weight: 700 !important;
+}
+
+@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+}
+
+@media only screen and (min-width: 1024px) {
+  .navigationSlider .slidingNav ul a[href*='signup'] {
+    background-color: white !important;
+    color: $primaryColor !important;
+    text-decoration: none !important;
+    line-height: 1.5;
+    user-select: none;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+}
+
+@media only screen and (max-width: 1023px) {
+}
+
+@media only screen and (min-width: 1400px) {
+}
+
+@media only screen and (min-width: 1500px) {
+}
