@@ -44,23 +44,21 @@ class Footer extends React.Component {
 
           <div>
             <h5>About</h5>
-            <a href={this.docUrl('about', this.props.language)}>About us</a>
-            <a href={this.docUrl('legal/privacy-policy', this.props.language)}>
-              Privacy Policy
-            </a>
-            <a href={this.docUrl('legal/terms-service', this.props.language)}>
-              Terms of Service
-            </a>
+            <a href={this.docUrl('about')}>About us</a>
+            <a href={this.docUrl('legal/privacy-policy')}>Privacy Policy</a>
+            <a href={this.docUrl('legal/terms-service')}>Terms of Service</a>
           </div>
           <div>
             <h5>Resources</h5>
-            <a href="https://github.com/">API</a>
-            <a href="https://github.com/">Support</a>
-            <a href="https://github.com/">Email Contact</a>
+            <a href={this.docUrl('api/information')}>API</a>
+            <a href={this.props.config.supportUrl}>Support</a>
+            <a href={`mailto:${this.props.config.emailContact}`}>
+              Email Contact
+            </a>
           </div>
           <div>
             <h5>Social</h5>
-            <a href="/blog">{this.props.config.title} Blog</a>
+            <a href="/blog/">{this.props.config.title} Blog</a>
             <a
               href={`https://twitter.com/${this.props.config.twitterUsername}`}
             >

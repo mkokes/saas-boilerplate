@@ -31,6 +31,8 @@ const siteConfig = {
   linkedinUrl: '',
   changelogUrl: 'https://changelog.domain.io',
   statusUrl: 'https://status.domain.io',
+  emailContact: 'admin@domain.io',
+  supportUrl: 'https://support.domain.io',
   users: [
     {
       caption: 'Coinbase',
