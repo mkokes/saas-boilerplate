@@ -6,6 +6,7 @@ const siteConfig = {
   baseUrl: '/',
   appUrl: process.env.APP_URL,
   docsUrl: '',
+  gaTrackingId: '',
   projectName: '',
   headerLinks: [
     { href: `${process.env.APP_URL}/auth/login`, label: 'Sign In' },
