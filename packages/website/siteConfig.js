@@ -2,7 +2,7 @@ const siteConfig = {
   customDocsPath: 'website/docs',
   title: 'ACME',
   tagline: 'Tagline',
-  url: 'https://domain.io',
+  url: 'https://dcabot.io',
   baseUrl: '/',
   appUrl: process.env.APP_URL,
   docsUrl: '',
@@ -30,10 +30,10 @@ const siteConfig = {
   twitterImage: 'img/docusaurus.png',
   twitterUsername: '',
   linkedinUrl: '',
-  changelogUrl: 'https://changelog.domain.io',
-  statusUrl: 'https://status.domain.io',
-  emailContact: 'admin@domain.io',
-  supportUrl: 'https://support.domain.io',
+  changelogUrl: 'https://changelog.dcabot.io',
+  statusUrl: 'https://status.dcabot.io',
+  emailContact: 'info@dcabot.io',
+  supportUrl: 'https://support.dcabot.io',
   users: [
     {
       caption: 'Coinbase',
