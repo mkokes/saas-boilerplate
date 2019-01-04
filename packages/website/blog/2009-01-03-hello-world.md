@@ -51,7 +51,7 @@ multiple times, but it is a useful alternative if both users can't
 be online at the same time or the recipient can't receive incoming
 connections.
 
-Total circulation will be _21,000,000 coins_. It'll be distributed
+Total circulation will be **21,000,000 coins**. It'll be distributed
 to network nodes when they make blocks, with the amount cut in half
 every 4 years.
 
