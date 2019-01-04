@@ -8,13 +8,9 @@ class ErrorPage extends React.Component {
   render() {
     return (
       <Container className="error-page">
-        <div className="error-message">
-          <div className=" error-message-container container">
-            <span>404 </span>
-            <p>Page Not Found.</p>
-            <a href="/">Return to the front page</a>
-          </div>
-        </div>
+        <span>404 </span>
+        <p>Page Not Found.</p>
+        <a href="/">Return to the front page</a>
       </Container>
     );
   }
