@@ -1,6 +1,6 @@
 const siteConfig = {
   customDocsPath: 'website/docs',
-  title: 'Brand name',
+  title: 'ACME',
   tagline: 'Tagline',
   url: 'https://domain.io',
   baseUrl: '/',

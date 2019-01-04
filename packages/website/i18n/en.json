@@ -9,7 +9,8 @@
         "title": "About Us"
       },
       "api/information": {
-        "title": "Request access"
+        "title": "Request Domain.io API access",
+        "sidebar_label": "Request access"
       },
       "faq": {
         "title": "Frequently asked questions"
