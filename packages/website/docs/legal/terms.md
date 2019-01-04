@@ -1,6 +1,6 @@
 ---
 id: terms-service
-title: Terms Of Service
+title: Terms of Service
 ---
 
 Check the [documentation](https://docusaurus.io) for how to use Docusaurus.

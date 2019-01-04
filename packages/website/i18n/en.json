@@ -5,14 +5,17 @@
     "previous": "Previous",
     "tagline": "Tagline",
     "docs": {
+      "about/about-us": {
+        "title": "About Us"
+      },
       "api/information": {
-        "title": "Domain.io API"
+        "title": "Request access"
       },
       "legal/privacy-policy": {
         "title": "Privacy Policy"
       },
       "legal/terms-service": {
-        "title": "Terms Of Service"
+        "title": "Terms of Service"
       }
     },
     "links": {
@@ -20,7 +23,11 @@
       "Get Started": "Get Started",
       "Blog": "Blog"
     },
-    "categories": {}
+    "categories": {
+      "About": "About",
+      "API": "API",
+      "Legal": "Legal"
+    }
   },
   "pages-strings": {
     "Help Translate|recruit community translators for your project": "Help Translate",

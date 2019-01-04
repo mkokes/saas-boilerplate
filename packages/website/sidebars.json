@@ -1,1 +1,7 @@
-{}
+{
+  "docs": {
+    "API": ["api/information"],
+    "About": ["about/about-us"],
+    "Legal": ["legal/terms-service", "legal/privacy-policy"]
+  }
+}
