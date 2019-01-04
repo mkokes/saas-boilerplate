@@ -9,6 +9,7 @@
     "packages/*"
   ],
   "scripts": {
+    "start:website": "(cd packages/website && yarn start)",
     "start:app": "(cd packages/app && yarn start)",
     "start:api": "(cd packages/api && yarn start)",
     "start:blog": "(cd packages/blog && yarn start)",
@@ -16,6 +17,8 @@
     "start:analytics": "(cd packages/analytics && yarn start)",
     "start:worker": "(cd packages/worker && yarn start)",
     "dev:api": "(cd packages/api && yarn dev)",
+    "build:website:stage": "(cd packages/website && yarn build:stage)",
+    "build:website": "(cd packages/website && yarn build:live)",
     "build:app:stage": "(cd packages/app && yarn build:stage)",
     "build:app": "(cd packages/app && yarn build:live)",
     "build:blog": "(cd packages/blog && yarn build)",
