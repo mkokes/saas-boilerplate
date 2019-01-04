@@ -1,5 +1,5 @@
 ✔ Website @done(19-01-04 05:56)
-  ☐ Blog
+  ✔ Blog @done(19-01-04 06:29)
 ☐ App
   ☐ User Dashboard
     ☐ Settings
@@ -23,10 +23,12 @@
   ☐ Change Toastify alerts design
   ☐ Email confirmation design page
   ☐ Refactor analytics to use GA
-☐ API Back-end
+☐ API
 ✔ Analytics Server @done(18-12-28 05:33)
 ☐ Scheduler Server
+  ☐ Zeit.co
 ☐ Worker Server
+  ☐ Zeit.co
 ☐ Misc
   ✔ Stage server @done(18-12-28 05:32)
   ☐ Test Mixpanel.com
