@@ -1,10 +1,13 @@
 const React = require('react');
 // const siteConfig = require(`${process.cwd()}/siteConfig.js`);
 
+const CompLibrary = require('../../core/CompLibrary.js');
+const Container = CompLibrary.Container;
+
 class ErrorPage extends React.Component {
   render() {
     return (
-      <div className="error-page">
+      <Container className="error-page">
         <div className="error-message">
           <div className=" error-message-container container">
             <span>404 </span>
@@ -12,7 +15,7 @@ class ErrorPage extends React.Component {
             <a href="/">Return to the front page</a>
           </div>
         </div>
-      </div>
+      </Container>
     );
   }
 }
