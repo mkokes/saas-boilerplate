@@ -102,7 +102,6 @@
 }
 .error-page-container {
   text-align: center;
-  padding-bottom: 18vh;
 }
 .error-page-container > span {
   color: $primaryColor;
