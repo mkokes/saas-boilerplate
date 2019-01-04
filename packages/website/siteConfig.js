@@ -3,7 +3,7 @@ const siteConfig = {
   title: 'ACME',
   tagline: 'Tagline',
   url: 'https://dcabot.io',
-  baseUrl: '',
+  baseUrl: '/',
   appUrl: process.env.APP_URL,
   docsUrl: '',
   projectName: '',
