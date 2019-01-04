@@ -187,8 +187,52 @@ class Index extends React.Component {
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
-          <Features />
-          <Showcase />
+          <Container background="light">
+            <Features />
+          </Container>
+          <Container>
+            <GridBlock
+              contents={[
+                {
+                  content: `Get [up and running](${siteConfig.baseUrl}docs/${
+                    this.props.language
+                  }/site-creation)
+                    quickly without having to worry about site design.`,
+                  imageAlign: 'right',
+                  image: `https://docusaurus.io/img/docusaurus_speed.svg`,
+                  imageAlt: 'Docusaurus on a Scooter',
+                  title: 'Quick Setup',
+                },
+              ]}
+              layout="twoColumn"
+            />
+          </Container>
+          <Container padding={['bottom', 'top']} background="light">
+            <GridBlock
+              contents={[
+                {
+                  content: `Make design and documentation changes by using the included
+                    [live server](${siteConfig.baseUrl}docs/${
+                    this.props.language
+                  }/site-preparation#verifying-installation).
+                    [Publish](${siteConfig.baseUrl}docs/${
+                    this.props.language
+                  }/publishing)
+                    your site to GitHub pages or other static file hosts
+                    manually, using a script, or with continuous integration
+                    like CircleCI.`,
+                  imageAlign: 'left',
+                  image: `https://docusaurus.io/img/docusaurus_live.gif`,
+                  imageAlt: 'Docusaurus Demo',
+                  title: 'Develop and Deploy',
+                },
+              ]}
+              layout="twoColumn"
+            />
+          </Container>
+          <Container className="productShowcaseSection">
+            <Showcase />
+          </Container>
         </div>
       </div>
     );

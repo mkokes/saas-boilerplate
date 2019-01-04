@@ -4,6 +4,7 @@ const siteConfig = {
   url: 'https://domain.io',
   baseUrl: '/',
   appUrl: process.env.APP_URL,
+  docsUrl: '',
   headerLinks: [
     { href: `${process.env.APP_URL}/auth/login`, label: 'Sign In' },
     { href: `${process.env.APP_URL}/signup`, label: 'Get Started' },
@@ -13,8 +14,9 @@ const siteConfig = {
   footerIcon: 'img/logo.png',
   favicon: 'img/logo.png',
   colors: {
-    primaryColor: '#2e3440',
-    secondaryColor: '#3b4252',
+    primaryColor: '#764ABC',
+    secondaryColor: '#40216F',
+    accentColor: '#717171',
   },
   copyright: `Copyright © ${new Date().getFullYear()} Brand name`,
   highlight: {
@@ -27,6 +29,8 @@ const siteConfig = {
   twitterImage: 'img/docusaurus.png',
   twitterUsername: '',
   linkedinUrl: '',
+  changelogUrl: 'https://changelog.domain.io',
+  statusUrl: 'https://status.domain.io',
   users: [
     {
       caption: 'Coinbase',

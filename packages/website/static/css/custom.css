@@ -1,3 +1,7 @@
+.productShowcaseSection {
+  padding-bottom: 0px !important;
+}
+
 .post article a {
   /* add underlines to links in blocks of text for a11y */
   color: $primaryColor;
@@ -8,7 +12,7 @@
 }
 .post article .hash-link {
   /* add underlines to links in blocks of text for a11y */
-  color: $accentColor1;
+  color: $accentColor;
   transition: outline-offset 0.2s ease-in-out;
   opacity: 1;
 }
@@ -30,7 +34,7 @@
 }
 .post article .hash-link {
   /* add underlines to links in blocks of text for a11y */
-  color: $accentColor1;
+  color: $accentColor;
   transition: outline-offset 0.2s ease-in-out;
   opacity: 1;
 }
