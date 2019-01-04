@@ -1,7 +1,7 @@
 ---
-title: New Blog Post
-author: Blog Author
-authorURL: http://twitter.com/
+title: Hello World
+author: Satoshi Nakamoto
+authorURL: http://bitcoin.org
 authorFBID: 100002976521003
 ---
 
