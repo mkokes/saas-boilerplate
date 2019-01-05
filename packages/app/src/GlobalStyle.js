@@ -6,6 +6,14 @@ const GlobalStyle = createGlobalStyle`
     position: relative;
     min-height: 100%;
   }
+  body {
+    color: #24292e;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    text-size-adjust: 100%;
+    word-wrap: break-word
+  }
   legend {
     display: block;
     width: 100%;
@@ -17,6 +25,11 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
     border-bottom: 1px solid #e5e5e5;
   }
+
+  a:hover, a:focus {
+    text-decoration: none;
+  }
+
   #app {
     height: 100%;
   }
@@ -36,11 +49,6 @@ const GlobalStyle = createGlobalStyle`
     flex-basis: auto;
   }
 
-  /* Google reCAPTCHA */
-  .grecaptcha-badge {
-    display: none;
-  }
-
   /* Headway.co */
   #HW_badge {
     top: -2px !important;
@@ -48,6 +56,15 @@ const GlobalStyle = createGlobalStyle`
   }
   #HW_badge_cont {
     width: 0px !important;
+  }
+  #headway-bell {
+    color: rgb(240, 240, 240);
+  }
+
+  .btn-theme {
+    color: #fff;
+    background-color: ${props => props.theme.primaryColor};
+    border-color: ${props => props.theme.primaryColor};
   }
 `;
 

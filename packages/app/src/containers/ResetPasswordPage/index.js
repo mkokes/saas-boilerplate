@@ -202,7 +202,7 @@ export default class ResetPasswordPage extends React.PureComponent {
                                     type="submit"
                                     block
                                     size="lg"
-                                    color="success"
+                                    className="btn-theme"
                                     disabled={isSubmitting}
                                   >
                                     <FontAwesomeIcon

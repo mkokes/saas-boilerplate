@@ -199,7 +199,7 @@ export default class ContactPage extends React.PureComponent {
                                       type="submit"
                                       block
                                       size="lg"
-                                      color="primary"
+                                      className="btn-theme"
                                       disabled={isSubmitting}
                                     >
                                       <FontAwesomeIcon

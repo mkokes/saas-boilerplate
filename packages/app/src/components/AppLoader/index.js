@@ -6,9 +6,9 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import ClipLoader from 'react-spinners/ClipLoader';
 
 import { BaseLayout } from 'layout';
+import Loader from 'components/Loader';
 
 const Container = styled.div`
   display: flex;
@@ -20,23 +20,13 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
 `;
-const LoadingIconContainer = styled.div`
-  div {
-    border-color: rgb(54, 215, 183);
-    border-bottom-color: transparent;
-    display: block;
-    margin: 0 auto;
-  }
-`;
 
 /* eslint-disable react/prefer-stateless-function */
 function AppLoader() {
   return (
     <BaseLayout>
       <Container>
-        <LoadingIconContainer>
-          <ClipLoader sizeUnit="em" size={7} />
-        </LoadingIconContainer>
+        <Loader large />
         <h1 className="mt-4">Loading Application</h1>
       </Container>
     </BaseLayout>

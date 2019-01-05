@@ -20,7 +20,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Button,
   Dropdown,
   DropdownToggle,
   DropdownMenu,
@@ -32,15 +31,9 @@ import { GlobalConsumer } from 'GlobalState';
 import Avatar from 'components/Avatar';
 import HeadWay from 'components/HeadWay';
 
-const NavbarNotLoggedNav = styled(Nav)`
-  &&& .nav-link > button {
-    display: block;
-    width: 100%;
-  }
-
-  @media (min-width: 576px) {
-    align-items: center;
-  }
+const MainNavbar = styled(Navbar)`
+  max-height: 50px;
+  background-color: ${props => props.theme.primaryColor};
 `;
 const UserBox = styled.div`
   display: flex;
@@ -78,7 +71,7 @@ const DashboardNavbar = styled(Navbar)`
   font-weight: 500;
 
   &&& .nav-link.active {
-    color: rgb(6, 103, 208);
+    color: ${props => props.theme.primaryColor};
   }
 `;
 const Backdrop = styled.div`
@@ -170,7 +163,7 @@ export class NavbarComponent extends React.PureComponent {
               <MediaQuery minWidth={768}>
                 {matchesMediaQuery => (
                   <Fragment>
-                    <Navbar color="dark" dark expand={expand}>
+                    <MainNavbar dark expand={expand}>
                       <Container>
                         {!dashboardNavbarHidden && (
                           <>
@@ -195,197 +188,151 @@ export class NavbarComponent extends React.PureComponent {
                           }
                         >
                           <NavbarBrand tag="span">
-                            Domain.io
-                            <span className="beta-icon align-text-bottom">
-                              beta
+                            <img
+                              src="/logo.png"
+                              alt="logo"
+                              height="34"
+                              weight="34"
+                              className="mr-2"
+                            />
+                            <span
+                              style={{
+                                fontSize: '20px',
+                                fontWeight: '600',
+                                verticalAlign: 'middle',
+                              }}
+                            >
+                              ACME
                             </span>
                           </NavbarBrand>
                         </NavLink>
-                        {!loggedIn ? (
-                          <Fragment>
-                            <NavbarToggler
-                              key="navbar-toggler"
-                              onClick={() =>
-                                this.toggle('isNavbarCollapseOpen')
-                              }
-                            />
-                            <Collapse
-                              key="navbar-collapse"
-                              isOpen={isNavbarCollapseOpen}
-                              navbar
+                        <Fragment>
+                          <Nav navbar className="flex-row">
+                            <HeadWay />
+                            <Dropdown
+                              isOpen={isDropdownOpen}
+                              key="user-options"
+                              nav
+                              inNavbar
+                              toggle={() => this.toggle('isDropdownOpen')}
+                              style={{ zIndex: '1050' }}
                             >
-                              <NavbarNotLoggedNav className="ml-auto" navbar>
-                                <NavItem
-                                  key="login"
-                                  onClick={() =>
-                                    this.setState({
-                                      isNavbarCollapseOpen: false,
-                                    })
-                                  }
+                              <DropdownToggle nav caret>
+                                <Avatar
+                                  width="32"
+                                  height="32"
+                                  src={`data:image/svg+xml;base64,${
+                                    userProfile.avatar
+                                  }`}
+                                />
+                                <span
+                                  className="text-white ml-1 mr-1"
+                                  style={{
+                                    fontWeight: '400',
+                                  }}
                                 >
-                                  <NavLink
-                                    to="/auth/login"
-                                    exact
-                                    activeClassName="active"
-                                    tag={RRNavLink}
-                                  >
-                                    <Button
-                                      color="link"
-                                      style={{
-                                        color: '#f8f9fa',
-                                        textDecoration: 'none',
-                                      }}
-                                    >
-                                      Sign In
-                                    </Button>
-                                  </NavLink>
-                                </NavItem>
-                                <NavItem
-                                  key="register"
-                                  onClick={() =>
-                                    this.setState({
-                                      isNavbarCollapseOpen: false,
-                                    })
-                                  }
-                                >
-                                  <NavLink
-                                    to="/signup"
-                                    exact
-                                    activeClassName="active"
-                                    tag={RRNavLink}
-                                  >
-                                    <Button color="primary">
-                                      <strong>Get Started</strong>
-                                    </Button>
-                                  </NavLink>
-                                </NavItem>
-                              </NavbarNotLoggedNav>
-                            </Collapse>
-                          </Fragment>
-                        ) : (
-                          <Fragment>
-                            <Nav navbar className="flex-row">
-                              <HeadWay />
-                              <Dropdown
-                                isOpen={isDropdownOpen}
-                                key="user-options"
-                                nav
-                                inNavbar
-                                toggle={() => this.toggle('isDropdownOpen')}
-                                style={{ zIndex: '1050' }}
+                                  {userProfile.nickname}
+                                </span>
+                              </DropdownToggle>
+                              <DropdownMenu
+                                style={{
+                                  minWidth: 260,
+                                  position: 'absolute',
+                                }}
+                                right
                               >
-                                <DropdownToggle nav caret>
+                                <UserBox>
                                   <Avatar
-                                    width="32"
-                                    height="32"
                                     src={`data:image/svg+xml;base64,${
                                       userProfile.avatar
                                     }`}
                                   />
-                                  <span className="text-white ml-1 mr-1">
-                                    {userProfile.nickname}
-                                  </span>
-                                </DropdownToggle>
-                                <DropdownMenu
-                                  style={{
-                                    minWidth: 260,
-                                    position: 'absolute',
-                                  }}
-                                  right
-                                >
-                                  <UserBox>
-                                    <Avatar
-                                      src={`data:image/svg+xml;base64,${
-                                        userProfile.avatar
-                                      }`}
-                                    />
-                                    <span
-                                      className="mb-1"
-                                      style={{ fontSize: 18 }}
-                                    >
-                                      {userProfile.fullName}
-                                    </span>
-                                    <span
-                                      className="text-muted"
-                                      style={{ fontSize: 14 }}
-                                    >
-                                      {userProfile.email}
-                                    </span>
-                                  </UserBox>
-
-                                  {isDashboardRoute ? (
-                                    <Fragment>
-                                      {userProfile.isSignUpEmailConfirmed && (
-                                        <Fragment>
-                                          <DropdownItem divider />
-                                          <DashboardDropdownItem
-                                            to="/dashboard/settings"
-                                            tag={RRNavLink}
-                                          >
-                                            Settings
-                                          </DashboardDropdownItem>
-                                        </Fragment>
-                                      )}
-                                      <DropdownItem divider />
-                                      <DashboardDropdownItem
-                                        to="/support"
-                                        tag={RRNavLink}
-                                      >
-                                        Contact support
-                                      </DashboardDropdownItem>
-                                    </Fragment>
-                                  ) : (
-                                    <Fragment>
-                                      <DropdownItem divider />
-                                      <DashboardDropdownItem
-                                        to="/dashboard"
-                                        tag={RRNavLink}
-                                      >
-                                        <FontAwesomeIcon
-                                          icon={faHome}
-                                          className="align-text-top mr-1"
-                                        />
-                                        Dashboard
-                                      </DashboardDropdownItem>
-                                    </Fragment>
-                                  )}
-                                  <DropdownItem divider />
-                                  <DashboardDropdownItem
-                                    to="/signout"
-                                    tag={RRNavLink}
+                                  <span
+                                    className="mb-1"
+                                    style={{ fontSize: 18 }}
                                   >
-                                    {isDashboardRoute && (
+                                    {userProfile.fullName}
+                                  </span>
+                                  <span
+                                    className="text-muted"
+                                    style={{ fontSize: 14 }}
+                                  >
+                                    {userProfile.email}
+                                  </span>
+                                </UserBox>
+
+                                {isDashboardRoute ? (
+                                  <Fragment>
+                                    {userProfile.isSignUpEmailConfirmed && (
+                                      <Fragment>
+                                        <DropdownItem divider />
+                                        <DashboardDropdownItem
+                                          to="/dashboard/settings"
+                                          tag={RRNavLink}
+                                        >
+                                          Settings
+                                        </DashboardDropdownItem>
+                                      </Fragment>
+                                    )}
+                                    <DropdownItem divider />
+                                    <DashboardDropdownItem
+                                      to="/support"
+                                      tag={RRNavLink}
+                                    >
+                                      Contact support
+                                    </DashboardDropdownItem>
+                                  </Fragment>
+                                ) : (
+                                  <Fragment>
+                                    <DropdownItem divider />
+                                    <DashboardDropdownItem
+                                      to="/dashboard"
+                                      tag={RRNavLink}
+                                    >
                                       <FontAwesomeIcon
-                                        icon={faUnlockAlt}
+                                        icon={faHome}
                                         className="align-text-top mr-1"
                                       />
-                                    )}
-                                    Sign out
-                                  </DashboardDropdownItem>
-                                </DropdownMenu>
-                              </Dropdown>
-                              <Backdrop hidden={!isDropdownOpen} />
-                            </Nav>
-
-                            {!dashboardNavbarHidden && (
-                              <>
-                                {!matchesMediaQuery && (
-                                  <Collapse
-                                    key="navbar-collapse"
-                                    isOpen={isNavbarCollapseOpen}
-                                    navbar
-                                  >
-                                    <Container>
-                                      {this.renderDashboardNavItems()}
-                                    </Container>
-                                  </Collapse>
+                                      Dashboard
+                                    </DashboardDropdownItem>
+                                  </Fragment>
                                 )}
-                              </>
-                            )}
-                          </Fragment>
-                        )}
+                                <DropdownItem divider />
+                                <DashboardDropdownItem
+                                  to="/signout"
+                                  tag={RRNavLink}
+                                >
+                                  {isDashboardRoute && (
+                                    <FontAwesomeIcon
+                                      icon={faUnlockAlt}
+                                      className="align-text-top mr-1"
+                                    />
+                                  )}
+                                  Sign out
+                                </DashboardDropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                            <Backdrop hidden={!isDropdownOpen} />
+                          </Nav>
+
+                          {!dashboardNavbarHidden && (
+                            <>
+                              {!matchesMediaQuery && (
+                                <Collapse
+                                  key="navbar-collapse"
+                                  isOpen={isNavbarCollapseOpen}
+                                  navbar
+                                >
+                                  <Container>
+                                    {this.renderDashboardNavItems()}
+                                  </Container>
+                                </Collapse>
+                              )}
+                            </>
+                          )}
+                        </Fragment>
                       </Container>
-                    </Navbar>
+                    </MainNavbar>
                     {!dashboardNavbarHidden && (
                       <>
                         {matchesMediaQuery && (

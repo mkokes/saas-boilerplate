@@ -65,7 +65,7 @@ export default class LoginPage extends React.PureComponent {
                 <Col md={{ size: 6, offset: 3 }}>
                   <Card>
                     <CardHeader>
-                      <h3 className="mb-0">Log in</h3>
+                      <h3 className="mb-0">Sign in to get started</h3>
                     </CardHeader>
                     <CardBody>
                       <Row>
@@ -173,8 +173,8 @@ export default class LoginPage extends React.PureComponent {
                                       component={ReactstrapInput}
                                       name="token"
                                       type="text"
-                                      label="Two-Factor Token (if enabled)"
-                                      placeholder="Google Authenticator or Authy"
+                                      label="Two-factor token (if enabled)"
+                                      placeholder="Google Authenticator token"
                                       autoComplete="off"
                                     />
                                     <div>
@@ -182,7 +182,7 @@ export default class LoginPage extends React.PureComponent {
                                         type="submit"
                                         block
                                         size="lg"
-                                        color="success"
+                                        className="btn-theme"
                                         disabled={isSubmitting}
                                       >
                                         <FontAwesomeIcon
@@ -192,7 +192,7 @@ export default class LoginPage extends React.PureComponent {
                                             isSubmitting ? 'mr-2' : 'd-none'
                                           }
                                         />
-                                        Log in to access
+                                        Sign In
                                       </Button>
                                     </div>
                                   </Form>

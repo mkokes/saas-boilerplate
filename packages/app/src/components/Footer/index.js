@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -15,112 +14,38 @@ const FooterContainer = styled.footer`
   bottom: 0;
   width: 100%;
   line-height: 34px;
-  background-color: #f5f5f5;
+  background-color: #20232a;
+`;
+
+const FooterLogo = styled.img`
+  opacity: 0.4;
+  transition: opacity 0.15s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 /* eslint-disable react/prefer-stateless-function */
 export class FooterComponent extends React.PureComponent {
   render() {
-    const { minimal } = this.props;
-
     return (
-      <FooterContainer className="bg-dark text-light">
+      <FooterContainer className="text-light">
         <Container>
-          <Row className="mx-auto pt-4" hidden={minimal}>
-            <div className="col-6 col-md offset-md-1">
-              <h5 className="font-weight-bold">Product</h5>
-              <ul className="list-unstyled text-small">
-                <li>
-                  <Link to="/pricing" className="text-light">
-                    Pricing
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href="https://changelog.domain.io"
-                    className="text-light"
-                    target="new"
-                  >
-                    Changelog
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://status.domain.io"
-                    className="text-light"
-                    target="new"
-                  >
-                    Status page
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="col-6 col-md">
-              <h5 className="font-weight-bold">Developers</h5>
-              <ul className="list-unstyled text-small">
-                <li>
-                  <a
-                    href="https://docs.domain.io/api"
-                    className="text-light"
-                    target="new"
-                  >
-                    API documentation
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="col-6 col-md">
-              <h5 className="font-weight-bold">Company</h5>
-              <ul className="list-unstyled text-small">
-                <li>
-                  <Link to="/about" className="text-light">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/contact" className="text-light">
-                    Contact us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="col-6 col-md">
-              <h5 className="font-weight-bold">Resources</h5>
-              <ul className="list-unstyled text-small">
-                <li>
-                  <Link to="/dashboard/support" className="text-light">
-                    Support
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href="https://blog.domain.io"
-                    className="text-light"
-                    target="new"
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <Link to="/legal/terms" className="text-light">
-                    Legal
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </Row>
           <Row className="mt-1 mb-1">
             <Col xs="10">
-              <span>® {new Date().getFullYear()} ACME Inc.</span>
+              <Link to="/">
+                <FooterLogo
+                  className=""
+                  src="/logo.png"
+                  alt="app logo"
+                  width="26"
+                  height="26"
+                />
+              </Link>
             </Col>
             <Col xs="2" className="text-right">
-              <img
-                className=""
-                src="/logo.png"
-                alt="app logo"
-                width="26"
-                height="26"
-              />
+              <span>® {new Date().getFullYear()} ACME Inc.</span>
             </Col>
           </Row>
         </Container>
@@ -129,8 +54,6 @@ export class FooterComponent extends React.PureComponent {
   }
 }
 
-FooterComponent.propTypes = {
-  minimal: PropTypes.bool,
-};
+FooterComponent.propTypes = {};
 
 export default FooterComponent;

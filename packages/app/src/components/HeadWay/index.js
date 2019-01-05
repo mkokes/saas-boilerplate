@@ -35,7 +35,12 @@ class HeadWay extends React.PureComponent {
           Product updates
         </UncontrolledTooltip>
 
-        <FontAwesomeIcon icon={faBell} color="gray" size="lg" />
+        <FontAwesomeIcon
+          icon={faBell}
+          color="gray"
+          size="lg"
+          id="headway-bell"
+        />
         <div className="headway" />
       </ChangelogNavItem>
     );

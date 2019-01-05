@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withTheme } from 'styled-components';
 
 const LoaderContainer = styled('div')`
   display: flex;
@@ -8,7 +9,7 @@ const LoaderContainer = styled('div')`
   align-items: center;
 `;
 
-const Loader = ({ large }) => (
+const Loader = ({ large, theme }) => (
   <LoaderContainer>
     <svg
       width={large ? '80' : '40'}
@@ -22,7 +23,7 @@ const Loader = ({ large }) => (
         cx="50"
         cy="50"
         fill="none"
-        stroke="#6e76ff"
+        stroke={theme.color3}
         strokeWidth="20"
         r="35"
         strokeDasharray="164.93361431346415 56.97787143782138"
@@ -45,6 +46,7 @@ const Loader = ({ large }) => (
 
 Loader.propTypes = {
   large: PropTypes.bool,
+  theme: PropTypes.object,
 };
 
-export default Loader;
+export default withTheme(Loader);

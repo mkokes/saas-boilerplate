@@ -162,9 +162,8 @@ export default class ForgotPasswordPage extends React.PureComponent {
                                     <Button
                                       type="submit"
                                       size="lg"
-                                      color="success"
                                       disabled={isSubmitting}
-                                      className="float-right"
+                                      className="btn-theme float-right"
                                     >
                                       <FontAwesomeIcon
                                         pulse

@@ -4,11 +4,11 @@
  * This is the entry file for the application
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import 'sanitize.css/sanitize.css';
 import { ApolloProvider } from 'react-apollo';
-// import FontFaceObserver from 'fontfaceobserver';
+import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -25,20 +25,24 @@ import GlobalStyle from 'GlobalStyle';
 import App from 'App';
 import { clientInstance } from './graphql';
 
-// Observe font loading
-/* const robotoFontObserver = new FontFaceObserver('Roboto', {});
-robotoFontObserver.load().then(() => {
-  document.body.classList.add('fontLoaded');
-}); */
+const APP_THEME = {
+  primaryColor: '#764ABC',
+  secondaryColor: '#40216F',
+  color3: '#6e76ff',
+};
 
 AnalyticsApi.setup();
 
 ReactDOM.render(
   <ApolloProvider client={clientInstance}>
     <GlobalProvider>
-      <ToastContainer />
-      <App />
-      <GlobalStyle />
+      <ThemeProvider theme={APP_THEME}>
+        <Fragment>
+          <ToastContainer />
+          <App />
+          <GlobalStyle />
+        </Fragment>
+      </ThemeProvider>
     </GlobalProvider>
   </ApolloProvider>,
   document.getElementById('app'),

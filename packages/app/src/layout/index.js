@@ -15,11 +15,18 @@ const BaseLayout = ({ children }) => (
   <LayoutContainer className="flex flex-column">{children}</LayoutContainer>
 );
 
-const DefaultLayout = ({
+const DefaultLayout = ({ children }) => (
+  <div className="flex flex-row">
+    <BaseLayout>
+      <div className="flex flex-column">{children}</div>
+    </BaseLayout>
+  </div>
+);
+
+const DashboardBaseLayout = ({
   dashboardNavbarHidden,
   navbarExpand,
   brandNameLink,
-  minimal,
   children,
 }) => (
   <div className="flex flex-row">
@@ -30,24 +37,19 @@ const DefaultLayout = ({
         brandNameLink={brandNameLink}
       />
       <div className="flex flex-column">{children}</div>
-      <Footer minimal={minimal} />
+      <Footer />
     </BaseLayout>
   </div>
 );
 
-const MinimalDefaultLayout = ({ children }) => (
-  <DefaultLayout minimal>{children}</DefaultLayout>
-);
-
 const DashboardLayout = ({ children }) => (
-  <DefaultLayout
+  <DashboardBaseLayout
     dashboardNavbarHidden={false}
     navbarExpand="md"
     brandNameLink="/dashboard"
-    minimal
   >
     <div style={{ paddingTop: '25px', paddingBottom: '25px' }}>{children}</div>
-  </DefaultLayout>
+  </DashboardBaseLayout>
 );
 
 const DashboardSettingsLayout = ({ children }) => (
@@ -61,14 +63,13 @@ BaseLayout.propTypes = {
 };
 
 DefaultLayout.propTypes = {
+  children: PropTypes.node,
+};
+
+DashboardBaseLayout.propTypes = {
   dashboardNavbarHidden: PropTypes.bool,
   navbarExpand: PropTypes.string,
   brandNameLink: PropTypes.string,
-  children: PropTypes.node,
-  minimal: PropTypes.bool,
-};
-
-MinimalDefaultLayout.propTypes = {
   children: PropTypes.node,
 };
 
@@ -80,10 +81,4 @@ DashboardSettingsLayout.propTypes = {
   children: PropTypes.node,
 };
 
-export {
-  BaseLayout,
-  DefaultLayout,
-  MinimalDefaultLayout,
-  DashboardLayout,
-  DashboardSettingsLayout,
-};
+export { BaseLayout, DefaultLayout, DashboardLayout, DashboardSettingsLayout };

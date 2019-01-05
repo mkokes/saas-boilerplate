@@ -17,18 +17,18 @@ const SideNav = styled.div`
   }
 
   .nav-link {
-    color: #888;
+    color: rgba(0, 0, 0, 0.5);
     padding: 0.3rem 0.5rem 0.3rem 1rem;
     border-left: 2px solid transparent;
   }
 
   .nav-link:hover {
-    color: #777;
+    color: rgba(0, 0, 0, 0.7);
   }
 
   .nav-link.active {
-    color: #666;
-    border-left: 2px solid #d9534f;
+    color: ${props => props.theme.secondaryColor};
+    border-left: 2px solid ${props => props.theme.primaryColor};
   }
 `;
 

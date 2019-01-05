@@ -209,7 +209,7 @@ export default class SignupPage extends React.PureComponent {
                                       type="submit"
                                       block
                                       size="lg"
-                                      color="success"
+                                      className="btn-theme"
                                       disabled={isSubmitting}
                                     >
                                       <FontAwesomeIcon
