@@ -34,7 +34,7 @@ const APP_THEME = {
 };
 
 MomentTimezone.tz.setDefault('America/Los_Angeles');
-AnalyticsApi.setup();
+AnalyticsApi.mixpanel.setup();
 
 ReactDOM.render(
   <ApolloProvider client={clientInstance}>

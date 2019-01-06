@@ -112,8 +112,8 @@ class Provider extends Component {
     const { profile } = this.state.auth;
 
     if (profile) {
-      AnalyticsApi.alias(profile._id);
-      AnalyticsApi.people.set({
+      AnalyticsApi.mixpanel.alias(profile._id);
+      AnalyticsApi.mixpanel.people.set({
         $email: profile.email,
         $created: new Date(),
         $last_login: new Date(),
@@ -125,7 +125,7 @@ class Provider extends Component {
     await this.signIn();
     const { profile } = this.state.auth;
 
-    if (profile) AnalyticsApi.identify(profile._id);
+    if (profile) AnalyticsApi.mixpanel.identify(profile._id);
   };
 
   setUserProfile = profile => {
@@ -199,7 +199,7 @@ class Provider extends Component {
       },
     });
 
-    if (!forcedLogOut) AnalyticsApi.track('Log out');
+    if (!forcedLogOut) AnalyticsApi.mixpanel.track('Log out');
 
     console.debug('Logout user');
   };

@@ -13,7 +13,7 @@ function RouteAnalytics(props) {
   const { location, children } = props;
 
   useEffect(() => {
-    AnalyticsApi.track(`Route ${location.pathname}`);
+    AnalyticsApi.ga.pageview(location.pathname + location.search);
   });
 
   return children;

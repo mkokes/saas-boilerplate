@@ -32,7 +32,7 @@ function EmailConfirmationPage(props) {
           mutation: ConfirmUserEmail,
           variables: { confirmationToken: token || '' },
         });
-        AnalyticsApi.track('Email verified');
+        AnalyticsApi.mixpanel.track('Email verified');
 
         setAlertMessage({
           color: 'success',

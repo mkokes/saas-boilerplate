@@ -139,7 +139,7 @@ export default class SignupPage extends React.PureComponent {
                                         recaptchaResponse,
                                       },
                                     });
-                                    AnalyticsApi.track('Signed up');
+                                    AnalyticsApi.mixpanel.track('Signed up');
 
                                     const {
                                       accessToken,

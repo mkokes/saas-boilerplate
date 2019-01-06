@@ -106,7 +106,7 @@ export default class LoginPage extends React.PureComponent {
                                         ...values,
                                       },
                                     });
-                                    AnalyticsApi.track('Logged in');
+                                    AnalyticsApi.mixpanel.track('Logged in');
 
                                     const {
                                       accessToken,

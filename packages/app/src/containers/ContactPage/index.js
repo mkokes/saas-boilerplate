@@ -116,7 +116,7 @@ export default class ContactPage extends React.PureComponent {
                                     recaptchaResponse,
                                   },
                                 });
-                                AnalyticsApi.track('Contact form submission');
+                                AnalyticsApi.mixpanel.track('Contact form submission');
 
                                 formikBag.setSubmitting(false);
                                 formikBag.resetForm();

@@ -131,7 +131,7 @@ export default class ResetPasswordPage extends React.PureComponent {
                                     newPassword: values.newPassword,
                                   },
                                 });
-                                AnalyticsApi.track('Account password reseted');
+                                AnalyticsApi.mixpanel.track('Account password reseted');
 
                                 formikBag.setSubmitting(false);
 

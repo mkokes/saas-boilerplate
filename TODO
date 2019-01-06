@@ -24,7 +24,8 @@
           ✔ Confirm if Paddle.com allows billing freq downgrade e.g. from `annual` plan to `monthly` @done(18-12-30 21:04) @lasted(2m26s)
   ☐ Change Toastify alerts design
   ☐ Email confirmation design page
-  ☐ Refactor analytics to use GA
+  ☐ Tweak 2FA page
+  ✔ Refactor analytics to use GA @done(19-01-06 22:50)
 ☐ API
   ☐ Freshdesk SSO login
     https://support.freshdesk.com/support/solutions/articles/31166-single-sign-on-remote-authentication-in-freshdesk
