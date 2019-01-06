@@ -24,6 +24,7 @@ import { ReactstrapInput } from 'utils/formiik';
 import * as Yup from 'yup';
 import { ApolloConsumer } from 'react-apollo';
 import Reaptcha from 'reaptcha';
+import MomentTimezone from 'moment-timezone';
 
 import { SignUpUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
@@ -134,6 +135,7 @@ export default class SignupPage extends React.PureComponent {
                                       mutation: SignUpUser,
                                       variables: {
                                         ...values,
+                                        timezone: MomentTimezone.tz.guess(),
                                         recaptchaResponse,
                                       },
                                     });

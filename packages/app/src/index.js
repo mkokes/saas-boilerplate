@@ -10,6 +10,7 @@ import 'sanitize.css/sanitize.css';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
+import MomentTimezone from 'moment-timezone';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,8 +30,10 @@ const APP_THEME = {
   primaryColor: '#764ABC',
   secondaryColor: '#40216F',
   color3: '#6e76ff',
+  color4: '#6f2dd9',
 };
 
+MomentTimezone.tz.setDefault('America/Los_Angeles');
 AnalyticsApi.setup();
 
 ReactDOM.render(

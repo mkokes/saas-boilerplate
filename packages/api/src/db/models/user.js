@@ -81,6 +81,10 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  timezone: {
+    type: String,
+    default: 'America/Los_Angeles',
+  },
   roles: {
     type: Array,
     default: [],

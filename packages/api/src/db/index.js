@@ -67,6 +67,7 @@ class Db extends EventEmitter {
       isTwoFactorAuthenticationEnabled,
       isInTrialPeriod,
       trialPeriodStartedAt,
+      timezone,
       legal,
     } = user;
 
@@ -86,6 +87,7 @@ class Db extends EventEmitter {
             isTwoFactorAuthenticationEnabled,
             isInTrialPeriod,
             trialPeriodStartedAt,
+            timezone,
             legal,
           }
         : {}),
@@ -140,7 +142,7 @@ class Db extends EventEmitter {
     return user.comparePassword(password);
   }
 
-  async signUpUser(email, password, fullName) {
+  async signUpUser(email, password, fullName, timezone) {
     let fullNameInitials = fullName.match(/\b\w/g) || [];
     fullNameInitials = (
       (fullNameInitials.shift() || '') + (fullNameInitials.pop() || '')
@@ -157,6 +159,7 @@ class Db extends EventEmitter {
       password,
       fullName,
       nickname: defaultNickname,
+      timezone,
       emailConfirmationToken: jwt.sign(
         {
           type: 'signup',
@@ -378,6 +381,12 @@ class Db extends EventEmitter {
     user.legal = finalLegal;
 
     await user.save();
+
+    return this.getUserProfile(userId, true);
+  }
+
+  async updateUserPreferences(userId, preferences) {
+    const user = await this._getUser(userId, { mustExist: true });
 
     return this.getUserProfile(userId, true);
   }

@@ -75,7 +75,10 @@ module.exports = ({
     },
   },
   Mutation: {
-    signUpUser: async (_, { recaptchaResponse, email, password, fullName }) => {
+    signUpUser: async (
+      _,
+      { recaptchaResponse, email, password, fullName, timezone },
+    ) => {
       const paramsValidationErrors = {};
 
       if (validator.isEmpty(recaptchaResponse)) {
@@ -115,7 +118,7 @@ module.exports = ({
       }
 
       try {
-        const user = await db.signUpUser(email, password, fullName);
+        const user = await db.signUpUser(email, password, fullName, timezone);
 
         const accessToken = createAccessToken({
           JWT_SECRET,
@@ -571,6 +574,13 @@ module.exports = ({
         user._id,
         validatedNotifications,
       );
+    },
+    updateUserPreferences: async (_, { preferences }, { user }) => {
+      await assertUser(user);
+
+      console.log(preferences);
+
+      return db.updateUserPreferences(user._id, preferences);
     },
     chageUserSubscriptionPlan: async (_, { planId }, { user }) => {
       await assertUser(user);

@@ -15,7 +15,7 @@ import Middleware from 'components/Middleware';
 import PrivateRoute from 'components/PrivateRoute';
 import RouteAnalytics from 'components/RouteAnalytics';
 
-// import ContactPage from 'containers/ContactPage/Loadable';
+import ContactPage from 'containers/ContactPage/Loadable';
 import PricingPage from 'containers/PricingPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
@@ -36,6 +36,7 @@ import {
   DashboardLayout,
   DashboardSettingsLayout,
   BaseLayout,
+  DashboardLayoutWithoutSubNavbar,
 } from 'layout';
 import { GlobalConsumer } from 'GlobalState';
 
@@ -121,6 +122,13 @@ export default function App() {
                     <Route
                       protected
                       exact
+                      path="/dashboard/contact"
+                      component={ContactPage}
+                      layout={DashboardLayout}
+                    />
+                    <Route
+                      protected
+                      exact
                       path="/dashboard/settings"
                       component={ProfilePage}
                       layout={DashboardSettingsLayout}
@@ -151,7 +159,7 @@ export default function App() {
                       exact
                       path="/dashboard/email-verification"
                       component={EmailVerificationPage}
-                      layout={DashboardLayout}
+                      layout={DashboardLayoutWithoutSubNavbar}
                     />
                     <Route
                       protected

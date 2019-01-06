@@ -14,6 +14,7 @@ const typeDefs = `
     isTwoFactorAuthenticationEnabled: Boolean
     isInTrialPeriod: Boolean
     trialPeriodStartedAt: String
+    timezone: String
     legal: [LegalAgreement]
   }
   type UserPaymentReceipts {
@@ -66,6 +67,9 @@ const typeDefs = `
   }
   input UserNotificationsPreferencesInput {
     notifications: [LegalAgreementInput]!
+  }
+  input UserPreferencesInput {
+    timezone: String!
   }
 `;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormFeedback, FormGroup, Input, Label } from 'reactstrap';
+import Select from 'react-select';
 
 export const ReactstrapInput = ({
   field: { ...fields },
@@ -25,41 +26,26 @@ export const ReactstrapInput = ({
 );
 
 export const ReactstrapSelect = ({
-  field,
-  form: { touched, errors },
+  field: { ...fields },
+  form: { setFieldValue, touched, errors, isSubmitting },
   ...props
 }) => {
-  const error = errors[field.name];
-  const touch = touched[field.name];
+  const error = errors[fields.name];
+  const touch = touched[fields.name];
+
   return (
     <FormGroup>
-      <Label for={field.name} className="label-color">
+      <Label for={fields.name} className="label-color">
         {props.label}
       </Label>
-      <Input
-        {...field}
+      <Select
         {...props}
-        type="select"
-        invalid={Boolean(touched[field.name] && errors[field.name])}
-        placeholder="Test"
-      >
-        {props.inputprops.placeholder && (
-          <option value="">{props.inputprops.placeholder}</option>
-        )}
-        {props.inputprops.options.map(option => {
-          if (option.name)
-            return (
-              <option value={option.id} key={option.id}>
-                {option.name}
-              </option>
-            );
-          return (
-            <option value={option} key={option}>
-              {option}
-            </option>
-          );
-        })}
-      </Input>
+        {...fields}
+        value={props.value}
+        onChange={option => setFieldValue(fields.name, option)}
+        onBlur={fields.onBlur}
+        isDisabled={isSubmitting}
+      />
       {touch && error && <FormFeedback>{error}</FormFeedback>}
     </FormGroup>
   );

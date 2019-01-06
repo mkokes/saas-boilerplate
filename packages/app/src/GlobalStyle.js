@@ -61,10 +61,15 @@ const GlobalStyle = createGlobalStyle`
     color: rgb(240, 240, 240);
   }
 
-  .btn-theme {
+  .btn-theme, .btn-theme:hover {
     color: #fff;
     background-color: ${props => props.theme.primaryColor};
     border-color: ${props => props.theme.primaryColor};
+  }
+ .btn-theme:hover {
+    color: #fff;
+    background-color: ${props => props.theme.color4};
+    border-color: ${props => props.theme.color4};
   }
 `;
 

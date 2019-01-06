@@ -16,12 +16,22 @@ import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
-import { ReactstrapCheckbox } from 'utils/formiik';
-import { UpdateUserNotificationsPreferences } from 'graphql/mutations';
+import { ReactstrapSelect, ReactstrapCheckbox } from 'utils/formiik';
+import {
+  UpdateUserNotificationsPreferences,
+  UpdateUserPreferences,
+} from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
+import { getTimezones } from 'utils/moment';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class PreferencesPage extends React.PureComponent {
+  constructor() {
+    super();
+
+    this.timezones = getTimezones();
+  }
+
   render() {
     return (
       <Fragment>
@@ -36,6 +46,83 @@ export default class PreferencesPage extends React.PureComponent {
                 <Fragment>
                   <h1 className="mb-3">Preferences</h1>
                   <Card body>
+                    <legend>Account Preferences</legend>
+                    <Row>
+                      <Col xs="10" sm="8" lg="6">
+                        <Formik
+                          initialValues={{
+                            timezone: this.timezones.find(
+                              ({ value }) => value === userProfile.timezone,
+                            ),
+                          }}
+                          validationSchema={Yup.object().shape({
+                            timezone: Yup.object().required('Required'),
+                          })}
+                          /* eslint-disable-next-line consistent-return */
+                          onSubmit={async (values, formikBag) => {
+                            return console.debug(values);
+                            try {
+                              const {
+                                data: { profile },
+                              } = await client.mutate({
+                                mutation: UpdateUserPreferences,
+                                variables: {
+                                  profile: values,
+                                },
+                              });
+
+                              setUserProfile(profile);
+
+                              formikBag.resetForm();
+                              toast.success(`Preferences updated!`, {
+                                position: toast.POSITION.TOP_CENTER,
+                                autoClose: 3000,
+                              });
+                            } catch (e) {
+                              const err = transformApolloErr(e);
+
+                              if (err.type === 'BAD_USER_INPUT') {
+                                formikBag.setErrors(err.data);
+                              } else {
+                                toast.error(err.message, {
+                                  position: toast.POSITION.TOP_CENTER,
+                                });
+                              }
+
+                              formikBag.setSubmitting(false);
+                            }
+                          }}
+                        >
+                          {({ values, isSubmitting }) => (
+                            <Fragment>
+                              <Form>
+                                <Field
+                                  component={ReactstrapSelect}
+                                  name="timezone"
+                                  label="Time zone"
+                                  options={this.timezones}
+                                  value={values.timezone}
+                                  required
+                                />
+
+                                <Button
+                                  type="submit"
+                                  disabled={isSubmitting}
+                                  className="float-right"
+                                >
+                                  <FontAwesomeIcon
+                                    pulse
+                                    icon={faSpinner}
+                                    className={isSubmitting ? 'mr-2' : 'd-none'}
+                                  />
+                                  Save
+                                </Button>
+                              </Form>
+                            </Fragment>
+                          )}
+                        </Formik>
+                      </Col>
+                    </Row>
                     <legend>Notifications</legend>
                     <Row>
                       <Col xs="10" sm="8" lg="6">

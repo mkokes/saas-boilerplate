@@ -247,7 +247,7 @@ export default class ProfilePage extends React.PureComponent {
                                     />
                                     <Field
                                       component={ReactstrapInput}
-                                      label="Confirm New Password"
+                                      label="Confirm new password"
                                       name="confirmNewPassword"
                                       type="password"
                                       autoComplete="off"
@@ -272,7 +272,7 @@ export default class ProfilePage extends React.PureComponent {
                                     <Button
                                       type="submit"
                                       size="lg"
-                                      color="primary"
+                                      className="btn-theme"
                                       disabled={isSubmitting}
                                     >
                                       <FontAwesomeIcon
@@ -293,7 +293,7 @@ export default class ProfilePage extends React.PureComponent {
                       </Col>
                     </Row>
                     <hr />
-                    <Row >
+                    <Row>
                       <Col xs="12" sm="4">
                         <p
                           style={{

@@ -48,7 +48,21 @@ const DashboardLayout = ({ children }) => (
     navbarExpand="md"
     brandNameLink="/dashboard"
   >
-    <div style={{ paddingTop: '25px', paddingBottom: '25px' }}>{children}</div>
+    <div style={{ paddingTop: '25px', paddingBottom: '25px' }} className="flex">
+      {children}
+    </div>
+  </DashboardBaseLayout>
+);
+
+const DashboardLayoutWithoutSubNavbar = ({ children }) => (
+  <DashboardBaseLayout
+    dashboardNavbarHidden
+    navbarExpand="md"
+    brandNameLink="/dashboard"
+  >
+    <div style={{ paddingTop: '25px', paddingBottom: '25px' }} className="flex">
+      {children}
+    </div>
   </DashboardBaseLayout>
 );
 
@@ -81,4 +95,10 @@ DashboardSettingsLayout.propTypes = {
   children: PropTypes.node,
 };
 
-export { BaseLayout, DefaultLayout, DashboardLayout, DashboardSettingsLayout };
+export {
+  BaseLayout,
+  DefaultLayout,
+  DashboardLayout,
+  DashboardLayoutWithoutSubNavbar,
+  DashboardSettingsLayout,
+};

@@ -9,12 +9,14 @@ export const SignUpUser = gql`
     $email: String!
     $password: String!
     $fullName: String!
+    $timezone: String
   ) {
     signUpUser(
       recaptchaResponse: $recaptchaResponse
       email: $email
       password: $password
       fullName: $fullName
+      timezone: $timezone
     ) @disableAuth {
       accessToken
       refreshToken
@@ -107,6 +109,15 @@ export const UpdateUserNotificationsPreferences = gql`
   ) {
     profile: updateUserNotificationsPreferences(notifications: $notifications)
       @requireAuth {
+      ...ProfileFields
+    }
+  }
+`;
+
+export const UpdateUserPreferences = gql`
+  ${ProfileFields}
+  mutation updateUserPreferences($preferences: UserPreferencesInput!) {
+    profile: updateUserPreferences(preferences: $preferences) @requireAuth {
       ...ProfileFields
     }
   }

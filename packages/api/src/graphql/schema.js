@@ -16,6 +16,7 @@ module.exports = gql`
     isTwoFactorAuthenticationEnabled: Boolean
     isInTrialPeriod: Boolean
     trialPeriodStartedAt: String
+    timezone: String
     legal: [LegalAgreement]
   }
   type UserPaymentReceipts {
@@ -69,6 +70,9 @@ module.exports = gql`
   input UserNotificationsPreferencesInput {
     notifications: [LegalAgreementInput]!
   }
+  input UserPreferencesInput {
+    timezone: String!
+  }
 
   type Query {
     userProfile: UserProfile
@@ -82,6 +86,7 @@ module.exports = gql`
       email: String!
       password: String!
       fullName: String!
+      timezone: String
     ): AuthTokens
     loginUser(email: String!, password: String!, token: String): AuthTokens
     loginUserNoAuth: UserProfile
@@ -96,6 +101,7 @@ module.exports = gql`
     updateUserNotificationsPreferences(
       notifications: UserNotificationsPreferencesInput!
     ): UserProfile
+    updateUserPreferences(preferences: UserPreferencesInput!): UserProfile
     chageUserSubscriptionPlan(planId: String!): Boolean
     requestEnable2FA: TwoFactorAuthentication
     confirmEnable2FA(password: String!, token: String!): Boolean
