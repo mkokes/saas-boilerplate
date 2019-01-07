@@ -68,10 +68,7 @@ export default class SignupPage extends React.PureComponent {
               <meta name="description" content="Description of SignupPage" />
             </Helmet>
 
-            <Container
-              tag="main"
-              className="flex flex-column justify-content-center"
-            >
+            <Container tag="main">
               <Row>
                 <Col md={{ size: 6, offset: 3 }}>
                   <Card>
@@ -177,7 +174,7 @@ export default class SignupPage extends React.PureComponent {
                                   }
                                 }}
                               >
-                                {({ submitForm, isSubmitting, touched }) => (
+                                {({ submitForm, isSubmitting }) => (
                                   <Form>
                                     <Field
                                       component={ReactstrapInput}
@@ -221,7 +218,7 @@ export default class SignupPage extends React.PureComponent {
                                           isSubmitting ? 'mr-2' : 'd-none'
                                         }
                                       />
-                                      Get started now
+                                      Submit
                                     </Button>
 
                                     <Reaptcha

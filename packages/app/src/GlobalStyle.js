@@ -71,6 +71,13 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${props => props.theme.color4};
     border-color: ${props => props.theme.color4};
   }
+
+  .Toastify__toast-body {
+    font-weight: 600;
+  }
+  .Toastify__toast--success {
+    background: #28a745;
+  }
 `;
 
 export default GlobalStyle;

@@ -9,8 +9,8 @@ const siteConfig = {
   gaTrackingId: '',
   projectName: '',
   headerLinks: [
-    { href: `${process.env.APP_URL}/auth/login`, label: 'Sign In' },
-    { href: `${process.env.APP_URL}/signup`, label: 'Get Started' },
+    { href: `${process.env.APP_URL}/auth/login`, label: 'Log in' },
+    { href: `${process.env.APP_URL}/signup`, label: 'Get started' },
     { blog: true, label: 'Blog' },
   ],
   headerIcon: 'img/logo.png',

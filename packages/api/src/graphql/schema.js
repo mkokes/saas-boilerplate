@@ -106,12 +106,5 @@ module.exports = gql`
     requestEnable2FA: TwoFactorAuthentication
     confirmEnable2FA(password: String!, token: String!): Boolean
     disable2FA(token: String!): Boolean
-    contact(
-      recaptchaResponse: String!
-      name: String!
-      email: String!
-      subject: String!
-      message: String!
-    ): Boolean
   }
 `;

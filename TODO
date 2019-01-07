@@ -22,9 +22,10 @@
         ✔ Handle plans upgrade/downgrade @started(18-12-30 21:04) @done(18-12-31 11:13) @lasted(14h9m9s)
           ✔ Disable button on loading @done(18-12-31 11:13)
           ✔ Confirm if Paddle.com allows billing freq downgrade e.g. from `annual` plan to `monthly` @done(18-12-30 21:04) @lasted(2m26s)
-  ☐ Change Toastify alerts design
-  ☐ Email confirmation design page
-  ☐ Tweak 2FA page
+  ✔ Change Toastify alerts design @done(19-01-07 11:42)
+  ☐ Email confirmation design page @today
+  ☐ Add links to go back to website front-end @today
+  ✔ Tweak 2FA page @done(19-01-07 10:13) @lasted(15m12s)
   ✔ Refactor analytics to use GA @done(19-01-06 22:50)
 ☐ API
   ☐ Freshdesk SSO login

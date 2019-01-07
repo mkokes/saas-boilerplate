@@ -15,7 +15,6 @@ import Middleware from 'components/Middleware';
 import PrivateRoute from 'components/PrivateRoute';
 import RouteAnalytics from 'components/RouteAnalytics';
 
-import ContactPage from 'containers/ContactPage/Loadable';
 import PricingPage from 'containers/PricingPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
@@ -33,9 +32,9 @@ import ProcessingPage from 'containers/ProcessingPage/Loadable';
 
 import {
   DefaultLayout,
+  BaseLayout,
   DashboardLayout,
   DashboardSettingsLayout,
-  BaseLayout,
   DashboardLayoutWithoutSubNavbar,
 } from 'layout';
 import { GlobalConsumer } from 'GlobalState';
@@ -117,13 +116,6 @@ export default function App() {
                       exact
                       path="/dashboard"
                       component={MainPage}
-                      layout={DashboardLayout}
-                    />
-                    <Route
-                      protected
-                      exact
-                      path="/dashboard/contact"
-                      component={ContactPage}
                       layout={DashboardLayout}
                     />
                     <Route

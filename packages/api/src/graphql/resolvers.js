@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
 const axios = require('axios');
 
-const { WEBSITE_CONTACT_FORM } = require('../constants/notifications');
 const { MARKETING_INFO } = require('../constants/legal');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
@@ -326,66 +325,6 @@ module.exports = ({
             throw e;
         }
       }
-
-      return true;
-    },
-    contact: async (
-      _,
-      { recaptchaResponse, name, email, subject, message },
-    ) => {
-      const paramsValidationErrors = {};
-
-      if (validator.isEmpty(recaptchaResponse)) {
-        throw new ApolloError(
-          'Captcha is required to continue',
-          'INVALID_CAPTCHA',
-        );
-      }
-      if (
-        validator.isEmpty(name) ||
-        !validator.isLength(name, { min: 2, max: undefined })
-      ) {
-        paramsValidationErrors.name = 'Name is not valid';
-      }
-      if (!validator.isEmail(email)) {
-        paramsValidationErrors.email = 'Email is not valid';
-      }
-      if (validator.isEmpty(subject)) {
-        paramsValidationErrors.subject = 'Subject is not valid';
-      }
-      if (
-        validator.isEmpty(message) ||
-        !validator.isLength(message, { min: 10, max: undefined })
-      ) {
-        paramsValidationErrors.message = 'Message is not valid';
-      }
-
-      if (Object.keys(paramsValidationErrors).length > 0) {
-        throw new UserInputError(
-          'Failed to send contact request due validation errors',
-          {
-            validationErrors: paramsValidationErrors,
-          },
-        );
-      }
-
-      const isRecaptchaValid = await validateRecaptchaResponse(
-        recaptchaResponse,
-      );
-
-      if (!isRecaptchaValid) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
-      }
-
-      await db.notify(null, WEBSITE_CONTACT_FORM, {
-        name,
-        email,
-        subject,
-        message,
-      });
 
       return true;
     },

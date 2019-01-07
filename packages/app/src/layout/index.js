@@ -11,16 +11,12 @@ const LayoutContainer = styled.div`
   background-color: rgb(244, 247, 250);
 `;
 
-const BaseLayout = ({ children }) => (
-  <LayoutContainer className="flex flex-column">{children}</LayoutContainer>
-);
+const DefaultLayout = ({ children }) => <BaseLayout>{children}</BaseLayout>;
 
-const DefaultLayout = ({ children }) => (
-  <div className="flex flex-row">
-    <BaseLayout>
-      <div className="flex flex-column">{children}</div>
-    </BaseLayout>
-  </div>
+const BaseLayout = ({ children }) => (
+  <LayoutContainer className="flex flex-column justify-content-center">
+    {children}
+  </LayoutContainer>
 );
 
 const DashboardBaseLayout = ({
@@ -29,17 +25,15 @@ const DashboardBaseLayout = ({
   brandNameLink,
   children,
 }) => (
-  <div className="flex flex-row">
-    <BaseLayout>
-      <Navbar
-        dashboardNavbarHidden={dashboardNavbarHidden}
-        expand={navbarExpand}
-        brandNameLink={brandNameLink}
-      />
-      <div className="flex flex-column">{children}</div>
-      <Footer />
-    </BaseLayout>
-  </div>
+  <BaseLayout>
+    <Navbar
+      dashboardNavbarHidden={dashboardNavbarHidden}
+      expand={navbarExpand}
+      brandNameLink={brandNameLink}
+    />
+    {children}
+    <Footer />
+  </BaseLayout>
 );
 
 const DashboardLayout = ({ children }) => (
@@ -72,11 +66,15 @@ const DashboardSettingsLayout = ({ children }) => (
   </DashboardLayout>
 );
 
+DefaultLayout.propTypes = {
+  children: PropTypes.node,
+};
+
 BaseLayout.propTypes = {
   children: PropTypes.node,
 };
 
-DefaultLayout.propTypes = {
+DashboardLayoutWithoutSubNavbar.propTypes = {
   children: PropTypes.node,
 };
 
@@ -96,8 +94,8 @@ DashboardSettingsLayout.propTypes = {
 };
 
 export {
-  BaseLayout,
   DefaultLayout,
+  BaseLayout,
   DashboardLayout,
   DashboardLayoutWithoutSubNavbar,
   DashboardSettingsLayout,

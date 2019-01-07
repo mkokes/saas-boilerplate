@@ -149,21 +149,3 @@ export const Disable2F = gql`
     disable2FA(token: $token) @requireAuth
   }
 `;
-
-export const Contact = gql`
-  mutation contact(
-    $recaptchaResponse: String!
-    $name: String!
-    $email: String!
-    $subject: String!
-    $message: String!
-  ) {
-    contact(
-      recaptchaResponse: $recaptchaResponse
-      name: $name
-      email: $email
-      subject: $subject
-      message: $message
-    ) @disableAuth
-  }
-`;

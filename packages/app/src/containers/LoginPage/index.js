@@ -54,18 +54,15 @@ export default class LoginPage extends React.PureComponent {
         {({ setAuthTokens, logIn }) => (
           <Fragment>
             <Helmet>
-              <title>Sign in</title>
+              <title>Log In</title>
               <meta name="description" content="Description of LoginPage" />
             </Helmet>
-            <Container
-              tag="main"
-              className="flex flex-column justify-content-center"
-            >
+            <Container tag="main">
               <Row>
                 <Col md={{ size: 6, offset: 3 }}>
                   <Card>
                     <CardHeader>
-                      <h3 className="mb-0">Sign in to get started</h3>
+                      <h3 className="mb-0">Log In</h3>
                     </CardHeader>
                     <CardBody>
                       <Row>
@@ -192,7 +189,7 @@ export default class LoginPage extends React.PureComponent {
                                             isSubmitting ? 'mr-2' : 'd-none'
                                           }
                                         />
-                                        Sign In
+                                        Log In
                                       </Button>
                                     </div>
                                   </Form>

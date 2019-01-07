@@ -93,19 +93,14 @@ export default class SecurityPage extends React.PureComponent {
                           Two-Factor Authentication (2FA) can be used to help
                           protect your account from unauthorized access by
                           requiring you to enter an additional code when you
-                          sign in. The Two-Factor Authentication feature
-                          currently supports the use of{' '}
+                          sign in.
+                        </p>
+                        <p>
+                          We recommend the use of{' '}
                           <a href="https://support.google.com/accounts/answer/1066447?hl=en">
                             Google Authenticator
                           </a>{' '}
-                          and <a href="https://www.authy.com/app">Authy</a>{' '}
-                          mobile applications.
-                        </p>
-                        <p>
-                          Once you’ve opted into Two-Factor Authentication, you
-                          will be asked to enter the code from your two-factor
-                          authentication app, then you will be signed into your
-                          account.
+                          mobile application.
                         </p>
                       </Col>
                       <Col className="text-center">
@@ -262,13 +257,11 @@ export default class SecurityPage extends React.PureComponent {
                                 <Alert color="secondary" className="mt-3">
                                   <Row>
                                     <Col xs="12">
-                                      <span>
-                                        Your Google Authenticator Code Is{' '}
-                                      </span>
+                                      <span>Your secret code is: </span>
                                       <h4>{secret2FA}</h4>
                                       <p style={{ fontSize: 14 }}>
-                                        Be sure to backup this code! If you lose
-                                        it, the process to unlock your account
+                                        Be sure to backup it! If you lose it,
+                                        the process to unlock your account
                                         requires considerable time and
                                         verification.
                                       </p>
@@ -279,6 +272,10 @@ export default class SecurityPage extends React.PureComponent {
                                         className="mt-3 mb-3"
                                         size={196}
                                       />
+                                      <p>
+                                        Scan the QR code with the authenticator
+                                        app
+                                      </p>
                                     </Col>
                                     <Col sm={{ size: 8, offset: 2 }}>
                                       <Formik
@@ -354,8 +351,7 @@ export default class SecurityPage extends React.PureComponent {
                                               <Field
                                                 component={ReactstrapInput}
                                                 name="token"
-                                                label="Enter your
-                                                    one-time authentication password:"
+                                                label="Enter your six-digit secret code (authenticator app)"
                                                 type="text"
                                                 autoComplete="off"
                                                 required

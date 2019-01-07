@@ -81,10 +81,7 @@ export default class ResetPasswordPage extends React.PureComponent {
           <title>Reset password</title>
           <meta name="description" content="Description of ResetPasswordPage" />
         </Helmet>
-        <Container
-          tag="main"
-          className="flex flex-column justify-content-center"
-        >
+        <Container tag="main">
           <Row>
             <Col md={{ size: 6, offset: 3 }}>
               <Card>
@@ -131,7 +128,9 @@ export default class ResetPasswordPage extends React.PureComponent {
                                     newPassword: values.newPassword,
                                   },
                                 });
-                                AnalyticsApi.mixpanel.track('Account password reseted');
+                                AnalyticsApi.mixpanel.track(
+                                  'Account password reseted',
+                                );
 
                                 formikBag.setSubmitting(false);
 
