@@ -1,6 +1,6 @@
 /**
  *
- * Asynchronously loads the component for FreshdeskSSO
+ * Asynchronously loads the component for FreshdeskLoginPage
  *
  */
 

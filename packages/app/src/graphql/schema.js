@@ -6,6 +6,7 @@ const typeDefs = `
   type UserProfile {
     _id: String
     _subscription: String
+    accountStatus: String
     fullName: String
     nickname: String
     email: String

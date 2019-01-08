@@ -13,19 +13,18 @@ const BaseLayoutContainer = styled.div`
 const DefaultLayout = ({ children }) => <BaseLayout>{children}</BaseLayout>;
 
 const TransactionalLayout = ({ headerTitle, children }) => (
-  <div>
+  <BaseLayout>
     <div
-      style={{ position: 'absolute', width: '100%', paddingTop: '10em' }}
-      className="flex flex-column align-items-center justify-content-center"
+      className="pb-4 text-center"
+      style={{ marginTop: '-20em', marginBottom: !headerTitle ? '1em' : '' }}
     >
-      <a href="http://localhost:3002">
+      <a href={process.env.REACT_APP_WEBSITE_URL}>
         <img src="/logo.png" alt="brand logo" width="112" height="112" />
       </a>
-      <h1>{headerTitle}</h1>
+      {headerTitle && <h1>{headerTitle}</h1>}
     </div>
-
-    <BaseLayout>{children}</BaseLayout>
-  </div>
+    {children}
+  </BaseLayout>
 );
 
 const BaseLayout = ({ children }) => (

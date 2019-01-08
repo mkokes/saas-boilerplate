@@ -5,7 +5,7 @@
  */
 
 import React, { Fragment } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import {
   Container,
   Card,
@@ -117,6 +117,7 @@ export default class LoginPage extends React.PureComponent {
 
                                     await logIn();
                                   } catch (e) {
+                                    console.debug(e);
                                     const err = transformApolloErr(e);
 
                                     if (err.type === 'BAD_USER_INPUT') {

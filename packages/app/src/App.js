@@ -29,8 +29,6 @@ import SecurityPage from 'containers/Dashboard/User/Settings/SecurityPage/Loadab
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SignOutPage from 'containers/SignOutPage/Loadable';
 import ProcessingPage from 'containers/ProcessingPage/Loadable';
-import FreshdeskSSO from 'containers/FreshdeskSSO/Loadable';
-
 
 import {
   DefaultLayout,
@@ -41,6 +39,7 @@ import {
   DashboardLayoutWithoutSubNavbar,
 } from 'layout';
 import { GlobalConsumer } from 'GlobalState';
+import { FreshdeskLoginPage } from 'containers/FreshdeskLoginPage';
 
 const Route = ({
   component: Component,
@@ -122,6 +121,7 @@ export default function App() {
                       exact
                       path="/auth/forgot-password"
                       component={ForgotPasswordPage}
+                      layout={TransactionalLayout}
                     />
                     <Route
                       exact
@@ -173,11 +173,9 @@ export default function App() {
                       layout={DashboardLayoutWithoutSubNavbar}
                     />
                     <Route
-                      protected
                       exact
-                      path="/dashboard/go/freshdesk"
-                      component={FreshdeskSSO}
-                      layout={DashboardLayoutWithoutSubNavbar}
+                      path="/dashboard/login/support"
+                      component={FreshdeskLoginPage}
                     />
 
                     <Route

@@ -5,7 +5,7 @@
  */
 
 import React, { Fragment } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import {
   Container,
   Card,
@@ -55,10 +55,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
             content="Description of ForgotPasswordPage"
           />
         </Helmet>
-        <Container
-          tag="main"
-          
-        >
+        <Container tag="main">
           <Row>
             <Col md={{ size: 6, offset: 3 }}>
               <Card>
@@ -154,7 +151,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
                                         size="lg"
                                       />
                                       <span className="ml-2">
-                                        Back to Login
+                                        Go back to the login page
                                       </span>
                                     </Link>
                                   </Col>
