@@ -78,7 +78,7 @@ export default class ResetPasswordPage extends React.PureComponent {
     return (
       <Fragment>
         <Helmet>
-          <title>Reset password</title>
+          <title>Set a New Password</title>
           <meta name="description" content="Description of ResetPasswordPage" />
         </Helmet>
         <Container tag="main">

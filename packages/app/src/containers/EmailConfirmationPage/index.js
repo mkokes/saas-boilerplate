@@ -8,7 +8,7 @@ import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { useAsyncEffect } from 'use-async-effect';
 import { Helmet } from 'react-helmet';
-import { Container, Row, Col, Alert } from 'reactstrap';
+import { Container, Row, Col, Alert, Button } from 'reactstrap';
 import queryString from 'query-string';
 import { withApollo } from 'react-apollo';
 
@@ -61,9 +61,18 @@ function EmailConfirmationPage(props) {
         <Row>
           <Col md="12" className="text-center">
             {alertMessage ? (
-              <Alert color={alertMessage.color}>
-                <strong>{alertMessage.text}</strong>
-              </Alert>
+              <Fragment>
+                <Alert color={alertMessage.color}>
+                  <strong>{alertMessage.text}</strong>
+                </Alert>
+                {alertMessage.color === 'success' && (
+                  <a href="/dashboard">
+                    <Button color="success" size="lg">
+                      Go to Dashboard
+                    </Button>
+                  </a>
+                )}
+              </Fragment>
             ) : (
               <Loader />
             )}

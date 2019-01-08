@@ -3,7 +3,6 @@
   "description": "API Back-end",
   "private": true,
   "version": "0.1.0",
-
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -36,6 +35,7 @@
     "koa-router": "^7.4.0",
     "lodash.get": "^4.4.2",
     "logdna-bunyan": "^1.0.1",
+    "moment-timezone": "^0.5.23",
     "mongoose": "^5.3.8",
     "mongoose-unique-validator": "^2.0.2",
     "now": "^12.1.1",

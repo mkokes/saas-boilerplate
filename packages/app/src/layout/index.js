@@ -6,17 +6,32 @@ import Navbar from 'components/Navbar';
 import Footer from 'components/Footer';
 import DashboardSettingsNavbar from 'components/DashboardSettingsNavbar/Loadable';
 
-const LayoutContainer = styled.div`
+const BaseLayoutContainer = styled.div`
   min-height: 100vh;
-  background-color: rgb(244, 247, 250);
 `;
 
 const DefaultLayout = ({ children }) => <BaseLayout>{children}</BaseLayout>;
 
+const TransactionalLayout = ({ headerTitle, children }) => (
+  <div>
+    <div
+      style={{ position: 'absolute', width: '100%', paddingTop: '10em' }}
+      className="flex flex-column align-items-center justify-content-center"
+    >
+      <a href="http://localhost:3002">
+        <img src="/logo.png" alt="brand logo" width="112" height="112" />
+      </a>
+      <h1>{headerTitle}</h1>
+    </div>
+
+    <BaseLayout>{children}</BaseLayout>
+  </div>
+);
+
 const BaseLayout = ({ children }) => (
-  <LayoutContainer className="flex flex-column justify-content-center">
+  <BaseLayoutContainer className="flex flex-column justify-content-center">
     {children}
-  </LayoutContainer>
+  </BaseLayoutContainer>
 );
 
 const DashboardBaseLayout = ({
@@ -70,6 +85,11 @@ DefaultLayout.propTypes = {
   children: PropTypes.node,
 };
 
+TransactionalLayout.propTypes = {
+  children: PropTypes.node,
+  headerTitle: PropTypes.string,
+};
+
 BaseLayout.propTypes = {
   children: PropTypes.node,
 };
@@ -95,6 +115,7 @@ DashboardSettingsLayout.propTypes = {
 
 export {
   DefaultLayout,
+  TransactionalLayout,
   BaseLayout,
   DashboardLayout,
   DashboardLayoutWithoutSubNavbar,

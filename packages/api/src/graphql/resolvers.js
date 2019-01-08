@@ -3,6 +3,8 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
 const axios = require('axios');
+const crypto = require('crypto');
+const momentTimezone = require('moment-timezone');
 
 const { MARKETING_INFO } = require('../constants/legal');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
@@ -37,7 +39,13 @@ const assertUser = async user => {
 };
 
 module.exports = ({
-  config: { JWT_SECRET, PADDLE_VENDOR_ID, PADDLE_VENDOR_AUTH_CODE },
+  config: {
+    JWT_SECRET,
+    PADDLE_VENDOR_ID,
+    PADDLE_VENDOR_AUTH_CODE,
+    FRESHDESK_SECRET,
+    FRESHDESK_BASE_URL,
+  },
   db,
   log,
 }) => ({
@@ -71,6 +79,25 @@ module.exports = ({
       const plans = await db.getActiveSubscriptionPlans();
 
       return plans;
+    },
+    getFreshdeskSSO: async (_, __, { user }) => {
+      await assertUser(user);
+
+      const profile = await db.getUserProfile(user._id, true);
+      const { fullName, email } = profile;
+
+      const timestamp = Math.floor(new Date().getTime() / 1000).toString();
+      const hmac = crypto.createHmac('md5', FRESHDESK_SECRET);
+      hmac.update(fullName + FRESHDESK_SECRET + email + timestamp);
+
+      const hash = hmac.digest('hex');
+      return {
+        url: `${FRESHDESK_BASE_URL}/login/sso?name=${escape(
+          fullName,
+        )}&email=${escape(email)}&timestamp=${escape(
+          escape(timestamp),
+        )}&hash=${escape(hash)}`,
+      };
     },
   },
   Mutation: {
@@ -517,7 +544,17 @@ module.exports = ({
     updateUserPreferences: async (_, { preferences }, { user }) => {
       await assertUser(user);
 
-      console.log(preferences);
+      const validTimezones = momentTimezone.tz.names();
+      if (!validTimezones.includes(preferences.timezone)) {
+        throw UserInputError(
+          'Failed to update user preferences due to validation errors',
+          {
+            validationErrors: {
+              timezone: 'Invalid timezone',
+            },
+          },
+        );
+      }
 
       return db.updateUserPreferences(user._id, preferences);
     },

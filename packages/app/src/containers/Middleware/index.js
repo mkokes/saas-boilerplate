@@ -15,17 +15,17 @@ class Middleware extends React.PureComponent {
 
     if (path) {
       if (path.indexOf('/auth') === 0) {
-        let redirectTo = '/dashboard';
+        let defaultRedirectTo = '/dashboard';
 
         if (location.state && location.state.from) {
           const { pathname, search, hash } = location.state.from;
 
           if (pathname !== '/signout') {
-            redirectTo = `${pathname + search + hash}`;
+            defaultRedirectTo = `${pathname + search + hash}`;
           }
         }
 
-        if (user) return <Redirect to={redirectTo} />;
+        if (user) return <Redirect to={defaultRedirectTo} />;
       }
       if (path.indexOf('/signup') === 0) {
         if (user) return <Redirect to="/dashboard" />;

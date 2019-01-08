@@ -12,6 +12,10 @@ const env = envalid.cleanEnv(
     LOGDNA_API_KEY: str({ default: '' }),
     PADDLE_VENDOR_ID: str({ default: '' }),
     PADDLE_VENDOR_AUTH_CODE: str({ default: '' }),
+    FRESHDESK_SECRET: str({ default: '' }),
+    FRESHDESK_BASE_URL: str({
+      default: 'https://nwytgservice374.freshdesk.com',
+    }),
   },
   {
     dotEnvPath: '.env',

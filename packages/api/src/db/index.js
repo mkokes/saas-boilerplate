@@ -386,7 +386,13 @@ class Db extends EventEmitter {
   }
 
   async updateUserPreferences(userId, preferences) {
+    const { timezone } = preferences;
+
     const user = await this._getUser(userId, { mustExist: true });
+
+    user.timezone = timezone;
+
+    await user.save();
 
     return this.getUserProfile(userId, true);
   }

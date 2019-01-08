@@ -60,20 +60,23 @@ export default class PreferencesPage extends React.PureComponent {
                           })}
                           /* eslint-disable-next-line consistent-return */
                           onSubmit={async (values, formikBag) => {
-                            return console.debug(values);
+                            const timezone = values.timezone.value;
+
                             try {
                               const {
                                 data: { profile },
                               } = await client.mutate({
                                 mutation: UpdateUserPreferences,
                                 variables: {
-                                  profile: values,
+                                  preferences: {
+                                    timezone,
+                                  },
                                 },
                               });
 
                               setUserProfile(profile);
 
-                              formikBag.resetForm();
+                              formikBag.setSubmitting(false);
                               toast.success(`Preferences updated!`, {
                                 position: toast.POSITION.TOP_CENTER,
                                 autoClose: 3000,

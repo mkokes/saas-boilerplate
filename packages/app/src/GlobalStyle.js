@@ -12,7 +12,9 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     line-height: 1.5;
     text-size-adjust: 100%;
-    word-wrap: break-word
+    word-wrap: break-word;
+    min-height: 100vh;
+    background-color: rgb(244, 247, 250);
   }
   legend {
     display: block;
@@ -66,11 +68,10 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${props => props.theme.primaryColor};
     border-color: ${props => props.theme.primaryColor};
   }
- .btn-theme:hover {
-    color: #fff;
-    background-color: ${props => props.theme.color4};
-    border-color: ${props => props.theme.color4};
+  .btn-theme:active {
+    background-color: ${props => props.theme.color4} !important;
   }
+
 
   .Toastify__toast-body {
     font-weight: 600;

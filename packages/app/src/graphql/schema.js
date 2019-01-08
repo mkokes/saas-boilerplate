@@ -48,6 +48,9 @@ const typeDefs = `
     secret: String!
     qrcode: String!
   }
+  type FreshdeskSSO {
+    url: String!
+  }
 
   enum LegalAgreementType {
     TERMS_AND_CONDITIONS

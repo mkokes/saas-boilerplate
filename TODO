@@ -3,12 +3,13 @@
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
   ✔ Brand colors style @done(19-01-05 20:25)
+  ☐ Freshdesk SSO
   ☐ User Dashboard
     ☐ Settings
       ✔ Profile @done(19-01-05 21:43)
         ✔ Fix buttons layout grid @started(18-12-28 19:03) @done(18-12-28 19:22) @lasted(19m27s)
       ✔ Preferences @done(19-01-06 20:52)
-        ✔ User timezone @done(19-01-06 20:52)
+        ✔ User timezone @started(19-01-08 08:39) @done(19-01-08 11:39) @lasted(3h11s)
       ☐ Billing
         We allow upgrade at any time but we only allow downgrades only at the end of the contract.
         If an user decides to re-subscribe and new plan tier is same to current tier then we add the
@@ -23,12 +24,13 @@
           ✔ Disable button on loading @done(18-12-31 11:13)
           ✔ Confirm if Paddle.com allows billing freq downgrade e.g. from `annual` plan to `monthly` @done(18-12-30 21:04) @lasted(2m26s)
   ✔ Change Toastify alerts design @done(19-01-07 11:42)
-  ☐ Email confirmation design page @today
-  ☐ Add links to go back to website front-end @today
+  ✔ Email confirmation design page @today @done(19-01-07 20:48)
+  ✔ Add links to go back to website front-end @done(19-01-07 20:42)
   ✔ Tweak 2FA page @done(19-01-07 10:13) @lasted(15m12s)
   ✔ Refactor analytics to use GA @done(19-01-06 22:50)
-☐ API
-  ☐ Freshdesk SSO login
+  ☐ Fix login header UI @started(19-01-08 11:39)
+✔ API @done(19-01-07 22:43)
+  ✔ Freshdesk SSO login @done(19-01-07 22:43)
     https://support.freshdesk.com/support/solutions/articles/31166-single-sign-on-remote-authentication-in-freshdesk
 ✔ Analytics Server @done(18-12-28 05:33)
 ☐ Scheduler Server

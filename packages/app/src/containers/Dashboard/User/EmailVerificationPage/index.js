@@ -13,7 +13,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
-import { isUserEmailConfirmedQuery } from 'graphql/queries';
+import { IsUserEmailConfirmedQuery } from 'graphql/queries';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class EmailVerificationPage extends React.PureComponent {
@@ -40,7 +40,7 @@ export default class EmailVerificationPage extends React.PureComponent {
                 <Row className="justify-content-center">
                   <Col md="12" className="text-center">
                     <SafeQuery
-                      query={isUserEmailConfirmedQuery}
+                      query={IsUserEmailConfirmedQuery}
                       fetchPolicy="cache-and-network"
                       pollInterval={3000}
                       keepExistingResultDuringRefetch

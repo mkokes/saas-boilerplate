@@ -11,7 +11,7 @@ import {
 import AppLoader from 'components/AppLoader';
 import ScrollToTop from 'components/ScrollToTop';
 import NotFoundPage from 'components/NotFoundPage/Loadable';
-import Middleware from 'components/Middleware';
+import Middleware from 'containers/Middleware';
 import PrivateRoute from 'components/PrivateRoute';
 import RouteAnalytics from 'components/RouteAnalytics';
 
@@ -29,9 +29,12 @@ import SecurityPage from 'containers/Dashboard/User/Settings/SecurityPage/Loadab
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SignOutPage from 'containers/SignOutPage/Loadable';
 import ProcessingPage from 'containers/ProcessingPage/Loadable';
+import FreshdeskSSO from 'containers/FreshdeskSSO/Loadable';
+
 
 import {
   DefaultLayout,
+  TransactionalLayout,
   BaseLayout,
   DashboardLayout,
   DashboardSettingsLayout,
@@ -52,7 +55,7 @@ const Route = ({
           <PrivateRoute exact loggedIn={loggedIn} enable={rest.protected}>
             <Middleware user={userProfile} path={rest.path}>
               <RouteAnalytics {...props}>
-                <Layout>
+                <Layout {...rest}>
                   <Component {...props} />
                 </Layout>
               </RouteAnalytics>
@@ -88,7 +91,13 @@ export default function App() {
                     />
 
                     <Route exact path="/pricing" component={PricingPage} />
-                    <Route exact path="/signup" component={SignupPage} />
+                    <Route
+                      exact
+                      path="/signup"
+                      component={SignupPage}
+                      layout={TransactionalLayout}
+                      headerTitle="Let's get started!"
+                    />
                     <Route
                       exact
                       path="/processing"
@@ -99,8 +108,16 @@ export default function App() {
                       exact
                       path="/confirm-email"
                       component={EmailConfirmationPage}
+                      layout={TransactionalLayout}
+                      headerTitle="Confirm Your Email"
                     />
-                    <Route exact path="/auth/login" component={LoginPage} />
+                    <Route
+                      exact
+                      path="/auth/login"
+                      component={LoginPage}
+                      layout={TransactionalLayout}
+                      headerTitle="Authentication"
+                    />
                     <Route
                       exact
                       path="/auth/forgot-password"
@@ -110,6 +127,8 @@ export default function App() {
                       exact
                       path="/auth/reset-password"
                       component={ResetPasswordPage}
+                      layout={TransactionalLayout}
+                      headerTitle="Reset Your Password"
                     />
                     <Route
                       protected
@@ -153,6 +172,14 @@ export default function App() {
                       component={EmailVerificationPage}
                       layout={DashboardLayoutWithoutSubNavbar}
                     />
+                    <Route
+                      protected
+                      exact
+                      path="/dashboard/go/freshdesk"
+                      component={FreshdeskSSO}
+                      layout={DashboardLayoutWithoutSubNavbar}
+                    />
+
                     <Route
                       protected
                       exact

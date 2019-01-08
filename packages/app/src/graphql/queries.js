@@ -56,10 +56,18 @@ export const UserSubscriptionQuery = gql`
   }
 `;
 
-export const isUserEmailConfirmedQuery = gql`
+export const IsUserEmailConfirmedQuery = gql`
   query getUserProfile {
     profile: userProfile @requireAuth {
       isSignUpEmailConfirmed
+    }
+  }
+`;
+
+export const GetFreshdeskSSO = gql`
+  query getFreshdeskSSO {
+    getFreshdeskSSO @requireAuth {
+      url
     }
   }
 `;
