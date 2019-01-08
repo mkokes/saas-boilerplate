@@ -38,7 +38,7 @@
     "moment-timezone": "^0.5.23",
     "mongoose": "^5.3.8",
     "mongoose-unique-validator": "^2.0.2",
-    "now": "^12.1.1",
+    "now": "^13.0.0",
     "otplib": "^10.0.1",
     "p-queue": "^3.0.0",
     "php-serialize": "^2.0.1",
