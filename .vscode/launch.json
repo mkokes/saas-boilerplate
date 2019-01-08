@@ -1,0 +1,16 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "API",
+      "runtimeExecutable": "nodemon",
+      "cwd": "${workspaceFolder}/packages/api",
+      "program": "${workspaceFolder}/packages/api/index.js",
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}
