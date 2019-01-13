@@ -29,6 +29,7 @@ import SecurityPage from 'containers/Dashboard/User/Settings/SecurityPage/Loadab
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SignOutPage from 'containers/SignOutPage/Loadable';
 import ProcessingPage from 'containers/ProcessingPage/Loadable';
+import SupportLoginPage from 'containers/SupportLoginPage/Loadable';
 
 import {
   DefaultLayout,
@@ -39,7 +40,6 @@ import {
   DashboardLayoutWithoutSubNavbar,
 } from 'layout';
 import { GlobalConsumer } from 'GlobalState';
-import { FreshdeskLoginPage } from 'containers/FreshdeskLoginPage';
 
 const Route = ({
   component: Component,
@@ -173,9 +173,10 @@ export default function App() {
                       layout={DashboardLayoutWithoutSubNavbar}
                     />
                     <Route
+                      protected
                       exact
-                      path="/dashboard/login/support"
-                      component={FreshdeskLoginPage}
+                      path="/support/login"
+                      component={SupportLoginPage}
                     />
 
                     <Route

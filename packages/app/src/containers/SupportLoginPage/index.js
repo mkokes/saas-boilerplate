@@ -1,33 +1,21 @@
 /**
  *
- * FreshdeskLoginPage
+ * SupportLoginPage
  *
  */
 
 import React from 'react';
 import { withApollo } from 'react-apollo';
-import styled from 'styled-components';
 
-import Loader from 'components/Loader';
 import { getProvider as getGlobalProvider } from 'GlobalState';
 import { buildAuthHeader } from 'utils/requests';
 import { GetFreshdeskSSO } from 'graphql/queries';
-import Delayed from 'components/Delayed';
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
-export default class freshdeskLoginPage extends React.PureComponent {
+class supportLoginPage extends React.PureComponent {
   async componentDidMount() {
     const { client, history, location } = this.props;
+
+    console.debug(this.props);
 
     try {
       const globalProvider = await getGlobalProvider();
@@ -47,7 +35,7 @@ export default class freshdeskLoginPage extends React.PureComponent {
 
       window.location = getFreshdeskSSO.url;
     } catch (err) {
-      console.error(err);
+      throw err;
       history.push('/auth/login', { from: location });
     }
   }
@@ -57,4 +45,4 @@ export default class freshdeskLoginPage extends React.PureComponent {
   }
 }
 
-export const FreshdeskLoginPage = withApollo(freshdeskLoginPage);
+export default withApollo(supportLoginPage);

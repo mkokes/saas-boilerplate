@@ -57,6 +57,7 @@ class Db extends EventEmitter {
     const {
       _id,
       _subscription,
+      accountStatus,
       lastLoginAt,
       registeredAt,
       email,
@@ -79,6 +80,7 @@ class Db extends EventEmitter {
         ? {
             _id: _id.toString(),
             _subscription: _subscription ? _subscription.toString() : null,
+            accountStatus,
             fullName,
             email,
             lastLoginAt,
@@ -188,13 +190,10 @@ class Db extends EventEmitter {
 
   async authChallenge(userId, JWTiat) {
     const user = await this._getUser(userId, { mustExist: true });
-    const { passwordUpdatedAt, accountStatus } = user;
+    const { passwordUpdatedAt } = user;
 
     if (JWTiat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
       throw new Error('token iat must be greater than passwordUpdatedAt');
-    }
-    if (accountStatus !== 'active') {
-      return false;
     }
 
     return true;

@@ -3,7 +3,7 @@
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
   ✔ Brand colors style @done(19-01-05 20:25)
-  ☐ Freshdesk SSO
+  ✔ Freshdesk SSO @started(19-01-08 18:41) @done(19-01-08 22:45) @lasted(4h4m17s)
   ☐ User Dashboard
     ☐ Settings
       ✔ Profile @done(19-01-05 21:43)
@@ -28,7 +28,7 @@
   ✔ Add links to go back to website front-end @done(19-01-07 20:42)
   ✔ Tweak 2FA page @done(19-01-07 10:13) @lasted(15m12s)
   ✔ Refactor analytics to use GA @done(19-01-06 22:50)
-  ☐ Fix login header UI @started(19-01-08 11:39)
+  ✔ Fix login header UI @done(19-01-08 18:10)
 ✔ API @done(19-01-07 22:43)
   ✔ Freshdesk SSO login @done(19-01-07 22:43)
     https://support.freshdesk.com/support/solutions/articles/31166-single-sign-on-remote-authentication-in-freshdesk
@@ -39,4 +39,4 @@
   ☐ Zeit.co
 ☐ Misc
   ✔ Stage server @done(18-12-28 05:32)
-  ☐ Test Mixpanel.com
+  ✔ Test Mixpanel.com @done(19-01-08 22:45)
