@@ -10692,13 +10692,9 @@ normalize-url@^3.0.0, normalize-url@^3.1.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
 
-now@^11.4.6:
-  version "11.5.2"
-  resolved "https://registry.yarnpkg.com/now/-/now-11.5.2.tgz#d91f7f6665ebea5e3a9b96c72215aab2b81fe42e"
-
-now@^12.1.1:
-  version "12.1.14"
-  resolved "https://registry.yarnpkg.com/now/-/now-12.1.14.tgz#3f56bce02df505eb668343baf2cecf57ca1cc10c"
+now@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/now/-/now-13.0.0.tgz#094e36f95e711e77c345161e3cc533d9465b2f9f"
 
 npm-bundled@^1.0.1:
   version "1.0.5"
