@@ -10382,8 +10382,8 @@ mongoose-unique-validator@^2.0.2:
     lodash.get "^4.0.2"
 
 mongoose@^5.3.8:
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.4.2.tgz#3f3d87e0082f3e28bf24f0e3f87e107195996461"
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.4.3.tgz#9cbc689ca0c529c2d7dd5a84dcfbc9b041084367"
   dependencies:
     async "2.6.1"
     bson "~1.1.0"
