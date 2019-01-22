@@ -281,7 +281,7 @@ export class NavbarComponent extends React.PureComponent {
                                       to="/support"
                                       tag={RRNavLink}
                                     >
-                                      Contact support
+                                      Support center
                                     </DashboardDropdownItem>
                                   </Fragment>
                                 ) : (

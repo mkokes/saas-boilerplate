@@ -153,7 +153,6 @@ export default class ResetPasswordPage extends React.PureComponent {
                                 if (
                                   err.type === 'INVALID_PASSWORD_RESET_TOKEN'
                                 ) {
-                                  // @TODO: Hide form. Ask user to re-issue forgot pw process.
                                   this.setState({ hideForm: true });
                                   this.setState({
                                     hideForgotPasswordPrompt: false,

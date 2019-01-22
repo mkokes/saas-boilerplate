@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
