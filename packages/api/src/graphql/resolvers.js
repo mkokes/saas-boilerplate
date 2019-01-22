@@ -84,16 +84,18 @@ module.exports = ({
       await assertUser(user);
 
       const profile = await db.getUserProfile(user._id, true);
-      const { fullName, email } = profile;
+      const { firstName, lastName, email } = profile;
+
+      const userDisplayName = `${firstName} ${lastName}`;
 
       const timestamp = Math.floor(new Date().getTime() / 1000).toString();
       const hmac = crypto.createHmac('md5', FRESHDESK_SECRET);
-      hmac.update(fullName + FRESHDESK_SECRET + email + timestamp);
+      hmac.update(userDisplayName + FRESHDESK_SECRET + email + timestamp);
 
       const hash = hmac.digest('hex');
       return {
         url: `${FRESHDESK_BASE_URL}/login/sso?name=${escape(
-          fullName,
+          userDisplayName,
         )}&email=${escape(email)}&timestamp=${escape(
           escape(timestamp),
         )}&hash=${escape(hash)}`,
@@ -103,7 +105,7 @@ module.exports = ({
   Mutation: {
     signUpUser: async (
       _,
-      { recaptchaResponse, email, password, fullName, timezone },
+      { recaptchaResponse, email, password, firstName, lastName, timezone },
     ) => {
       const paramsValidationErrors = {};
 
@@ -119,11 +121,17 @@ module.exports = ({
       if (validator.isEmpty(password)) {
         paramsValidationErrors.password = 'Password must be set';
       }
-      if (validator.isEmpty(fullName)) {
-        paramsValidationErrors.fullName = "What's your name?";
+      if (validator.isEmpty(firstName)) {
+        paramsValidationErrors.firstName = 'First name is required';
       }
-      if (!validator.isLength(fullName, { min: 2, max: undefined })) {
-        paramsValidationErrors.fullName = 'Too short!';
+      if (!validator.isLength(firstName, { min: 2, max: undefined })) {
+        paramsValidationErrors.firstName = 'Too short!';
+      }
+      if (validator.isEmpty(lastName)) {
+        paramsValidationErrors.lastName = 'Last name is required';
+      }
+      if (!validator.isLength(lastName, { min: 2, max: undefined })) {
+        paramsValidationErrors.lastName = 'Too short!';
       }
 
       if (Object.keys(paramsValidationErrors).length > 0) {
@@ -144,7 +152,13 @@ module.exports = ({
       }
 
       try {
-        const user = await db.signUpUser(email, password, fullName, timezone);
+        const user = await db.signUpUser(
+          email,
+          password,
+          firstName,
+          lastName,
+          timezone,
+        );
 
         const accessToken = createAccessToken({
           JWT_SECRET,
@@ -480,7 +494,7 @@ module.exports = ({
     updateUserPersonalDetails: async (_, { profile }, { user }) => {
       await assertUser(user);
 
-      const { fullName } = profile;
+      const { firstName, lastName } = profile;
 
       const userInputError = errors =>
         new UserInputError(
@@ -492,12 +506,20 @@ module.exports = ({
       const paramsValidationErrors = {};
 
       if (
-        typeof fullName !== 'string' ||
-        !fullName ||
-        !/^[^0-9_]{2,48}$/.test(fullName)
+        typeof firstName !== 'string' ||
+        !firstName ||
+        !/^[^0-9_]{2,48}$/.test(firstName)
       ) {
-        paramsValidationErrors.fullName =
-          'Full Name must be between 2 and 48 characters and not contain numbers or underscores.';
+        paramsValidationErrors.firstName =
+          'First name must be between 2 and 48 characters and not contain numbers or underscores.';
+      }
+      if (
+        typeof lastName !== 'string' ||
+        !lastName ||
+        !/^[^0-9_]{2,48}$/.test(lastName)
+      ) {
+        paramsValidationErrors.lastName =
+          'Last name must be between 2 and 48 characters and not contain numbers or underscores.';
       }
 
       if (Object.keys(paramsValidationErrors).length > 0) {

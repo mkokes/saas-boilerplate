@@ -7,7 +7,8 @@ const typeDefs = `
     _id: String
     _subscription: String
     accountStatus: String
-    fullName: String
+    firstName: String
+    lastName: String
     nickname: String
     email: String
     avatar: String
@@ -67,7 +68,8 @@ const typeDefs = `
     nickname: String!
   }
   input UserPersonalDetailsInput {
-    fullName: String!
+    firstName: String!
+    lastName: String!
   }
   input UserNotificationsPreferencesInput {
     notifications: [LegalAgreementInput]!

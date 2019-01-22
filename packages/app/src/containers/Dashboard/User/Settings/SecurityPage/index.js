@@ -97,7 +97,10 @@ export default class SecurityPage extends React.PureComponent {
                         </p>
                         <p>
                           We recommend the use of{' '}
-                          <a href="https://support.google.com/accounts/answer/1066447?hl=en">
+                          <a
+                            href="https://support.google.com/accounts/answer/1066447?hl=en"
+                            target="_new"
+                          >
                             Google Authenticator
                           </a>{' '}
                           mobile application.

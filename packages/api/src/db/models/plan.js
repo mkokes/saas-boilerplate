@@ -22,7 +22,10 @@ const Plan = new mongoose.Schema({
     type: Number,
     required: true,
   },
-
+  tier: {
+    type: Number,
+    required: true,
+  },
   billingInterval: {
     type: String,
     required: true,

@@ -5,7 +5,8 @@ export const ProfileFields = gql`
     _id
     _subscription
     accountStatus
-    fullName
+    firstName
+    lastName
     nickname
     email
     avatar

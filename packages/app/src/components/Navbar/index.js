@@ -251,7 +251,7 @@ export class NavbarComponent extends React.PureComponent {
                                     className="mb-1"
                                     style={{ fontSize: 18 }}
                                   >
-                                    {userProfile.fullName}
+                                    {`${userProfile.firstName} ${userProfile.lastName}`}
                                   </span>
                                   <span
                                     className="text-muted"

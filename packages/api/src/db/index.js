@@ -61,7 +61,8 @@ class Db extends EventEmitter {
       lastLoginAt,
       registeredAt,
       email,
-      fullName,
+      firstName,
+      lastName,
       nickname,
       avatar,
       isSignUpEmailConfirmed,
@@ -81,7 +82,8 @@ class Db extends EventEmitter {
             _id: _id.toString(),
             _subscription: _subscription ? _subscription.toString() : null,
             accountStatus,
-            fullName,
+            firstName,
+            lastName,
             email,
             lastLoginAt,
             registeredAt,
@@ -144,23 +146,24 @@ class Db extends EventEmitter {
     return user.comparePassword(password);
   }
 
-  async signUpUser(email, password, fullName, timezone) {
-    let fullNameInitials = fullName.match(/\b\w/g) || [];
-    fullNameInitials = (
-      (fullNameInitials.shift() || '') + (fullNameInitials.pop() || '')
-    ).toUpperCase();
+  async signUpUser(email, password, firstName, lastName, timezone) {
+    const fullNameInitials = `${firstName} ${lastName}`
+      .split(/\s/)
+      /* eslint-disable-next-line */
+      .reduce((response, word) => (response += word.slice(0, 1)), '');
 
-    let defaultNickname =
-      fullNameInitials.length > 1 ? fullNameInitials : fullName;
-    if (defaultNickname.length > 16) {
-      defaultNickname = `${defaultNickname.substr(0, 13)}…`;
+    let nickname = fullNameInitials.length > 1 ? fullNameInitials : firstName;
+
+    if (nickname.length > 16) {
+      nickname = `${nickname.substr(0, 13)}…`;
     }
 
     const user = await new User({
       email,
       password,
-      fullName,
-      nickname: defaultNickname,
+      firstName,
+      lastName,
+      nickname,
       timezone,
       emailConfirmationToken: jwt.sign(
         {
@@ -180,10 +183,9 @@ class Db extends EventEmitter {
 
   async loginUser(userId) {
     const user = await this._getUser(userId, { mustExist: true });
-
     this._log.info(`Updating login timestamp for user ${userId}`);
     user.lastLoginAt = Date.now();
-    await user.save();
+    user.save();
 
     return this.getUserProfile(userId, true);
   }
@@ -350,14 +352,16 @@ class Db extends EventEmitter {
   }
 
   async updateUserPersonalDetails(userId, profile) {
-    const { fullName } = profile;
+    const { firstName, lastName } = profile;
 
     const user = await this._getUser(userId, { mustExist: true });
-    const { fullName: existingFullName } = user;
+    const { firstName: existingFirstName, lastName: existingLastName } = user;
 
-    const finalFullName = fullName || existingFullName;
+    const finalFirstName = firstName || existingFirstName;
+    const finalLastName = lastName || existingLastName;
 
-    user.fullName = finalFullName;
+    user.firstName = finalFirstName;
+    user.lastName = finalLastName;
     await user.save();
 
     return this.getUserProfile(userId, true);

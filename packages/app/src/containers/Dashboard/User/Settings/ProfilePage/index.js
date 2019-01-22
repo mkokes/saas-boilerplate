@@ -512,10 +512,12 @@ export default class ProfilePage extends React.PureComponent {
                       <Col xs="10" sm="8" lg="6">
                         <Formik
                           initialValues={{
-                            fullName: userProfile.fullName,
+                            firstName: userProfile.firstName,
+                            lastName: userProfile.lastName,
                           }}
                           validationSchema={Yup.object().shape({
-                            fullName: Yup.string().required('Required'),
+                            firstName: Yup.string().required('Required'),
+                            lastName: Yup.string().required('Required'),
                           })}
                           /* eslint-disable-next-line consistent-return */
                           onSubmit={async (values, formikBag) => {
@@ -556,8 +558,16 @@ export default class ProfilePage extends React.PureComponent {
                               <Form>
                                 <Field
                                   component={ReactstrapInput}
-                                  name="fullName"
-                                  label="Full Name"
+                                  name="firstName"
+                                  label="First Name"
+                                  type="text"
+                                  autoComplete="off"
+                                  required
+                                />
+                                <Field
+                                  component={ReactstrapInput}
+                                  name="lastName"
+                                  label="Last Name"
                                   type="text"
                                   autoComplete="off"
                                   required

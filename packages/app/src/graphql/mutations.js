@@ -8,14 +8,16 @@ export const SignUpUser = gql`
     $recaptchaResponse: String
     $email: String!
     $password: String!
-    $fullName: String!
+    $firstName: String!
+    $lastName: String!
     $timezone: String
   ) {
     signUpUser(
       recaptchaResponse: $recaptchaResponse
       email: $email
       password: $password
-      fullName: $fullName
+      firstName: $firstName
+      lastName: $lastName
       timezone: $timezone
     ) @disableAuth {
       accessToken

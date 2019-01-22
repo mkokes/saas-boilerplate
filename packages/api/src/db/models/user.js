@@ -46,7 +46,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  fullName: {
+  firstName: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  lastName: {
     type: String,
     trim: true,
     required: true,
@@ -59,7 +64,8 @@ const UserSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: () => new Identicon(uuidv4(), { format: 'svg', size: '128' }),
+    default: () =>
+      new Identicon(uuidv4(), { margin: 0.2, format: 'svg', size: '128' }),
   },
   isSignUpEmailConfirmed: {
     type: Boolean,

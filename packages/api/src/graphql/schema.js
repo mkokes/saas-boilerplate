@@ -9,7 +9,8 @@ module.exports = gql`
     _id: String
     _subscription: String
     accountStatus: String
-    fullName: String
+    firstName: String
+    lastName: String
     nickname: String
     email: String
     avatar: String
@@ -69,7 +70,8 @@ module.exports = gql`
     nickname: String!
   }
   input UserPersonalDetailsInput {
-    fullName: String!
+    firstName: String!
+    lastName: String!
   }
   input UserNotificationsPreferencesInput {
     notifications: [LegalAgreementInput]!
@@ -90,7 +92,8 @@ module.exports = gql`
       recaptchaResponse: String
       email: String!
       password: String!
-      fullName: String!
+      firstName: String!
+      lastName: String!
       timezone: String
     ): AuthTokens
     loginUser(email: String!, password: String!, token: String): AuthTokens

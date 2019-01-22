@@ -92,7 +92,8 @@ export default class SignupPage extends React.PureComponent {
                               <Formik
                                 initialValues={{
                                   email: '',
-                                  fullName: '',
+                                  firstName: '',
+                                  lastName: '',
                                   password: '',
                                 }}
                                 validationSchema={() =>
@@ -104,13 +105,17 @@ export default class SignupPage extends React.PureComponent {
                                         'Already in use, use another email',
                                       )
                                       .required('Required'),
-                                    fullName: Yup.string()
+                                    firstName: Yup.string()
+                                      .min(2, 'Too short!')
+                                      .required('Required'),
+                                    lastName: Yup.string()
                                       .min(2, 'Too short!')
                                       .required('Required'),
                                     password: Yup.string().required('Required'),
                                   })
                                 }
                                 onSubmit={async (values, formikBag) => {
+                                  console.debug(values);
                                   this.setState({
                                     signUpErrorMessage: null,
                                   });
@@ -178,11 +183,20 @@ export default class SignupPage extends React.PureComponent {
                                   <Form>
                                     <Field
                                       component={ReactstrapInput}
-                                      name="fullName"
+                                      name="firstName"
                                       type="text"
                                       placeholder="John Doe"
-                                      label="Full name"
-                                      autoComplete="full-name"
+                                      label="First name"
+                                      autoComplete="first-name"
+                                      required
+                                    />
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="lastName"
+                                      type="text"
+                                      placeholder="John Doe"
+                                      label="Last name"
+                                      autoComplete="last-name"
                                       required
                                     />
                                     <Field
