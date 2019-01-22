@@ -13154,8 +13154,8 @@ realpath-native@^1.0.0:
     util.promisify "^1.0.0"
 
 reaptcha@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/reaptcha/-/reaptcha-1.4.0.tgz#458caf653da31c4919117bad082f5cdc5f9851d6"
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/reaptcha/-/reaptcha-1.4.1.tgz#6511656336d34df9f39b96f1124d114f7c4fbadb"
 
 rechoir@^0.6.2:
   version "0.6.2"
