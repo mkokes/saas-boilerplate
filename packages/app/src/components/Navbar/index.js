@@ -32,7 +32,6 @@ import Avatar from 'components/Avatar';
 import HeadWay from 'components/HeadWay';
 
 const MainNavbar = styled(Navbar)`
-  max-height: 50px;
   background-color: ${props => props.theme.primaryColor};
 `;
 const UserBox = styled.div`
@@ -158,12 +157,12 @@ export class NavbarComponent extends React.PureComponent {
     return (
       <Fragment>
         <GlobalConsumer>
-          {({ loggedIn, userProfile }) => (
+          {({ userProfile }) => (
             <header>
               <MediaQuery minWidth={768}>
                 {matchesMediaQuery => (
                   <Fragment>
-                    <MainNavbar dark expand={expand}>
+                    <MainNavbar dark expand={expand} className="pt-0 pb-0">
                       <Container>
                         {!dashboardNavbarHidden && (
                           <>
@@ -186,6 +185,7 @@ export class NavbarComponent extends React.PureComponent {
                           onClick={() =>
                             this.setState({ isNavbarCollapseOpen: false })
                           }
+                          style={{ maxHeight: 50 }}
                         >
                           <NavbarBrand tag="span">
                             <img

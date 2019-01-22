@@ -32,22 +32,20 @@ export class FooterComponent extends React.PureComponent {
     return (
       <FooterContainer className="text-light">
         <Container>
-          <Row className="mt-1 mb-1">
-            <Col xs="10">
-              <Link to="/">
-                <FooterLogo
-                  className=""
-                  src="/logo.png"
-                  alt="app logo"
-                  width="26"
-                  height="26"
-                />
-              </Link>
-            </Col>
-            <Col xs="2" className="text-right">
-              <span>® {new Date().getFullYear()} ACME Inc.</span>
-            </Col>
-          </Row>
+          <div className="mt-1 mb-1">
+            <Link to="/" className="float-left">
+              <FooterLogo
+                className=""
+                src="/logo.png"
+                alt="app logo"
+                width="26"
+                height="26"
+              />
+            </Link>
+            <span className="float-right">
+              ® {new Date().getFullYear()} ACME Inc.
+            </span>
+          </div>
         </Container>
       </FooterContainer>
     );
