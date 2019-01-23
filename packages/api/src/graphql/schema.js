@@ -31,6 +31,7 @@ module.exports = gql`
     _paddleProductId: Int
     name: String
     price: Float
+    tier: Int
     billingInterval: String
   }
   type Subscription {

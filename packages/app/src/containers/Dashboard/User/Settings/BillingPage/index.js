@@ -8,13 +8,14 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Card, Button, Alert } from 'reactstrap';
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTable from 'react-table';
 import Moment from 'react-moment';
 import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
+import { NavLink } from 'react-router-dom';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
@@ -89,11 +90,29 @@ export default class BillingPage extends React.PureComponent {
         return <strong>Your current plan</strong>;
       }
 
+      let ctaButton = {
+        color: 'primary',
+        text: 'Change Plan',
+      };
+
+      if (plan.tier > currentPlan._plan.tier) {
+        ctaButton = {
+          color: 'success',
+          text: `Upgrade`,
+        };
+      }
+      if (plan.tier < currentPlan._plan.tier) {
+        ctaButton = {
+          color: 'secondary',
+          text: 'Downgrade',
+        };
+      }
+
       return (
         <ApolloConsumer>
           {client => (
             <Button
-              color="primary"
+              color={ctaButton.color}
               onClick={async () => {
                 this.setState({ subscriptionPlansLoading: true });
 
@@ -121,7 +140,7 @@ export default class BillingPage extends React.PureComponent {
                 }
               }}
             >
-              Change Plan
+              {ctaButton.text}
             </Button>
           )}
         </ApolloConsumer>
@@ -262,7 +281,15 @@ export default class BillingPage extends React.PureComponent {
                     )}
                   </Col>
                 </Row>
-                <legend>Subscription plans</legend>
+                <legend>
+                  Subscription plans{' '}
+                  <NavLink to="/pricing" className="float-right">
+                    <small>
+                      Pricing page{' '}
+                      <FontAwesomeIcon icon={faQuestionCircle} size="xs" />
+                    </small>
+                  </NavLink>{' '}
+                </legend>
                 <Row>
                   <Col hidden={subscriptionPlansLoading}>
                     <SafeQuery

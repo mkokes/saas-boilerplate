@@ -2,6 +2,7 @@ import React, { createContext, Component } from 'react';
 import propTypes from 'prop-types';
 import { withApollo } from 'react-apollo';
 import jwtDecode from 'jwt-decode';
+import MomentTimezone from 'moment-timezone';
 
 import { LocalStorageApi, AnalyticsApi } from 'api/vendors';
 import { LoginUserNoAuth, RefreshAccessToken } from 'graphql/mutations';
@@ -138,6 +139,8 @@ class Provider extends Component {
         loggedIn: true,
       },
     }));
+
+    MomentTimezone.tz.setDefault(profile.timezone);
   };
 
   refreshAccessTokenReq = async () => {

@@ -26,6 +26,7 @@ export const ActiveSubscriptionPlans = gql`
     currentPlan: userSubscription @requireAuth {
       _plan {
         _paddleProductId
+        tier
       }
     }
     plans: activeSubscriptionPlans @requireAuth {
@@ -33,6 +34,7 @@ export const ActiveSubscriptionPlans = gql`
       _paddleProductId
       name
       price
+      tier
       billingInterval
     }
   }
