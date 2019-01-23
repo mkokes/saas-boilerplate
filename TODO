@@ -13,7 +13,7 @@
       ☐ Billing
         ☐ Layout grid
           ☐ Current subscription
-          ☐ Subscription plans
+          ✔ Subscription plans @done(19-01-23 20:19)
         ✔ Refactor GraphQL @started(18-12-30 11:15) @done(18-12-30 12:03) @lasted(48m35s)
         ✔ On subscription subscribed success redirect @done(18-12-30 20:16)
         ✔ Handle plans upgrade/downgrade @started(18-12-30 21:04) @done(18-12-31 11:13) @lasted(14h9m9s)

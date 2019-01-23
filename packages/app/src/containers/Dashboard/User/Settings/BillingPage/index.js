@@ -7,7 +7,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Card, Button, Alert } from 'reactstrap';
+import { Container, Row, Col, Card, Button, Alert } from 'reactstrap';
 import { faFileAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTable from 'react-table';
@@ -67,6 +67,7 @@ export default class BillingPage extends React.PureComponent {
         return (
           <Button
             color="primary"
+            block
             onClick={() =>
               PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
                 history.replace(`/processing`);
@@ -87,7 +88,11 @@ export default class BillingPage extends React.PureComponent {
         currentPlan &&
         currentPlan._plan._paddleProductId === plan._paddleProductId
       ) {
-        return <strong>Your current plan</strong>;
+        return (
+          <Button color="secondary" disabled block>
+            Current Plan
+          </Button>
+        );
       }
 
       let ctaButton = {
@@ -103,7 +108,7 @@ export default class BillingPage extends React.PureComponent {
       }
       if (plan.tier < currentPlan._plan.tier) {
         ctaButton = {
-          color: 'secondary',
+          color: 'danger',
           text: 'Downgrade',
         };
       }
@@ -113,6 +118,7 @@ export default class BillingPage extends React.PureComponent {
           {client => (
             <Button
               color={ctaButton.color}
+              block
               onClick={async () => {
                 this.setState({ subscriptionPlansLoading: true });
 
@@ -148,12 +154,16 @@ export default class BillingPage extends React.PureComponent {
     };
 
     return plans.map(plan => (
-      <Row key={plan._id} className="mb-2">
-        <Col>{plan.name}</Col>
-        <Col>
+      <Row key={plan._id} className="mt-2 mb-2 text-center text-sm-left">
+        <Col xs="12" md="3">
+          {plan.name}
+        </Col>
+        <Col xs="12" md="5">
           ${plan.price.toFixed(2)}/{plan.billingInterval}
         </Col>
-        <Col>{_renderPlanActionButton(plan)}</Col>
+        <Col xs="12" md="4">
+          {_renderPlanActionButton(plan)}
+        </Col>
       </Row>
     ));
   }
@@ -300,9 +310,9 @@ export default class BillingPage extends React.PureComponent {
                       showError
                     >
                       {({ data: { currentPlan, plans = [] } }) => (
-                        <Fragment>
+                        <Container>
                           {this.renderSubscriptionPlans(currentPlan, plans)}
-                        </Fragment>
+                        </Container>
                       )}
                     </SafeQuery>
                   </Col>
