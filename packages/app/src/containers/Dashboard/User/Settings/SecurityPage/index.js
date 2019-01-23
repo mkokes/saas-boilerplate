@@ -90,10 +90,10 @@ export default class SecurityPage extends React.PureComponent {
                     <Row>
                       <Col xs="12">
                         <p>
-                          Two-Factor Authentication (2FA) can be used to help
-                          protect your account from unauthorized access by
-                          requiring you to enter an additional code when you
-                          sign in.
+                          <strong>Two-Factor Authentication (2FA)</strong> can
+                          be used to help protect your account from unauthorized
+                          access by requiring you to enter an additional code
+                          when you sign in.
                         </p>
                         <p>
                           We recommend the use of{' '}

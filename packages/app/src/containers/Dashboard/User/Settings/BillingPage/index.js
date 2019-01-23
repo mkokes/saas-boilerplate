@@ -7,12 +7,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Card, Button, Alert, UncontrolledTooltip } from 'reactstrap';
+import { Row, Col, Card, Button, Alert } from 'reactstrap';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTable from 'react-table';
 import Moment from 'react-moment';
-import Switch from 'react-switch';
 import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
@@ -54,7 +53,6 @@ export default class BillingPage extends React.PureComponent {
     }
 
     this.state = {
-      billingSwitchChecked: true,
       subscriptionPlansLoading: false,
     };
     this.renderSubscriptionPlans = this.renderSubscriptionPlans.bind(this);
@@ -130,13 +128,7 @@ export default class BillingPage extends React.PureComponent {
       );
     };
 
-    const { billingSwitchChecked } = this.state;
-
-    const filteredPlans = plans.filter(
-      plan => (plan.billingInterval === 'year') === billingSwitchChecked,
-    );
-
-    return filteredPlans.map(plan => (
+    return plans.map(plan => (
       <Row key={plan._id} className="mb-2">
         <Col>{plan.name}</Col>
         <Col>
@@ -148,7 +140,7 @@ export default class BillingPage extends React.PureComponent {
   }
 
   render() {
-    const { billingSwitchChecked, subscriptionPlansLoading } = this.state;
+    const { subscriptionPlansLoading } = this.state;
 
     return (
       <Fragment>
@@ -270,35 +262,7 @@ export default class BillingPage extends React.PureComponent {
                     )}
                   </Col>
                 </Row>
-                <legend>
-                  Subscription plans{' '}
-                  <label
-                    htmlFor="normal-switch"
-                    id="billing-switch"
-                    className="d-flex align-items-center float-right"
-                  >
-                    <Switch
-                      onChange={checked => {
-                        this.setState({
-                          billingSwitchChecked: checked,
-                        });
-                      }}
-                      checked={this.state.billingSwitchChecked}
-                      onColor="#7EB6FF"
-                      uncheckedIcon={false}
-                      checkedIcon={false}
-                      id="normal-switch"
-                      className="mr-1"
-                    />
-
-                    <small>{billingSwitchChecked ? 'Yearly' : 'Monthly'}</small>
-                  </label>
-                  <UncontrolledTooltip placement="top" target="billing-switch">
-                    Switch to {billingSwitchChecked ? 'monthly' : 'yearly'}{' '}
-                    billing
-                  </UncontrolledTooltip>
-                </legend>
-
+                <legend>Subscription plans</legend>
                 <Row>
                   <Col hidden={subscriptionPlansLoading}>
                     <SafeQuery
