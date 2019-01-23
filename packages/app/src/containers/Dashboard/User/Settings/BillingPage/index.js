@@ -154,7 +154,7 @@ export default class BillingPage extends React.PureComponent {
     };
 
     return plans.map(plan => (
-      <Row key={plan._id} className="mt-2 mb-2 text-center text-sm-left">
+      <Row key={plan._id} className="mt-2 mb-2 text-center text-md-left">
         <Col xs="12" md="3">
           {plan.name}
         </Col>
