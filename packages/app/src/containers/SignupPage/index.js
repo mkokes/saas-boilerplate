@@ -181,24 +181,30 @@ export default class SignupPage extends React.PureComponent {
                               >
                                 {({ submitForm, isSubmitting }) => (
                                   <Form>
-                                    <Field
-                                      component={ReactstrapInput}
-                                      name="firstName"
-                                      type="text"
-                                      placeholder="John Doe"
-                                      label="First name"
-                                      autoComplete="first-name"
-                                      required
-                                    />
-                                    <Field
-                                      component={ReactstrapInput}
-                                      name="lastName"
-                                      type="text"
-                                      placeholder="John Doe"
-                                      label="Last name"
-                                      autoComplete="last-name"
-                                      required
-                                    />
+                                    <Row>
+                                      <Col>
+                                        <Field
+                                          component={ReactstrapInput}
+                                          name="firstName"
+                                          type="text"
+                                          placeholder="John Doe"
+                                          label="First name"
+                                          autoComplete="first-name"
+                                          required
+                                        />
+                                      </Col>
+                                      <Col>
+                                        <Field
+                                          component={ReactstrapInput}
+                                          name="lastName"
+                                          type="text"
+                                          placeholder="Smith"
+                                          label="Last name"
+                                          autoComplete="last-name"
+                                          required
+                                        />
+                                      </Col>
+                                    </Row>
                                     <Field
                                       component={ReactstrapInput}
                                       name="email"

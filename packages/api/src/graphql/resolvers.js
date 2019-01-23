@@ -590,8 +590,14 @@ module.exports = ({
       const currentUserSubscription = await db.getUserSubscription(user._id);
       if (!currentUserSubscription) {
         throw new ApolloError(
-          'Not user subscription not found',
+          'Subscription not found',
           'USER_SUBSCRIPTION_NOT_FOUND',
+        );
+      }
+      if (currentUserSubscription.paymentStatus !== 'active') {
+        throw new ApolloError(
+          'Cannot change subscription plan because your current subscription is not active',
+          'USER_SUBSCRIPTION_NOT_ACTIVE',
         );
       }
       if (currentUserSubscription._plan._id.toString() === planId) {
@@ -601,12 +607,6 @@ module.exports = ({
             'CANNOT_CHANGE_SAME_PLAN',
           );
         }
-      }
-      if (currentUserSubscription.status !== 'active') {
-        throw new ApolloError(
-          'Cannot change plan because subscription is not active',
-          'USER_SUBSCRIPTION_NOT_ACTIVE',
-        );
       }
 
       const plan = await db.getPlanById(planId);
