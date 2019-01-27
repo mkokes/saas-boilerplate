@@ -416,7 +416,7 @@ class Db extends EventEmitter {
       secret,
       qrcode: otplib.authenticator.keyuri(
         user.email,
-        'MY_SERVICE_NAME',
+        'MY_SERVICE_NAME', // @TODO: Get this from config
         secret,
       ),
     };
@@ -502,7 +502,7 @@ class Db extends EventEmitter {
 
   async subscriptionPaymentPastDue(id) {
     return Subscription.findByIdAndUpdate(id, {
-      status: 'past_due',
+      paymentStatus: 'past_due',
       pastDueAt: Date.now(),
     }).exec();
   }

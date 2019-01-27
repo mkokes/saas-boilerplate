@@ -42,6 +42,7 @@ const init = async () => {
     await nextHandler();
   });
 
+  // @TODO: Import router instead of put it here
   router.post('/paddle-webhooks', async ctx => {
     const {
       p_signature: paddleSignature,

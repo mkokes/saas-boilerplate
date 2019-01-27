@@ -9,3 +9,4 @@ package-lock.json
 yarn-debug.log*
 yarn-error.log*
 npm-debug.log*
+lerna-debug.log*

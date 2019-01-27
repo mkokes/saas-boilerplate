@@ -5,9 +5,10 @@
   "private": true,
   "version": "0.0.1",
   "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": []
+  },
   "scripts": {
     "start:website": "(cd packages/website && yarn start)",
     "start:app": "(cd packages/app && yarn start)",
