@@ -7,14 +7,15 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Card, Button, Alert } from 'reactstrap';
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { Container, Row, Col, Card, Button, Alert } from 'reactstrap';
+import { faFileAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTable from 'react-table';
 import Moment from 'react-moment';
 import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
+import { NavLink } from 'react-router-dom';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
@@ -66,6 +67,7 @@ export default class BillingPage extends React.PureComponent {
         return (
           <Button
             color="primary"
+            block
             onClick={() =>
               PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
                 history.replace(`/processing`);
@@ -86,14 +88,37 @@ export default class BillingPage extends React.PureComponent {
         currentPlan &&
         currentPlan._plan._paddleProductId === plan._paddleProductId
       ) {
-        return <strong>Your current plan</strong>;
+        return (
+          <Button color="secondary" disabled block>
+            Current Plan
+          </Button>
+        );
+      }
+
+      let ctaButton = {
+        color: 'primary',
+        text: 'Change Plan',
+      };
+
+      if (plan.tier > currentPlan._plan.tier) {
+        ctaButton = {
+          color: 'success',
+          text: `Upgrade`,
+        };
+      }
+      if (plan.tier < currentPlan._plan.tier) {
+        ctaButton = {
+          color: 'danger',
+          text: 'Downgrade',
+        };
       }
 
       return (
         <ApolloConsumer>
           {client => (
             <Button
-              color="primary"
+              color={ctaButton.color}
+              block
               onClick={async () => {
                 this.setState({ subscriptionPlansLoading: true });
 
@@ -121,7 +146,7 @@ export default class BillingPage extends React.PureComponent {
                 }
               }}
             >
-              Change Plan
+              {ctaButton.text}
             </Button>
           )}
         </ApolloConsumer>
@@ -129,12 +154,16 @@ export default class BillingPage extends React.PureComponent {
     };
 
     return plans.map(plan => (
-      <Row key={plan._id} className="mb-2">
-        <Col>{plan.name}</Col>
-        <Col>
+      <Row key={plan._id} className="mt-2 mb-2 text-center text-md-left">
+        <Col xs="12" md="3">
+          {plan.name}
+        </Col>
+        <Col xs="12" md="5">
           ${plan.price.toFixed(2)}/{plan.billingInterval}
         </Col>
-        <Col>{_renderPlanActionButton(plan)}</Col>
+        <Col xs="12" md="4">
+          {_renderPlanActionButton(plan)}
+        </Col>
       </Row>
     ));
   }
@@ -262,7 +291,15 @@ export default class BillingPage extends React.PureComponent {
                     )}
                   </Col>
                 </Row>
-                <legend>Subscription plans</legend>
+                <legend>
+                  Subscription plans{' '}
+                  <NavLink to="/pricing" className="float-right">
+                    <small>
+                      Pricing page{' '}
+                      <FontAwesomeIcon icon={faQuestionCircle} size="xs" />
+                    </small>
+                  </NavLink>{' '}
+                </legend>
                 <Row>
                   <Col hidden={subscriptionPlansLoading}>
                     <SafeQuery
@@ -273,9 +310,9 @@ export default class BillingPage extends React.PureComponent {
                       showError
                     >
                       {({ data: { currentPlan, plans = [] } }) => (
-                        <Fragment>
+                        <Container>
                           {this.renderSubscriptionPlans(currentPlan, plans)}
-                        </Fragment>
+                        </Container>
                       )}
                     </SafeQuery>
                   </Col>

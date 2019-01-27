@@ -89,7 +89,13 @@ export default function App() {
                       component={() => <Redirect to="/dashboard" />}
                     />
 
-                    <Route exact path="/pricing" component={PricingPage} />
+                    <Route
+                      exact
+                      path="/pricing"
+                      component={PricingPage}
+                      layout={TransactionalLayout}
+                      headerTitle="Pricing"
+                    />
                     <Route
                       exact
                       path="/signup"

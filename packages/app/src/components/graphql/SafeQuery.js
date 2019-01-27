@@ -28,7 +28,10 @@ export default class SafeQuery extends Component {
     return (
       <Query {...props}>
         {result => {
-          if (result.data && keepExistingResultDuringRefetch) {
+          if (
+            Object.entries(result.data).length > 0 &&
+            keepExistingResultDuringRefetch
+          ) {
             return children(result);
           }
 
