@@ -46,12 +46,12 @@ export default class BillingPage extends React.PureComponent {
     // eslint-disable-next-line default-case
     switch (success) {
       case 'subscribed':
-        toast.success('New subscription created successfully!', {
+        toast.success('Subscribed successfully', {
           position: toast.POSITION.TOP_CENTER,
         });
         break;
       case 'plan_change':
-        toast.success('Plan changed successfully!', {
+        toast.success('Plan changed successfully', {
           position: toast.POSITION.TOP_CENTER,
         });
 
