@@ -171,7 +171,7 @@ export default class LoginPage extends React.PureComponent {
                                       component={ReactstrapInput}
                                       name="token"
                                       type="text"
-                                      label="Two-factor token (if enabled)"
+                                      label="Two-factor authentication (if enabled)"
                                       placeholder="Google Authenticator token"
                                       autoComplete="off"
                                     />

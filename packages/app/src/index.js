@@ -15,6 +15,7 @@ import MomentTimezone from 'moment-timezone';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-table/react-table.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import * as serviceWorker from 'serviceWorker';
 

@@ -23,11 +23,12 @@ export const UserPaymentReceipts = gql`
 
 export const ActiveSubscriptionPlans = gql`
   query getActiveSubscriptionPlans {
-    currentPlan: userSubscription @requireAuth {
+    currentSubscription: userSubscription @requireAuth {
       _plan {
         _paddleProductId
         tier
       }
+      paymentStatus
     }
     plans: activeSubscriptionPlans @requireAuth {
       _id

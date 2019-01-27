@@ -79,6 +79,10 @@ const GlobalStyle = createGlobalStyle`
   .Toastify__toast--success {
     background: #28a745;
   }
+
+  .react-confirm-alert-body > h1 {
+    font-size: 2.2em;
+  }
 `;
 
 export default GlobalStyle;
