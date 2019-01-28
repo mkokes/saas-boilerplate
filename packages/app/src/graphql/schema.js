@@ -28,6 +28,8 @@ const typeDefs = `
     _id: String
     _paddleProductId: Int
     name: String
+    description: String
+    features: [String]
     price: Float
     billingInterval: String
   }

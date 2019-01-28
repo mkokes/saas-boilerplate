@@ -73,9 +73,7 @@ module.exports = ({
 
       return payments;
     },
-    activeSubscriptionPlans: async (_, __, { user }) => {
-      await assertUser(user);
-
+    activeSubscriptionPlans: async () => {
       const plans = await db.getActiveSubscriptionPlans();
 
       return plans;

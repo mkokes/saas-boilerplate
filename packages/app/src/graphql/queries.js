@@ -21,6 +21,19 @@ export const UserPaymentReceipts = gql`
   }
 `;
 
+export const ActivePlans = gql`
+  query getActivePlans {
+    plans: activeSubscriptionPlans {
+      _id
+      name
+      price
+      description
+      features
+      billingInterval
+    }
+  }
+`;
+
 export const ActiveSubscriptionPlans = gql`
   query getActiveSubscriptionPlans {
     currentSubscription: userSubscription @requireAuth {

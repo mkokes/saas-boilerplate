@@ -63,6 +63,13 @@ const GlobalStyle = createGlobalStyle`
     color: rgb(240, 240, 240);
   }
 
+  .color-primary-theme {
+    color: ${props => props.theme.primaryColor};
+  }
+  .color-secondary-theme {
+    color: ${props => props.theme.secondaryColor};
+  }
+
   .btn-theme, .btn-theme:hover {
     color: #fff;
     background-color: ${props => props.theme.primaryColor};

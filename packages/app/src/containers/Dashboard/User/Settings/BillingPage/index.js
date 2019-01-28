@@ -192,8 +192,9 @@ export default class BillingPage extends React.PureComponent {
           <Col xs="12" md="3">
             <strong>{plan.name}</strong>
           </Col>
-          <Col xs="12" md="5" className="text-secondary">
-            ${plan.price.toFixed(2)}/{plan.billingInterval}
+          <Col xs="12" md="5">
+            ${plan.price.toFixed(2)}{' '}
+            <span className="text-muted">/ {plan.billingInterval}</span>
           </Col>
           <Col xs="12" md="4">
             {_renderPlanActionButton(plan)}
