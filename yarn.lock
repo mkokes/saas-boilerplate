@@ -15549,8 +15549,8 @@ validator@9.4.1:
   resolved "http://registry.npmjs.org/validator/-/validator-9.4.1.tgz#abf466d398b561cd243050112c6ff1de6cc12663"
 
 validator@^10.9.0:
-  version "10.10.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-10.10.0.tgz#a69ac298149f063a44361cb52182edb52dab59a4"
+  version "10.11.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-10.11.0.tgz#003108ea6e9a9874d31ccc9e5006856ccd76b228"
 
 value-equal@^0.4.0:
   version "0.4.0"
