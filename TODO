@@ -4,20 +4,21 @@
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
+  ☐ Pricing page
   ✔ Brand colors style @done(19-01-05 20:25)
   ✔ Freshdesk SSO @started(19-01-08 18:41) @done(19-01-08 22:45) @lasted(4h4m17s)
-  ☐ User Dashboard
+  ✔ User Dashboard @done(19-01-28 13:17)
     ✔ Settings @done(19-01-27 23:17)
       ✔ Profile @done(19-01-05 21:43)
         ✔ Fix buttons layout grid @started(18-12-28 19:03) @done(18-12-28 19:22) @lasted(19m27s)
       ✔ Preferences @done(19-01-06 20:52)
         ✔ User timezone @started(19-01-08 08:39) @done(19-01-08 11:39) @lasted(3h11s)
-      ☐ Billing
+      ✔ Billing @done(19-01-28 13:17)
         ✔ Current subscription @done(19-01-27 22:15)
           ✔ Hide data based on `subscription.paymentstatus` @started(19-01-27 21:40) @done(19-01-27 22:15) @lasted(35m17s)
-        ☐ Subscription plans
-          ☐ Table design
-          ☐ Feature plan names e.g: increase text weight
+        ✔ Subscription plans @done(19-01-28 13:17)
+          ✔ Table design @done(19-01-28 13:17)
+          ✔ Feature plan names e.g: increase text weight @done(19-01-28 13:17)
           ✔ Show subscribe btn if `subscription.paymentstatus` is `deleted` @done(19-01-27 22:04)
           ✔ Show cost alert when plan upgrade @done(19-01-27 23:16)
           ✔ Show alert when plan downgrade @done(19-01-27 23:16)

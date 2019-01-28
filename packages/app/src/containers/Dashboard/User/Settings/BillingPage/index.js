@@ -184,17 +184,22 @@ export default class BillingPage extends React.PureComponent {
     };
 
     return plans.map(plan => (
-      <Row key={plan._id} className="mt-2 mb-2 text-center text-md-left">
-        <Col xs="12" md="3">
-          {plan.name}
-        </Col>
-        <Col xs="12" md="5">
-          ${plan.price.toFixed(2)}/{plan.billingInterval}
-        </Col>
-        <Col xs="12" md="4">
-          {_renderPlanActionButton(plan)}
-        </Col>
-      </Row>
+      <Card body className="p-2 pl-3 pr-3 mb-2">
+        <Row
+          key={plan._id}
+          className="mt-2 mb-2 text-center text-md-left align-items-center"
+        >
+          <Col xs="12" md="3">
+            <strong>{plan.name}</strong>
+          </Col>
+          <Col xs="12" md="5" className="text-secondary">
+            ${plan.price.toFixed(2)}/{plan.billingInterval}
+          </Col>
+          <Col xs="12" md="4">
+            {_renderPlanActionButton(plan)}
+          </Col>
+        </Row>
+      </Card>
     ));
   }
 
@@ -357,7 +362,7 @@ export default class BillingPage extends React.PureComponent {
                   </Col>
                 </Row>
                 <legend>
-                  Subscription plans{' '}
+                  Plans{' '}
                   <NavLink to="/pricing" className="float-right">
                     <small>
                       Pricing page{' '}
