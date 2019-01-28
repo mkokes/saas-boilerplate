@@ -60,6 +60,10 @@ const DashboardDropdownItem = styled(DropdownItem)`
   &.active:hover {
     background-color: #f8f9fa;
   }
+
+  a {
+    color: #212529 !important;
+  }
 `;
 const DashboardNavbar = styled(Navbar)`
   border-bottom-width: 1px;
@@ -277,11 +281,12 @@ export class NavbarComponent extends React.PureComponent {
                                       </Fragment>
                                     )}
                                     <DropdownItem divider />
-                                    <DashboardDropdownItem
-                                      to="/support"
-                                      tag={RRNavLink}
-                                    >
-                                      Support center
+                                    <DashboardDropdownItem>
+                                      <a
+                                        href={process.env.REACT_APP_SUPPORT_URL}
+                                      >
+                                        Support Center
+                                      </a>
                                     </DashboardDropdownItem>
                                   </Fragment>
                                 ) : (
