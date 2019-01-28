@@ -4,6 +4,16 @@
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
+  ☐ <meta> titles
+  ☐ <meta> desc
+    ☐ Login page
+    ☐ Pricing page
+    ☐ Sign up page
+    ☐ Forgot password page
+  ☐ <meta> NOINDEX, NOFOLLOW
+    ☐ Confirm email page
+    ☐ Reset password page
+    ☐ Processing page
   ✔ Pricing page @done(19-01-28 22:59)
   ✔ Brand colors style @done(19-01-05 20:25)
   ✔ Freshdesk SSO @started(19-01-08 18:41) @done(19-01-08 22:45) @lasted(4h4m17s)

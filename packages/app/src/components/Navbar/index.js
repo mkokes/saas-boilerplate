@@ -79,7 +79,7 @@ const DashboardNavbar = styled(Navbar)`
 `;
 const Backdrop = styled.div`
   position: fixed;
-  top: 65px;
+  top: 50px;
   right: 0;
   bottom: 0;
   left: 0;
