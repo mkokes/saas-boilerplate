@@ -421,7 +421,11 @@ export default class BillingPage extends React.PureComponent {
                               {
                                 Header: 'Amount',
                                 accessor: 'saleGross',
-                                Cell: row => <span>${row.value}</span>,
+                                Cell: row => (
+                                  <span>
+                                    ${parseInt(row.value, 10).toFixed(2)}
+                                  </span>
+                                ),
                               },
                               {
                                 Header: 'View receipt',

@@ -40,6 +40,10 @@
   ✔ Freshdesk SSO login @done(19-01-07 22:43)
     https://support.freshdesk.com/support/solutions/articles/31166-single-sign-on-remote-authentication-in-freshdesk
 ✔ Analytics Server @done(18-12-28 05:33)
+☐ Integrate Mailchimp for newsletter?
+  ☐ Add to list after registration
+  ☐ Add to list after check emails notifications checkbox in preferences
+  ☐ Remove from list after uncheck emails notifications checkbox in preferences
 ☐ Scheduler Server
   ☐ Zeit.co
 ☐ Worker Server
