@@ -10790,11 +10790,7 @@ normalize-url@^3.0.0, normalize-url@^3.1.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
 
-now@^13.0.0:
-  version "13.0.6"
-  resolved "https://registry.yarnpkg.com/now/-/now-13.0.6.tgz#35d91939117988dbf80ede365bf3fc8a2d2140ec"
-
-now@^13.1.2:
+now@^13.0.0, now@^13.1.2:
   version "13.1.2"
   resolved "https://registry.yarnpkg.com/now/-/now-13.1.2.tgz#dda24eb622edeedc43e694d31d9c81f2154896c4"
 
