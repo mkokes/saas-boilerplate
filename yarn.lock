@@ -15842,8 +15842,8 @@ ylru@^1.2.0:
   resolved "https://registry.yarnpkg.com/ylru/-/ylru-1.2.1.tgz#f576b63341547989c1de7ba288760923b27fe84f"
 
 yup@^0.26.6:
-  version "0.26.8"
-  resolved "https://registry.yarnpkg.com/yup/-/yup-0.26.8.tgz#a2d4e499d184e6d8483a6dd206675ffb9f43e44f"
+  version "0.26.10"
+  resolved "https://registry.yarnpkg.com/yup/-/yup-0.26.10.tgz#3545839663289038faf25facfc07e11fd67c0cb1"
   dependencies:
     "@babel/runtime" "7.0.0"
     fn-name "~2.0.1"
