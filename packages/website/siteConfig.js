@@ -35,7 +35,7 @@ const siteConfig = {
   changelogUrl: 'https://changelog.dcabot.io',
   statusUrl: 'https://status.dcabot.io',
   emailContact: 'info@dcabot.io',
-  supportUrl: 'https://support.dcabot.io',
+  supportUrl: process.env.SUPPORT_URL,
   users: [
     {
       caption: 'Coinbase',

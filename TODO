@@ -44,6 +44,7 @@
   ☐ Add to list after registration
   ☐ Add to list after check emails notifications checkbox in preferences
   ☐ Remove from list after uncheck emails notifications checkbox in preferences
+    ☐ Try/catch: user could be already unsubscribed if they clicked the unsub email link
 ☐ Scheduler Server
   ☐ Zeit.co
 ☐ Worker Server
