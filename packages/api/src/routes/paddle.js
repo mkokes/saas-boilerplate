@@ -26,6 +26,7 @@ module.exports = async ({ db, router, log: parentLog }) => {
         return sortedObj;
       }
 
+      // prettier-ignore-start
       const PADDLE_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
       MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyI5uVjrlEEIeyFcUkTMo
       LkKaZ/410F4jPFkUYRYsokFlaUvt1M/EAl3++GaLoQb7cwZ4oCxEvjBjdBFegCjr
@@ -40,6 +41,7 @@ module.exports = async ({ db, router, log: parentLog }) => {
       sAwMAnGXfJpNDrLt3jS2wbhu2XFQKoAXc8uPE5XK1NFhNdOWdxrWZUkLO4QjkAcH
       agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
       -----END PUBLIC KEY-----`;
+      // prettier-ignore-end
 
       let params = ctx.body;
       delete params.p_signature;
