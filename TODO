@@ -1,5 +1,6 @@
 ☐ Misc:
   ✔ Do all src code @ todos @done(19-01-29 21:06)
+  ☐ Add Sentry to frontend app and servers
 ✔ Website @done(19-01-04 05:56)
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
@@ -57,7 +58,8 @@
     Kickback is using it to refresh active party data every X seconds.
   ☐ migrate from now.json to .deploy folder [ZEIT.CO]
 ☐ Worker Server
-  Remove scale auto in zeit now if we are going to call our API server instead of do everything in the worker server ¿?
+  Remove scale auto in zeit now if we are going to call our API server instead of do everything in the worker server side ¿?
   ✔ Think about this.. really we need it? @done(19-01-30 00:26)
     If we need to execute a determined task in a specific timeframe e.g: every monday at 9 am then we need this!
+    E.g use cases: send an auto-generated newsletter at the start of the week, update some user stats every hour.
   ☐ migrate from now.json to .deploy folder [ZEIT.CO]
