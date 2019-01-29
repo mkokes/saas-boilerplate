@@ -28,7 +28,6 @@ class Log {
 
 module.exports = config => {
   const streams = [];
-
   const inTestMode = config.APP_MODE === 'test';
 
   if (config.LOGDNA_API_KEY && !inTestMode) {

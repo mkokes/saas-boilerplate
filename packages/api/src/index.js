@@ -43,7 +43,7 @@ const init = async () => {
   paddleRouting({ db, router, log });
   server.use(router.routes());
 
-  setupAuthMiddleware({ config, db, server, log });
+  setupAuthMiddleware({ config, db, server });
   setupGraphQLEndpoint({ config, db, server, log });
 
   server.listen(config.PORT, err => {

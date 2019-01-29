@@ -2,9 +2,7 @@ const jwt = require('koa-jwt');
 
 const { assertAccessTokenPayload } = require('../utils/asserts');
 
-module.exports = ({ config, server, db, log: parentLog }) => {
-  const log = parentLog.create('auth');
-
+module.exports = ({ config, server, db }) => {
   server.use(
     jwt({
       secret: config.JWT_SECRET,
@@ -28,10 +26,6 @@ module.exports = ({ config, server, db, log: parentLog }) => {
           throw new Error('User did not pass auth challenge');
         }
       } catch (err) {
-        if (config.APP_MODE === 'dev') {
-          log.error(err);
-        }
-
         ctx.state.user = '';
       }
     }

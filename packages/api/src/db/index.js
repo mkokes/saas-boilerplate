@@ -186,7 +186,7 @@ class Db extends EventEmitter {
 
   async loginUser(userId) {
     const user = await this._getUser(userId, { mustExist: true });
-    this._log.info(`Updating login timestamp for user ${userId}`);
+
     user.lastLoginAt = Date.now();
     user.save();
 
