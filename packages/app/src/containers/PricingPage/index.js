@@ -32,7 +32,7 @@ export default class PricingPage extends React.PureComponent {
                 <h2 className="color-secondary-theme mb-4" style={{}}>
                   Start with <strong>7-day free trial</strong>.
                 </h2>
-                <div className="card-deck mb-3 text-center">
+                <div className="card-deck mb-3 text-center justify-content-center">
                   <SafeQuery
                     query={ActivePlans}
                     keepExistingResultDuringRefetch

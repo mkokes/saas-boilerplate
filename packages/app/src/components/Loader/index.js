@@ -6,8 +6,6 @@ const LoaderContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 100%;
-  flex-grow: 1;
 `;
 
 const Loader = ({ large, theme }) => (
