@@ -5,6 +5,8 @@ module.exports = async ({ db, router, log: parentLog }) => {
   const log = parentLog.create('paddle');
 
   router.post('/paddle-webhooks', async ctx => {
+    log.debug(ctx.body);
+
     const {
       p_signature: paddleSignature,
       alert_name: eventName,
@@ -83,7 +85,6 @@ module.exports = async ({ db, router, log: parentLog }) => {
 
     const user = JSON.parse(userData);
 
-    log.info(ctx.body);
     /* eslint-disable default-case */
     switch (eventName) {
       case 'subscription_created': {
