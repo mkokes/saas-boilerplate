@@ -27,19 +27,19 @@ module.exports = async ({ db, router, log: parentLog }) => {
       }
 
       const PADDLE_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
-  MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyI5uVjrlEEIeyFcUkTMo
-  LkKaZ/410F4jPFkUYRYsokFlaUvt1M/EAl3++GaLoQb7cwZ4oCxEvjBjdBFegCjr
-  1l/u1uBul0frrJT9xZQy0vxIslEVZTMg1vTEjtzLbRkkJGb1azec+sHJViVXmFL2
-  YeI1fjKG3nioDILz+72H9xLUi21Bij/ChA6imWISdC4Br8NmZkOz/LP3GcaKIQtE
-  7NJSHrmF6N0E7p7R/+SHR6KBO1aIrA2YCBhenJ3nC780Jg7/AFNGqwj0ltx02PUC
-  88QhIDmuOn6Q+QGSiDyAD+yrzsbC4DKYzYMcKTCHPK4KpaJsmFkQHyGqAhu4cbnF
-  ewd2zvwC/nZTJsZ2J+3ycLTNNQegGwrxTZ7/4SpNsNp46A/Lb+vXu1cPNXHePjwc
-  AyZQk9Hu6OTyo0MvwXa1+mhI2IwXh2n72Dgbo8C/krWD2MhwCl1oe0MvNEvs+3Y6
-  7uP0jxFfyMBc0mEBY+zHgCNqJBsE9zsKOkrRNUbHm9DuN3PHuPLfRPE7NskbA8dO
-  QYgnv0qmRy3ZdgZoZc/XoP3LlShNQawxeDbLwk5yZg333JI5bkWsG8Mlw6Z8MaZh
-  sAwMAnGXfJpNDrLt3jS2wbhu2XFQKoAXc8uPE5XK1NFhNdOWdxrWZUkLO4QjkAcH
-  agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
-  -----END PUBLIC KEY-----`;
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyI5uVjrlEEIeyFcUkTMo
+      LkKaZ/410F4jPFkUYRYsokFlaUvt1M/EAl3++GaLoQb7cwZ4oCxEvjBjdBFegCjr
+      1l/u1uBul0frrJT9xZQy0vxIslEVZTMg1vTEjtzLbRkkJGb1azec+sHJViVXmFL2
+      YeI1fjKG3nioDILz+72H9xLUi21Bij/ChA6imWISdC4Br8NmZkOz/LP3GcaKIQtE
+      7NJSHrmF6N0E7p7R/+SHR6KBO1aIrA2YCBhenJ3nC780Jg7/AFNGqwj0ltx02PUC
+      88QhIDmuOn6Q+QGSiDyAD+yrzsbC4DKYzYMcKTCHPK4KpaJsmFkQHyGqAhu4cbnF
+      ewd2zvwC/nZTJsZ2J+3ycLTNNQegGwrxTZ7/4SpNsNp46A/Lb+vXu1cPNXHePjwc
+      AyZQk9Hu6OTyo0MvwXa1+mhI2IwXh2n72Dgbo8C/krWD2MhwCl1oe0MvNEvs+3Y6
+      7uP0jxFfyMBc0mEBY+zHgCNqJBsE9zsKOkrRNUbHm9DuN3PHuPLfRPE7NskbA8dO
+      QYgnv0qmRy3ZdgZoZc/XoP3LlShNQawxeDbLwk5yZg333JI5bkWsG8Mlw6Z8MaZh
+      sAwMAnGXfJpNDrLt3jS2wbhu2XFQKoAXc8uPE5XK1NFhNdOWdxrWZUkLO4QjkAcH
+      agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
+      -----END PUBLIC KEY-----`;
 
       let params = ctx.body;
       delete params.p_signature;
