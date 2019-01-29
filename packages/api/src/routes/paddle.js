@@ -74,7 +74,8 @@ module.exports = async ({ db, router, log: parentLog }) => {
 
       /* eslint-enable */
     } catch (e) {
-      ctx.throw(403, e.message);
+      log.error(e);
+      ctx.throw(403);
     }
 
     const user = JSON.parse(userData);
