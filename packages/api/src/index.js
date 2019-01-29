@@ -40,9 +40,7 @@ const init = async () => {
   });
 
   const router = new Router();
-
-  paddleRouting({ db, router });
-
+  paddleRouting({ db, router, log });
   server.use(router.routes());
 
   setupAuthMiddleware({ config, db, server, log });

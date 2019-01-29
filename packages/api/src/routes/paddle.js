@@ -1,7 +1,9 @@
 const Serialize = require('php-serialize');
 const crypto = require('crypto');
 
-module.exports = async ({ db, router }) => {
+module.exports = async ({ db, router, log: parentLog }) => {
+  const log = parentLog.create('paddle');
+
   router.post('/paddle-webhooks', async ctx => {
     const {
       p_signature: paddleSignature,
@@ -77,6 +79,7 @@ module.exports = async ({ db, router }) => {
 
     const user = JSON.parse(userData);
 
+    log.info(ctx.body);
     /* eslint-disable default-case */
     switch (eventName) {
       case 'subscription_created': {
