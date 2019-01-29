@@ -76,6 +76,7 @@ module.exports = async ({ db, router, log: parentLog }) => {
 
       /* eslint-enable */
     } catch (e) {
+      log.error(e.message);
       log.error(e);
       ctx.throw(403, e.message);
     }
