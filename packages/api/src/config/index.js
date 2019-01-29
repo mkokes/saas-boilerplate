@@ -13,7 +13,7 @@ const env = envalid.cleanEnv(
     PADDLE_VENDOR_ID: str({ default: '' }),
     PADDLE_VENDOR_AUTH_CODE: str({ default: '' }),
     FRESHDESK_SECRET: str({ default: '' }),
-    FRESHDESK_BASE_URL: str({ default: 'https://stage.support.dcabot.io' }),
+    FRESHDESK_BASE_URL: str({ default: '' }),
   },
   {
     dotEnvPath: '.env',
