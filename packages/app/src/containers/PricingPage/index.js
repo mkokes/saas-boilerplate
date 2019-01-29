@@ -37,6 +37,7 @@ export default class PricingPage extends React.PureComponent {
                     query={ActivePlans}
                     keepExistingResultDuringRefetch
                     fetchPolicy="network-only"
+                    showLoading
                     showError
                   >
                     {({ data: { plans } }) =>

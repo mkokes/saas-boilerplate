@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 const LoaderContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 100%;
+  flex-grow: 1;
 `;
 
 const Loader = ({ large, theme }) => (
