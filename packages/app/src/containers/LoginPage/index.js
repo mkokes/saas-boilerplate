@@ -55,7 +55,7 @@ export default class LoginPage extends React.PureComponent {
           <Fragment>
             <Helmet>
               <title>Log In</title>
-              <meta name="description" content="Description of LoginPage" />
+              <meta name="description" content="Authentication page" />
             </Helmet>
             <Container tag="main">
               <Row>

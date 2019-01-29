@@ -63,7 +63,6 @@ export default class SecurityPage extends React.PureComponent {
       <Fragment>
         <Helmet>
           <title>SecurityPage</title>
-          <meta name="description" content="Description of SecurityPage" />
         </Helmet>
         <ApolloConsumer>
           {client => (

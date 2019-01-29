@@ -52,10 +52,7 @@ function EmailConfirmationPage(props) {
     <Fragment>
       <Helmet>
         <title>Email confirmation</title>
-        <meta
-          name="description"
-          content="Description of EmailConfirmationPage"
-        />
+        <meta name="robots" content="noindex, follow" />
       </Helmet>
       <Container tag="main">
         <Row>

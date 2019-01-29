@@ -35,22 +35,8 @@ import {
 } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import Avatar from 'components/Avatar';
+import { equalTo } from 'utils/yup';
 
-// @FIXME: DUPLICATED CODE, CHECK RESETPASSWORDPAGE
-function equalTo(ref, msg) {
-  return this.test({
-    name: 'equalTo',
-    exclusive: false,
-    /* eslint-disable-next-line no-template-curly-in-string */
-    message: msg || '${path} must be the same as ${reference}',
-    params: {
-      reference: ref.path,
-    },
-    test(value) {
-      return value === this.resolve(ref);
-    },
-  });
-}
 Yup.addMethod(Yup.string, 'equalTo', equalTo);
 
 /* eslint-disable react/prefer-stateless-function */
@@ -78,7 +64,6 @@ export default class ProfilePage extends React.PureComponent {
       <Fragment>
         <Helmet>
           <title>ProfilePage</title>
-          <meta name="description" content="Description of ProfilePage" />
         </Helmet>
         <ApolloConsumer>
           {client => (

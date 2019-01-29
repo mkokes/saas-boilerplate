@@ -4,16 +4,15 @@
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
-  ☐ <meta> titles
-  ☐ <meta> desc
-    ☐ Login page
-    ☐ Pricing page
-    ☐ Sign up page
-    ☐ Forgot password page
-  ☐ <meta> NOINDEX, NOFOLLOW
-    ☐ Confirm email page
-    ☐ Reset password page
-    ☐ Processing page
+  ✔ <meta> titles and descs @done(19-01-29 17:29)
+    ✔ Login page @done(19-01-29 17:29)
+    ✔ Pricing page @done(19-01-29 17:29)
+    ✔ Sign up page @done(19-01-29 17:29)
+    ✔ Forgot password page @done(19-01-29 17:29)
+  ✔ <meta> NOINDEX, NOFOLLOW @done(19-01-29 16:36)
+    ✔ Confirm email page @done(19-01-29 16:36)
+    ✔ Reset password page @done(19-01-29 16:36)
+    ✔ Processing page @done(19-01-29 16:36)
   ✔ Pricing page @done(19-01-28 22:59)
   ✔ Brand colors style @done(19-01-05 20:25)
   ✔ Freshdesk SSO @started(19-01-08 18:41) @done(19-01-08 22:45) @lasted(4h4m17s)
@@ -50,15 +49,7 @@
   ✔ Freshdesk SSO login @done(19-01-07 22:43)
     https://support.freshdesk.com/support/solutions/articles/31166-single-sign-on-remote-authentication-in-freshdesk
 ✔ Analytics Server @done(18-12-28 05:33)
-☐ Integrate Mailchimp for newsletter?
-  ☐ Add to list after registration
-  ☐ Add to list after check emails notifications checkbox in preferences
-  ☐ Remove from list after uncheck emails notifications checkbox in preferences
-    ☐ Try/catch: user could be already unsubscribed if they clicked the unsub email link
 ☐ Scheduler Server
   ☐ Zeit.co
 ☐ Worker Server
   ☐ Zeit.co
-☐ Misc
-  ✔ Stage server @done(18-12-28 05:32)
-  ✔ Test Mixpanel.com @done(19-01-08 22:45)

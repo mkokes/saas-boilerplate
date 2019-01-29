@@ -37,7 +37,6 @@ export default class PreferencesPage extends React.PureComponent {
       <Fragment>
         <Helmet>
           <title>PreferencesPage</title>
-          <meta name="description" content="Description of PreferencesPage" />
         </Helmet>
         <ApolloConsumer>
           {client => (

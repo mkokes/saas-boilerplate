@@ -23,11 +23,8 @@ export default class EmailVerificationPage extends React.PureComponent {
         {({ setUserProfile, userProfile }) => (
           <Fragment>
             <Helmet>
-              <title>Forgot password</title>
-              <meta
-                name="description"
-                content="Description of ForgotPasswordPage"
-              />
+              <title>Email Verification</title>
+              <meta name="robots" content="noindex, follow" />
             </Helmet>
 
             {userProfile.isSignUpEmailConfirmed ? (

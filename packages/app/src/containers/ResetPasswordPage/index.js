@@ -29,22 +29,8 @@ import { ApolloConsumer } from 'react-apollo';
 import { ResetPassword } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { AnalyticsApi } from 'api/vendors';
+import { equalTo } from 'utils/yup';
 
-// @TODO: Export this to utils
-function equalTo(ref, msg) {
-  return this.test({
-    name: 'equalTo',
-    exclusive: false,
-    /* eslint-disable-next-line no-template-curly-in-string */
-    message: msg || '${path} must be the same as ${reference}',
-    params: {
-      reference: ref.path,
-    },
-    test(value) {
-      return value === this.resolve(ref);
-    },
-  });
-}
 Yup.addMethod(Yup.string, 'equalTo', equalTo);
 
 /* eslint-disable react/prefer-stateless-function */
@@ -79,7 +65,7 @@ export default class ResetPasswordPage extends React.PureComponent {
       <Fragment>
         <Helmet>
           <title>Set a New Password</title>
-          <meta name="description" content="Description of ResetPasswordPage" />
+          <meta name="robots" content="noindex, follow" />
         </Helmet>
         <Container tag="main">
           <Row>

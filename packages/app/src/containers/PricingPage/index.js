@@ -22,8 +22,8 @@ export default class PricingPage extends React.PureComponent {
     return (
       <Fragment>
         <Helmet>
-          <title>PricingPage</title>
-          <meta name="description" content="Description of PricingPage" />
+          <title>Pricing</title>
+          <meta name="description" content="Our plans" />
         </Helmet>
         <GlobalConsumer>
           {({ userProfile }) => (

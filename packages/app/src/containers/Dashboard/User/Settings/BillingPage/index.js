@@ -211,7 +211,6 @@ export default class BillingPage extends React.PureComponent {
       <Fragment>
         <Helmet>
           <title>BillingPage</title>
-          <meta name="description" content="Description of BillingPage" />
         </Helmet>
         <GlobalConsumer>
           {({ userProfile }) => (
