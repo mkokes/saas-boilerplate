@@ -32,6 +32,9 @@ module.exports = config => {
   const inTestMode = config.APP_MODE === 'test';
 
   if (config.LOGDNA_API_KEY && !inTestMode) {
+    // eslint-disable-next-line
+    console.log('Connecting logger to LogDNA ...');
+
     streams.push({
       type: 'raw',
       level: config.LOG,

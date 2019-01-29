@@ -78,8 +78,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
 
       /* eslint-enable */
     } catch (e) {
-      log.error(e);
-      ctx.throw(403, e.message);
+      ctx.throw(403);
     }
 
     const user = JSON.parse(userData);
