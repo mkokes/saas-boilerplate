@@ -13,6 +13,7 @@ const init = async () => {
 
   const scheduler = setupScheduler({ log });
   const eventQueue = setupEventQueue({ log });
+
   await createProcessor({ config, log, eventQueue, scheduler });
 
   const server = new Koa();
