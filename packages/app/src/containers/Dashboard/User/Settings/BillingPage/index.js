@@ -115,7 +115,8 @@ export default class BillingPage extends React.PureComponent {
           text: `Upgrade`,
           confirmAlert: {
             title: 'Confirm upgrade',
-            message: 'Message', // @TODO: Upgrade alert message
+            message:
+              'If chosen plan price is higher than your current plan then price will be pro-rate and bill immediately.',
           },
         };
       }
@@ -124,7 +125,8 @@ export default class BillingPage extends React.PureComponent {
           text: 'Downgrade',
           confirmAlert: {
             title: 'Confirm downgrade',
-            message: 'Message2', // @TODO: Downgrade alert message
+            message:
+              'Are you sure that you want to downgrade? you will lose all benefits of your current plan.',
           },
         };
       }

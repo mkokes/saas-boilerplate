@@ -8,6 +8,7 @@ const env = envalid.cleanEnv(
     PORT: num({ default: 3001 }),
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
+    GOOGLE_AUTHENTICATOR_DISPLAY_NAME: str({ default: 'BRAND_NAME' }),
     LOG: str({ default: 'debug' }),
     LOGDNA_API_KEY: str({ default: '' }),
     PADDLE_VENDOR_ID: str({ default: '' }),

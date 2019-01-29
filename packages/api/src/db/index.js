@@ -419,7 +419,7 @@ class Db extends EventEmitter {
       secret,
       qrcode: otplib.authenticator.keyuri(
         user.email,
-        'MY_SERVICE_NAME', // @TODO: Get this from config
+        this._config.GOOGLE_AUTHENTICATOR_DISPLAY_NAME,
         secret,
       ),
     };
