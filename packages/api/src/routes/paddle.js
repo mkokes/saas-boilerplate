@@ -79,6 +79,8 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
       ctx.throw(403);
     }
 
+    log.debug(ctx.body);
+
     const user = JSON.parse(userData);
 
     /* eslint-disable default-case */
