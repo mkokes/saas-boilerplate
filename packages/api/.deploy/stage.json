@@ -10,7 +10,7 @@
   "env": {
     "LOG": "debug",
     "NODE_ENV": "production",
-    "APP_MODE": "live",
+    "APP_MODE": "stage",
     "DB_CONNECTION_URI": "@db_connection_uri",
     "JWT_SECRET": "@jwt_secret",
     "RECAPTCHA_SECRET_KEY": "@recaptcha_secret_key",
