@@ -281,13 +281,16 @@ export class NavbarComponent extends React.PureComponent {
                                       </Fragment>
                                     )}
                                     <DropdownItem divider />
-                                    <DashboardDropdownItem>
-                                      <a
-                                        href={process.env.REACT_APP_SUPPORT_URL}
+                                    <a
+                                      href={process.env.REACT_APP_SUPPORT_URL}
+                                      target="_new"
+                                    >
+                                      <DashboardDropdownItem
+                                        style={{ cursor: 'pointer' }}
                                       >
                                         Support Center
-                                      </a>
-                                    </DashboardDropdownItem>
+                                      </DashboardDropdownItem>
+                                    </a>
                                   </Fragment>
                                 ) : (
                                   <Fragment>

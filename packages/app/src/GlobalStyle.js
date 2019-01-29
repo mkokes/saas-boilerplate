@@ -79,7 +79,6 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${props => props.theme.color4} !important;
   }
 
-
   .Toastify__toast-body {
     font-weight: 600;
   }

@@ -50,6 +50,6 @@
     https://support.freshdesk.com/support/solutions/articles/31166-single-sign-on-remote-authentication-in-freshdesk
 ✔ Analytics Server @done(18-12-28 05:33)
 ☐ Scheduler Server
-  ☐ Zeit.co
+  ☐ migrate from now.json to .deploy folder [ZEIT.CO]
 ☐ Worker Server
-  ☐ Zeit.co
+  ☐ migrate from now.json to .deploy folder [ZEIT.CO]
