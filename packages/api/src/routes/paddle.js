@@ -78,7 +78,6 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
 
       /* eslint-enable */
     } catch (e) {
-      log.error(e.message);
       log.error(e);
       ctx.throw(403, e.message);
     }

@@ -32,8 +32,6 @@ module.exports = config => {
   const inTestMode = config.APP_MODE === 'test';
 
   if (config.LOGDNA_API_KEY && !inTestMode) {
-    console.log('Connecting logger to LogDNA ...');
-
     streams.push({
       type: 'raw',
       level: config.LOG,
