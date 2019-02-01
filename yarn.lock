@@ -958,7 +958,7 @@
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
 
-"@fortawesome/fontawesome-common-types@^0.2.12", "@fortawesome/fontawesome-common-types@^0.2.13":
+"@fortawesome/fontawesome-common-types@^0.2.13":
   version "0.2.13"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.13.tgz#17f3d30c53732f07a765199c3cf93b4834e8cfde"
 
@@ -12600,8 +12600,8 @@ react-app-polyfill@^0.2.0:
     whatwg-fetch "3.0.0"
 
 react-confirm-alert@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.0.7.tgz#f30fe17f8e082ca9eb8ff867cb4ce414159a63a9"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.1.0.tgz#ca81c923f2e2ec8418b7751f8d6dc45fde6a62fe"
 
 react-dev-utils@^5.0.2:
   version "5.0.3"
