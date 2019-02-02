@@ -15,8 +15,6 @@ class supportLoginPage extends React.PureComponent {
   async componentDidMount() {
     const { client, history, location } = this.props;
 
-    console.debug(this.props);
-
     try {
       const globalProvider = await getGlobalProvider();
 
@@ -34,8 +32,7 @@ class supportLoginPage extends React.PureComponent {
       });
 
       window.location = getFreshdeskSSO.url;
-    } catch (err) {
-      throw err;
+    } catch (_) {
       history.push('/auth/login', { from: location });
     }
   }
