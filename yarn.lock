@@ -12565,8 +12565,8 @@ react-app-polyfill@^0.2.0:
     whatwg-fetch "3.0.0"
 
 react-confirm-alert@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.0.7.tgz#f30fe17f8e082ca9eb8ff867cb4ce414159a63a9"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.1.0.tgz#ca81c923f2e2ec8418b7751f8d6dc45fde6a62fe"
 
 react-dev-utils@^5.0.2:
   version "5.0.3"
