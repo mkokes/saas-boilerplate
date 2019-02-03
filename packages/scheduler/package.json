@@ -27,8 +27,9 @@
     "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
     "lodash.get": "^4.4.2",
+    "logdna-bunyan": "^1.0.1",
     "now": "^13.1.2",
-    "logdna-bunyan": "^1.0.1"
+    "request": "^2.88.0"
   },
   "lint-staged": {
     "*.js": [

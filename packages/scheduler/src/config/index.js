@@ -9,6 +9,8 @@ const env = envalid.cleanEnv(
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     LOG: str({ default: 'debug' }),
+    API_SECRET_KEY: str({ default: 'foo' }),
+    API_URL: str({ default: '' }),
     LOGDNA_API_KEY: str({ default: '' }),
   },
   {
