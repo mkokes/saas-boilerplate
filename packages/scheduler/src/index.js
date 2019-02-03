@@ -24,7 +24,6 @@ const init = async () => {
   );
 
   server.use(async (ctx, nextHandler) => {
-    // set the default statusCode.
     ctx.res.statusCode = 200;
     await nextHandler();
   });

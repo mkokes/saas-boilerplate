@@ -37,18 +37,18 @@ const init = async () => {
   );
 
   server.use(async (ctx, nextHandler) => {
-    // set the default statusCode.
     ctx.res.statusCode = 200;
     await nextHandler();
   });
 
-  const router = new Router();
-  paddleRouting({ db, router, log });
-  server.use(router.routes());
-
   setupAuthMiddleware({ config, db, server });
   setupGraphQLEndpoint({ config, db, server, log });
 
+  const router = new Router();
+
+  paddleRouting({ db, router, log });
+
+  server.use(router.routes());
   server.listen(config.PORT, err => {
     if (err) {
       throw err;
