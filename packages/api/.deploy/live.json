@@ -1,6 +1,6 @@
 {
   "name": "dcabot-api-live",
-  "alias": "live.api.dcabot.io",
+  "alias": "api.dcabot.io",
   "scale": {
     "bru1": {
       "min": 1,

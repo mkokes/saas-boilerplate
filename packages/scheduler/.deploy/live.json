@@ -1,6 +1,6 @@
 {
   "name": "dcabot-scheduler-live",
-  "alias": "live.scheduler.dcabot.io",
+  "alias": "scheduler.dcabot.io",
   "scale": {
     "bru1": {
       "min": 1,
