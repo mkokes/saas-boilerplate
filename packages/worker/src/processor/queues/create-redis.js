@@ -1,7 +1,7 @@
 const Redis = require('ioredis');
 
 module.exports = ({ config }) => {
-  let redisConfig; // Use the local instance of Redis in development by not passing any connection string
+  let redisConfig;
   if (config.APP_MODE === 'prod') {
     redisConfig = {
       port: process.env.COMPOSE_REDIS_PORT,

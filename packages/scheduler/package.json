@@ -6,8 +6,15 @@
   "scripts": {
     "start": "node index.js",
     "test": "jest --no-cache",
-    "test:coverage": "npm test --coverage",
-    "deploy": "now -f"
+    "deploy:stage": "yarn now -f --local-config=.deploy/stage.json && yarn now --local-config=.deploy/stage.json alias",
+    "deploy:live": "yarn now -f --local-config=.deploy/live.json && yarn now --local-config=.deploy/live.json alias",
+    "release:stage": "yarn deploy:stage && yarn now rm dcabot-api-stage --safe --yes",
+    "release:live": "yarn deploy:live && yarn now rm dcabot-api-live --safe --yes",
+    "now": "now --team amgaventures",
+    "lint": "npm run lint:js",
+    "lint:js": "npm run lint:eslint -- .",
+    "lint:eslint": "eslint --ignore-path .gitignore",
+    "lint:eslint:fix": "eslint --ignore-path .gitignore --fix"
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",
@@ -22,6 +29,21 @@
     "lodash.get": "^4.4.2",
     "now": "^13.1.2",
     "p-queue": "^3.0.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint:eslint:fix",
+      "git add --force"
+    ],
+    "*.{json,md}": [
+      "prettier --config ../.prettierrc --write",
+      "git add --force"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "jest": {
     "testEnvironment": "node",

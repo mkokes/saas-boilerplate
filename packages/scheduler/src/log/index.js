@@ -1,4 +1,5 @@
 const bunyan = require('bunyan');
+const { BunyanStream: LogDnaStream } = require('logdna-bunyan');
 
 class Log {
   constructor(opts) {
@@ -25,16 +26,33 @@ class Log {
   }
 }
 
-module.exports = config =>
-  new Log({
+module.exports = config => {
+  const streams = [];
+  const inTestMode = config.APP_MODE === 'test';
+
+  if (config.LOGDNA_API_KEY && !inTestMode) {
+    streams.push({
+      type: 'raw',
+      level: config.LOG,
+      stream: new LogDnaStream({ key: config.LOGDNA_API_KEY }),
+    });
+  }
+
+  /* eslint-disable indent */
+  return new Log({
     name: 'root',
-    streams: [
-      {
-        level: config.LOG,
-        stream: process.stdout,
-      },
-    ],
+    streams: inTestMode
+      ? []
+      : [
+          {
+            level: config.LOG,
+            stream: process.stdout,
+          },
+          ...streams,
+        ],
     serializers: {
       err: bunyan.stdSerializers.err,
     },
+    appMode: config.APP_MODE,
   });
+};
