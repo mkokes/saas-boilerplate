@@ -3,6 +3,7 @@ const cors = require('@koa/cors');
 const Router = require('koa-router');
 const koaBody = require('koa-body');
 const isEmpty = require('lodash.isempty');
+const Sentry = require('@sentry/node');
 
 const config = require('./config');
 const log = require('./log')(config);
@@ -14,6 +15,12 @@ const setupGraphQLEndpoint = require('./graphql');
 
 const init = async () => {
   log.info(`App mode: ${config.APP_MODE}`);
+
+  Sentry.init({
+    dsn: config.SENTRY_DSN,
+    environment: config.APP_MODE,
+    serverName: config.SERVER_NAME,
+  });
 
   const db = await connectDb({ config, log });
   await createProcessor({ config, log, db });
@@ -58,5 +65,5 @@ const init = async () => {
 
 init().catch(err => {
   log.error(err);
-  process.exit(-1);
+  throw err;
 });

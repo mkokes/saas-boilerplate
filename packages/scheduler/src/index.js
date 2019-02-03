@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const cors = require('@koa/cors');
 const Router = require('koa-router');
+const Sentry = require('@sentry/node');
 
 const config = require('./config');
 const log = require('./log')(config);
@@ -9,6 +10,12 @@ const setupScheduler = require('./scheduler');
 
 const init = async () => {
   log.info(`App mode: ${config.APP_MODE}`);
+
+  Sentry.init({
+    dsn: config.SENTRY_DSN,
+    environment: config.APP_MODE,
+    serverName: config.SERVER_NAME,
+  });
 
   const scheduler = setupScheduler({ log });
 
@@ -38,5 +45,5 @@ const init = async () => {
 
 init().catch(err => {
   log.error(err);
-  process.exit(-1);
+  throw err;
 });

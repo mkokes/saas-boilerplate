@@ -77,7 +77,7 @@ export default class SecurityPage extends React.PureComponent {
                         className={
                           userProfile.isTwoFactorAuthenticationEnabled
                             ? 'text-success'
-                            : 'text-danger'
+                            : 'text-muted'
                         }
                       >
                         {userProfile.isTwoFactorAuthenticationEnabled
