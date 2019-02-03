@@ -1600,6 +1600,16 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@sentry/browser@4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.5.3.tgz#69744d13b01c490f366cbf2676790624b9f7c0a0"
+  integrity sha512-ePbsyXtZS9jWM0lD8rxA46omJjJcQPaRZak08TyxFBGm1YOUFvvNAA6rNjUtK4fFEznLhPA5YcllcOCBE2bPPg==
+  dependencies:
+    "@sentry/core" "4.5.3"
+    "@sentry/types" "4.5.3"
+    "@sentry/utils" "4.5.3"
+    tslib "^1.9.3"
+
 "@sentry/core@4.5.3":
   version "4.5.3"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.5.3.tgz#e55a42c694deec903aec2479e4a282d5a7a43878"
