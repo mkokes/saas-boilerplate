@@ -2,6 +2,7 @@ const Koa = require('koa');
 const cors = require('@koa/cors');
 const Router = require('koa-router');
 const koaBody = require('koa-body');
+const isEmpty = require('lodash.isempty');
 
 const config = require('./config');
 const log = require('./log')(config);
@@ -21,7 +22,9 @@ const init = async () => {
 
   server.use(koaBody());
   server.use(async (ctx, next) => {
-    ctx.body = ctx.request.body;
+    const { body } = ctx.request;
+
+    ctx.body = isEmpty(body) ? 'OK' : body;
 
     await next();
   });

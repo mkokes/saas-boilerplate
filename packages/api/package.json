@@ -34,6 +34,7 @@
     "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
     "lodash.get": "^4.4.2",
+    "lodash.isempty": "^4.4.0",
     "logdna-bunyan": "^1.0.1",
     "moment-timezone": "^0.5.23",
     "mongoose": "^5.3.8",
