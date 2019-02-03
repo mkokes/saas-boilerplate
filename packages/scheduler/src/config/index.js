@@ -12,6 +12,7 @@ const env = envalid.cleanEnv(
     API_SECRET_KEY: str({ default: 'foo' }),
     API_URL: str({ default: '' }),
     LOGDNA_API_KEY: str({ default: '' }),
+    LOGDNA_HOSTNAME: str({ default: 'Scheduler' }),
   },
   {
     dotEnvPath: '.env',

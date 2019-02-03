@@ -11,6 +11,7 @@ const env = envalid.cleanEnv(
     LOG: str({ default: 'debug' }),
     API_SECRET_KEY: str({ default: 'foo' }),
     LOGDNA_API_KEY: str({ default: '' }),
+    LOGDNA_HOSTNAME: str({ default: 'API' }),
     GOOGLE_AUTHENTICATOR_DISPLAY_NAME: str({ default: 'BRAND_NAME' }),
     PADDLE_VENDOR_ID: str({ default: '' }),
     PADDLE_VENDOR_AUTH_CODE: str({ default: '' }),

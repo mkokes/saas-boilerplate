@@ -1,22 +1,21 @@
 const request = require('request');
 
-module.exports = ({ log: parentLog }) => {
-  const log = parentLog.create('demoTask');
+module.exports = ({ log: parentLog, config }) => {
+  const TASK_NAME = 'demoTask';
+
+  const log = parentLog.create(TASK_NAME);
 
   return () => {
     try {
-      request('https://example.com/url?a=b', function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-          console.log(body);
+      request(`${config.API_URL}/tasks/ping`, function(error, response) {
+        if (error) throw error;
+
+        if (response.statusCode === 200) {
+          log.info('OK ✅');
         }
       });
-
-      log.info(`Running demoTask ...`);
-      setTimeout(() => {
-        log.info('DONE ✅');
-      }, 5000);
     } catch (err) {
-      log.error('Failed', err);
+      log.error(`❌ Error:`, err);
     }
   };
 };

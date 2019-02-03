@@ -29,7 +29,7 @@ class Scheduler {
   }
 
   unschedule(id) {
-    this._log.info(`Unschedule job ${id}`);
+    this._log.info(`Unscheduled job ${id}`);
 
     delete this._jobs[id];
   }
@@ -63,7 +63,7 @@ class Scheduler {
       const now = Date.now();
 
       if (now - lastRun >= intervalMs) {
-        this._log.debug(`Sending job to queue: ${id} ...`);
+        console.log(`Sending job to queue: ${id} ...`);
 
         job.lastRun = now;
 

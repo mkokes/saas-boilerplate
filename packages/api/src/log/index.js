@@ -34,7 +34,11 @@ module.exports = config => {
     streams.push({
       type: 'raw',
       level: config.LOG,
-      stream: new LogDnaStream({ key: config.LOGDNA_API_KEY }),
+      stream: new LogDnaStream({
+        key: config.LOGDNA_API_KEY,
+        hostname: config.LOGDNA_HOSTNAME,
+        env: config.APP_MODE,
+      }),
     });
   }
 
