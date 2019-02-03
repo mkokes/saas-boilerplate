@@ -63,7 +63,7 @@ class Scheduler {
       const now = Date.now();
 
       if (now - lastRun >= intervalMs) {
-        console.log(`Sending job to queue: ${id} ...`);
+        // console.log(`Sending job to queue: ${id} ...`);
 
         job.lastRun = now;
 

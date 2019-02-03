@@ -1,13 +1,11 @@
 const request = require('request');
 
 module.exports = ({ log: parentLog, config }) => {
-  const TASK_NAME = 'demoTask';
-
-  const log = parentLog.create(TASK_NAME);
+  const log = parentLog.create('demoTask');
 
   return () => {
     try {
-      request(`${config.API_URL}/tasks/ping`, function(error, response) {
+      request(`${config.API_URL}/tasks/ping`, (error, response) => {
         if (error) throw error;
 
         if (response.statusCode === 200) {
