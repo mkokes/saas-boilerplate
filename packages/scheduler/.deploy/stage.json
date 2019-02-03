@@ -10,7 +10,8 @@
   "env": {
     "LOG": "debug",
     "NODE_ENV": "production",
-    "APP_MODE": "stage"
+    "APP_MODE": "stage",
+    "LOGDNA_API_KEY": "@logdna_api_key"
   },
   "version": 1
 }

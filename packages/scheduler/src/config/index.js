@@ -9,6 +9,7 @@ const env = envalid.cleanEnv(
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     LOG: str({ default: 'debug' }),
+    LOGDNA_API_KEY: str({ default: '' }),
   },
   {
     dotEnvPath: '.env',
