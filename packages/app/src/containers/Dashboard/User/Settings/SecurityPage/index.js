@@ -219,7 +219,6 @@ export default class SecurityPage extends React.PureComponent {
                         ) : (
                           <Fragment>
                             <Button
-                              color="success"
                               size="lg"
                               onClick={async () => {
                                 this.setState({
