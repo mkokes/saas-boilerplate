@@ -31,7 +31,8 @@
     "deploy:worker": "(cd packages/worker && yarn deploy)",
     "release:api": "(cd packages/api && yarn release:live)",
     "release:api:stage": "(cd packages/api && yarn release:stage)",
-    "release:scheduler": "(cd packages/scheduler && yarn release)",
+    "release:scheduler": "(cd packages/scheduler && yarn release:live)",
+    "release:scheduler:stage": "(cd packages/scheduler && yarn release:stage)",
     "release:analytics": "(cd packages/analytics && yarn release)",
     "release:worker": "(cd packages/worker && yarn release)"
   },
