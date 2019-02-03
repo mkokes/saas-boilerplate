@@ -1,6 +1,6 @@
 ☐ Misc:
   ✔ Do all src code @ todos @done(19-01-29 21:06)
-  ☐ Add Sentry to frontend app and servers to track crashes/exceptions @today
+  ✔ Add Sentry to frontend app and servers to track crashes/exceptions @done(19-02-03 23:35)
 ✔ Website @done(19-01-04 05:56)
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
@@ -53,7 +53,7 @@
   ✔ Freshdesk SSO login @done(19-01-07 22:43)
     https://support.freshdesk.com/support/solutions/articles/31166-single-sign-on-remote-authentication-in-freshdesk
 ✔ Analytics Server @done(18-12-28 05:33)
-✔ Scheduler Server @today @done(19-02-03 22:11)
+✔ Scheduler Server @done(19-02-03 22:11)
   ✔ Think about this.. how we are going to use it? @done(19-01-30 00:23)
     We could use this for no mission-critical tasks (no one cares if it fails one time because it will be executed again soon).
 
