@@ -150,14 +150,7 @@ class Db extends EventEmitter {
     return user.comparePassword(password);
   }
 
-  async signUpUser(
-    email,
-    password,
-    firstName,
-    lastName,
-    timezone,
-    mixpanelDistinctId,
-  ) {
+  async signUpUser(email, password, firstName, lastName, timezone) {
     const fullNameInitials = `${firstName} ${lastName}`
       .split(/\s/)
       /* eslint-disable-next-line */
@@ -182,7 +175,6 @@ class Db extends EventEmitter {
         },
         this._config.JWT_SECRET,
       ),
-      mixpanelDistinctId,
     }).save();
 
     this.notify(user._id, VERIFY_EMAIL, {
@@ -190,7 +182,7 @@ class Db extends EventEmitter {
       token: user.emailConfirmationToken,
     });
 
-    this._mixpanel.people.set(user.mixpanelDistinctId, {
+    this._mixpanel.people.set(user._id, {
       $email: user.email,
       $first_name: user.firstName,
       $last_name: user.lastName,
@@ -198,7 +190,7 @@ class Db extends EventEmitter {
       plan: 'trial',
     });
     this._mixpanel.track('sign up', {
-      distinct_id: mixpanelDistinctId,
+      distinct_id: user._id,
     });
 
     return user;
@@ -317,7 +309,7 @@ class Db extends EventEmitter {
           email: user.email,
         });
         this._mixpanel.track('initial email verification', {
-          distinct_id: user.mixpanelDistinctId,
+          distinct_id: user._id,
           email: user.email,
         });
         break;
@@ -327,7 +319,7 @@ class Db extends EventEmitter {
           newEmail: user.email,
         });
         this._mixpanel.track('email change', {
-          distinct_id: user.mixpanelDistinctId,
+          distinct_id: user._id,
           old: oldUserEmail,
           new: user.email,
         });
@@ -396,7 +388,7 @@ class Db extends EventEmitter {
     user.lastName = finalLastName;
     await user.save();
 
-    this._mixpanel.people.set(user.mixpanelDistinctId, {
+    this._mixpanel.people.set(user._id, {
       $first_name: finalFirstName,
       $last_name: finalLastName,
     });

@@ -32,13 +32,6 @@ export const AnalyticsApi = {
         }
       },
     },
-    getDistinctId() {
-      if (MIXPANEL_ID && window.mixpanel) {
-        return window.mixpanel.get_distinct_id();
-      }
-
-      return null;
-    },
   },
   ga: {
     initialize() {

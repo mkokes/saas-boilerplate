@@ -137,7 +137,6 @@ export default class SignupPage extends React.PureComponent {
                                       variables: {
                                         ...values,
                                         timezone: MomentTimezone.tz.guess(),
-                                        mixpanelDistinctId: AnalyticsApi.mixpanel.getDistinctId(),
                                         recaptchaResponse,
                                       },
                                     });
