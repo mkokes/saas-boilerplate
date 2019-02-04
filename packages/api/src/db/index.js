@@ -316,11 +316,20 @@ class Db extends EventEmitter {
         this.notify(user._id, WELCOME_EMAIL, {
           email: user.email,
         });
+        this._mixpanel.track('initial email verification', {
+          distinct_id: user.mixpanelDistinctId,
+          email: user.email,
+        });
         break;
       case 'change':
         this.notify(user._id, EMAIL_CHANGED, {
           email: oldUserEmail,
           newEmail: user.email,
+        });
+        this._mixpanel.track('email change', {
+          distinct_id: user.mixpanelDistinctId,
+          old: oldUserEmail,
+          new: user.email,
         });
         break;
       default:
