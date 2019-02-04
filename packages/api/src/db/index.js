@@ -22,11 +22,12 @@ const {
 } = require('../constants/notifications');
 
 class Db extends EventEmitter {
-  constructor({ config, nativeDb, log: parentLog }) {
+  constructor({ config, nativeDb, log: parentLog, mixpanel }) {
     super();
     this._config = config;
     this._nativeDb = nativeDb;
     this._log = parentLog.create('db/core');
+    this._mixpanel = mixpanel;
   }
 
   async _getUser(userId, { mustExist = false } = {}) {
@@ -375,6 +376,11 @@ class Db extends EventEmitter {
     user.lastName = finalLastName;
     await user.save();
 
+    this._mixpanel.people.set(user.mixpanelDistinctId, {
+      $first_name: finalFirstName,
+      $last_name: finalLastName,
+    });
+
     return this.getUserProfile(userId, true);
   }
 
@@ -568,8 +574,8 @@ class Db extends EventEmitter {
   }
 }
 
-module.exports = async ({ config, log }) => {
+module.exports = async ({ config, log, mixpanel }) => {
   const nativeDb = await setupDb({ config, log });
 
-  return new Db({ config, nativeDb, log });
+  return new Db({ config, nativeDb, log, mixpanel });
 };

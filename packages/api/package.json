@@ -37,6 +37,7 @@
     "lodash.get": "^4.4.2",
     "lodash.isempty": "^4.4.0",
     "logdna-bunyan": "^1.0.1",
+    "mixpanel": "^0.10.1",
     "moment-timezone": "^0.5.23",
     "mongoose": "^5.3.8",
     "mongoose-unique-validator": "^2.0.2",

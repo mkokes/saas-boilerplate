@@ -10252,6 +10252,13 @@ mixin-object@^2.0.1:
     for-in "^0.1.3"
     is-extendable "^0.1.1"
 
+mixpanel@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/mixpanel/-/mixpanel-0.10.1.tgz#0845390cea3768f53dc8dd0cda80edbce571fc10"
+  integrity sha512-jP2z5mxsewcHHtx5ZPrDf7U/ERPKyNTbpjGN5fdUPxDQk8C7+XoDO5SYZgBUtQ8SqEjZ+Yvw9lot3ec++EaYGA==
+  dependencies:
+    https-proxy-agent "2.2.1"
+
 mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   version "0.5.1"
   resolved "http://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"

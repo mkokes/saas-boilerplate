@@ -20,6 +20,7 @@ const env = envalid.cleanEnv(
     PADDLE_VENDOR_AUTH_CODE: str({ default: '' }),
     FRESHDESK_SECRET: str({ default: '' }),
     FRESHDESK_BASE_URL: str({ default: '' }),
+    MIXPANEL_TOKEN: str({ default: '10d9e1131949749220397c144c4c6826' }),
   },
   {
     dotEnvPath: '.env',

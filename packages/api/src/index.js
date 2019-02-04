@@ -4,6 +4,7 @@ const Router = require('koa-router');
 const koaBody = require('koa-body');
 const isEmpty = require('lodash.isempty');
 const Sentry = require('@sentry/node');
+const Mixpanel = require('mixpanel');
 
 const config = require('./config');
 const log = require('./log')(config);
@@ -22,7 +23,11 @@ const init = async () => {
     serverName: config.SERVER_NAME,
   });
 
-  const db = await connectDb({ config, log });
+  const mixpanel = Mixpanel.init(config.MIXPANEL_TOKEN, {
+    protocol: 'https',
+  });
+
+  const db = await connectDb({ config, log, mixpanel });
   await createProcessor({ config, log, db });
 
   const server = new Koa();
