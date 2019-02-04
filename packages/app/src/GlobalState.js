@@ -114,12 +114,6 @@ class Provider extends Component {
 
     if (profile) {
       AnalyticsApi.mixpanel.alias(profile._id);
-      AnalyticsApi.mixpanel.people.set({
-        $email: profile.email,
-        $first_name: profile.firstName,
-        $last_name: profile.lastName,
-        $created: new Date(),
-      });
     }
   };
 
@@ -195,7 +189,7 @@ class Provider extends Component {
     }
   };
 
-  logOut = async ({ forcedLogOut = false } = {}) => {
+  logOut = async () => {
     LocalStorageApi.removeItem('access_token');
     LocalStorageApi.removeItem('refresh_token');
 

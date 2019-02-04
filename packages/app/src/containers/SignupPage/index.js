@@ -31,6 +31,8 @@ import { transformApolloErr } from 'utils/apollo';
 import { GlobalConsumer } from 'GlobalState';
 import { AnalyticsApi } from 'api/vendors';
 
+console.debug(AnalyticsApi.mixpanel.getDistinctId());
+
 /* eslint-disable react/prefer-stateless-function */
 export default class SignupPage extends React.PureComponent {
   constructor(props) {
@@ -115,7 +117,6 @@ export default class SignupPage extends React.PureComponent {
                                   })
                                 }
                                 onSubmit={async (values, formikBag) => {
-                                  console.debug(values);
                                   this.setState({
                                     signUpErrorMessage: null,
                                   });
@@ -138,10 +139,10 @@ export default class SignupPage extends React.PureComponent {
                                       variables: {
                                         ...values,
                                         timezone: MomentTimezone.tz.guess(),
+                                        mixpanelDistinctId: AnalyticsApi.mixpanel.getDistinctId(),
                                         recaptchaResponse,
                                       },
                                     });
-                                    AnalyticsApi.mixpanel.track('Signed up');
 
                                     const {
                                       accessToken,

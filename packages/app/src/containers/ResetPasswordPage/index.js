@@ -28,7 +28,6 @@ import { ApolloConsumer } from 'react-apollo';
 
 import { ResetPassword } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
-import { AnalyticsApi } from 'api/vendors';
 import { equalTo } from 'utils/yup';
 
 Yup.addMethod(Yup.string, 'equalTo', equalTo);
@@ -114,9 +113,6 @@ export default class ResetPasswordPage extends React.PureComponent {
                                     newPassword: values.newPassword,
                                   },
                                 });
-                                AnalyticsApi.mixpanel.track(
-                                  'Account password reseted',
-                                );
 
                                 formikBag.setSubmitting(false);
 

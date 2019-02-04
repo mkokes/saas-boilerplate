@@ -14,7 +14,6 @@ import { withApollo } from 'react-apollo';
 
 import { ConfirmUserEmail } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
-import { AnalyticsApi } from 'api/vendors';
 import Loader from 'components/Loader';
 
 function EmailConfirmationPage(props) {
@@ -32,7 +31,6 @@ function EmailConfirmationPage(props) {
           mutation: ConfirmUserEmail,
           variables: { confirmationToken: token || '' },
         });
-        AnalyticsApi.mixpanel.track('Email verified');
 
         setAlertMessage({
           color: 'success',

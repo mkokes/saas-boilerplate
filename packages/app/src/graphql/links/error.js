@@ -68,7 +68,7 @@ const errorLink = () =>
                 tokenSubscribers = [];
                 isFetchingToken = false;
 
-                return globalProvider.logOut({ forcedLogOut: true });
+                return globalProvider.logOut();
               }
             }
 
