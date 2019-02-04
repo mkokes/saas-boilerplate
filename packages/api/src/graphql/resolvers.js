@@ -48,6 +48,7 @@ module.exports = ({
   },
   db,
   log,
+  mixpanel,
 }) => ({
   Query: {
     userProfile: async (_, __, { user }) => {
@@ -634,6 +635,12 @@ module.exports = ({
         if (!paddleResponse.success) {
           throw new Error(paddleResponse.error.message);
         }
+
+        this._mixpanel.track('subscription plan change', {
+          distinct_id: user._id,
+          old_plan_id: currentUserSubscription._plan._id,
+          new_plan_id: planId,
+        });
       } catch (e) {
         log.error(e);
         throw e;

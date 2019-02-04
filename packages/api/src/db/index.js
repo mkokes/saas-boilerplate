@@ -182,12 +182,16 @@ class Db extends EventEmitter {
       token: user.emailConfirmationToken,
     });
 
+    this._mixpanel.people.set_once(user._id, {
+      internal_id: user._id,
+      $created: new Date(),
+    });
     this._mixpanel.people.set(user._id, {
       $email: user.email,
       $first_name: user.firstName,
       $last_name: user.lastName,
-      internal_id: user._id,
-      plan: 'trial',
+      internal_subscribed_plan_id: null,
+      trialing: true,
     });
     this._mixpanel.track('sign up', {
       distinct_id: user._id,
@@ -257,6 +261,9 @@ class Db extends EventEmitter {
     this.notify(_user._id, PASSWORD_RESETED, {
       email: _user.email,
     });
+    this._mixpanel.track('account password reseted', {
+      distinct_id: _user._id,
+    });
   }
 
   async confirmUserEmail(confirmationToken) {
@@ -308,7 +315,7 @@ class Db extends EventEmitter {
         this.notify(user._id, WELCOME_EMAIL, {
           email: user.email,
         });
-        this._mixpanel.track('initial email verification', {
+        this._mixpanel.track('account email verification', {
           distinct_id: user._id,
           email: user.email,
         });
@@ -318,7 +325,7 @@ class Db extends EventEmitter {
           email: oldUserEmail,
           newEmail: user.email,
         });
-        this._mixpanel.track('email change', {
+        this._mixpanel.track('account email change', {
           distinct_id: user._id,
           old: oldUserEmail,
           new: user.email,
@@ -342,6 +349,9 @@ class Db extends EventEmitter {
 
     this.notify(user._id, PASSWORD_CHANGED, {
       email: user.email,
+    });
+    this._mixpanel.track('account password change', {
+      distinct_id: user._id,
     });
   }
 
@@ -482,6 +492,10 @@ class Db extends EventEmitter {
 
     user.isTwoFactorAuthenticationEnabled = true;
     await user.save();
+
+    this._mixpanel.track('enable 2fa', {
+      distinct_id: user._id,
+    });
   }
 
   async disable2FA(userId, token) {
@@ -502,6 +516,10 @@ class Db extends EventEmitter {
     user.isTwoFactorAuthenticationEnabled = false;
     user.twoFactorAuthenticationSecret = null;
     await user.save();
+
+    this._mixpanel.track('disable 2fa', {
+      distinct_id: user._id,
+    });
   }
 
   async getPlanById(planId) {
@@ -525,27 +543,49 @@ class Db extends EventEmitter {
 
     await User.findByIdAndUpdate(userId, {
       _subscription: subscription._id,
-      isInTrialPeriod: false, // suspend trial period if user decided to upgrade
+      isInTrialPeriod: false, // suspend trial period if user decided to upgrade while trialing
     }).exec();
+
+    this._mixpanel.people.set(userId, {
+      internal_subscribed_plan_id: data._plan,
+      trialing: false,
+    });
+    this._mixpanel.track('subscribed to a plan', {
+      distinct_id: userId,
+      internal_plan_id: data._plan,
+    });
   }
 
   async subscriptionPaymentPastDue(id) {
-    return Subscription.findByIdAndUpdate(id, {
+    const subscription = await Subscription.findByIdAndUpdate(id, {
       paymentStatus: 'past_due',
       pastDueAt: Date.now(),
     }).exec();
+
+    this._mixpanel.track('subscription payment due', {
+      distinct_id: subscription._user,
+      plan_id: subscription._plan,
+    });
+
+    return subscription;
   }
 
   async subscriptionUpdated(id, data) {
-    return Subscription.findByIdAndUpdate(id, {
+    const subscription = await Subscription.findByIdAndUpdate(id, {
       status: 'active',
       lastUpdatedAt: Date.now(),
       ...data,
     }).exec();
+
+    this._mixpanel.track('subscription updated', {
+      distinct_id: subscription._user,
+    });
+
+    return subscription;
   }
 
   async cancelSubscriptionPayment(paddleSubscriptionId) {
-    await Subscription.updateOne(
+    const subscription = await Subscription.findOneAndUpdate(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
       },
@@ -554,16 +594,33 @@ class Db extends EventEmitter {
         cancelledAt: Date.now(),
       },
     ).exec();
+
+    this._mixpanel.track('cancelled subscription plan', {
+      distinct_id: subscription._user,
+      internal_plan_id: subscription._plan,
+    });
   }
 
   async receivedSubscriptionPayment(data) {
-    return new Payment({
+    const payment = await new Payment({
       ...data,
     }).save();
+
+    this._mixpanel.people.track_charge(data._user, data.saleGross);
+    this._mixpanel.track('subscription payment made', {
+      distinct_id: data._user,
+      internal_payment_id: payment._id,
+      internal_plan_id: data._plan,
+      amount: data.saleGross,
+      method: data.paymentMethod,
+      coupon: data.coupon,
+    });
+
+    return payment;
   }
 
-  async SubscriptionPaymentRefunded(paddleOrderId, data) {
-    return Payment.findOneAndUpdate(
+  async subscriptionPaymentRefunded(paddleOrderId, data) {
+    const payment = Payment.findOneAndUpdate(
       {
         _paddleOrderId: paddleOrderId,
       },
@@ -573,6 +630,15 @@ class Db extends EventEmitter {
         ...data,
       },
     ).exec();
+
+    this._mixpanel.track('subscription payment refunded', {
+      distinct_id: data._user,
+      internal_payment_id: payment._user,
+      internal_plan_id: payment._plan,
+      amount: payment.saleGrossRefund,
+    });
+
+    return payment;
   }
 
   async notify(userId, type, data) {

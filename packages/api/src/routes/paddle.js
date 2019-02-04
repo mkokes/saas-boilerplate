@@ -231,7 +231,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
           fee_refund: feeRefund,
         } = ctx.body;
 
-        await db.SubscriptionPaymentRefunded(orderId, {
+        await db.subscriptionPaymentRefunded(orderId, {
           amountRefund,
           saleGrossRefund,
           feeRefund,

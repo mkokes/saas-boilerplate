@@ -54,7 +54,7 @@ const init = async () => {
   });
 
   setupAuthMiddleware({ config, db, server });
-  setupGraphQLEndpoint({ config, db, server, log });
+  setupGraphQLEndpoint({ config, db, server, log, mixpanel });
 
   const router = new Router();
 
