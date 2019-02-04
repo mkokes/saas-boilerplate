@@ -79,6 +79,7 @@ export default class BillingPage extends React.PureComponent {
             onClick={() =>
               PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
                 history.replace(`/processing`);
+
                 setTimeout(() => {
                   history.replace(
                     '/dashboard/settings/billing?success=subscribed',
@@ -222,145 +223,135 @@ export default class BillingPage extends React.PureComponent {
                 <legend>Current subscription plan</legend>
                 <Row>
                   <Col>
-                    {userProfile.isInTrialPeriod ? (
-                      <Alert
-                        color="warning"
-                        className="text-center"
-                        fade={false}
+                    <Fragment>
+                      <SafeQuery
+                        query={UserSubscriptionQuery}
+                        keepExistingResultDuringRefetch
+                        fetchPolicy="network-only"
+                        showLoading
+                        showError
                       >
-                        <strong>You are currently in trial period</strong>
-                      </Alert>
-                    ) : (
-                      <Fragment>
-                        <SafeQuery
-                          query={UserSubscriptionQuery}
-                          keepExistingResultDuringRefetch
-                          fetchPolicy="network-only"
-                          showLoading
-                          showError
-                        >
-                          {({ data: { subscription } }) => {
-                            if (!subscription) {
-                              return (
-                                <Alert
-                                  color="warning"
-                                  className="text-center"
-                                  fade={false}
-                                >
+                        {({ data: { subscription } }) => {
+                          if (!subscription) {
+                            return (
+                              <Alert
+                                color="warning"
+                                className="text-center"
+                                fade={false}
+                              >
+                                <strong>
+                                  {userProfile.isIntrialPeriod ? (
+                                    <Fragment>
+                                      You are currently using trial version
+                                    </Fragment>
+                                  ) : (
+                                    <Fragment>
+                                      You don&#39;t have an active subscription
+                                      at this time
+                                    </Fragment>
+                                  )}
+                                </strong>
+                              </Alert>
+                            );
+                          }
+
+                          return (
+                            <Fragment>
+                              {subscription.paymentStatus === 'past_due' && (
+                                <Alert color="danger">
                                   <strong>
-                                    You don&#39;t have an active subscription at
-                                    this time
+                                    IMPORTANT: Unfortunately, we could not bill
+                                    you. Please, update your payment method
+                                    before it is too late and we cancel your
+                                    current subscription.
                                   </strong>
                                 </Alert>
-                              );
-                            }
+                              )}
 
-                            return (
-                              <Fragment>
-                                {subscription.paymentStatus === 'past_due' && (
-                                  <Alert color="danger">
+                              <Row>
+                                <Col sm="12" md="6">
+                                  <p>
+                                    Current plan:{' '}
+                                    <strong>{subscription._plan.name}</strong>
+                                  </p>
+                                  <p>
+                                    Valid until:{' '}
                                     <strong>
-                                      IMPORTANT: Unfortunately, we could not
-                                      bill you. Please, update your payment
-                                      method before it is too late and we cancel
-                                      your current subscription.
+                                      <Moment
+                                        format="LL"
+                                        date={Number(subscription.accessUntil)}
+                                      />
                                     </strong>
-                                  </Alert>
-                                )}
-
-                                <Row>
-                                  <Col sm="12" md="6">
+                                  </p>
+                                  {subscription.paymentStatus === 'active' && (
                                     <p>
-                                      Current plan:{' '}
-                                      <strong>{subscription._plan.name}</strong>
-                                    </p>
-                                    <p>
-                                      Valid until:{' '}
+                                      Next payment date at:{' '}
                                       <strong>
                                         <Moment
                                           format="LL"
                                           date={Number(
-                                            subscription.accessUntil,
+                                            subscription.nextBillDateAt,
                                           )}
                                         />
                                       </strong>
                                     </p>
-                                    {subscription.paymentStatus ===
-                                      'active' && (
-                                      <p>
-                                        Next payment date at:{' '}
-                                        <strong>
-                                          <Moment
-                                            format="LL"
-                                            date={Number(
-                                              subscription.nextBillDateAt,
-                                            )}
-                                          />
-                                        </strong>
-                                      </p>
-                                    )}
+                                  )}
+                                  {subscription.paymentStatus !== 'deleted' && (
+                                    <p>
+                                      Required payment amount:{' '}
+                                      <strong>
+                                        ${subscription.unitPrice.toFixed(2)}
+                                      </strong>
+                                    </p>
+                                  )}
+                                  {subscription.paymentStatus === 'deleted' && (
+                                    <p>
+                                      Payment method status:{' '}
+                                      <strong className="text-danger">
+                                        Cancelled
+                                      </strong>
+                                    </p>
+                                  )}
+                                </Col>
+                                <Col sm="12" md="6">
+                                  <span>
                                     {subscription.paymentStatus !==
                                       'deleted' && (
-                                      <p>
-                                        Required payment amount:{' '}
-                                        <strong>
-                                          ${subscription.unitPrice.toFixed(2)}
-                                        </strong>
-                                      </p>
-                                    )}
-                                    {subscription.paymentStatus ===
-                                      'deleted' && (
-                                      <p>
-                                        Payment method status:{' '}
-                                        <strong className="text-danger">
-                                          Cancelled
-                                        </strong>
-                                      </p>
-                                    )}
-                                  </Col>
-                                  <Col sm="12" md="6">
-                                    <span>
-                                      {subscription.paymentStatus !==
-                                        'deleted' && (
-                                        <Button
-                                          onClick={() =>
-                                            PaddleCheckoutAPI.open(
-                                              subscription.updateURL,
-                                            )
-                                          }
-                                          className="mr-2"
-                                        >
-                                          <FontAwesomeIcon
-                                            icon={faCreditCard}
-                                          />
-                                          {'  '}
-                                          Update Payment Method
-                                        </Button>
-                                      )}
-                                    </span>
-                                    {subscription.paymentStatus ===
-                                      'active' && (
                                       <Button
                                         onClick={() =>
                                           PaddleCheckoutAPI.open(
-                                            subscription.cancelURL,
+                                            subscription.updateURL,
                                           )
                                         }
-                                        color="link"
-                                        size="sm"
-                                        className="d-block"
+                                        className="mr-2"
                                       >
-                                        Cancel Subscription
+                                        <FontAwesomeIcon icon={faCreditCard} />
+                                        {'  '}
+                                        Update Payment Method
                                       </Button>
                                     )}
-                                  </Col>
-                                </Row>
-                              </Fragment>
-                            );
-                          }}
-                        </SafeQuery>
-                      </Fragment>
-                    )}
+                                  </span>
+                                  {subscription.paymentStatus === 'active' && (
+                                    <Button
+                                      onClick={() =>
+                                        PaddleCheckoutAPI.open(
+                                          subscription.cancelURL,
+                                        )
+                                      }
+                                      color="link"
+                                      size="sm"
+                                      className="d-block"
+                                    >
+                                      Cancel Subscription
+                                    </Button>
+                                  )}
+                                </Col>
+                              </Row>
+                            </Fragment>
+                          );
+                        }}
+                      </SafeQuery>
+                    </Fragment>
                   </Col>
                 </Row>
                 <legend>
