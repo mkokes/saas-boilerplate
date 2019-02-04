@@ -50,7 +50,7 @@ class Provider extends Component {
     return this.state.auth.loggedIn;
   }
 
-  signIn = async () => {
+  loadUserFromToken = async () => {
     if (this.state.loggedIn) return;
 
     console.debug(`Checking if user is logged in ...`);
@@ -109,7 +109,7 @@ class Provider extends Component {
   };
 
   signUp = async () => {
-    await this.signIn();
+    await this.logIn();
     const { profile } = this.state.auth;
 
     if (profile) {
@@ -124,13 +124,13 @@ class Provider extends Component {
   };
 
   logIn = async () => {
-    await this.signIn();
+    await this.loadUserFromToken();
     const { profile } = this.state.auth;
 
     if (profile) {
       AnalyticsApi.mixpanel.identify(profile._id);
       AnalyticsApi.mixpanel.people.set({
-        $last_login: new Date(),
+        $last_seen: new Date(),
       });
     }
   };
@@ -212,7 +212,7 @@ class Provider extends Component {
   };
 
   async componentDidMount() {
-    await this.signIn();
+    await this.logIn();
 
     setProviderInstance(this);
     this.setAppLoad(true);
@@ -225,7 +225,6 @@ class Provider extends Component {
           appLoadStatus: this.state.appLoad,
           userProfile: this.state.auth.profile,
           loggedIn: this.isLoggedIn(),
-          signIn: this.signIn,
           signUp: this.signUp,
           logIn: this.logIn,
           logOut: this.logOut,

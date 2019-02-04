@@ -28,7 +28,6 @@ import { ApolloConsumer } from 'react-apollo';
 import { GlobalConsumer } from 'GlobalState';
 import { LoginUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
-import { AnalyticsApi } from 'api/vendors';
 
 const ForgotPasswordContainer = styled.div`
   margin-top: -10px;
