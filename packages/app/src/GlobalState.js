@@ -116,8 +116,9 @@ class Provider extends Component {
       AnalyticsApi.mixpanel.alias(profile._id);
       AnalyticsApi.mixpanel.people.set({
         $email: profile.email,
+        $first_name: profile.firstName,
+        $last_name: profile.lastName,
         $created: new Date(),
-        $last_login: new Date(),
       });
     }
   };
@@ -126,7 +127,12 @@ class Provider extends Component {
     await this.signIn();
     const { profile } = this.state.auth;
 
-    if (profile) AnalyticsApi.mixpanel.identify(profile._id);
+    if (profile) {
+      AnalyticsApi.mixpanel.identify(profile._id);
+      AnalyticsApi.mixpanel.people.set({
+        $last_login: new Date(),
+      });
+    }
   };
 
   setUserProfile = profile => {
@@ -201,8 +207,6 @@ class Provider extends Component {
         loggedIn: false,
       },
     });
-
-    if (!forcedLogOut) AnalyticsApi.mixpanel.track('Log out');
 
     console.debug('Logout user');
   };
