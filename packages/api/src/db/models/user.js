@@ -91,6 +91,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: 'America/Los_Angeles',
   },
+  mixpanelDistinctId: {
+    type: String,
+    default: null,
+  },
   roles: {
     type: Array,
     default: [],

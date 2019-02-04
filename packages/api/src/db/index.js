@@ -149,7 +149,14 @@ class Db extends EventEmitter {
     return user.comparePassword(password);
   }
 
-  async signUpUser(email, password, firstName, lastName, timezone) {
+  async signUpUser(
+    email,
+    password,
+    firstName,
+    lastName,
+    timezone,
+    mixpanelDistinctId,
+  ) {
     const fullNameInitials = `${firstName} ${lastName}`
       .split(/\s/)
       /* eslint-disable-next-line */
@@ -174,6 +181,7 @@ class Db extends EventEmitter {
         },
         this._config.JWT_SECRET,
       ),
+      mixpanelDistinctId,
     }).save();
 
     this.notify(user._id, VERIFY_EMAIL, {

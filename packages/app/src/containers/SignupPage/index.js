@@ -31,8 +31,6 @@ import { transformApolloErr } from 'utils/apollo';
 import { GlobalConsumer } from 'GlobalState';
 import { AnalyticsApi } from 'api/vendors';
 
-console.debug(AnalyticsApi.mixpanel.getDistinctId());
-
 /* eslint-disable react/prefer-stateless-function */
 export default class SignupPage extends React.PureComponent {
   constructor(props) {

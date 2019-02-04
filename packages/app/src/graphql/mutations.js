@@ -11,6 +11,7 @@ export const SignUpUser = gql`
     $firstName: String!
     $lastName: String!
     $timezone: String
+    $mixpanelDistinctId: String
   ) {
     signUpUser(
       recaptchaResponse: $recaptchaResponse
@@ -19,6 +20,7 @@ export const SignUpUser = gql`
       firstName: $firstName
       lastName: $lastName
       timezone: $timezone
+      mixpanelDistinctId: $mixpanelDistinctId
     ) @disableAuth {
       accessToken
       refreshToken

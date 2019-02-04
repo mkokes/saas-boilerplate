@@ -103,7 +103,15 @@ module.exports = ({
   Mutation: {
     signUpUser: async (
       _,
-      { recaptchaResponse, email, password, firstName, lastName, timezone },
+      {
+        recaptchaResponse,
+        email,
+        password,
+        firstName,
+        lastName,
+        timezone,
+        mixpanelDistinctId,
+      },
     ) => {
       const paramsValidationErrors = {};
 
@@ -156,6 +164,7 @@ module.exports = ({
           firstName,
           lastName,
           timezone,
+          mixpanelDistinctId,
         );
 
         const accessToken = createAccessToken({
