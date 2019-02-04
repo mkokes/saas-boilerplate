@@ -636,7 +636,7 @@ module.exports = ({
           throw new Error(paddleResponse.error.message);
         }
 
-        this._mixpanel.track('subscription plan change', {
+        mixpanel.track('subscription plan change', {
           distinct_id: user._id,
           old_plan_id: currentUserSubscription._plan._id,
           new_plan_id: planId,
