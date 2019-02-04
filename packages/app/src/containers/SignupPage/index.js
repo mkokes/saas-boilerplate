@@ -29,7 +29,6 @@ import MomentTimezone from 'moment-timezone';
 import { SignUpUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { GlobalConsumer } from 'GlobalState';
-import { AnalyticsApi } from 'api/vendors';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SignupPage extends React.PureComponent {
