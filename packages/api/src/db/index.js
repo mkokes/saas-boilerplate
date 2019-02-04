@@ -190,6 +190,17 @@ class Db extends EventEmitter {
       token: user.emailConfirmationToken,
     });
 
+    this._mixpanel.people.set(user.mixpanelDistinctId, {
+      $email: user.email,
+      $first_name: user.firstName,
+      $last_name: user.lastName,
+      internal_id: user._id,
+      plan: 'trial',
+    });
+    this._mixpanel.track('sign up', {
+      distinct_id: mixpanelDistinctId,
+    });
+
     return user;
   }
 
