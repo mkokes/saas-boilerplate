@@ -281,10 +281,7 @@ export class NavbarComponent extends React.PureComponent {
                                       </Fragment>
                                     )}
                                     <DropdownItem divider />
-                                    <a
-                                      href={process.env.REACT_APP_SUPPORT_URL}
-                                      target="_new"
-                                    >
+                                    <a href={process.env.REACT_APP_SUPPORT_URL}>
                                       <DashboardDropdownItem
                                         style={{ cursor: 'pointer' }}
                                       >

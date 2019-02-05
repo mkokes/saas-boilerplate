@@ -28,7 +28,7 @@ const init = async () => {
   });
 
   const db = await connectDb({ config, log, mixpanel });
-  await createProcessor({ config, log, db });
+  await createProcessor({ config, log, db, Sentry });
 
   const server = new Koa();
 

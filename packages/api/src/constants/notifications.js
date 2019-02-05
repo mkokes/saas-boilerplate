@@ -1,6 +1,6 @@
 module.exports = [
   'VERIFY_EMAIL',
-  'WELCOME_EMAIL',
+  'WELCOME',
   'FORGOT_PASSWORD',
   'PASSWORD_RESETED',
   'PASSWORD_CHANGED',

@@ -14,11 +14,11 @@ const { NOTIFICATION } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
   VERIFY_EMAIL,
+  WELCOME,
   FORGOT_PASSWORD,
   PASSWORD_RESETED,
   PASSWORD_CHANGED,
   EMAIL_CHANGED,
-  WELCOME_EMAIL,
 } = require('../constants/notifications');
 
 class Db extends EventEmitter {
@@ -312,7 +312,7 @@ class Db extends EventEmitter {
 
     switch (decodedToken.type) {
       case 'signup':
-        this.notify(user._id, WELCOME_EMAIL, {
+        this.notify(user._id, WELCOME, {
           email: user.email,
         });
         this._mixpanel.track('account email verification', {
@@ -666,7 +666,7 @@ class Db extends EventEmitter {
       data,
     }).save();
 
-    this.emit(NOTIFICATION, notification._id);
+    this.emit(NOTIFICATION, notification);
   }
 }
 
