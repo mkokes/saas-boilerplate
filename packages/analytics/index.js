@@ -5,7 +5,7 @@ const KoaRouter = require('koa-router')
 const globalTunnel = require('global-tunnel-ng')
 const Sentry = require('@sentry/node')
 
-const SENTRY_DSN = ''
+const SENTRY_DSN = 'https://614c2c61a38141c584a4cc4e19a96f46@sentry.io/1385946'
 
 Sentry.init({
   dsn: SENTRY_DSN,
