@@ -1,6 +1,6 @@
 const request = require('request');
 
-module.exports = ({ log: parentLog, config }) => {
+module.exports = ({ log: parentLog, config, sentry }) => {
   const log = parentLog.create('cronDemoTask');
 
   return () => {
@@ -14,6 +14,7 @@ module.exports = ({ log: parentLog, config }) => {
       });
     } catch (err) {
       log.error(`❌ Error:`, err);
+      sentry.captureException(err);
     }
   };
 };

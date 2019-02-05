@@ -1,3 +1,4 @@
+const cronJobScheduler = require('node-schedule');
 const uuid = require('uuid');
 
 const _idn = (id, name) => `${name}-${id}`;
@@ -73,6 +74,12 @@ class Scheduler {
 
     // check every second
     this._timer = setTimeout(() => this._processJobs(), 1000);
+  }
+
+  scheduleCronJob(name, data, callback) {
+    this._log.info(`Scheduled cron job ${name}`);
+
+    cronJobScheduler.scheduleJob(data, callback);
   }
 }
 
