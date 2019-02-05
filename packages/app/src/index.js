@@ -6,13 +6,15 @@
 
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import 'sanitize.css/sanitize.css';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import MomentTimezone from 'moment-timezone';
 import * as Sentry from '@sentry/browser';
 
+import MaintenancePage from 'containers/MaintenancePage/Loadable';
+
+import 'sanitize.css/sanitize.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-table/react-table.css';
@@ -40,22 +42,36 @@ Sentry.init({
   environment: process.env.NODE_ENV,
 });
 
-MomentTimezone.tz.setDefault('America/Los_Angeles');
-AnalyticsApi.mixpanel.setup();
+const MAINTENANCE_MODE = true;
 
-ReactDOM.render(
-  <ApolloProvider client={clientInstance}>
-    <GlobalProvider>
-      <ThemeProvider theme={APP_THEME}>
-        <Fragment>
-          <ToastContainer />
-          <App />
-          <GlobalStyle />
-        </Fragment>
-      </ThemeProvider>
-    </GlobalProvider>
-  </ApolloProvider>,
-  document.getElementById('app'),
-);
+if (MAINTENANCE_MODE) {
+  ReactDOM.render(
+    <ThemeProvider theme={APP_THEME}>
+      <Fragment>
+        <MaintenancePage />
+        <GlobalStyle />
+      </Fragment>
+    </ThemeProvider>,
+    document.getElementById('app'),
+  );
+} else {
+  MomentTimezone.tz.setDefault('America/Los_Angeles');
+  AnalyticsApi.mixpanel.setup();
+
+  ReactDOM.render(
+    <ApolloProvider client={clientInstance}>
+      <GlobalProvider>
+        <ThemeProvider theme={APP_THEME}>
+          <Fragment>
+            <ToastContainer />
+            <App />
+            <GlobalStyle />
+          </Fragment>
+        </ThemeProvider>
+      </GlobalProvider>
+    </ApolloProvider>,
+    document.getElementById('app'),
+  );
+}
 
 serviceWorker.unregister();

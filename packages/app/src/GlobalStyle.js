@@ -70,6 +70,9 @@ const GlobalStyle = createGlobalStyle`
     color: ${props => props.theme.secondaryColor};
   }
 
+  .btn-theme {
+    background-color: ${props => props.theme.color4} !important;
+  }
   .btn-theme, .btn-theme:hover {
     color: #fff;
     background-color: ${props => props.theme.primaryColor};
