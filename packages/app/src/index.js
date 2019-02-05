@@ -41,7 +41,7 @@ Sentry.init({
   environment: process.env.NODE_ENV,
 });
 
-const MAINTENANCE_MODE = true;
+const MAINTENANCE_MODE = false;
 
 if (MAINTENANCE_MODE) {
   ReactDOM.render(
