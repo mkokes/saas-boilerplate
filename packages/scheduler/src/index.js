@@ -45,5 +45,5 @@ const init = async () => {
 
 init().catch(err => {
   log.error(err);
-  throw err;
+  Sentry.captureException(err);
 });

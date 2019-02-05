@@ -63,7 +63,7 @@
     E.g: https://github.com/alfonmga/server/blob/dev/src/processor/index.js#L63 https://github.com/alfonmga/server/blob/dev/src/processor/tasks/refreshActivePartyData/index.js
     Kickback is using it to refresh active party data every X seconds.
   ✔ migrate from now.json to .deploy folder [ZEIT.CO] @done(19-02-03 22:11)
-☐ Worker Server @today
+☐ Worker Server
   Remove scale auto in zeit now if we are going to call our API server instead of do everything in the worker server side ¿?
   ✔ Think about this.. really we need it? @done(19-01-30 00:26)
     If we need to execute a determined task in a specific timeframe e.g: every monday at 9 am then we need this!

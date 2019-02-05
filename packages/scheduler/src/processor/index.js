@@ -1,4 +1,7 @@
+const cronScheduler = require('node-schedule');
+
 const DemoTask = require('./tasks/demoTask');
+const CronDemoTask = require('./tasks/cronDemoTask');
 
 module.exports = async ({ config, log: parentLog, scheduler }) => {
   const log = parentLog.create('processor');
@@ -8,5 +11,11 @@ module.exports = async ({ config, log: parentLog, scheduler }) => {
     log,
   });
 
-  scheduler.schedule('demoTask', 10, demoTask);
+  const cronDemoTask = CronDemoTask({
+    config,
+    log,
+  });
+
+  scheduler.schedule('demoTask', 60, demoTask);
+  cronScheduler.scheduleJob('*/5 * * * *', cronDemoTask);
 };

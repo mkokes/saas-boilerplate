@@ -5,7 +5,7 @@ const { str, num } = envalid;
 const env = envalid.cleanEnv(
   process.env,
   {
-    PORT: num({ default: 3002 }),
+    PORT: num({ default: 3003 }),
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     LOG: str({ default: 'debug' }),
