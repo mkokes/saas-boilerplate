@@ -58,6 +58,10 @@ const init = async () => {
 
   const router = new Router();
 
+  router.get('/tasks/ping', async ctx => {
+    ctx.throw(403);
+  });
+
   paddleRouting({ db, router, log });
 
   server.use(router.routes());
