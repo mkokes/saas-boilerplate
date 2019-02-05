@@ -3,6 +3,15 @@ const cors = require('@koa/cors')
 const Koa = require('koa')
 const KoaRouter = require('koa-router')
 const globalTunnel = require('global-tunnel-ng')
+const Sentry = require('@sentry/node')
+
+const SENTRY_DSN = ''
+
+Sentry.init({
+  dsn: SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+  serverName: 'Analytics proxy',
+})
 
 const { PROXY } = process.env
 
@@ -13,9 +22,7 @@ if (PROXY) {
 }
 
 const MIXPANEL_API_URL = 'https://api.mixpanel.com'
-const MIXPANEL_JS_LIB_URL =
-  'http://cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js'
-
+const MIXPANEL_JS_LIB_URL = 'http://cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js'
 const CODE_CACHE = new Map()
 
 const init = async () => {

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "deploy": "yarn now -f --local-config=.deploy/live.json && yarn now --local-config=.deploy/live.json alias",
-    "release": "yarn deploy && yarn now rm dcabot-analytics --safe --yes"
+    "release": "yarn deploy && yarn now rm dcabot-analytics-live --safe --yes"
 
   },
   "dependencies": {
@@ -15,7 +15,8 @@
     "global-tunnel-ng": "^2.6.0",
     "got": "^9.2.2",
     "koa": "^2.5.3",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "@sentry/node": "4.5.3"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",

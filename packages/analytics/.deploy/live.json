@@ -1,5 +1,5 @@
 {
-  "name": "dcabot-analytics",
+  "name": "dcabot-analytics-live",
   "alias": "analytics.dcabot.io",
   "scale": {
     "bru1": {
