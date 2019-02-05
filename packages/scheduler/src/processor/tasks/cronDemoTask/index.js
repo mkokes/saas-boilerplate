@@ -1,20 +1,15 @@
-const request = require('request');
+const rp = require('request-promise');
 
-module.exports = ({ log: parentLog, config, sentry }) => {
+module.exports = ({ log: parentLog, config, Sentry }) => {
   const log = parentLog.create('cronDemoTask');
 
-  return () => {
+  return async () => {
     try {
-      request(`${config.API_URL}/tasks/ping`, (error, response) => {
-        if (error) throw error;
+      await rp(`${config.API_URL}/tasks/ping`);
 
-        if (response.statusCode === 200) {
-          log.info('OKK ✅');
-        }
-      });
+      log.info('OKK ✅');
     } catch (err) {
-      log.error(`❌ Error:`, err);
-      sentry.captureException(err);
+      Sentry.captureException(err);
     }
   };
 };

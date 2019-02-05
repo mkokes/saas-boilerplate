@@ -11,7 +11,7 @@ const setupScheduler = require('./scheduler');
 const init = async () => {
   log.info(`App mode: ${config.APP_MODE}`);
 
-  const sentry = Sentry.init({
+  Sentry.init({
     dsn: config.SENTRY_DSN,
     environment: config.APP_MODE,
     serverName: config.SERVER_NAME,
@@ -19,7 +19,7 @@ const init = async () => {
 
   const scheduler = setupScheduler({ log });
 
-  await createProcessor({ config, log, scheduler, sentry });
+  await createProcessor({ config, log, scheduler, Sentry });
 
   const server = new Koa();
   const router = new Router();
