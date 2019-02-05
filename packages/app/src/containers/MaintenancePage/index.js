@@ -42,12 +42,14 @@ export default class MaintenancePage extends React.PureComponent {
                   height="112"
                 />
               </a>
-              <h1 style={{ fontSize: '2.5em' }}>Maintenance Mode</h1>
+              <h1 style={{ fontSize: '2.5em' }} className="mt-4">
+                Maintenance Mode
+              </h1>
               <p style={{ fontSize: '1.5em' }}>
                 We are performing scheduled maintenance. We will be back online
                 shortly!
               </p>
-              <a href={process.env.REACT_APP_WEBSITE_URL}>
+              <a href={process.env.REACT_APP_WEBSITE_URL} className="mt-4">
                 Go back to homepage
               </a>
             </Card>

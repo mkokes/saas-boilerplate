@@ -12,8 +12,6 @@ import { ToastContainer } from 'react-toastify';
 import MomentTimezone from 'moment-timezone';
 import * as Sentry from '@sentry/browser';
 
-import MaintenancePage from 'containers/MaintenancePage/Loadable';
-
 import 'sanitize.css/sanitize.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -28,6 +26,7 @@ import { GlobalProvider } from 'GlobalState';
 import GlobalStyle from 'GlobalStyle';
 
 import App from 'App';
+import MaintenancePage from 'containers/MaintenancePage/Loadable';
 import { clientInstance } from './graphql';
 
 const APP_THEME = {
