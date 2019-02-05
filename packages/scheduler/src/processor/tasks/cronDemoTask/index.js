@@ -9,7 +9,7 @@ module.exports = ({ log: parentLog, config, Sentry }) => {
 
       log.info('OKK ✅');
     } catch (err) {
-      Sentry.captureException(err);
+      Sentry.captureException(new Error(err.message));
     }
   };
 };
