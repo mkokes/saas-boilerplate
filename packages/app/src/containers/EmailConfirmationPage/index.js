@@ -62,7 +62,7 @@ function EmailConfirmationPage(props) {
                 </Alert>
                 {alertMessage.color === 'success' && (
                   <a href="/dashboard">
-                    <Button color="success" size="lg">
+                    <Button className="mt-2 btn-theme" size="lg">
                       Go to Dashboard
                     </Button>
                   </a>

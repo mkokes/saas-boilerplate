@@ -577,9 +577,15 @@ class Db extends EventEmitter {
       ...data,
     }).exec();
 
-    this._mixpanel.people.set(subscription._user, {
-      internal_subscribed_plan_id: subscription._plan,
-    });
+    this._mixpanel.people.set(
+      subscription._user,
+      {
+        internal_subscribed_plan_id: subscription._plan,
+      },
+      {
+        $ignore_time: true,
+      },
+    );
     this._mixpanel.track('subscription updated', {
       distinct_id: subscription._user,
     });
@@ -598,9 +604,15 @@ class Db extends EventEmitter {
       },
     ).exec();
 
-    this._mixpanel.people.set(subscription._user, {
-      internal_subscribed_plan_id: null,
-    });
+    this._mixpanel.people.set(
+      subscription._user,
+      {
+        internal_subscribed_plan_id: null,
+      },
+      {
+        $ignore_time: true,
+      },
+    );
     this._mixpanel.track('cancelled subscription plan', {
       distinct_id: subscription._user,
       internal_plan_id: subscription._plan,
