@@ -16,7 +16,7 @@ const TransactionalLayout = ({ headerTitle, children }) => (
   <BaseLayout>
     <div
       className="pb-4 text-center"
-      style={{ marginTop: '-20em', marginBottom: !headerTitle ? '1em' : '' }}
+      style={{ marginBottom: !headerTitle ? '1em' : '' }}
     >
       <a href={process.env.REACT_APP_WEBSITE_URL}>
         <img src="/logo.png" alt="brand logo" width="112" height="112" />
