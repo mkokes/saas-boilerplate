@@ -17,9 +17,7 @@ module.exports = async ({ config, db, log: parentLog }) => {
     return next();
   };
 
-  router.post('/handle-users-trial', authMiddleware, async ctx => {
-    console.log('*');
-  });
+  router.post('/handle-users-trial', authMiddleware, async ctx => {});
 
   return router;
 };
