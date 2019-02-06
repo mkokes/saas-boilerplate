@@ -1,33 +1,8 @@
+const Router = require('koa-router');
 const Serialize = require('php-serialize');
 const crypto = require('crypto');
 
-module.exports = async ({ db, router, log: parentLog }) => {
-  const log = parentLog.create('paddle');
-
-  router.post('/paddle-webhooks', async ctx => {
-    const {
-      p_signature: paddleSignature,
-      alert_name: eventName,
-      status,
-      subscription_id: paddleSubscriptionId,
-      passthrough: userData,
-    } = ctx.body;
-
-    try {
-      /* eslint-disable */
-      function ksort(obj) {
-        const keys = Object.keys(obj).sort();
-        const sortedObj = {};
-
-        for (const i in keys) {
-          sortedObj[keys[i]] = obj[keys[i]];
-        }
-
-        return sortedObj;
-      }
-
-      // prettier-ignore-start
-      const PADDLE_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
+const PADDLE_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyI5uVjrlEEIeyFcUkTMo
 LkKaZ/410F4jPFkUYRYsokFlaUvt1M/EAl3++GaLoQb7cwZ4oCxEvjBjdBFegCjr
 1l/u1uBul0frrJT9xZQy0vxIslEVZTMg1vTEjtzLbRkkJGb1azec+sHJViVXmFL2
@@ -41,9 +16,30 @@ QYgnv0qmRy3ZdgZoZc/XoP3LlShNQawxeDbLwk5yZg333JI5bkWsG8Mlw6Z8MaZh
 sAwMAnGXfJpNDrLt3jS2wbhu2XFQKoAXc8uPE5XK1NFhNdOWdxrWZUkLO4QjkAcH
 agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
 -----END PUBLIC KEY-----`;
-      // prettier-ignore-end
 
-      let params = ctx.body;
+module.exports = async ({ db, log: parentLog }) => {
+  const log = parentLog.create('paddle');
+
+  const router = new Router();
+  router.prefix('/paddle');
+
+  const paddleMiddleware = (ctx, next) => {
+    try {
+      const { p_signature: paddleSignature } = ctx.request.body;
+
+      /* eslint-disable */
+      function ksort(obj) {
+        const keys = Object.keys(obj).sort();
+        const sortedObj = {};
+
+        for (const i in keys) {
+          sortedObj[keys[i]] = obj[keys[i]];
+        }
+
+        return sortedObj;
+      }
+
+      let params = ctx.request.body;
       delete params.p_signature;
 
       const mySig = Buffer.from(paddleSignature, 'base64');
@@ -79,7 +75,18 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
       ctx.throw(403);
     }
 
-    log.debug(ctx.body);
+    return next();
+  };
+
+  router.post('/webhooks', paddleMiddleware, async ctx => {
+    const {
+      alert_name: eventName,
+      status,
+      subscription_id: paddleSubscriptionId,
+      passthrough: userData,
+    } = ctx.request.body;
+
+    log.debug(ctx.request.body);
 
     const user = JSON.parse(userData);
 
@@ -95,7 +102,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
           update_url: updateURL,
           cancel_url: cancelURL,
           next_bill_date: nextBillDateAt,
-        } = ctx.body;
+        } = ctx.request.body;
 
         const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
         if (!plan) {
@@ -145,7 +152,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
               new_quantity: quantity,
               new_unit_price: unitPrice,
               next_bill_date: nextBillDateAt,
-            } = ctx.body;
+            } = ctx.request.body;
 
             const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
             if (!plan) {
@@ -193,7 +200,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
           country: customerCountry,
           currency,
           next_bill_date: nextBillDateAt,
-        } = ctx.body;
+        } = ctx.request.body;
 
         const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
 
@@ -229,7 +236,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
           gross_refund: saleGrossRefund,
           tax_refund: taxRefund,
           fee_refund: feeRefund,
-        } = ctx.body;
+        } = ctx.request.body;
 
         await db.subscriptionPaymentRefunded(orderId, {
           amountRefund,
@@ -241,4 +248,6 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
       }
     }
   });
+
+  return router;
 };

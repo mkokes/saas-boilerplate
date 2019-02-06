@@ -71,7 +71,6 @@ class Db extends EventEmitter {
       isSignUpEmailConfirmed,
       isTwoFactorAuthenticationEnabled,
       isInTrialPeriod,
-      trialPeriodStartedAt,
       timezone,
       legal,
     } = user;
@@ -93,7 +92,6 @@ class Db extends EventEmitter {
             isSignUpEmailConfirmed,
             isTwoFactorAuthenticationEnabled,
             isInTrialPeriod,
-            trialPeriodStartedAt,
             timezone,
             legal,
           }

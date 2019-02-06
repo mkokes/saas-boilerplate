@@ -1,8 +1,6 @@
 const Koa = require('koa');
 const cors = require('@koa/cors');
-const Router = require('koa-router');
 const koaBody = require('koa-body');
-const isEmpty = require('lodash.isempty');
 const Sentry = require('@sentry/node');
 const Mixpanel = require('mixpanel');
 
@@ -10,7 +8,7 @@ const config = require('./config');
 const log = require('./log')(config);
 const connectDb = require('./db');
 const createProcessor = require('./processor');
-const paddleRouting = require('./routes/paddle');
+const setupRoutes = require('./routes');
 const setupAuthMiddleware = require('./auth');
 const setupGraphQLEndpoint = require('./graphql');
 
@@ -33,14 +31,6 @@ const init = async () => {
   const server = new Koa();
 
   server.use(koaBody());
-  server.use(async (ctx, next) => {
-    const { body } = ctx.request;
-
-    ctx.body = isEmpty(body) ? 'OK' : body;
-
-    await next();
-  });
-
   server.use(
     cors({
       origin: '*',
@@ -53,14 +43,10 @@ const init = async () => {
     await nextHandler();
   });
 
+  setupRoutes({ config, db, server, log });
   setupAuthMiddleware({ config, db, server });
   setupGraphQLEndpoint({ config, db, server, log, mixpanel });
 
-  const router = new Router();
-
-  paddleRouting({ db, router, log });
-
-  server.use(router.routes());
   server.listen(config.PORT, err => {
     if (err) {
       throw err;

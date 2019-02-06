@@ -240,7 +240,7 @@ export default class BillingPage extends React.PureComponent {
                                 fade={false}
                               >
                                 <strong>
-                                  {userProfile.isIntrialPeriod ? (
+                                  {userProfile.isInTrialPeriod ? (
                                     <Fragment>
                                       You are currently using trial version
                                     </Fragment>
