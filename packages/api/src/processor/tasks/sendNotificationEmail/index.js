@@ -10,6 +10,8 @@ const {
   EMAIL_CHANGED,
   TRIAL_EXPIRING,
   TRIAL_EXPIRED,
+  ENABLED_2FA,
+  DISABLED_2FA,
 } = require('../../../constants/notifications');
 
 module.exports = ({ config, log: parentLog, Sentry }) => {
@@ -24,11 +26,13 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
     EMAIL_CHANGED: 10144785,
     TRIAL_EXPIRING: 10142455,
     TRIAL_EXPIRED: 10141867,
+    ENABLED_2FA: 10148059,
+    DISABLED_2FA: 10148227,
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
     product_name: 'DCABot',
-    product_url: 'https://dcabot.io',
+    product_url: config.PRODUCT_APP_URL,
     support_url: 'https://support.dcabot.io',
     company_name: 'AMGA Ventures Inc.',
     company_address: null,
@@ -45,11 +49,12 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
         config.POSTMARK_API_TOKEN,
       );
 
-      let templateModel = {
+      const templateModel = {
         ...POSTMARK_TEMPLATE_VALUES,
         ...notification.variables,
       };
 
+      let targetEmail = _user.email;
       /* eslint-disable default-case */
       switch (notification.type) {
         case VERIFY_EMAIL:
@@ -61,39 +66,52 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
           templateModel.login_url = `${config.PRODUCT_APP_URL}/auth/login`;
           templateModel.name = _user.firstName;
           templateModel.email = _user.email;
-          templateModel.trial_length = config.PRODUCT_TRIAL_LENGTH;
+          templateModel.trial_length = config.PRODUCT_TRIAL_DAYS_LENGTH;
           templateModel.trial_start_date = moment(
             _user.registeredAt,
             _user.timezone,
-          ).format('YYYY-MM-DD');
+          ).format('LL');
 
           /* eslint-disable no-case-declarations */
           const trialEndDate = new Date(_user.registeredAt);
           trialEndDate.setDate(
-            trialEndDate.getDate() + config.PRODUCT_TRIAL_LENGTH,
+            trialEndDate.getDate() + config.PRODUCT_TRIAL_DAYS_LENGTH,
           );
           templateModel.trial_end_date = moment(
             trialEndDate,
             _user.timezone,
-          ).format('YYYY-MM-DD');
+          ).format('LL');
           break;
         case FORGOT_PASSWORD:
           templateModel.action_url = notification.variables.action_url;
+          templateModel.name = _user.firstName;
           break;
         case PASSWORD_RESETED:
-          templateModel = {};
+          templateModel.action_url = `${
+            config.PRODUCT_APP_URL
+          }/auth/reset-password`;
           break;
         case PASSWORD_CHANGED:
-          templateModel = {};
+          templateModel.action_url = `${
+            config.PRODUCT_APP_URL
+          }/auth/reset-password`;
           break;
         case EMAIL_CHANGED:
-          templateModel = {};
+          targetEmail = templateModel.old_email;
+          templateModel.name = _user.firstName;
+          templateModel.email = _user.email;
           break;
         case TRIAL_EXPIRING:
-          templateModel = {};
+          templateModel.name = _user.firstName;
           break;
         case TRIAL_EXPIRED:
-          templateModel = {};
+          templateModel.name = _user.firstName;
+          break;
+        case ENABLED_2FA:
+          templateModel.name = _user.firstName;
+          break;
+        case DISABLED_2FA:
+          templateModel.name = _user.firstName;
           break;
       }
 
@@ -104,7 +122,7 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
       await postmarkClient.sendEmailWithTemplate({
         TemplateId: POSTMARK_TEMPLATES_ID[notification.type],
         From: config.POSTMARK_SENDER_EMAIL,
-        To: _user.email,
+        To: targetEmail,
         TemplateModel: templateModel,
         Metadata: {
           notification_id: notification._id,

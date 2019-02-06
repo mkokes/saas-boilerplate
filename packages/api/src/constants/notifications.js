@@ -7,6 +7,8 @@ module.exports = [
   'EMAIL_CHANGED',
   'TRIAL_EXPIRING',
   'TRIAL_EXPIRED',
+  'ENABLED_2FA',
+  'DISABLED_2FA',
 ].reduce((m, a) => {
   const k = m;
 

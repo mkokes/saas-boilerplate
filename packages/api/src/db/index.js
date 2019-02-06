@@ -19,6 +19,8 @@ const {
   PASSWORD_RESETED,
   PASSWORD_CHANGED,
   EMAIL_CHANGED,
+  ENABLED_2FA,
+  DISABLED_2FA,
 } = require('../constants/notifications');
 
 class Db extends EventEmitter {
@@ -175,6 +177,7 @@ class Db extends EventEmitter {
         },
         this._config.JWT_SECRET,
       ),
+      trialDaysLength: this._config.PRODUCT_TRIAL_DAYS_LENGTH,
     }).save();
 
     this.notify(user._id, VERIFY_EMAIL, {
@@ -248,7 +251,7 @@ class Db extends EventEmitter {
 
     const { _user, used, createdAt } = resetPasswordToken;
 
-    if (used || createdAt < Date.now() - 5 * 60 * 1000) {
+    if (used || createdAt < Date.now() - 60 * 60 * 1000) {
       throw new Error('INVALID_PASSWORD_RESET_TOKEN');
     }
 
@@ -320,7 +323,7 @@ class Db extends EventEmitter {
         break;
       case 'change':
         this.notify(user._id, EMAIL_CHANGED, {
-          oldEmail: oldUserEmail,
+          old_email: oldUserEmail,
         });
         this._mixpanel.track('account email change', {
           distinct_id: user._id,
@@ -489,6 +492,7 @@ class Db extends EventEmitter {
     user.isTwoFactorAuthenticationEnabled = true;
     await user.save();
 
+    this.notify(user._id, ENABLED_2FA);
     this._mixpanel.track('enable 2fa', {
       distinct_id: user._id,
     });
@@ -513,6 +517,7 @@ class Db extends EventEmitter {
     user.twoFactorAuthenticationSecret = null;
     await user.save();
 
+    this.notify(user._id, DISABLED_2FA);
     this._mixpanel.track('disable 2fa', {
       distinct_id: user._id,
     });

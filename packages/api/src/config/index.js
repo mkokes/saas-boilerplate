@@ -10,7 +10,7 @@ const env = envalid.cleanEnv(
     APP_MODE: str({ default: 'dev' }),
     SERVER_NAME: str({ default: 'API' }),
     PRODUCT_APP_URL: str({ default: 'http://localhost:3000' }),
-    PRODUCT_TRIAL_LENGTH: num({ default: 7 }),
+    PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
     LOG: str({ default: 'debug' }),
     API_SECRET_KEY: str({ default: 'foo' }),
     LOGDNA_API_KEY: str({ default: '' }),

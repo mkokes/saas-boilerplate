@@ -205,7 +205,7 @@ export default class ResetPasswordPage extends React.PureComponent {
                   <Row hidden={hideForgotPasswordPrompt}>
                     <Col className="text-center">
                       <Link to="/auth/forgot-password">
-                        <Button color="secondary">
+                        <Button className="btn-theme">
                           Request new password link
                         </Button>
                       </Link>
@@ -214,7 +214,7 @@ export default class ResetPasswordPage extends React.PureComponent {
                   <Row hidden={hideLogInPrompt}>
                     <Col className="text-center">
                       <Link to="/auth/login">
-                        <Button color="secondary">Go to log in form</Button>
+                        <Button className="btn-theme">Go to login page</Button>
                       </Link>
                     </Col>
                   </Row>

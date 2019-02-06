@@ -34,7 +34,7 @@ function EmailConfirmationPage(props) {
 
         setAlertMessage({
           color: 'success',
-          text: 'THANKS FOR COMFIRM YOUR EMAIL!',
+          text: 'Thank you, your email address is now verified.',
         });
       } catch (e) {
         const err = transformApolloErr(e);

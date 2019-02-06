@@ -87,6 +87,14 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  trialDaysLength: {
+    type: Number,
+    required: true,
+  },
+  trialExpiringNotified: {
+    type: Boolean,
+    default: false,
+  },
   timezone: {
     type: String,
     default: 'America/Los_Angeles',
