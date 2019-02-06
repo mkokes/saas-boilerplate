@@ -1,3 +1,3 @@
 module.exports = {
-  API_URL: 'http://stage.api.dcabot.io',
+  API_URL: 'https://stage.api.dcabot.io',
 };
