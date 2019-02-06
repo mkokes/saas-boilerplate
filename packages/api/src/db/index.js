@@ -178,8 +178,9 @@ class Db extends EventEmitter {
     }).save();
 
     this.notify(user._id, VERIFY_EMAIL, {
-      email: user.email,
-      token: user.emailConfirmationToken,
+      action_url: `${this._config.PRODUCT_APP_URL}/confirm-email?token=${
+        user.emailConfirmationToken
+      }`,
     });
 
     this._mixpanel.people.set_once(user._id, {
@@ -228,8 +229,9 @@ class Db extends EventEmitter {
     }).save();
 
     this.notify(user._id, FORGOT_PASSWORD, {
-      email: user.email,
-      token: resetPasswordToken.token,
+      action_url: `${this._config.PRODUCT_APP_URL}/auth/reset-password?token=${
+        resetPasswordToken.token
+      }`,
     });
   }
 
@@ -258,9 +260,7 @@ class Db extends EventEmitter {
     await _user.save();
     await resetPasswordToken.save();
 
-    this.notify(_user._id, PASSWORD_RESETED, {
-      email: _user.email,
-    });
+    this.notify(_user._id, PASSWORD_RESETED);
     this._mixpanel.track('account password reseted', {
       distinct_id: _user._id,
     });
@@ -312,9 +312,7 @@ class Db extends EventEmitter {
 
     switch (decodedToken.type) {
       case 'signup':
-        this.notify(user._id, WELCOME, {
-          email: user.email,
-        });
+        this.notify(user._id, WELCOME);
         this._mixpanel.track('account email verification', {
           distinct_id: user._id,
           email: user.email,
@@ -322,8 +320,7 @@ class Db extends EventEmitter {
         break;
       case 'change':
         this.notify(user._id, EMAIL_CHANGED, {
-          email: oldUserEmail,
-          newEmail: user.email,
+          oldEmail: oldUserEmail,
         });
         this._mixpanel.track('account email change', {
           distinct_id: user._id,
@@ -347,9 +344,7 @@ class Db extends EventEmitter {
     user.password = newPassword;
     await user.save();
 
-    this.notify(user._id, PASSWORD_CHANGED, {
-      email: user.email,
-    });
+    this.notify(user._id, PASSWORD_CHANGED);
     this._mixpanel.track('account password change', {
       distinct_id: user._id,
     });
@@ -368,8 +363,9 @@ class Db extends EventEmitter {
     await user.save();
 
     this.notify(user._id, VERIFY_EMAIL, {
-      email: newEmail,
-      token: user.emailConfirmationToken,
+      action_url: `${this._config.PRODUCT_APP_URL}/confirm-email?token=${
+        user.emailConfirmationToken
+      }`,
     });
   }
 
@@ -659,11 +655,11 @@ class Db extends EventEmitter {
     return payment;
   }
 
-  async notify(userId, type, data) {
+  async notify(userId, type, variables) {
     const notification = await new Notification({
       _user: userId,
       type,
-      data,
+      variables,
     }).save();
 
     this.emit(NOTIFICATION, notification);

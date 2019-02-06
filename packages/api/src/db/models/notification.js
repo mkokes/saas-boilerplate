@@ -16,11 +16,11 @@ const NotificationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  data: {
+  variables: {
     type: Schema.Types.Mixed,
     default: null,
   },
-  emailSent: {
+  sent: {
     type: Boolean,
     default: false,
   },

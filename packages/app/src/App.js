@@ -134,7 +134,7 @@ export default function App() {
                       path="/auth/reset-password"
                       component={ResetPasswordPage}
                       layout={TransactionalLayout}
-                      headerTitle="Reset Your Password"
+                      headerTitle="Reset Password"
                     />
                     <Route
                       protected

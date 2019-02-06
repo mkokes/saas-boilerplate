@@ -5,6 +5,8 @@ module.exports = [
   'PASSWORD_RESETED',
   'PASSWORD_CHANGED',
   'EMAIL_CHANGED',
+  'TRIAL_EXPIRING',
+  'TRIAL_EXPIRED',
 ].reduce((m, a) => {
   const k = m;
 

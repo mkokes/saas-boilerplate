@@ -1,6 +1,6 @@
 const envalid = require('envalid');
 
-const { str, num, json } = envalid;
+const { str, num } = envalid;
 
 const env = envalid.cleanEnv(
   process.env,
@@ -9,6 +9,8 @@ const env = envalid.cleanEnv(
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     SERVER_NAME: str({ default: 'API' }),
+    PRODUCT_APP_URL: str({ default: 'http://localhost:3000' }),
+    PRODUCT_TRIAL_LENGTH: num({ default: 7 }),
     LOG: str({ default: 'debug' }),
     API_SECRET_KEY: str({ default: 'foo' }),
     LOGDNA_API_KEY: str({ default: '' }),
@@ -23,21 +25,6 @@ const env = envalid.cleanEnv(
     MIXPANEL_TOKEN: str({ default: '10d9e1131949749220397c144c4c6826' }),
     POSTMARK_API_TOKEN: str({ default: '' }),
     POSTMARK_SENDER_EMAIL: str({ default: 'payments@amgaventures.com' }),
-    POSTMARK_TEMPLATES_ID: json({
-      VERIFY_EMAIL: 123,
-      WELCOME: 123,
-      FORGOT_PASSWORD: 123,
-      PASSWORD_RESETED: 123,
-      PASSWORD_CHANGED: 123,
-      EMAIL_CHANGED: 123,
-    }),
-    POSTMARK_TEMPLATE_VALUES: json({
-      product_name: 'DCABot',
-      product_url: 'https://dcabot.io',
-      support_url: 'https://support.dcabot.io',
-      company_name: 'AMGA Ventures Inc.',
-      company_address: null,
-    }),
   },
   {
     dotEnvPath: '.env',

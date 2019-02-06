@@ -361,6 +361,8 @@ module.exports = ({
               'Oops! the email address you choosen was used by another user before you. Please try it again.',
               'UNABLE_EMAIL_CONFIRMATION',
             );
+          case 'SIGNUP_EMAIL_ALREADY_VERIFIED':
+            throw invalidTokenErr;
           default:
             throw e;
         }
