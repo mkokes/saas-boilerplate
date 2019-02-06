@@ -6,7 +6,7 @@ const Sentry = require('@sentry/node');
 const config = require('./config');
 const log = require('./log')(config);
 const createProcessor = require('./processor');
-const setupScheduler = require('./scheduler');
+const setupIntervalScheduler = require('./intervalScheduler');
 
 const init = async () => {
   log.info(`App mode: ${config.APP_MODE}`);
@@ -17,9 +17,9 @@ const init = async () => {
     serverName: config.SERVER_NAME,
   });
 
-  const scheduler = setupScheduler({ log });
+  const intervalScheduler = await setupIntervalScheduler({ log });
 
-  await createProcessor({ config, log, scheduler, Sentry });
+  await createProcessor({ config, log, intervalScheduler, Sentry });
 
   const server = new Koa();
   const router = new Router();

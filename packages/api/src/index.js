@@ -29,7 +29,6 @@ const init = async () => {
   await createProcessor({ config, log, db, Sentry });
 
   const server = new Koa();
-
   server.use(koaBody());
   server.use(
     cors({
@@ -37,7 +36,6 @@ const init = async () => {
       credentials: true,
     }),
   );
-
   server.use(async (ctx, nextHandler) => {
     ctx.res.statusCode = 200;
     await nextHandler();

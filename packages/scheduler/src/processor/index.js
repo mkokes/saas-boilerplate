@@ -1,21 +1,14 @@
-const DemoTask = require('./tasks/demoTask');
-const CronDemoTask = require('./tasks/cronDemoTask');
+const cronJobScheduler = require('node-schedule');
+const HandleUsersTrialTask = require('./tasks/handleUsersTrial');
 
-module.exports = async ({ config, log: parentLog, scheduler, Sentry }) => {
+module.exports = async ({ config, log: parentLog, Sentry }) => {
   const log = parentLog.create('processor');
 
-  const demoTask = DemoTask({
+  const handleUsersTrialTask = HandleUsersTrialTask({
     config,
     log,
     Sentry,
   });
 
-  const cronDemoTask = CronDemoTask({
-    config,
-    log,
-    Sentry,
-  });
-
-  scheduler.schedule('demoTask', 60, demoTask);
-  scheduler.scheduleCronJob('cronDemoTask', '*/5 * * * *', cronDemoTask);
+  cronJobScheduler.scheduleJob('0 * * * *', handleUsersTrialTask);
 };

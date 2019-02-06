@@ -1,11 +1,10 @@
-const cronJobScheduler = require('node-schedule');
 const uuid = require('uuid');
 
 const _idn = (id, name) => `${name}-${id}`;
 
-class Scheduler {
+class IntervalScheduler {
   constructor({ log }) {
-    this._log = log.create('scheduler');
+    this._log = log.create('intervalScheduler');
 
     this._jobs = {};
   }
@@ -14,7 +13,7 @@ class Scheduler {
     const id = _idn(uuid(), name);
 
     this._log.info(
-      `Scheduled job ${name} [#${id}] to run every ${intervalSeconds} seconds`,
+      `Scheduled job ${name} to run every ${intervalSeconds} seconds`,
     );
 
     this._jobs[id] = {
@@ -64,8 +63,6 @@ class Scheduler {
       const now = Date.now();
 
       if (now - lastRun >= intervalMs) {
-        // console.log(`Sending job to queue: ${id} ...`);
-
         job.lastRun = now;
 
         callback();
@@ -75,12 +72,6 @@ class Scheduler {
     // check every second
     this._timer = setTimeout(() => this._processJobs(), 1000);
   }
-
-  scheduleCronJob(name, data, callback) {
-    this._log.info(`Scheduled cron job ${name}`);
-
-    cronJobScheduler.scheduleJob(data, callback);
-  }
 }
 
-module.exports = args => new Scheduler(args);
+module.exports = args => new IntervalScheduler(args);

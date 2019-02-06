@@ -1,5 +1,5 @@
-const setupApiPrivateRouting = require('./paddle');
-const setupPaddleRouting = require('./api/private');
+const setupApiPrivateRouting = require('./api/private');
+const setupPaddleRouting = require('./paddle');
 
 module.exports = async ({ config, db, server, log }) => {
   const apiPrivateRouter = await setupApiPrivateRouting({
