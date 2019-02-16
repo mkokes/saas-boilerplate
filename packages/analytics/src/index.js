@@ -85,5 +85,7 @@ const init = async () => {
 
 init().catch(err => {
   console.error(err)
+  Sentry.captureException(err)
+
   process.exit(-1)
 })
