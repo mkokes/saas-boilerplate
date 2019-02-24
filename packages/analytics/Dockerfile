@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN yarn install --frozen-lockfile --no-cache --production
 
-COPY . .
+COPY . /src
 
 EXPOSE 3000
 

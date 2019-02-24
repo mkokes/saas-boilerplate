@@ -54,6 +54,9 @@ const init = async () => {
   router.get('/favicon.ico', async ctx => {
     ctx.body = ''
   })
+  router.get('/health/liveness', async ctx => {
+    ctx.status = 200
+  })
   router.get('*', async ctx => {
     const { origin, href } = ctx
     const newUrl = `${MIXPANEL_API_URL}${href.substr(origin.length)}`
