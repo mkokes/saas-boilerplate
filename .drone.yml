@@ -16,6 +16,7 @@ pipeline:
   build:
     image: node:8.15.0
     commands:
+      - ls
       - node -v
       - npm -v
       - yarn --version
