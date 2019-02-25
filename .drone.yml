@@ -15,7 +15,7 @@ pipeline:
   build:
     image: node:8.15.0
     commands:
-      - yarn -v
+      - ls
       - yarn install
   rebuild-cache:
     image: drillster/drone-volume-cache
