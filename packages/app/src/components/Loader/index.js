@@ -11,7 +11,7 @@ const Circle = styled.circle`
   stroke: ${props => props.theme.color3};
 `;
 
-const Loader = ({ large, theme }) => (
+const Loader = ({ large }) => (
   <LoaderContainer>
     <svg
       width={large ? '80' : '40'}
@@ -47,7 +47,6 @@ const Loader = ({ large, theme }) => (
 
 Loader.propTypes = {
   large: PropTypes.bool,
-  theme: PropTypes.object,
 };
 
 export default Loader;
