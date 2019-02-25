@@ -22,8 +22,7 @@ pipeline:
       - npm -v
       - yarn --version
       - mkdir -p .yarn-cache
-      - yarn config set cache-folder .yarn-cache
-      - yarn install --pure-lockfile
+      - yarn install --pure-lockfile --cache-folder .yarn-cache
       - ls .yarn-cache
   slack:
     image: plugins/slack
