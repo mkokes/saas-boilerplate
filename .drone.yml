@@ -10,10 +10,9 @@ pipeline:
     restore: true
     mount:
       - ./.yarn-cache
-      - ./node_modules
     volumes:
       - /tmp/cache:/cache
-  build:
+  install:
     image: node:8.15.0
     commands:
       - node -v
@@ -31,6 +30,5 @@ pipeline:
     rebuild: true
     mount:
       - ./.yarn-cache
-      - ./node_modules
     volumes:
       - /tmp/cache:/cache
