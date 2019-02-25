@@ -14,6 +14,7 @@ pipeline:
       - yarn -v
       - yarn install --pure-lockfile --cache-folder .yarn-cache
   test:
+    image: node:8.15.0
     commands: yarn test:app
   slack:
     image: plugins/slack
