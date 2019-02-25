@@ -9,24 +9,26 @@ pipeline:
     image: drillster/drone-volume-cache
     restore: true
     mount:
-      - ./node_modules
+      - ./.yarn-cache
     volumes:
       - /tmp/cache:/cache
   build:
     image: node:8.15.0
     commands:
-      - ls
-      - yarn install
-  rebuild-cache:
-    image: drillster/drone-volume-cache
-    rebuild: true
-    mount:
-      - ./node_modules
-    volumes:
-      - /tmp/cache:/cache
+      - node -v
+      - yarn --version
+      - yarn config set cache-folder .yarn-cache
+      - yarn install --pure-lockfile
   slack:
     image: plugins/slack
     webhook: https://hooks.slack.com/services/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
     when:
       branch: [ master, staging ]
       status: [ success, failure ]
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    rebuild: true
+    mount:
+      - ./.yarn-cache
+    volumes:
+      - /tmp/cache:/cache
