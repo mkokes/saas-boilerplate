@@ -1,0 +1,22 @@
+pipeline:
+  slack:
+    image: plugins/slack
+    webhook: https://hooks.slack.com/services/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
+    channel: deployments
+    username: drone
+    template: "<{{build.link}}|Deployment #{{build.number}} started> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}"
+    when:
+      branch: [ master, staging ]
+  build:
+    image: node:8.15.0-alpine
+    commands:
+      - yarn -v
+      - yarn install
+  slack:
+    image: plugins/slack
+    webhook: https://hooks.slack.com/services/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
+    channel: deployments
+    username: drone
+    when:
+      branch: [ master, staging ]
+      status: [ success, failure ]

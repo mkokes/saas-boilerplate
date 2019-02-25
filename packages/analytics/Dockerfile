@@ -4,7 +4,7 @@ WORKDIR /src
 
 COPY package*.json ./
 
-RUN yarn install --frozen-lockfile --no-cache --production
+RUN yarn install
 
 COPY . /src
 
