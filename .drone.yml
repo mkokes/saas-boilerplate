@@ -16,13 +16,14 @@ pipeline:
   build:
     image: node:8.15.0
     commands:
+      - yarn cache list
       - ls
       - node -v
       - npm -v
       - yarn --version
       - yarn config set cache-folder .yarn-cache
       - yarn install --pure-lockfile
-      - ls
+      - yarn cache list
   slack:
     image: plugins/slack
     webhook: https://hooks.slack.com/services/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
