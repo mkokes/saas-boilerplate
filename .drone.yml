@@ -8,7 +8,7 @@ pipeline:
     when:
       branch: [ master, staging ]
   build:
-    image: node:8.15.0-alpine
+    image: node:8.15.0
     commands:
       - yarn -v
       - yarn install
