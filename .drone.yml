@@ -5,11 +5,25 @@ pipeline:
     template: "<{{build.link}}|Deployment #{{build.number}} started> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}"
     when:
       branch: [ master, staging ]
+  restore-cache:
+    image: drillster/drone-volume-cache
+    restore: true
+    mount:
+      - ./node_modules
+    volumes:
+      - /tmp/cache:/cache
   build:
     image: node:8.15.0
     commands:
       - yarn -v
       - yarn install
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    rebuild: true
+    mount:
+      - ./node_modules
+    volumes:
+      - /tmp/cache:/cache
   slack:
     image: plugins/slack
     webhook: https://hooks.slack.com/services/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
