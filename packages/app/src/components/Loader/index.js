@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 
 const LoaderContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+const Circle = styled.circle`
+  stroke: ${props => props.theme.color3};
+`;
 
-const Loader = ({ large, theme }) => (
+const Loader = ({ large }) => (
   <LoaderContainer>
     <svg
       width={large ? '80' : '40'}
@@ -18,11 +21,10 @@ const Loader = ({ large, theme }) => (
       preserveAspectRatio="xMidYMid"
       className="lds-rolling"
     >
-      <circle
+      <Circle
         cx="50"
         cy="50"
         fill="none"
-        stroke={theme.color3}
         strokeWidth="20"
         r="35"
         strokeDasharray="164.93361431346415 56.97787143782138"
@@ -38,14 +40,13 @@ const Loader = ({ large, theme }) => (
           begin="0s"
           repeatCount="indefinite"
         />
-      </circle>
+      </Circle>
     </svg>
   </LoaderContainer>
 );
 
 Loader.propTypes = {
   large: PropTypes.bool,
-  theme: PropTypes.object,
 };
 
-export default withTheme(Loader);
+export default Loader;
