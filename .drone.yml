@@ -19,7 +19,7 @@ steps:
       - yarn test:app
     when:
       changeset:
-        includes: [ **/**.js, **/**.c, **/**.html ]
+        includes: [ **/**.js, **/**.cs2, **/**.html ]
 
   - name: notify_slack
     image: plugins/slack
