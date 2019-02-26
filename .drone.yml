@@ -1,32 +1,33 @@
-pipeline:
-  restore-cache:
-    image: drillster/drone-volume-cache
-    restore: true
-    mount:
-      - ./.yarn-cache
-    volumes:
-      - /tmp/cache:/cache
-  install:
+kind: pipeline
+name: Default
+
+steps:
+  - name: install
     image: node:8.15.0
+    volumes:
+      - name: cache
+        path: /tmp/cache
     commands:
       - node -v
       - npm -v
       - yarn -v
-      - yarn install --pure-lockfile --cache-folder .yarn-cache
-  test:
-    image: node:8.15.0
-    commands: yarn test:app
-  slack:
+      - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
+
+  - name: notify_slack
     image: plugins/slack
-    webhook: https://hooks.slack.com/services/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
-    template: '<{{build.link}}|Deployment #{{build.number}} ended> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}'
+    settings:
+      webhook:
+        from_secret: slack_webhook
+      template: '<{{build.link}}|Deployment #{{build.number}} ended> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}'
     when:
-      branch: [master, staging]
-      status: [success, failure]
-  rebuild-cache:
-    image: drillster/drone-volume-cache
-    rebuild: true
-    mount:
-      - ./.yarn-cache
-    volumes:
-      - /tmp/cache:/cache
+      branch:
+        - master
+        - staging
+      status:
+        - success
+        - failure
+
+volumes:
+  - name: cache
+    host:
+      path: /var/lib/cache
