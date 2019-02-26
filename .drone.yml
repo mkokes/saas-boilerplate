@@ -19,7 +19,7 @@ steps:
       - yarn test:app
     when:
       changeset:
-        includes: [ **/**.j3s, **/**.cs2, **/**.ht2aml ]
+        includes: [ **/**.j3s, **/**.cs22, **/**.ht2aml ]
 
   - name: notify_slack
     image: plugins/slack
