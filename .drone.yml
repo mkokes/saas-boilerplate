@@ -13,6 +13,11 @@ steps:
       - yarn -v
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
 
+  - name: test_app
+    image: node:8.15.0
+    commands:
+      - yarn test:app
+
   - name: notify_slack
     image: plugins/slack
     settings:
