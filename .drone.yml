@@ -17,6 +17,9 @@ steps:
     image: node:8.15.0
     commands:
       - yarn test:app
+    when:
+      changeset:
+        includes: [ **/**.js, **/**.css, **/**.html ]
 
   - name: notify_slack
     image: plugins/slack
