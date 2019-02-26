@@ -19,7 +19,7 @@ steps:
       - yarn test:app
     when:
       changeset:
-        includes: ['packages/appz/**']
+        includes: ['packages/app/**']
 
   - name: notify_slack
     image: plugins/slack
