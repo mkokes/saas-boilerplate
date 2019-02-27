@@ -52,7 +52,7 @@ steps:
       webhook:
         from_secret: slack_secret
       channel: dev
-    template: '<{{build.link}}|Deployment #{{build.number}} ended> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}'
+    template: '<{{build.link}}|Deployment #{{build.number}}> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}'
     when:
       branch: master
       event: push
