@@ -46,7 +46,7 @@ steps:
       changeset:
         includes: ['packages/app/**']
 
-  - name: notify_slack
+  - name: notify
     image: plugins/slack
     settings:
       webhook:
