@@ -48,7 +48,7 @@ steps:
     settings:
       webhook:
         from_secret: slack_secret
-      channel: deployments
+      channel: dev
       template: >
         {{#success build.status}}
           build {{build.number}} succeeded. Good job.
