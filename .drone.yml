@@ -54,9 +54,9 @@ steps:
       channel: dev
     template: >
       {{#success build.status}}
-        <{{build.link}}|Build {{build.number}} succeeded> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}>. Good job. <@{{build.author}}>
+        build {{build.number}} succeeded. Good job. <@john.doe>
       {{else}}
-        <{{build.link}}|Build {{build.number}} failed>  on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}>. Fix me please. <@channelname> <@someone>
+        build {{build.number}} failed. Fix me please. <@channelname> <@someone>
       {{/success}}
     when:
       branch: master
