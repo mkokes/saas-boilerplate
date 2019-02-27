@@ -20,7 +20,6 @@ steps:
     when:
       changeset:
         includes: ['package.json', '.eslintignore', 'packages/app/**']
-
   - name: app_build
     image: node:8.15.0
     commands:
@@ -30,7 +29,6 @@ steps:
       event: push
       changeset:
         includes: ['package.json', '.eslintignore', 'packages/app/**']
-
   - name: app_publish
     image: lucap/drone-netlify
     settings:
