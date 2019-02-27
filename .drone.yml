@@ -2,7 +2,7 @@ kind: pipeline
 name: Default
 
 steps:
-  - name: install
+  - name: install_dependencies
     image: node:8.15.0
     volumes:
       - name: cache
