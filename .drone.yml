@@ -54,9 +54,9 @@ steps:
       channel: dev
     template: >
       {{#success build.status}}
-        build {{build.number}} succeeded. Good job. <@john.doe>
+        build {{build.number}} succeeded. Good job. <@{{build.author}}>
       {{else}}
-        build {{build.number}} failed. Fix me please. <@channelname> <@someone>
+        build {{build.number}} failed. Fix me please. <@channel>
       {{/success}}
     when:
       branch: master
