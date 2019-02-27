@@ -200,7 +200,9 @@ export default class LoginPage extends React.PureComponent {
                     </CardBody>
                   </Card>
                   <div className="mt-5 text-center">
-                    <Link to="/signup">Don&#39;t have an account? testing CD</Link>
+                    <Link to="/signup">
+                      Don&#39;t have an account? testing CD
+                    </Link>
                   </div>
                 </Col>
               </Row>
