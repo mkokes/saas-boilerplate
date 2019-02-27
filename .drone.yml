@@ -46,22 +46,24 @@ steps:
       changeset:
         includes: ['packages/app/**']
 
-  - name: notify
-    image: plugins/slack-blame
+  - name: notify_slack
+    image: plugins/slack
     settings:
-      token:
-        from_secret: slack_access_token
+      webhook:
+        from_secret: slack_secret
       channel: dev
-      success_template: |
-        The build is fixed! Thanks @alfonmga
-      success_image_attachments:
-        - 'http://i.imgur.com/TP4PIxc.jpg'
-      success_username: dronesuccessbot
-      failure_template: |
-        The build is broken! Blame @alfonmga
-      failure_image_attachments:
-        - 'http://m.memegen.com/5wxk2j.jpg'
-      failure_username: dronefailurebot
+    template: >
+      {{#success build.status}}
+        <{{build.link}}|Build {{build.number}} succeeded> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}>. Good job. <@{{build.author}}>
+      {{else}}
+        <{{build.link}}|Build {{build.number}} failed>  on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}>. Fix me please. <@channelname> <@someone>
+      {{/success}}
+    when:
+      branch: master
+      event: push
+      status:
+        - success
+        - failure
 
 volumes:
   - name: cache
