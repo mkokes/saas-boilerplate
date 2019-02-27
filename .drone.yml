@@ -56,7 +56,7 @@ steps:
       {{#success build.status}}
         build {{build.number}} succeeded. Good job. <@{{build.author}}>
       {{else}}
-        build {{build.number}} failed. Fix me please. <@channel>
+        build {{build.number}} failed ({{build.link}}). Fix me please. <@channel>
       {{/success}}
     when:
       branch: master
