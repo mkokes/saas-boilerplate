@@ -12,6 +12,9 @@ steps:
       - npm -v
       - yarn -v
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
+    when:
+      changeset:
+        includes: ['package.json', '.eslintignore', 'packages/app/**']
 
   - name: app_test
     image: node:8.15.0
