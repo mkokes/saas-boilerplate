@@ -53,15 +53,15 @@ steps:
         from_secret: slack_access_token
       channel: dev
       success_template: |
-        The build is fixed! Thanks @{{slack.name}}
+        The build is fixed! Thanks @alfonmga
       success_image_attachments:
         - 'http://i.imgur.com/TP4PIxc.jpg'
-      success_username: successbot
+      success_username: dronesuccessbot
       failure_template: |
-        The build is broken! Blame {{slack.name}}
+        The build is broken! Blame @alfonmga
       failure_image_attachments:
         - 'http://m.memegen.com/5wxk2j.jpg'
-      failure_username: failurebot
+      failure_username: dronefailurebot
 
 volumes:
   - name: cache
