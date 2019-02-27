@@ -26,6 +26,8 @@ steps:
     commands:
       - yarn build:app:stage
     when:
+      branch: master
+      event: push
       changeset:
         includes: ['packages/app/**']
 
@@ -38,15 +40,16 @@ steps:
         from_secret: netlify_site_api_id
       path: packages/app/build
     when:
-      branch:
-        - master
+      branch: master
+      event: push
       changeset:
         includes: ['packages/app/**']
 
   - name: notify_slack
     image: plugins/slack
     settings:
-      webhook: https://hooks.slack.com/services/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
+      webhook:
+        from_secret: slack_secret
       channel: dev
       template: >
         {{#success build.status}}
@@ -55,9 +58,8 @@ steps:
           build {{build.number}} failed. Fix me please.
         {{/success}}
     when:
-      branch:
-        - master
-        - staging
+      branch: master
+      event: push
       status:
         - success
         - failure
