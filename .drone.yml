@@ -46,8 +46,7 @@ steps:
   - name: notify_slack
     image: plugins/slack
     settings:
-      webhook:
-        from_secret: slack_secret
+      webhook: https://hooks.slack.com/services/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
       channel: dev
       template: >
         {{#success build.status}}
