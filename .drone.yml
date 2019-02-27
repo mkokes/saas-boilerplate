@@ -13,11 +13,33 @@ steps:
       - yarn -v
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
 
-  - name: test_app
+  - name: app_test
     image: node:8.15.0
     commands:
       - yarn test:app
     when:
+      changeset:
+        includes: ['packages/app/**']
+
+  - name: app_build
+    image: node:8.15.0
+    commands:
+      - yarn build:app
+    when:
+      changeset:
+        includes: ['packages/app/**']
+
+  - name: app_publish
+    image: lucap/drone-netlify
+    settings:
+      token:
+        from_secret: netlify_token
+      site_id:
+        from_secret: netlify_site_api_id
+      path: packages/app/build
+    when:
+      branch:
+        - master
       changeset:
         includes: ['packages/app/**']
 
