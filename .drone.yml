@@ -47,7 +47,7 @@ steps:
     image: plugins/slack
     settings:
       webhook:
-        from_secret: slack_webhook
+        from_secret: slack_secret
       channel: deployments
       template: >
         {{#success build.status}}
