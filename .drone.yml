@@ -39,7 +39,7 @@ steps:
         from_secret: netlify_token
       site_id:
         from_secret: netlify_site_api_id
-      domain: stage.app.dcabot.io
+      site_name: stage-app-dcabot
       path: packages/app/build
     when:
       branch: master
