@@ -24,7 +24,7 @@ steps:
   - name: app_build
     image: node:8.15.0
     commands:
-      - yarn build:app
+      - yarn build:app:stage
     when:
       changeset:
         includes: ['packages/app/**']
