@@ -22,7 +22,7 @@ steps:
       - yarn test:app
     when:
       changeset:
-        includes: ['package.json', '.eslintignore', 'packages/app/**']
+        includes: ['.eslintignore', 'packages/app/**']
   - name: app_build
     image: node:8.15.0
     commands:
@@ -31,7 +31,7 @@ steps:
       branch: master
       event: push
       changeset:
-        includes: ['package.json', '.eslintignore', 'packages/app/**']
+        includes: ['packages/app/**']
   - name: app_publish
     image: lucap/drone-netlify
     settings:
@@ -44,7 +44,7 @@ steps:
       branch: master
       event: push
       changeset:
-        includes: ['package.json', '.eslintignore', 'packages/app/**']
+        includes: ['packages/app/**']
 
   - name: notify_slack
     image: plugins/slack
