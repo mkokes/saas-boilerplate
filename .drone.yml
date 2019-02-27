@@ -2,7 +2,7 @@ kind: pipeline
 name: Default
 
 steps:
-  - name: install
+  - name: install_dependencies
     image: node:8.15.0
     volumes:
       - name: cache
@@ -12,17 +12,55 @@ steps:
       - npm -v
       - yarn -v
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
+    when:
+      changeset:
+        includes: ['package.json', '.eslintignore', 'packages/app/**']
+
+  - name: app_test
+    image: node:8.15.0
+    commands:
+      - yarn test:app
+    when:
+      changeset:
+        includes: ['package.json', '.eslintignore', 'packages/app/**']
+  - name: app_build
+    image: node:8.15.0
+    commands:
+      - yarn build:app:stage
+    when:
+      branch: master
+      event: push
+      changeset:
+        includes: ['package.json', '.eslintignore', 'packages/app/**']
+  - name: app_publish
+    image: lucap/drone-netlify
+    settings:
+      token:
+        from_secret: netlify_token
+      site_id:
+        from_secret: netlify_site_api_id
+      path: packages/app/build
+    when:
+      branch: master
+      event: push
+      changeset:
+        includes: ['package.json', '.eslintignore', 'packages/app/**']
 
   - name: notify_slack
     image: plugins/slack
     settings:
       webhook:
-        from_secret: slack_webhook
-      template: '<{{build.link}}|Deployment #{{build.number}} ended> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}'
+        from_secret: slack_secret
+      channel: dev
+      template: >
+        {{#success build.status}}
+          build {{build.number}} succeeded. Good job.
+        {{else}}
+          build {{build.number}} failed. Fix me please.
+        {{/success}}
     when:
-      branch:
-        - master
-        - staging
+      branch: master
+      event: push
       status:
         - success
         - failure
