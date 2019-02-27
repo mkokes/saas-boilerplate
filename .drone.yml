@@ -37,8 +37,7 @@ steps:
     settings:
       token:
         from_secret: netlify_token
-      site_id:
-        from_secret: netlify_site_api_id
+      site_id: 7d8053d6-80e8-4751-9a57-f5b6e8f8c271
       site_name: stage-app-dcabot
       path: packages/app/build
     when:
