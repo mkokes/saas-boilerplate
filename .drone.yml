@@ -50,7 +50,7 @@ steps:
     image: plugins/slack-blame
     settings:
       token:
-        from_secret: slack_secret
+        from_secret: slack_access_token
       channel: dev
       success_template: |
         The build is fixed! Thanks @{{slack.name}}
