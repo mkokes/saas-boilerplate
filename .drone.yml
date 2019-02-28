@@ -50,7 +50,7 @@ steps:
     image: plugins/docker
     settings:
       repo: https://registry.amgaventures.com/saas-boilerplate/analytics
-      registry: https://registry.amgaventures.com
+      registry: registry.amgaventures.com
       auth:
         from_secret: docker_registry_auth
       dockerfile: packages/analytics/Dockerfile
