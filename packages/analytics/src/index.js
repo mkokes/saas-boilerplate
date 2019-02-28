@@ -1,4 +1,4 @@
-// v1.00
+// v1.000
 
 const got = require('got')
 const cors = require('@koa/cors')
