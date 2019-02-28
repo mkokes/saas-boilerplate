@@ -59,7 +59,7 @@ steps:
         from_secret: docker_password
       repo: registry.amgaventures.com/saas-boilerplate/analytics
       registry: registry.amgaventures.com
-      dockerfile: packages/analytics/Dockerfile
+      context: packages/analytics
     when:
       branch: master
       event: push

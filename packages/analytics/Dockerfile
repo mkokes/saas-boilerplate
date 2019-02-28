@@ -2,11 +2,11 @@ FROM node:8.15.0-alpine
 
 WORKDIR /app
 
-COPY packages/analytics/package.json ./
+COPY package.json ./
 
 RUN yarn install
 
-COPY packages/analytics /app
+COPY . /app
 
 EXPOSE 3000
 

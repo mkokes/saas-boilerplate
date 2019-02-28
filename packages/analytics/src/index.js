@@ -82,7 +82,7 @@ const init = async () => {
   const PORT = process.env.PORT || 3000
 
   app.listen(PORT, () => {
-    console.log(`Running on http://127.0.0.1:${PORT}`)
+    console.log(`Running on http://127.0.0.1:${PORT} v2`)
   })
 }
 
