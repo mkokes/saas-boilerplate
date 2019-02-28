@@ -32,6 +32,7 @@ steps:
     when:
       branch: master
       event: push
+      status: success
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/app/**']
   - name: app_publish
