@@ -1,5 +1,3 @@
-// v1.042222x2621g35242x6
-
 const got = require('got')
 const cors = require('@koa/cors')
 const Koa = require('koa')

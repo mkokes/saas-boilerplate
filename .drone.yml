@@ -43,22 +43,24 @@ steps:
     when:
       branch: master
       event: push
+      status: success
       changeset:
         includes: ['packages/app/**']
 
   - name: analytics_publish
-    image: plugins/docker:17.12
+    image: plugins/docker
     settings:
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      repo: registry.amgaventures.com/app
+      repo: registry.amgaventures.com/saas-boilerplate/analytics
       registry: registry.amgaventures.com
       dockerfile: packages/analytics/Dockerfile
     when:
       branch: master
       event: push
+      status: success
       changeset:
         includes: ['packages/analytics/**']
 
