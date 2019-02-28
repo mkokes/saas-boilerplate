@@ -2,7 +2,7 @@ FROM node:8.15.0-alpine
 
 WORKDIR /app
 
-COPY packages/analytics/package*.json ./
+COPY packages/analytics/package.json ./
 
 RUN yarn install
 
