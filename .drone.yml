@@ -49,10 +49,10 @@ steps:
   - name: analytics_publish
     image: plugins/docker
     settings:
-      repo: registry.amgaventures.com/saas-boilerplate/analytics
-      registry: https://registry.amgaventures.com
-      auth:
-        from_secret: docker_registry_auth
+      username: kevinbacon
+      password: pa55word
+      repo: registry.amgaventures.com/app
+      registry: registry.amgaventures.com
       dockerfile: packages/analytics/Dockerfile
     when:
       branch: master
