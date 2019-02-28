@@ -49,7 +49,7 @@ steps:
   - name: analytics_publish
     image: plugins/docker
     settings:
-      repo: saas-boilerplate/analytics
+      repo: registry.amgaventures.com/saas-boilerplate/analytics
       registry: registry.amgaventures.com
       auth:
         from_secret: docker_registry_auth
