@@ -46,6 +46,22 @@ steps:
       changeset:
         includes: ['packages/app/**']
 
+  - name: analytics_publish
+    image: plugins/docker
+    settings:
+      repo: saas-boilerplate/analytics
+      registry: registry.amgaventures.com
+      username:
+        from_secret: docker_registry_username
+      password:
+        from_secret: docker_registry_password
+      dockerfile: packages/analytics/Dockerfile
+    when:
+      branch: master
+      event: push
+      changeset:
+        includes: ['packages/analytics/**']
+
   - name: notify
     image: plugins/slack
     settings:
