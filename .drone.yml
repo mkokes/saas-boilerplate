@@ -53,6 +53,10 @@ steps:
       registry: registry.amgaventures.com
       auth:
         from_secret: docker_registry_auth
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
       dockerfile: packages/analytics/Dockerfile
     when:
       branch: master
