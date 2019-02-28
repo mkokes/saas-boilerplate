@@ -54,9 +54,9 @@ const Route = ({
           <PrivateRoute exact loggedIn={loggedIn} enable={rest.protected}>
             <Middleware user={userProfile} path={rest.path}>
               <RouteAnalytics {...props}>
-                <Layout {...rest}>
+                <LLayout {...rest}>
                   <Component {...props} />
-                </Layout>
+                </LLayout>
               </RouteAnalytics>
             </Middleware>
           </PrivateRoute>
