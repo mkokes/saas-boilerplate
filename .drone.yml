@@ -53,8 +53,6 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      auth:
-        from_secret: docker_auth
       repo: registry.amgaventures.com/app
       registry: registry.amgaventures.com
       dockerfile: packages/analytics/Dockerfile
