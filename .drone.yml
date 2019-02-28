@@ -51,10 +51,6 @@ steps:
     settings:
       auth:
         from_secret: docker_registry_auth
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
       repo: registry.amgaventures.com:443/app
       registry: registry.amgaventures.com:443
       dockerfile: packages/analytics/Dockerfile
