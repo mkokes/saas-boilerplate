@@ -49,8 +49,10 @@ steps:
   - name: analytics_publish
     image: plugins/docker
     settings:
-      username: kevinbacon
-      password: pa55word
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
       repo: registry.amgaventures.com/app
       registry: registry.amgaventures.com
       dockerfile: packages/analytics/Dockerfile
