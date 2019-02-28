@@ -1,9 +1,4 @@
-app/build
-app/coverage
-node_modules/*
+packages/app/build/*
+packages/website/build/*
 **/node_modules/*
-package-lock.json
 yarn.lock
-package.json
-*.hbs
-packages/blog
