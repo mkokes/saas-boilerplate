@@ -28,17 +28,6 @@ steps:
     image: node:8.15.0
     commands:
       - yarn test:app
-    when:
-      changeset:
-        includes:
-          [
-            'yarn.lock',
-            'package.json',
-            '.eslintignore',
-            '.prettierignore',
-            '.prettierrc',
-            'packages/app/**',
-          ]
   - name: app_build
     image: node:8.15.0
     commands:
