@@ -49,6 +49,8 @@ steps:
   - name: analytics_publish
     image: plugins/docker
     settings:
+      auth:
+        from_secret: docker_registry_auth
       username:
         from_secret: docker_username
       password:
