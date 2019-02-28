@@ -47,7 +47,7 @@ steps:
         includes: ['packages/app/**']
 
   - name: analytics_publish
-    image: plugins/docker
+    image: plugins/docker:17.12
     settings:
       username:
         from_secret: docker_username
