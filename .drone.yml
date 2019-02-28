@@ -51,10 +51,8 @@ steps:
     settings:
       repo: registry.amgaventures.com/saas-boilerplate/analytics
       registry: registry.amgaventures.com
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
+      auth:
+        from_secret: docker_registry_auth
       dockerfile: packages/analytics/Dockerfile
     when:
       branch: master
