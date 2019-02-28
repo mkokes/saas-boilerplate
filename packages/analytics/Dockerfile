@@ -2,14 +2,14 @@ FROM node:8.15.0-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY packages/analytics/package*.json ./
 
 RUN yarn install
 
-COPY . /app
+COPY packages/analytics /app
 
 EXPOSE 3000
 
 ENV NODE_ENV production
 
-CMD [ "pwd" ]
+CMD [ "yarn", "start" ]
