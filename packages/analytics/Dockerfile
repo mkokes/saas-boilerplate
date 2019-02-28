@@ -1,12 +1,12 @@
 FROM node:8.15.0-alpine
 
-WORKDIR /src
+WORKDIR /app
 
 COPY package*.json ./
 
 RUN yarn install
 
-COPY . /src
+COPY . /app
 
 EXPOSE 3000
 
