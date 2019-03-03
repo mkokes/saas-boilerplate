@@ -46,9 +46,9 @@ steps:
     image: plugins/docker
     settings:
       username:
-        from_secret: docker_username
+        from_secret: docker_registry_username
       password:
-        from_secret: docker_password
+        from_secret: docker_registry_password
       repo: registry.amgaventures.com/saas-boilerplate/analytics
       registry: registry.amgaventures.com
       dockerfile: packages/analytics/Dockerfile
@@ -64,7 +64,7 @@ steps:
     image: plugins/slack
     settings:
       webhook:
-        from_secret: slack_secret
+        from_secret: slack_webhook
       channel: dev
     template: >
       {{#success build.status}}
