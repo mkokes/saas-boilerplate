@@ -20,17 +20,14 @@ steps:
       SSH_KEY:
         from_secret: SSH_KEY
     commands:
-      - echo $SSH_KEY
       - mkdir /root/.ssh
       - echo -n "$SSH_KEY" > /root/.ssh/id_rsa
       - chmod 600 /root/.ssh/id_rsa
 
-      # add dokku.amgaventures.com to our known hosts.
       - touch /root/.ssh/known_hosts
       - chmod 600 /root/.ssh/known_hosts
       - ssh-keyscan -t rsa dokku.amgaventures.com > /etc/ssh/ssh_known_hosts 2> /dev/null
 
-      - ssh -v dokku@dokku.amgaventures.com
       - git remote add analytics dokku@dokku.amgaventures.com:analytics
       - git push analytics
     when:

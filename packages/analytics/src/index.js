@@ -79,10 +79,11 @@ const init = async () => {
   app.use(router.routes())
   app.use(router.allowedMethods())
 
+  const HOST = process.env.HOST || '0.0.0.0'
   const PORT = process.env.PORT || 3000
 
-  app.listen(PORT, () => {
-    console.log(`Running on http://127.0.0.1:${PORT}`)
+  app.listen(PORT, HOST, () => {
+    console.log(`Listening on ${HOST}:${PORT}`)
   })
 }
 
