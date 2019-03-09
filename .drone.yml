@@ -37,6 +37,29 @@ steps:
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/analytics/**']
 
+  - name: api_publish
+    image: node:8.15.0
+    environment:
+      SSH_KEY:
+        from_secret: SSH_KEY
+    commands:
+      - mkdir /root/.ssh
+      - echo -n "$SSH_KEY" > /root/.ssh/id_rsa
+      - chmod 600 /root/.ssh/id_rsa
+
+      - touch /root/.ssh/known_hosts
+      - chmod 600 /root/.ssh/known_hosts
+      - ssh-keyscan -t rsa dokku.amgaventures.com > /etc/ssh/ssh_known_hosts 2> /dev/null
+
+      - git remote add api dokku@dokku.amgaventures.com:api
+      - git push api
+    when:
+      branch: master
+      event: push
+      status: success
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/analytics/**']
+
   - name: notify
     image: plugins/slack
     settings:
