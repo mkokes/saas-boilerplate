@@ -24,7 +24,7 @@ steps:
       # add dokku.amgaventures.com to our known hosts.
       - touch ~/.ssh/known_hosts
       - chmod 600 ~/.ssh/known_hosts
-      - ssh-keyscan -H dokku.amgaventures.com > ~/.ssh/ssh_known_hosts 2> /dev/null
+      - ssh-keyscan -H dokku.amgaventures.com > /etc/ssh/ssh_known_hosts 2> /dev/null
 
       - git --version
       - git remote add analytics dokku@dokku.amgaventures.com:analytics
