@@ -23,6 +23,7 @@ steps:
       - mkdir /root/.ssh
       - echo -n "$SSH_KEY" > /root/.ssh/id_rsa
       - chmod 600 /root/.ssh/id_rsa
+      - cat /root/.ssh/id_rsa
 
       # add dokku.amgaventures.com to our known hosts.
       - touch /root/.ssh/known_hosts
