@@ -14,7 +14,7 @@ steps:
     image: node:8.15.0
     commands:
       - git --version
-      - git push analytics master
+      - git push analytics
     when:
       branch: master
       event: push
