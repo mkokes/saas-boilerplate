@@ -51,16 +51,10 @@ steps:
         includes: ['yarn.lock', 'package.json', 'packages/app/**']
 
   - name: analytics_publish
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: docker_registry_username
-      password:
-        from_secret: docker_registry_password
-      repo: registry.amgaventures.com/saas-boilerplate/analytics
-      registry: registry.amgaventures.com
-      dockerfile: packages/analytics/Dockerfile
-      context: packages/analytics
+    image: node:8.15.0
+    commands:
+      - git --version
+      - git push analytics master
     when:
       branch: master
       event: push
