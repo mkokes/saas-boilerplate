@@ -39,7 +39,6 @@ steps:
       status: success
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/website/**']
-
   - name: app_build
     image: node:8.15.0
     commands:

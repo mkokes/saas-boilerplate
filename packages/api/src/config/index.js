@@ -10,6 +10,10 @@ const env = envalid.cleanEnv(
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     SERVER_NAME: str({ default: 'API' }),
+    DB_CONNECTION_URI: str({
+      default:
+        'mongodb://app:6cbf720e9b626f8d2bd5d5ffff34b9d5@dokku-mongo-app:27017/app',
+    }),
     PRODUCT_APP_URL: str({ default: 'http://localhost:3000' }),
     PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
     LOG: str({ default: 'debug' }),
