@@ -12,7 +12,7 @@ const env = envalid.cleanEnv(
     SERVER_NAME: str({ default: 'API' }),
     DB_CONNECTION_URI: str({
       default:
-        'mongodb://app:6cbf720e9b626f8d2bd5d5ffff34b9d5@dokku-mongo-app:27017/app',
+        'mongodb://db:025ec88a45c31ac9293a5fd33729cdb6@dokku-mongo-db:27017/db',
     }),
     PRODUCT_APP_URL: str({ default: 'http://localhost:3000' }),
     PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
