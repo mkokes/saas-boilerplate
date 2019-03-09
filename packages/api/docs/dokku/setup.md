@@ -11,7 +11,7 @@ dokku proxy:ports-remove brandname-env-api http:3000:3000
 
 dokku letsencrypt brandname-env-api
 
-dokku config:set --no-restart brandname-env-api DB_CONNECTION_URI=XXX
+dokku config:set --no-restart brandname-env-api DB_DSN=XXX
 dokku config:set --no-restart brandname-env-api RECAPTCHA_SECRET_KEY=XXX
 dokku config:set --no-restart brandname-env-api JWT_SECRET=XXX
 dokku config:set --no-restart brandname-env-api RECAPTCHA_SECRET_KEY=XXX

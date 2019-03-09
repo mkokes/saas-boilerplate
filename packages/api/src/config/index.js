@@ -10,7 +10,7 @@ const env = envalid.cleanEnv(
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     SERVER_NAME: str({ default: 'API' }),
-    DB_CONNECTION_URI: str({
+    DB_DSN: str({
       default: '',
     }),
     JWT_SECRET: str({

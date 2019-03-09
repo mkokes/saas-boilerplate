@@ -21,6 +21,8 @@ const init = async () => {
     serverName: config.SERVER_NAME,
   });
 
+  log.info(config.DB_DSN);
+
   const mixpanel = Mixpanel.init(config.MIXPANEL_TOKEN, {
     protocol: 'https',
   });
