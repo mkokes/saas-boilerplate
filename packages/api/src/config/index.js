@@ -14,6 +14,12 @@ const env = envalid.cleanEnv(
       default:
         'mongodb://db:025ec88a45c31ac9293a5fd33729cdb6@dokku-mongo-db:27017/db',
     }),
+    JWT_SECRET: str({
+      default: '',
+    }),
+    RECAPTCHA_SECRET_KEY: str({
+      default: '',
+    }),
     PRODUCT_APP_URL: str({ default: 'http://localhost:3000' }),
     PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
     LOG: str({ default: 'debug' }),

@@ -24,8 +24,8 @@ const init = async () => {
   const mixpanel = Mixpanel.init(config.MIXPANEL_TOKEN, {
     protocol: 'https',
   });
-
   const db = await connectDb({ config, log, mixpanel });
+
   await createProcessor({ config, log, db, Sentry });
 
   const server = new Koa();
@@ -53,6 +53,8 @@ const init = async () => {
     /* eslint-disable-next-line */
     log.info(`Listening on ${config.HOST}:${config.PORT}`);
   });
+
+  log.info(config.JWT_SECRET);
 };
 
 init().catch(err => {
