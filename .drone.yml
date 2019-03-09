@@ -36,19 +36,19 @@ steps:
   #     changeset:
   #       includes: ['yarn.lock', 'package.json', 'packages/app/**']
   # - name: app_publish
-    image: lucap/drone-netlify
-    settings:
-      token:
-        from_secret: netlify_account_token
-      site_id: 7d8053d6-80e8-4751-9a57-f5b6e8f8c271
-      site_name: stage-app-dcabot
-      path: packages/app/build
-    when:
-      branch: master
-      event: push
-      status: success
-      changeset:
-        includes: ['yarn.lock', 'package.json', 'packages/app/**']
+    # image: lucap/drone-netlify
+    # settings:
+    #   token:
+    #     from_secret: netlify_account_token
+    #   site_id: 7d8053d6-80e8-4751-9a57-f5b6e8f8c271
+    #   site_name: stage-app-dcabot
+    #   path: packages/app/build
+    # when:
+    #   branch: master
+    #   event: push
+    #   status: success
+    #   changeset:
+    #     includes: ['yarn.lock', 'package.json', 'packages/app/**']
 
   - name: analytics_publish
     image: node:8.15.0
