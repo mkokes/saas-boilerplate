@@ -53,8 +53,6 @@ const init = async () => {
     /* eslint-disable-next-line */
     log.info(`Listening on ${config.HOST}:${config.PORT}`);
   });
-
-  log.info(config.JWT_SECRET);
 };
 
 init().catch(err => {
