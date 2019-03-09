@@ -11,8 +11,7 @@ const env = envalid.cleanEnv(
     APP_MODE: str({ default: 'dev' }),
     SERVER_NAME: str({ default: 'API' }),
     DB_CONNECTION_URI: str({
-      default:
-        'mongodb://db:025ec88a45c31ac9293a5fd33729cdb6@dokku-mongo-db:27017/db',
+      default: '',
     }),
     JWT_SECRET: str({
       default: '',
