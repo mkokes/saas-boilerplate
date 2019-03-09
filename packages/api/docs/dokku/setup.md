@@ -11,7 +11,8 @@ dokku proxy:ports-remove brandname-env-api http:3000:3000
 
 dokku letsencrypt brandname-env-api
 
-dokku config:set --no-restart brandname-env-api DB_DSN=XXX
+dokku config:set --no-restart brandname-env-api APP_MODE=live
+dokku config:set --no-restart brandname-env-api MONGO_URL=XXX
 dokku config:set --no-restart brandname-env-api RECAPTCHA_SECRET_KEY=XXX
 dokku config:set --no-restart brandname-env-api JWT_SECRET=XXX
 dokku config:set --no-restart brandname-env-api RECAPTCHA_SECRET_KEY=XXX
@@ -19,7 +20,4 @@ dokku config:set --no-restart brandname-env-api PADDLE_VENDOR_ID=XXX
 dokku config:set --no-restart brandname-env-api PADDLE_VENDOR_AUTH_CODE=XXX
 dokku config:set --no-restart brandname-env-api POSTMARK_API_TOKEN=XXX
 dokku config:set --no-restart brandname-env-api FRESHDESK_SECRET=XXX
-
-dokku ps:restart brandname-env-api
-dokku logs brandname-env-api
 ```
