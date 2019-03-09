@@ -14,6 +14,7 @@ steps:
     image: node:8.15.0
     commands:
       - git --version
+      - git remote add analytics dokku@dokku.amgaventures.com:analytics
       - git push analytics
     when:
       branch: master
