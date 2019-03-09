@@ -45,10 +45,13 @@ const init = async () => {
   setupAuthMiddleware({ config, db, server });
   setupGraphQLEndpoint({ config, db, server, log, mixpanel });
 
-  server.listen(config.PORT, err => {
+  server.listen(config.PORT, config.HOST, err => {
     if (err) {
       throw err;
     }
+
+    /* eslint-disable-next-line */
+    log.info(`Listening on ${config.HOST}:${config.PORT}`);
   });
 };
 

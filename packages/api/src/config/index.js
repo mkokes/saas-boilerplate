@@ -6,6 +6,7 @@ const env = envalid.cleanEnv(
   process.env,
   {
     PORT: num({ default: 3001 }),
+    HOST: str({ default: '0.0.0.0' }),
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     SERVER_NAME: str({ default: 'API' }),
