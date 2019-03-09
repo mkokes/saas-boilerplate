@@ -22,19 +22,7 @@
     "build:website": "(cd packages/website && yarn build:live)",
     "build:app:stage": "(cd packages/app && yarn build:stage)",
     "build:app": "(cd packages/app && yarn build:live)",
-    "build:blog": "(cd packages/blog && yarn build)",
-    "deploy:api": "(cd packages/api && yarn deploy:live)",
-    "deploy:api:stage": "(cd packages/api && yarn deploy:stage)",
-    "deploy:scheduler": "(cd packages/scheduler && yarn deploy:live)",
-    "deploy:scheduler:stage": "(cd packages/scheduler && yarn deploy:stage)",
-    "deploy:analytics": "(cd packages/analytics && yarn deploy)",
-    "deploy:worker": "(cd packages/worker && yarn deploy)",
-    "release:api": "(cd packages/api && yarn release:live)",
-    "release:api:stage": "(cd packages/api && yarn release:stage)",
-    "release:scheduler": "(cd packages/scheduler && yarn release:live)",
-    "release:scheduler:stage": "(cd packages/scheduler && yarn release:stage)",
-    "release:analytics": "(cd packages/analytics && yarn release)",
-    "release:worker": "(cd packages/worker && yarn release)"
+    "build:blog": "(cd packages/blog && yarn build)"
   },
   "devDependencies": {
     "lerna": "^3.5.1"

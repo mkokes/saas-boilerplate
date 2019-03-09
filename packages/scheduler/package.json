@@ -6,11 +6,6 @@
   "scripts": {
     "start": "node index.js",
     "test": "jest --no-cache",
-    "deploy:stage": "yarn now -f --local-config=.deploy/stage.json && yarn now --local-config=.deploy/stage.json alias",
-    "deploy:live": "yarn now -f --local-config=.deploy/live.json && yarn now --local-config=.deploy/live.json alias",
-    "release:stage": "yarn deploy:stage && yarn now rm dcabot-scheduler-stage --safe --yes",
-    "release:live": "yarn deploy:live && yarn now rm dcabot-scheduler-live --safe --yes",
-    "now": "now --team amgaventures",
     "lint": "npm run lint:js",
     "lint:js": "npm run lint:eslint -- .",
     "lint:eslint": "eslint --ignore-path .gitignore",
@@ -30,7 +25,6 @@
     "lodash.get": "^4.4.2",
     "logdna-bunyan": "^1.0.1",
     "node-schedule": "^1.3.1",
-    "now": "^13.1.2",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   },
