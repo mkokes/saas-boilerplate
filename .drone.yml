@@ -1,5 +1,3 @@
-#foo
-
 kind: pipeline
 name: CI-CD
 
