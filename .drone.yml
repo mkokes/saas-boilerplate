@@ -1,5 +1,5 @@
 kind: pipeline
-name: Default
+name: CI-CD
 
 platform:
   os: linux
