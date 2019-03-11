@@ -1,4 +1,4 @@
-#123
+#foo
 
 kind: pipeline
 name: CI-CD
