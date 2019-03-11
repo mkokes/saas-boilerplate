@@ -8,11 +8,14 @@ platform:
 steps:
   - name: install_deps
     image: node:8.15.0
+    volumes:
+      - name: cache
+        path: /tmp/cache
     commands:
       - node -v
       - npm -v
       - yarn -v
-      - yarn install --pure-lockfile
+      - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
     when:
       branch:
         - master
@@ -153,3 +156,8 @@ steps:
       status:
         - success
         - failure
+
+volumes:
+  - name: cache
+    host:
+      path: /var/lib/cache
