@@ -18,7 +18,7 @@ steps:
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
     when:
       changeset:
-        includes: ['package.json', 'packages/**']
+        includes: ['yarn.lock', 'package.json', 'packages/**']
 
   - name: app_test
     image: node:8.15.0
