@@ -80,7 +80,6 @@ steps:
     when:
       branch:
         - master
-
       event: push
       status: success
       changeset:
@@ -96,7 +95,6 @@ steps:
     when:
       branch:
         - master
-
       event: push
       status: success
       changeset:
