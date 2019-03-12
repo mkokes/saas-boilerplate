@@ -2,7 +2,7 @@
   "name": "api-server",
   "description": "API Back-end",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.0.1",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
