@@ -55,7 +55,7 @@ const init = async () => {
   router.get('/favicon.ico', async ctx => {
     ctx.body = '';
   });
-  router.get('/health/liveness', async ctx => {
+  router.get('/health', async ctx => {
     ctx.status = 200;
   });
   router.get('*', async ctx => {

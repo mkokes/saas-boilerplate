@@ -1,6 +1,6 @@
 const Koa = require('koa');
-const cors = require('@koa/cors');
 const Router = require('koa-router');
+const cors = require('@koa/cors');
 const Sentry = require('@sentry/node');
 
 const config = require('./config');
@@ -8,18 +8,21 @@ const log = require('./log')(config);
 const createProcessor = require('./processor');
 
 const init = async () => {
-  log.info(`App mode: ${config.APP_MODE}`);
+  const { APP_MODE, SENTRY_DSN, SERVER_NAME, PORT, HOST } = config;
+
+  log.info(`App mode: ${APP_MODE}`);
 
   Sentry.init({
-    dsn: config.SENTRY_DSN,
-    environment: config.APP_MODE,
-    serverName: config.SERVER_NAME,
+    dsn: SENTRY_DSN,
+    environment: APP_MODE,
+    serverName: SERVER_NAME,
   });
 
   await createProcessor({ config, log, Sentry });
 
   const server = new Koa();
   const router = new Router();
+
   server.use(
     cors({
       origin: '*',
@@ -32,11 +35,18 @@ const init = async () => {
     await nextHandler();
   });
 
+  router.get('/health', ctx => {
+    ctx.status = 200;
+  });
+
   server.use(router.routes());
-  server.listen(config.PORT, err => {
+  server.listen(PORT, HOST, err => {
     if (err) {
       throw err;
     }
+
+    /* eslint-disable-next-line */
+    log.info(`Listening on ${HOST}:${PORT}`);
   });
 };
 

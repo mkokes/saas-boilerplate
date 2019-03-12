@@ -2,4 +2,4 @@ WAIT=5
 TIMEOUT=60  # Timeout after a minute
 ATTEMPTS=10 # Attempt checks 10 times
 
-/ OK
+/health OK

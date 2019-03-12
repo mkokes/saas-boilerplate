@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "jest --no-cache",
     "lint": "npm run lint:js",
     "lint:js": "npm run lint:eslint -- .",

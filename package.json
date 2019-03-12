@@ -21,6 +21,7 @@
     "start:scheduler": "(cd packages/scheduler && yarn start)",
     "start:analytics": "(cd packages/analytics && yarn start)",
     "dev:api": "(cd packages/api && yarn dev)",
+    "dev:scheduler": "(cd packages/scheduler && yarn dev)",
     "build:website:stage": "(cd packages/website && yarn build:stage)",
     "build:website": "(cd packages/website && yarn build:live)",
     "build:app:stage": "(cd packages/app && yarn build:stage)",
