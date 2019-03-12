@@ -16,9 +16,6 @@ steps:
       - npm -v
       - yarn -v
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
-    when:
-      branch:
-        - master
 
   - name: app_test
     image: node:8.15.0
