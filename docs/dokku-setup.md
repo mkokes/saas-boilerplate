@@ -1,5 +1,7 @@
 # Dokku applications setup (production)
 
+Docs: http://dokku.viewdocs.io/dokku
+
 ## Create DB
 
 Plugin URL: https://github.com/dokku/dokku-mongo
