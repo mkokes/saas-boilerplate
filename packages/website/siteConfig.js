@@ -1,16 +1,18 @@
+const { APP_URL, SUPPORT_URL } = process.env;
+
 const siteConfig = {
   customDocsPath: 'website/docs',
   title: 'ACME',
   tagline: 'Tagline',
   url: 'https://dcabot.io',
   baseUrl: '/',
-  appUrl: process.env.APP_URL,
+  appUrl: APP_URL,
   docsUrl: '',
   gaTrackingId: '',
   projectName: '',
   headerLinks: [
-    { href: `${process.env.APP_URL}/auth/login`, label: 'Log in' },
-    { href: `${process.env.APP_URL}/signup`, label: 'Get started' },
+    { href: `${APP_URL}/auth/login`, label: 'Log in' },
+    { href: `${APP_URL}/signup`, label: 'Get started' },
     { blog: true, label: 'Blog' },
   ],
   headerIcon: 'img/logo.png',
@@ -35,7 +37,7 @@ const siteConfig = {
   changelogUrl: 'https://changelog.dcabot.io',
   statusUrl: 'https://status.dcabot.io',
   emailContact: 'info@dcabot.io',
-  supportUrl: process.env.SUPPORT_URL,
+  supportUrl: SUPPORT_URL,
   users: [
     {
       caption: 'Coinbase',

@@ -4,10 +4,12 @@ const schema = require('./schema');
 const createResolvers = require('./resolvers');
 
 module.exports = ({ config, db, server: app, log: parentLog, mixpanel }) => {
-  const log = parentLog.create('graphql');
+  const { APP_MODE } = config;
 
+  const log = parentLog.create('graphql');
   const resolvers = createResolvers({ config, db, log, mixpanel });
-  if (config.APP_MODE === 'dev') {
+
+  if (APP_MODE === 'dev') {
     /* eslint-disable-next-line */
     const createGraphQLLogger = require('graphql-log');
     const logExecutions = createGraphQLLogger({

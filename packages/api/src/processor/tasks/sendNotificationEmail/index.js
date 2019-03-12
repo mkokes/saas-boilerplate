@@ -14,7 +14,16 @@ const {
   DISABLED_2FA,
 } = require('../../../constants/notifications');
 
-module.exports = ({ config, log: parentLog, Sentry }) => {
+module.exports = ({
+  config: {
+    PRODUCT_APP_URL,
+    PRODUCT_TRIAL_DAYS_LENGTH,
+    POSTMARK_API_TOKEN,
+    POSTMARK_SENDER_EMAIL,
+  },
+  log: parentLog,
+  Sentry,
+}) => {
   const log = parentLog.create('sendNotificationEmail');
 
   const POSTMARK_TEMPLATES_ID = {
@@ -32,7 +41,7 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
 
   const POSTMARK_TEMPLATE_VALUES = {
     product_name: 'DCABot',
-    product_url: config.PRODUCT_APP_URL,
+    product_url: PRODUCT_APP_URL,
     support_url: 'https://support.dcabot.io',
     company_name: 'AMGA Ventures Inc.',
     company_address: null,
@@ -45,9 +54,7 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
         .execPopulate();
       const { _user } = notification;
 
-      const postmarkClient = new postmark.ServerClient(
-        config.POSTMARK_API_TOKEN,
-      );
+      const postmarkClient = new postmark.ServerClient(POSTMARK_API_TOKEN);
 
       const templateModel = {
         ...POSTMARK_TEMPLATE_VALUES,
@@ -62,11 +69,11 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
           templateModel.name = _user.firstName;
           break;
         case WELCOME:
-          templateModel.action_url = `${config.PRODUCT_APP_URL}/dashboard`;
-          templateModel.login_url = `${config.PRODUCT_APP_URL}/auth/login`;
+          templateModel.action_url = `${PRODUCT_APP_URL}/dashboard`;
+          templateModel.login_url = `${PRODUCT_APP_URL}/auth/login`;
           templateModel.name = _user.firstName;
           templateModel.email = _user.email;
-          templateModel.trial_length = config.PRODUCT_TRIAL_DAYS_LENGTH;
+          templateModel.trial_length = PRODUCT_TRIAL_DAYS_LENGTH;
           templateModel.trial_start_date = moment(
             _user.registeredAt,
             _user.timezone,
@@ -75,7 +82,7 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
           /* eslint-disable no-case-declarations */
           const trialEndDate = new Date(_user.registeredAt);
           trialEndDate.setDate(
-            trialEndDate.getDate() + config.PRODUCT_TRIAL_DAYS_LENGTH,
+            trialEndDate.getDate() + PRODUCT_TRIAL_DAYS_LENGTH,
           );
           templateModel.trial_end_date = moment(
             trialEndDate,
@@ -87,14 +94,10 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
           templateModel.name = _user.firstName;
           break;
         case PASSWORD_RESETED:
-          templateModel.action_url = `${
-            config.PRODUCT_APP_URL
-          }/auth/reset-password`;
+          templateModel.action_url = `${PRODUCT_APP_URL}/auth/reset-password`;
           break;
         case PASSWORD_CHANGED:
-          templateModel.action_url = `${
-            config.PRODUCT_APP_URL
-          }/auth/reset-password`;
+          templateModel.action_url = `${PRODUCT_APP_URL}/auth/reset-password`;
           break;
         case EMAIL_CHANGED:
           targetEmail = templateModel.old_email;
@@ -121,7 +124,7 @@ module.exports = ({ config, log: parentLog, Sentry }) => {
 
       await postmarkClient.sendEmailWithTemplate({
         TemplateId: POSTMARK_TEMPLATES_ID[notification.type],
-        From: config.POSTMARK_SENDER_EMAIL,
+        From: POSTMARK_SENDER_EMAIL,
         To: targetEmail,
         TemplateModel: templateModel,
         Metadata: {

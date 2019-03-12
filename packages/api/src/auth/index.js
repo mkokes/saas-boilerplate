@@ -2,10 +2,10 @@ const jwt = require('koa-jwt');
 
 const { assertAccessTokenPayload } = require('../utils/asserts');
 
-module.exports = ({ config, server, db }) => {
+module.exports = ({ config: { JWT_SECRET }, server, db }) => {
   server.use(
     jwt({
-      secret: config.JWT_SECRET,
+      secret: JWT_SECRET,
       passthrough: true,
       algorithm: 'HS256',
     }),
