@@ -11,6 +11,7 @@ dokku proxy:ports-remove brandname-env-api http:3000:3000
 
 dokku letsencrypt brandname-env-api
 
+dokku config:set --no-restart brandname-env-api NODE_ENV=production
 dokku config:set --no-restart brandname-env-api APP_MODE=live
 dokku config:set --no-restart brandname-env-api MONGO_URL=XXX
 dokku config:set --no-restart brandname-env-api RECAPTCHA_SECRET_KEY=XXX
