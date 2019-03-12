@@ -11,6 +11,12 @@ import {
 export default class SafeQuery extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
+    isLoading: PropTypes.func,
+    renderError: PropTypes.func,
+    renderLoading: PropTypes.func,
+    showError: PropTypes.bool,
+    showLoading: PropTypes.bool,
+    keepExistingResultDuringRefetch: PropTypes.bool,
   };
 
   render() {

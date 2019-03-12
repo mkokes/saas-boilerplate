@@ -24,6 +24,11 @@ DEFAULT_RENDER_ERROR.propTypes = {
 export default class SafeMutation extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
+    isLoading: PropTypes.func,
+    renderError: PropTypes.func,
+    renderLoading: PropTypes.func,
+    showError: PropTypes.bool,
+    showLoading: PropTypes.bool,
   };
 
   render() {

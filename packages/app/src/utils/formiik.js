@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FormFeedback, FormGroup, Input, Label } from 'reactstrap';
 import Select from 'react-select';
 
@@ -24,6 +25,11 @@ export const ReactstrapInput = ({
     )}
   </FormGroup>
 );
+ReactstrapInput.propTypes = {
+  field: PropTypes.object,
+  form: PropTypes.object,
+  label: PropTypes.string,
+};
 
 export const ReactstrapSelect = ({
   field: { ...fields },
@@ -50,6 +56,12 @@ export const ReactstrapSelect = ({
     </FormGroup>
   );
 };
+ReactstrapSelect.propTypes = {
+  field: PropTypes.object,
+  form: PropTypes.object,
+  label: PropTypes.string,
+  value: PropTypes.string,
+};
 
 export const ReactstrapCheckbox = ({
   field: { ...fields },
@@ -74,6 +86,11 @@ export const ReactstrapCheckbox = ({
     )}
   </FormGroup>
 );
+ReactstrapCheckbox.propTypes = {
+  field: PropTypes.object,
+  form: PropTypes.object,
+  label: PropTypes.string,
+};
 
 /* export const ReactstrapRadioInput = ({
   field: { name, value },
