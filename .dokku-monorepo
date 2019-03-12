@@ -1,2 +1,3 @@
 analytics=packages/analytics
 api=packages/api
+scheduler=packages/scheduler
