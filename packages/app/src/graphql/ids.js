@@ -1,5 +1,3 @@
-// foo
-
 import _ from 'lodash';
 
 const mappings = {};
