@@ -19,21 +19,6 @@
     "generate": "plop --plopfile internals/generators/index.js",
     "eject": "react-scripts eject"
   },
-  "lint-staged": {
-    "*.js": [
-      "npm run lint:eslint:fix",
-      "git add --force"
-    ],
-    "*.{json,md}": [
-      "prettier --config ../.prettierrc --write",
-      "git add --force"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}"
@@ -104,11 +89,8 @@
     "eslint-plugin-jsx-a11y": "6.2.0",
     "eslint-plugin-prettier": "3.0.1",
     "eslint-plugin-react": "7.12.4",
-    "husky": "^1.1.2",
     "jest-styled-components": "^6.2.2",
-    "lint-staged": "^8.0.3",
     "plop": "^2.1.0",
-    "prettier": "1.16.3",
     "stylelint": "9.10.1",
     "stylelint-config-recommended": "2.1.0",
     "stylelint-config-styled-components": "0.1.1",
