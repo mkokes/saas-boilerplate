@@ -11,6 +11,21 @@
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix"
   },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint:eslint:fix",
+      "git add --force"
+    ],
+    "*.{json,md}": [
+      "prettier --config ../.prettierrc --write",
+      "git add --force"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
     "@koa/cors": "^2.2.2",
     "global-tunnel-ng": "^2.6.0",
