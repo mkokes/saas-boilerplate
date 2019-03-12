@@ -5,7 +5,11 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "lint": "npm run lint:js",
+    "lint:js": "npm run lint:eslint -- .",
+    "lint:eslint": "eslint --ignore-path .gitignore",
+    "lint:eslint:fix": "eslint --ignore-path .gitignore --fix"
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",

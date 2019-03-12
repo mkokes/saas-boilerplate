@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 
-module.exports = async ({ config, db, log: parentLog }) => {
+module.exports = async ({ config, log: parentLog }) => {
   const log = parentLog.create('api/private');
 
   const router = new Router();
@@ -17,7 +17,7 @@ module.exports = async ({ config, db, log: parentLog }) => {
     return next();
   };
 
-  router.post('/handle-users-trial', authMiddleware, async ctx => {});
+  router.post('/handle-users-trial', authMiddleware, async () => {});
 
   return router;
 };
