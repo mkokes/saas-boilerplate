@@ -28,7 +28,7 @@ steps:
       - yarn lint:app
     when:
       changeset:
-        includes: ['packages/app/**']
+        includes: ['**/*eslint*/**', 'packages/app/**']
   - name: analytics_lint
     image: node:8.15.0
     commands:
