@@ -3728,20 +3728,6 @@ builtins@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
 
-bull@^3.5.2:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/bull/-/bull-3.6.0.tgz#9d137a4470d9f5a0df54801ca4390656e5054a42"
-  dependencies:
-    cron-parser "^2.7.3"
-    debuglog "^1.0.0"
-    ioredis "^4.5.1"
-    lodash "^4.17.11"
-    p-timeout "^2.0.1"
-    promise.prototype.finally "^3.1.0"
-    semver "^5.6.0"
-    util.promisify "^1.0.0"
-    uuid "^3.2.1"
-
 bunyan@^1.8.12:
   version "1.8.12"
   resolved "https://registry.yarnpkg.com/bunyan/-/bunyan-1.8.12.tgz#f150f0f6748abdd72aeae84f04403be2ef113797"
@@ -4224,10 +4210,6 @@ clone-response@1.0.2, clone-response@^1.0.2:
 clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
-
-cluster-key-slot@^1.0.6:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/cluster-key-slot/-/cluster-key-slot-1.0.12.tgz#d5deff2a520717bc98313979b687309b2d368e29"
 
 cmd-shim@^2.0.2:
   version "2.0.2"
@@ -5070,7 +5052,7 @@ debug@^4.0.0, debug@^4.0.1, debug@^4.1.0:
   dependencies:
     ms "^2.1.1"
 
-debuglog@^1.0.0, debuglog@^1.0.1:
+debuglog@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/debuglog/-/debuglog-1.0.1.tgz#aa24ffb9ac3df9a2351837cfb2d279360cd78492"
 
@@ -5253,10 +5235,6 @@ delegate@^3.1.2:
 delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
-
-denque@^1.1.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/denque/-/denque-1.4.0.tgz#79e2f0490195502107f24d9553f374837dabc916"
 
 depd@^1.1.2, depd@~1.1.2:
   version "1.1.2"
@@ -5728,18 +5706,7 @@ es-abstract@^1.11.0, es-abstract@^1.12.0, es-abstract@^1.5.1, es-abstract@^1.7.0
     is-callable "^1.1.3"
     is-regex "^1.0.4"
 
-es-abstract@^1.9.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.13.0.tgz#ac86145fdd5099d8dd49558ccba2eaf9b88e24e9"
-  dependencies:
-    es-to-primitive "^1.2.0"
-    function-bind "^1.1.1"
-    has "^1.0.3"
-    is-callable "^1.1.4"
-    is-regex "^1.0.4"
-    object-keys "^1.0.12"
-
-es-to-primitive@^1.1.1, es-to-primitive@^1.2.0:
+es-to-primitive@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/es-to-primitive/-/es-to-primitive-1.2.0.tgz#edf72478033456e8dda8ef09e00ad9650707f377"
   dependencies:
@@ -6621,10 +6588,6 @@ flatted@^2.0.0:
 flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
-
-flexbuffer@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/flexbuffer/-/flexbuffer-0.0.6.tgz#039fdf23f8823e440c38f3277e6fef1174215b30"
 
 flush-write-stream@^1.0.0:
   version "1.0.3"
@@ -7986,22 +7949,6 @@ invert-kv@^1.0.0:
 invert-kv@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
-
-ioredis@4.6.2, ioredis@^4.5.1:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.6.2.tgz#840847117fe0190a9309085847311a07183fc385"
-  integrity sha512-zlc/LeoeriHTXm5z3rakPcfRcUV9x+xr0E+7/L7KH0D5z7sI5ngEQWR2RUxnwFcxUcCkvrXMztRIdBP3DhqMAQ==
-  dependencies:
-    cluster-key-slot "^1.0.6"
-    debug "^3.1.0"
-    denque "^1.1.0"
-    flexbuffer "0.0.6"
-    lodash.defaults "^4.2.0"
-    lodash.flatten "^4.4.0"
-    redis-commands "1.4.0"
-    redis-errors "^1.2.0"
-    redis-parser "^3.0.0"
-    standard-as-callback "^1.0.0"
 
 ip-regex@^2.1.0:
   version "2.1.0"
@@ -9638,7 +9585,7 @@ lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
-lodash.defaults@^4.0.1, lodash.defaults@^4.2.0:
+lodash.defaults@^4.0.1:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.defaults/-/lodash.defaults-4.2.0.tgz#d09178716ffea4dde9e5fb7b37f6f0802274580c"
 
@@ -9646,7 +9593,7 @@ lodash.filter@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.filter/-/lodash.filter-4.6.0.tgz#668b1d4981603ae1cc5a6fa760143e480b4c4ace"
 
-lodash.flatten@^4.2.0, lodash.flatten@^4.4.0:
+lodash.flatten@^4.2.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
 
@@ -10052,6 +9999,11 @@ mem@^4.0.0:
 memoize-one@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-4.1.0.tgz#a2387c58c03fff27ca390c31b764a79addf3f906"
+
+memoize-one@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.0.0.tgz#d55007dffefb8de7546659a1722a5d42e128286e"
+  integrity sha512-7g0+ejkOaI9w5x6LvQwmj68kUj6rxROywPSCqmclG/HBacmFnZqhVscQ8kovkn9FBCNJmOz6SY42+jnvZzDWdw==
 
 memory-fs@^0.4.0, memory-fs@~0.4.1:
   version "0.4.1"
@@ -12438,14 +12390,6 @@ promise-retry@^1.1.1:
     err-code "^1.0.0"
     retry "^0.10.0"
 
-promise.prototype.finally@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/promise.prototype.finally/-/promise.prototype.finally-3.1.0.tgz#66f161b1643636e50e7cf201dc1b84a857f3864e"
-  dependencies:
-    define-properties "^1.1.2"
-    es-abstract "^1.9.0"
-    function-bind "^1.1.1"
-
 promise@8.0.2:
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/promise/-/promise-8.0.2.tgz#9dcd0672192c589477d56891271bdc27547ae9f0"
@@ -12939,12 +12883,13 @@ react-scripts@2.1.3:
     fsevents "1.2.4"
 
 react-select@^2.2.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.3.0.tgz#990429622445eb2b4a6e985b8069fe7d498cae91"
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.4.2.tgz#27da80e3880e92b081be607207bebdf63bcf4f3a"
+  integrity sha512-5xFOQ6JJktkY5NTaHrc6x9mKwIjhNIiBkGic1j71uyY+ulFpRFra6f4WKLd9fuCylk4WjLpO5zDhdF4CAcwFzA==
   dependencies:
     classnames "^2.2.5"
     emotion "^9.1.2"
-    memoize-one "^4.0.0"
+    memoize-one "^5.0.0"
     prop-types "^15.6.0"
     raf "^3.4.0"
     react-input-autosize "^2.2.1"
@@ -13194,20 +13139,6 @@ redent@^2.0.0:
   dependencies:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
-
-redis-commands@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/redis-commands/-/redis-commands-1.4.0.tgz#52f9cf99153efcce56a8f86af986bd04e988602f"
-
-redis-errors@^1.0.0, redis-errors@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/redis-errors/-/redis-errors-1.2.0.tgz#eb62d2adb15e4eaf4610c04afe1529384250abad"
-
-redis-parser@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-3.0.0.tgz#b66d828cdcafe6b4b8a428a7def4c6bcac31c8b4"
-  dependencies:
-    redis-errors "^1.0.0"
 
 reduce-css-calc@^1.2.6:
   version "1.3.0"
@@ -14254,10 +14185,6 @@ stack-utils@^1.0.1:
 staged-git-files@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/staged-git-files/-/staged-git-files-1.1.2.tgz#4326d33886dc9ecfa29a6193bf511ba90a46454b"
-
-standard-as-callback@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/standard-as-callback/-/standard-as-callback-1.0.1.tgz#2e9e1e9d278d7d77580253faaec42269015e3c1d"
 
 state-toggle@^1.0.0:
   version "1.0.1"
@@ -15352,7 +15279,7 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
 
-uuid@^3.0.1, uuid@^3.1.0, uuid@^3.2.1, uuid@^3.3.2:
+uuid@^3.0.1, uuid@^3.1.0, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
 
