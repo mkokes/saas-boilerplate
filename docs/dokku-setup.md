@@ -1,6 +1,6 @@
 # Dokku applications setup (production)
 
-Docs: http://dokku.viewdocs.io/dokku
+Dokku docs: http://dokku.viewdocs.io/dokku
 
 ## Create DB
 
