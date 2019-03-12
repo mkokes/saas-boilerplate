@@ -29,6 +29,13 @@ steps:
     when:
       changeset:
         includes: ['packages/app/**']
+  - name: analytics_lint
+    image: node:8.15.0
+    commands:
+      - yarn lint:analytics
+    when:
+      changeset:
+        includes: ['packages/analytics/**']
   - name: api_lint
     image: node:8.15.0
     commands:
