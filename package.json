@@ -28,6 +28,10 @@
     "build:blog": "(cd packages/blog && yarn build)"
   },
   "lint-staged": {
+    "*.js": [
+      "lerna run lint:eslint:fix",
+      "git add --force"
+    ],
     "*.{json,md}": [
       "prettier --config ./.prettierrc --write",
       "git add --force"
