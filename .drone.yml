@@ -1,5 +1,5 @@
 kind: pipeline
-name: CI-CD
+name: Pipeline
 
 platform:
   os: linux
@@ -221,6 +221,10 @@ steps:
       status:
         - success
         - failure
+
+  trigger:
+    branch:
+      - master
 
 volumes:
   - name: cache
