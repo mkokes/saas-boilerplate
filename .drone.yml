@@ -17,6 +17,8 @@ steps:
       - yarn -v
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
     when:
+      branch:
+        - master
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/**']
 
@@ -25,6 +27,8 @@ steps:
     commands:
       - yarn test:app
     when:
+      branch:
+        - master
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/app/**']
 
@@ -33,6 +37,8 @@ steps:
     commands:
       - yarn lint:app
     when:
+      branch:
+        - master
       changeset:
         includes:
           ['.eslintignore', '.prettierignore', '.prettierrc', 'packages/app/**']
@@ -54,6 +60,8 @@ steps:
     commands:
       - yarn lint:api
     when:
+      branch:
+        - master
       changeset:
         includes:
           ['.eslintignore', '.prettierignore', '.prettierrc', 'packages/api/**']
@@ -62,6 +70,8 @@ steps:
     commands:
       - yarn lint:scheduler
     when:
+      branch:
+        - master
       changeset:
         includes:
           [
@@ -78,7 +88,6 @@ steps:
     when:
       branch:
         - master
-
       event: push
       status: success
       changeset:
