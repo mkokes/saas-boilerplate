@@ -9,16 +9,15 @@
     "build:stage": "cross-env NODE_ENV=production NODE_PATH=./src env-cmd ./env/stage.env react-scripts build",
     "build:live": "cross-env NODE_ENV=production NODE_PATH=./src env-cmd ./env/prod.env react-scripts build",
     "build:clean": "rimraf ./build",
-    "pretest": "npm run lint",
     "test": "cross-env NODE_ENV=test NODE_PATH=./src react-scripts test",
     "test:watch": "cross-env NODE_ENV=test NODE_PATH=./src react-scripts test --watchAll",
-    "eject": "react-scripts eject",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "npm run lint:eslint -- .",
     "lint:css": "stylelint './src/**/*.js'",
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix",
-    "generate": "plop --plopfile internals/generators/index.js"
+    "generate": "plop --plopfile internals/generators/index.js",
+    "eject": "react-scripts eject"
   },
   "lint-staged": {
     "*.js": [
