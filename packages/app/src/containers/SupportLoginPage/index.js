@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withApollo } from 'react-apollo';
 
 import { getProvider as getGlobalProvider } from 'GlobalState';
@@ -41,5 +42,11 @@ class supportLoginPage extends React.PureComponent {
     return null;
   }
 }
+
+supportLoginPage.propTypes = {
+  client: PropTypes.object,
+  history: PropTypes.object,
+  location: PropTypes.object,
+};
 
 export default withApollo(supportLoginPage);
