@@ -10,5 +10,5 @@ module.exports = async ({ config, log: parentLog, Sentry }) => {
     Sentry,
   });
 
-  cronJobScheduler.scheduleJob('* * * * *', handleUsersTrialTask); // run every minute
+  cronJobScheduler.scheduleJob('* * * * *', handleUsersTrialTask);
 };
