@@ -222,10 +222,6 @@ steps:
         - success
         - failure
 
-  trigger:
-    branch:
-      - master
-
 volumes:
   - name: cache
     host:
