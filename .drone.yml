@@ -142,7 +142,7 @@ steps:
       event: push
       status: success
       changeset:
-        includes: ['yarn.lock', 'package.json', 'packages/analytics/**']
+        includes: ['yarn.lock', 'package.json', 'packages/api/**']
 
   - name: notify
     image: plugins/slack
