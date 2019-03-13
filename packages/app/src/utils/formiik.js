@@ -60,7 +60,7 @@ ReactstrapSelect.propTypes = {
   field: PropTypes.object,
   form: PropTypes.object,
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.object,
 };
 
 export const ReactstrapCheckbox = ({

@@ -151,7 +151,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
                                         size="lg"
                                       />
                                       <span className="ml-2">
-                                        Go back to the login page
+                                        Return to the login page
                                       </span>
                                     </Link>
                                   </Col>

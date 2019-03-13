@@ -43,17 +43,7 @@ Sentry.init({
 
 const MAINTENANCE_MODE = false;
 
-if (MAINTENANCE_MODE) {
-  ReactDOM.render(
-    <ThemeProvider theme={APP_THEME}>
-      <Fragment>
-        <MaintenancePage />
-        <GlobalStyle />
-      </Fragment>
-    </ThemeProvider>,
-    document.getElementById('app'),
-  );
-} else {
+if (!MAINTENANCE_MODE) {
   MomentTimezone.tz.setDefault('America/Los_Angeles');
   AnalyticsApi.mixpanel.setup();
 
@@ -69,6 +59,16 @@ if (MAINTENANCE_MODE) {
         </ThemeProvider>
       </GlobalProvider>
     </ApolloProvider>,
+    document.getElementById('app'),
+  );
+} else {
+  ReactDOM.render(
+    <ThemeProvider theme={APP_THEME}>
+      <Fragment>
+        <MaintenancePage />
+        <GlobalStyle />
+      </Fragment>
+    </ThemeProvider>,
     document.getElementById('app'),
   );
 }

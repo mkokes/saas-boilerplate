@@ -45,12 +45,12 @@ export default class MaintenancePage extends React.PureComponent {
               <h1 style={{ fontSize: '2.5em' }} className="mt-4">
                 Maintenance Mode
               </h1>
-              <p style={{ fontSize: '1.5em' }}>
+              <p style={{ fontSize: '1.5em', fontWeight: 500 }}>
                 We are performing scheduled maintenance. We will be back online
                 shortly!
               </p>
               <a href={process.env.REACT_APP_WEBSITE_URL} className="mt-4">
-                Go back to homepage
+                Go to homepage
               </a>
             </Card>
           </div>

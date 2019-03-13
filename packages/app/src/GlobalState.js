@@ -22,7 +22,7 @@ export const getProvider = () => providerPromise;
 /* eslint-disable no-console */
 class Provider extends Component {
   state = {
-    appLoad: false,
+    appLoadStatus: false,
     apolloClient: this.props.client,
     auth: {
       accessToken: LocalStorageApi.getItem('access_token') || undefined,
@@ -30,8 +30,8 @@ class Provider extends Component {
     },
   };
 
-  setAppLoad(val) {
-    this.setState({ appLoad: val });
+  setAppLoadStatus(status) {
+    this.setState({ appLoadStatus: status });
   }
 
   authAccessToken() {
@@ -197,14 +197,14 @@ class Provider extends Component {
     await this.logIn();
 
     setProviderInstance(this);
-    this.setAppLoad(true);
+    this.setAppLoadStatus(true);
   }
 
   render() {
     return (
       <GlobalContext.Provider
         value={{
-          appLoadStatus: this.state.appLoad,
+          appLoadStatus: this.state.appLoadStatus,
           userProfile: this.state.auth.profile,
           loggedIn: this.isLoggedIn(),
           signUp: this.signUp,

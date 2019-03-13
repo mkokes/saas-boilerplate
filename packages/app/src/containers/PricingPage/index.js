@@ -86,13 +86,13 @@ export default class PricingPage extends React.PureComponent {
                   {userProfile ? (
                     <Link to="/dashboard/settings/billing">
                       <Button color="link" className="text-muted">
-                        Go back to billing page
+                        Return to the billing page
                       </Button>
                     </Link>
                   ) : (
                     <a href={process.env.REACT_APP_WEBSITE_URL}>
                       <Button color="link" className="text-muted">
-                        Go back to homepage
+                        Return to the homepage
                       </Button>
                     </a>
                   )}
