@@ -2572,7 +2572,7 @@ apollo-link-error@1.1.8:
     apollo-link-http-common "^0.2.11"
     tslib "^1.9.3"
 
-apollo-link-http-common@^0.2.11, apollo-link-http-common@^0.2.8:
+apollo-link-http-common@^0.2.11:
   version "0.2.11"
   resolved "https://registry.yarnpkg.com/apollo-link-http-common/-/apollo-link-http-common-0.2.11.tgz#d4e494ed1e45ea0e0c0ed60f3df64541d0de682d"
   integrity sha512-FjtzEDiG6blH/2MR4fpVNoxdZUFmddP0sez34qnoLaYz6ABFbTDlmRE/dVN79nPExM4Spfs/DtW7KRqyjJ3tOg==
@@ -2582,11 +2582,13 @@ apollo-link-http-common@^0.2.11, apollo-link-http-common@^0.2.8:
     tslib "^1.9.3"
 
 apollo-link-http@^1.5.5:
-  version "1.5.9"
-  resolved "https://registry.yarnpkg.com/apollo-link-http/-/apollo-link-http-1.5.9.tgz#9046f5640a94c8a8b508a39e0f2c628b781baecc"
+  version "1.5.12"
+  resolved "https://registry.yarnpkg.com/apollo-link-http/-/apollo-link-http-1.5.12.tgz#878d48bf9d8ae091752710529a222c4a5548118e"
+  integrity sha512-2tS36RIU6OdxzoWYTPrjvDTF2sCrnlaJ6SL7j0ILPn1Lmw4y6YLwKDsv/SWLwtodtVe9v1dLCGKIGMRMM/SdyA==
   dependencies:
-    apollo-link "^1.2.6"
-    apollo-link-http-common "^0.2.8"
+    apollo-link "^1.2.9"
+    apollo-link-http-common "^0.2.11"
+    tslib "^1.9.3"
 
 apollo-link-state@^0.4.1:
   version "0.4.2"
