@@ -27,6 +27,7 @@
 
     <script type="text/javascript">
       window.MIXPANEL_CUSTOM_LIB_URL = '%REACT_APP_MIXPANEL_CUSTOM_LIB_URL%';
+      window.PADDLE_VENDOR_ID = parseInt('%REACT_APP_PADDLE_VENDOR_ID%');
     </script>
     <script type="text/javascript">
       (function(e, a) {
@@ -100,7 +101,7 @@
     <script src="//cdn.headwayapp.co/widget.js"></script>
     <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
     <script type="text/javascript">
-      Paddle.Setup({ vendor: 38114 });
+      Paddle.Setup({ vendor: PADDLE_VENDOR_ID });
     </script>
   </head>
 
