@@ -12,7 +12,7 @@
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix"
   },
   "dependencies": {
-    "@koa/cors": "^2.2.2",
+    "@koa/cors": "^3.0.0",
     "global-tunnel-ng": "^2.6.0",
     "got": "^9.2.2",
     "koa": "^2.5.3",

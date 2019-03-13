@@ -27,7 +27,7 @@
     "setupTestFrameworkScriptFile": "<rootDir>/.jest/setupTestFrameworkScriptFile.js"
   },
   "dependencies": {
-    "@koa/cors": "^2.2.2",
+    "@koa/cors": "^3.0.0",
     "@sentry/node": "4.5.3",
     "apollo-server-koa": "^2.1.0",
     "axios": "^0.18.0",
