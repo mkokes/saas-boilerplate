@@ -443,7 +443,7 @@ export default class BillingPage extends React.PureComponent {
                             minRows={payments.length > 0 ? 1 : 3}
                             defaultPageSize={3}
                             showPageJump={false}
-                            noDataText="No invoices found"
+                            noDataText="No receipts found"
                             className="-striped -highlight"
                           />
                         </Fragment>

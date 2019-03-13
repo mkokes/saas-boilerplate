@@ -47,6 +47,8 @@ steps:
     commands:
       - yarn lint:analytics
     when:
+      branch:
+        - master
       changeset:
         includes:
           [
