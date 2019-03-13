@@ -5972,8 +5972,9 @@ env-cmd@^8.0.2:
     cross-spawn "^6.0.5"
 
 envalid@^4.1.4:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/envalid/-/envalid-4.2.0.tgz#73bbbe9583e9aa3a8653da82ea4135f5075f9942"
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/envalid/-/envalid-4.2.2.tgz#3ed23b3e42c987b4105b43789d8eb526538c025d"
+  integrity sha512-D6RV00pb4c/eKzslI8bwCeLhBrD9GzNrAa2QRoSto9LdwEQXhsHUKfI61areFi6LvLDVFmlHnrk/SD34UJiMpg==
   dependencies:
     chalk "^2.4.1"
     dotenv "^6.2.0"
