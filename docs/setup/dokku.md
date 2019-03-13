@@ -1,10 +1,13 @@
 # Dokku setup
 
-Dokku docs: http://dokku.viewdocs.io/dokku
+Dokku docs: http://dokku.viewdocs.io/dokku.
 
-## Create DB
+## Required plugins
 
-Plugin URL: https://github.com/dokku/dokku-mongo
+- `dokku-monorepo`: https://github.com/notpushkin/dokku-monorepo.
+- `dokku-mongo`: https://github.com/dokku/dokku-mongo.
+
+## Create API DB
 
 ```
 dokku mongo:create db
@@ -59,3 +62,7 @@ dokku config:set --no-restart api FRESHDESK_SECRET=XXX
   dokku config:set --no-restart scheduler NODE_ENV=production
   dokku config:set --no-restart scheduler APP_MODE=live
 ```
+
+## Adding a new application
+
+Add application name and path to file `.dokku-monorepo` and ssh to the `Dokku server` to setup your application (domain, ports, ssl, env config..etc).

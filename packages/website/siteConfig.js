@@ -4,7 +4,7 @@ const siteConfig = {
   customDocsPath: 'website/docs',
   title: 'ACME',
   tagline: 'Tagline',
-  url: 'https://dcabot.io',
+  url: 'https://domain.io',
   baseUrl: '/',
   appUrl: APP_URL,
   docsUrl: '',
@@ -34,9 +34,9 @@ const siteConfig = {
   twitterImage: 'img/docusaurus.png',
   twitterUsername: '',
   linkedinUrl: 'https://www.linkedin.com',
-  changelogUrl: 'https://changelog.dcabot.io',
-  statusUrl: 'https://status.dcabot.io',
-  emailContact: 'info@dcabot.io',
+  changelogUrl: 'https://changelog.domain.io',
+  statusUrl: 'https://status.domain.io',
+  emailContact: 'info@domain.io',
   supportUrl: SUPPORT_URL,
   users: [
     {
