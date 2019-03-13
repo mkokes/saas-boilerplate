@@ -1,4 +1,4 @@
-# Dokku applications setup (production)
+# Dokku setup
 
 Dokku docs: http://dokku.viewdocs.io/dokku
 

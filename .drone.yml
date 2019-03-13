@@ -140,11 +140,11 @@ steps:
   - name: analytics_publish
     image: node:8.15.0
     environment:
-      SSH_KEY:
-        from_secret: SSH_KEY
+      DOKKU_SSH_KEY:
+        from_secret: DOKKU_SSH_KEY
     commands:
       - mkdir /root/.ssh
-      - echo -n "$SSH_KEY" > /root/.ssh/id_rsa
+      - echo -n "$DOKKU_SSH_KEY" > /root/.ssh/id_rsa
       - chmod 600 /root/.ssh/id_rsa
 
       - touch /root/.ssh/known_hosts
@@ -162,11 +162,11 @@ steps:
   - name: api_publish
     image: node:8.15.0
     environment:
-      SSH_KEY:
-        from_secret: SSH_KEY
+      DOKKU_SSH_KEY:
+        from_secret: DOKKU_SSH_KEY
     commands:
       - mkdir /root/.ssh
-      - echo -n "$SSH_KEY" > /root/.ssh/id_rsa
+      - echo -n "$DOKKU_SSH_KEY" > /root/.ssh/id_rsa
       - chmod 600 /root/.ssh/id_rsa
 
       - touch /root/.ssh/known_hosts
@@ -185,11 +185,11 @@ steps:
   - name: scheduler_publish
     image: node:8.15.0
     environment:
-      SSH_KEY:
-        from_secret: SSH_KEY
+      DOKKU_SSH_KEY:
+        from_secret: DOKKU_SSH_KEY
     commands:
       - mkdir /root/.ssh
-      - echo -n "$SSH_KEY" > /root/.ssh/id_rsa
+      - echo -n "$DOKKU_SSH_KEY" > /root/.ssh/id_rsa
       - chmod 600 /root/.ssh/id_rsa
 
       - touch /root/.ssh/known_hosts
