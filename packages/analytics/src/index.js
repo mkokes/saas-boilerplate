@@ -7,24 +7,27 @@ const Sentry = require('@sentry/node');
 
 const SENTRY_DSN = 'https://614c2c61a38141c584a4cc4e19a96f46@sentry.io/1385946';
 
+const MIXPANEL_API_URL = 'https://api.mixpanel.com';
+const MIXPANEL_JS_LIB_URL =
+  'http://cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js';
+
+const CODE_CACHE = new Map();
+
+const { PROXY } = process.env;
+const HOST = process.env.HOST || '0.0.0.0';
+const PORT = process.env.PORT || 3000;
+
 Sentry.init({
   dsn: SENTRY_DSN,
   environment: process.env.NODE_ENV,
   serverName: 'Analytics proxy',
 });
 
-const { PROXY } = process.env;
-
 if (PROXY) {
   const [host, port] = PROXY.split(':');
   console.log(`Proxying all requests through ${host}:${port}`);
   globalTunnel.initialize({ host, port });
 }
-
-const MIXPANEL_API_URL = 'https://api.mixpanel.com';
-const MIXPANEL_JS_LIB_URL =
-  'http://cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js';
-const CODE_CACHE = new Map();
 
 const init = async () => {
   console.log(`Downloading JS lib from: ${MIXPANEL_JS_LIB_URL}`);
@@ -79,9 +82,6 @@ const init = async () => {
   });
   app.use(router.routes());
   app.use(router.allowedMethods());
-
-  const HOST = process.env.HOST || '0.0.0.0';
-  const PORT = process.env.PORT || 3000;
 
   app.listen(PORT, HOST, () => {
     console.log(`Listening on ${HOST}:${PORT}`);
