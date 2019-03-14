@@ -11440,9 +11440,12 @@ p-pipe@^1.1.0, p-pipe@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/p-pipe/-/p-pipe-1.2.0.tgz#4b1a11399a11520a67790ee5a0c1d5881d6befe9"
 
-p-queue@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-3.0.0.tgz#0ef247082f0dd5a21b66e2cfe8fb7b06db13fb52"
+p-queue@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-4.0.0.tgz#ed0eee8798927ed6f2c2f5f5b77fdb2061a5d346"
+  integrity sha512-3cRXXn3/O0o3+eVmUroJPSj/esxoEFIm0ZOno/T+NzG/VZgPOqQ8WKmlNqubSEpZmCIngEy34unkHGg83ZIBmg==
+  dependencies:
+    eventemitter3 "^3.1.0"
 
 p-reduce@^1.0.0:
   version "1.0.0"
