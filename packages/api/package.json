@@ -50,7 +50,7 @@
     "moment-timezone": "^0.5.23",
     "mongoose": "^5.3.8",
     "mongoose-unique-validator": "^2.0.2",
-    "otplib": "^10.0.1",
+    "otplib": "^11.0.0",
     "p-queue": "^3.0.0",
     "php-serialize": "^2.0.1",
     "postmark": "^2.2.4",
