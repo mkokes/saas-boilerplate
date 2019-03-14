@@ -51,7 +51,7 @@
     "mongoose": "^5.3.8",
     "mongoose-unique-validator": "^2.0.2",
     "otplib": "^10.0.1",
-    "p-queue": "^3.0.0",
+    "p-queue": "^4.0.0",
     "php-serialize": "^2.0.1",
     "postmark": "^2.2.4",
     "validator": "^10.9.0"
