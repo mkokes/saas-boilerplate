@@ -1,7 +1,5 @@
 ☐ Misc:
   ✔ Create a new sandbox paddle.com account @today @done(19-03-13 21:20)
-  ☐ Create a new sandbox freshdesk.com account @today
-  ☐ Fix support center redirect bug @today
   ✔ Do all src code @ todos @done(19-01-29 21:06)
   ✔ Add Sentry to frontend app and servers to track crashes/exceptions @done(19-02-03 23:35)
 ✔ Website @done(19-01-04 05:56)
@@ -22,7 +20,6 @@
     ✔ Processing page @done(19-01-29 16:36)
   ✔ Pricing page @done(19-01-28 22:59)
   ✔ Brand colors style @done(19-01-05 20:25)
-  ✔ Freshdesk SSO @started(19-01-08 18:41) @done(19-01-08 22:45) @lasted(4h4m17s)
   ✔ User Dashboard @done(19-01-28 13:17)
     ✔ Settings @done(19-01-27 23:17)
       ✔ Profile @done(19-01-05 21:43)
@@ -58,8 +55,6 @@
     ☐ Templates
       ☐ Trial expiring
       ☐ Trial expired
-  ✔ Freshdesk SSO login @done(19-01-07 22:43)
-    https://support.freshdesk.com/support/solutions/articles/31166-single-sign-on-remote-authentication-in-freshdesk
 ✔ Analytics Server @done(18-12-28 05:33)
 ✔ Scheduler Server @done(19-02-03 22:11)
   ✔ Think about this.. how we are going to use it? @done(19-01-30 00:23)

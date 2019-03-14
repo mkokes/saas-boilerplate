@@ -1,4 +1,4 @@
-const { APP_URL, SUPPORT_URL } = process.env;
+const { APP_URL } = process.env;
 
 const siteConfig = {
   customDocsPath: 'web/docs',
@@ -37,7 +37,7 @@ const siteConfig = {
   changelogUrl: 'https://changelog.domain.io',
   statusUrl: 'https://status.domain.io',
   emailContact: 'info@domain.io',
-  supportUrl: SUPPORT_URL,
+  supportUrl: `${APP_URL}/support`,
   users: [
     {
       caption: 'Coinbase',

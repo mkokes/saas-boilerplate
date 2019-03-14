@@ -79,11 +79,3 @@ export const IsUserEmailConfirmedQuery = gql`
     }
   }
 `;
-
-export const GetFreshdeskSSO = gql`
-  query getFreshdeskSSO {
-    getFreshdeskSSO @requireAuth {
-      url
-    }
-  }
-`;

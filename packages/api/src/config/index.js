@@ -30,8 +30,6 @@ const env = envalid.cleanEnv(
     GOOGLE_AUTHENTICATOR_DISPLAY_NAME: str({ default: 'BRAND_NAME' }),
     PADDLE_VENDOR_ID: str({ default: '' }),
     PADDLE_VENDOR_AUTH_CODE: str({ default: '' }),
-    FRESHDESK_SECRET: str({ default: '' }),
-    FRESHDESK_BASE_URL: str({ default: '' }),
     MIXPANEL_TOKEN: str({ default: '10d9e1131949749220397c144c4c6826' }),
     POSTMARK_API_TOKEN: str({ default: '' }),
     POSTMARK_SENDER_EMAIL: str({ default: 'payments@amgaventures.com' }),

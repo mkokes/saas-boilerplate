@@ -1,10 +1,10 @@
 # Netlify setup
 
-Website: https://www.netlify.com.
+Website: <https://www.netlify.com>.
 
 ## Requirements
 
-- Generate a Netlify `personal access token` (URL: https://app.netlify.com/account/applications) to add it as `secret` to Drone.io system.
+- Generate a Netlify `personal access token` (URL: <https://app.netlify.com/account/applications>) to add it as `secret` to Drone.io system.
 
 ## Adding sites (web, front-end client app or a new one)
 

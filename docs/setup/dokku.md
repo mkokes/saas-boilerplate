@@ -1,21 +1,21 @@
 # Dokku setup
 
-Dokku docs: http://dokku.viewdocs.io/dokku.
+Dokku docs: <http://dokku.viewdocs.io/dokku>.
 
 ## Required plugins
 
-- `dokku-monorepo`: https://github.com/notpushkin/dokku-monorepo.
-- `dokku-mongo`: https://github.com/dokku/dokku-mongo.
+- `dokku-monorepo`: <https://github.com/notpushkin/dokku-monorepo>.
+- `dokku-mongo`: <https://github.com/dokku/dokku-mongo>.
 
 ## Create API DB
 
-```
+```bash
 dokku mongo:create db
 ```
 
 ## API
 
-```
+```bash
 dokku apps:create api
 
 dokku mongo:link db api
@@ -36,12 +36,11 @@ dokku config:set --no-restart api RECAPTCHA_SECRET_KEY=XXX
 dokku config:set --no-restart api PADDLE_VENDOR_ID=XXX
 dokku config:set --no-restart api PADDLE_VENDOR_AUTH_CODE=XXX
 dokku config:set --no-restart api POSTMARK_API_TOKEN=XXX
-dokku config:set --no-restart api FRESHDESK_SECRET=XXX
 ```
 
 ## Analytics
 
-```
+```bash
   dokku apps:create analytics
 
   dokku domains:add analytics <domain>
@@ -56,7 +55,7 @@ dokku config:set --no-restart api FRESHDESK_SECRET=XXX
 
 ## Scheduler
 
-```
+```bash
   dokku apps:create scheduler
 
   dokku config:set --no-restart scheduler NODE_ENV=production

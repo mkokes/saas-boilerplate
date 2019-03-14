@@ -30,7 +30,6 @@ import SecurityPage from 'containers/Dashboard/User/Settings/SecurityPage/Loadab
 import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
 import SignOutPage from 'containers/SignOutPage/Loadable';
 import ProcessingPage from 'containers/ProcessingPage/Loadable';
-import SupportLoginPage from 'containers/SupportLoginPage/Loadable';
 
 import {
   DefaultLayout,
@@ -178,12 +177,6 @@ export default function App() {
                       path="/dashboard/email-verification"
                       component={EmailVerificationPage}
                       layout={DashboardLayoutWithoutSubNavbar}
-                    />
-                    <Route
-                      protected
-                      exact
-                      path="/support/login"
-                      component={SupportLoginPage}
                     />
 
                     <Route

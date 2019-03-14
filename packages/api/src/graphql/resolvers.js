@@ -3,7 +3,6 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
 const axios = require('axios');
-const crypto = require('crypto');
 const momentTimezone = require('moment-timezone');
 
 const { MARKETING_INFO } = require('../constants/legal');
@@ -39,13 +38,7 @@ const assertUser = async user => {
 };
 
 module.exports = ({
-  config: {
-    JWT_SECRET,
-    PADDLE_VENDOR_ID,
-    PADDLE_VENDOR_AUTH_CODE,
-    FRESHDESK_SECRET,
-    FRESHDESK_BASE_URL,
-  },
+  config: { JWT_SECRET, PADDLE_VENDOR_ID, PADDLE_VENDOR_AUTH_CODE },
   db,
   log,
   mixpanel,
@@ -78,27 +71,6 @@ module.exports = ({
       const plans = await db.getActiveSubscriptionPlans();
 
       return plans;
-    },
-    getFreshdeskSSO: async (_, __, { user }) => {
-      await assertUser(user);
-
-      const profile = await db.getUserProfile(user._id, true);
-      const { firstName, lastName, email } = profile;
-
-      const userDisplayName = `${firstName} ${lastName}`;
-
-      const timestamp = Math.floor(new Date().getTime() / 1000).toString();
-      const hmac = crypto.createHmac('md5', FRESHDESK_SECRET);
-      hmac.update(userDisplayName + FRESHDESK_SECRET + email + timestamp);
-
-      const hash = hmac.digest('hex');
-      return {
-        url: `${FRESHDESK_BASE_URL}/login/sso?name=${escape(
-          userDisplayName,
-        )}&email=${escape(email)}&timestamp=${escape(
-          escape(timestamp),
-        )}&hash=${escape(hash)}`,
-      };
     },
   },
   Mutation: {

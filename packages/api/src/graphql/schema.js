@@ -54,9 +54,6 @@ module.exports = gql`
     secret: String!
     qrcode: String!
   }
-  type FreshdeskSSO {
-    url: String!
-  }
 
   enum LegalAgreementType {
     TERMS_AND_CONDITIONS
@@ -87,7 +84,6 @@ module.exports = gql`
     userSubscription: Subscription
     userPaymentReceipts: [UserPaymentReceipts]
     activeSubscriptionPlans: [Plan]
-    getFreshdeskSSO: FreshdeskSSO
   }
   type Mutation {
     signUpUser(
