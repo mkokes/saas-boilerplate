@@ -2569,14 +2569,7 @@ apollo-cache-inmemory@^1.2.8:
     ts-invariant "^0.2.1"
     tslib "^1.9.3"
 
-apollo-cache@1.1.25:
-  version "1.1.25"
-  resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.1.25.tgz#87a15a2a19993bb07234ccee6839b59d6fb49ac5"
-  dependencies:
-    apollo-utilities "^1.1.2"
-    tslib "^1.9.3"
-
-apollo-cache@^1.2.1:
+apollo-cache@1.2.1, apollo-cache@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.2.1.tgz#aae71eb4a11f1f7322adc343f84b1a39b0693644"
   integrity sha512-nzFmep/oKlbzUuDyz6fS6aYhRmfpcHWqNkkA9Bbxwk18RD6LXC4eZkuE0gXRX0IibVBHNjYVK+Szi0Yied4SpQ==
@@ -2585,15 +2578,17 @@ apollo-cache@^1.2.1:
     tslib "^1.9.3"
 
 apollo-client@^2.4.0:
-  version "2.4.12"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.4.12.tgz#9fa15f502d04f8cc788a9fbb825163b437681504"
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.5.1.tgz#36126ed1d32edd79c3713c6684546a3bea80e6d1"
+  integrity sha512-MNcQKiqLHdGmNJ0rZ0NXaHrToXapJgS/5kPk0FygXt+/FmDCdzqcujI7OPxEC6e9Yw5S/8dIvOXcRNuOMElHkA==
   dependencies:
     "@types/zen-observable" "^0.8.0"
-    apollo-cache "1.1.25"
+    apollo-cache "1.2.1"
     apollo-link "^1.0.0"
     apollo-link-dedup "^1.0.0"
-    apollo-utilities "1.1.2"
+    apollo-utilities "1.2.1"
     symbol-observable "^1.0.2"
+    ts-invariant "^0.2.1"
     tslib "^1.9.3"
     zen-observable "^0.8.0"
 
@@ -2769,14 +2764,7 @@ apollo-tracing@0.5.2:
     apollo-server-env "2.2.0"
     graphql-extensions "0.5.4"
 
-apollo-utilities@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.1.2.tgz#aa5eca9d1f1eb721c381a22e0dde03559d856db3"
-  dependencies:
-    fast-json-stable-stringify "^2.0.0"
-    tslib "^1.9.3"
-
-apollo-utilities@^1.0.1, apollo-utilities@^1.0.21, apollo-utilities@^1.0.27, apollo-utilities@^1.0.8, apollo-utilities@^1.1.2, apollo-utilities@^1.2.1:
+apollo-utilities@1.2.1, apollo-utilities@^1.0.1, apollo-utilities@^1.0.21, apollo-utilities@^1.0.27, apollo-utilities@^1.0.8, apollo-utilities@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.2.1.tgz#1c3a1ebf5607d7c8efe7636daaf58e7463b41b3c"
   integrity sha512-Zv8Udp9XTSFiN8oyXOjf6PMHepD4yxxReLsl6dPUy5Ths7jti3nmlBzZUOxuTWRwZn0MoclqL7RQ5UEJN8MAxg==
