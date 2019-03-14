@@ -1,7 +1,7 @@
 const { APP_URL, SUPPORT_URL } = process.env;
 
 const siteConfig = {
-  customDocsPath: 'website/docs',
+  customDocsPath: 'web/docs',
   title: 'ACME',
   tagline: 'Tagline',
   url: 'https://domain.io',

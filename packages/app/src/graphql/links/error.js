@@ -72,11 +72,9 @@ const errorLink = () =>
               }
             }
 
-            const tokenSubscriber = new Promise((resolve, reject) => {
+            const tokenSubscriber = new Promise(resolve => {
               subscribeTokenRefresh(errRefreshing => {
-                if (errRefreshing) return reject(errRefreshing);
-
-                return resolve(retryRequest());
+                if (!errRefreshing) return resolve(retryRequest());
               });
             });
 

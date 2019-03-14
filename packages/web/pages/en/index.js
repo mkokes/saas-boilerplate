@@ -139,7 +139,7 @@ class Index extends React.Component {
             title: 'Feature One',
           },
           {
-            content: 'Serverless websites, contact forms, and applications',
+            content: 'Serverless webs, contact forms, and applications',
             image: `${baseUrl}img/homepage/features/2.svg`,
             imageAlign: 'top',
             title: 'Feature Two',

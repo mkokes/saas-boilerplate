@@ -6,7 +6,7 @@ Website: https://www.netlify.com.
 
 - Generate a Netlify `personal access token` (URL: https://app.netlify.com/account/applications) to add it as `secret` to Drone.io system.
 
-## Adding sites (website, front-end client app or a new one)
+## Adding sites (web, front-end client app or a new one)
 
 Repeat this for each site:
 

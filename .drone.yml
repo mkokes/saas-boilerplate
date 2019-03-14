@@ -83,17 +83,17 @@ steps:
             'packages/scheduler/**',
           ]
 
-  - name: website_build
+  - name: web_build
     image: node:8.15.0
     commands:
-      - yarn build:website:stage
+      - yarn build:web:stage
     when:
       branch:
         - master
       event: push
       status: success
       changeset:
-        includes: ['yarn.lock', 'package.json', 'packages/website/**']
+        includes: ['yarn.lock', 'package.json', 'packages/web/**']
   - name: app_build
     image: node:8.15.0
     commands:
@@ -107,22 +107,22 @@ steps:
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/app/**']
 
-  - name: website_publish
+  - name: web_publish
     image: lucap/drone-netlify
     settings:
       token:
         from_secret: netlify_account_token
       site_id: 3ee97675-c7e2-47cc-8a8c-b6b24ca3fbf9
       site_name: web-amgaventures
-      #domain: website.amgaventures.com
-      path: packages/website/build
+      #domain: web.amgaventures.com
+      path: packages/web/build
     when:
       branch:
         - master
       event: push
       status: success
       changeset:
-        includes: ['yarn.lock', 'package.json', 'packages/website/**']
+        includes: ['yarn.lock', 'package.json', 'packages/web/**']
   - name: app_publish
     image: lucap/drone-netlify
     settings:

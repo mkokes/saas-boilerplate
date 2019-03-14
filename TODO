@@ -48,7 +48,7 @@
           ✔ Confirm if Paddle.com allows billing freq downgrade e.g. from `annual` plan to `monthly` @done(18-12-30 21:04) @lasted(2m26s)
   ✔ Change Toastify alerts design @done(19-01-07 11:42)
   ✔ Email confirmation design page @done(19-01-07 20:48)
-  ✔ Add links to go back to website front-end @done(19-01-07 20:42)
+  ✔ Add links to go back to web front-end @done(19-01-07 20:42)
   ✔ Tweak 2FA page @done(19-01-07 10:13) @lasted(15m12s)
   ✔ Refactor analytics to use GA @done(19-01-06 22:50)
   ✔ Fix login header UI @done(19-01-08 18:10)

@@ -1,9 +1,11 @@
 {
-  "name": "website",
+  "name": "web",
   "version": "0.2.0",
   "private": true,
   "workspaces": {
-    "nohoist": ["docusaurus"]
+    "nohoist": [
+      "docusaurus"
+    ]
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development env-cmd ./env/dev.env docusaurus-start",
