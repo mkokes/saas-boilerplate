@@ -16,6 +16,7 @@ import Middleware from 'containers/Middleware';
 import PrivateRoute from 'components/PrivateRoute';
 import RouteAnalytics from 'components/RouteAnalytics';
 
+import SupportPage from 'containers/SupportPage';
 import PricingPage from 'containers/PricingPage/Loadable';
 import SignupPage from 'containers/SignupPage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
@@ -89,6 +90,12 @@ export default function App() {
                       component={() => <Redirect to="/dashboard" />}
                     />
 
+                    <Route
+                      exact
+                      path="/contact-support"
+                      component={SupportPage}
+                      layout={TransactionalLayout}
+                    />
                     <Route
                       exact
                       path="/pricing"

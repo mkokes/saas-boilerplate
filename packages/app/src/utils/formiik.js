@@ -16,7 +16,7 @@ export const ReactstrapInput = ({
       {...props}
       {...fields}
       invalid={Boolean(touched[fields.name] && errors[fields.name])}
-      disabled={isSubmitting}
+      disabled={isSubmitting || props.disabled}
     />
     {touched[fields.name] && errors[fields.name] ? (
       <FormFeedback>{errors[fields.name]}</FormFeedback>
@@ -29,6 +29,7 @@ ReactstrapInput.propTypes = {
   field: PropTypes.object,
   form: PropTypes.object,
   label: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export const ReactstrapSelect = ({
@@ -50,7 +51,7 @@ export const ReactstrapSelect = ({
         value={props.value}
         onChange={option => setFieldValue(fields.name, option)}
         onBlur={fields.onBlur}
-        isDisabled={isSubmitting}
+        disabled={isSubmitting}
       />
       {touch && error && <FormFeedback>{error}</FormFeedback>}
     </FormGroup>
