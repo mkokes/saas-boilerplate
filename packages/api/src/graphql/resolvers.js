@@ -9,7 +9,7 @@ const { MARKETING_INFO } = require('../constants/legal');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
-// We set our own JWT iat to avoid the Clock skew issue: @URL: https://en.wikipedia.org/wiki/Clock_skew
+// We set our own JWT iat to avoid clock skew issue: @URL: https://en.wikipedia.org/wiki/Clock_skew
 const createAccessToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {
@@ -74,6 +74,44 @@ module.exports = ({
     },
   },
   Mutation: {
+    contactSupport: async (
+      _,
+      { requesterName, requesterEmail, subject, ticketType, description },
+    ) => {
+      const paramsValidationErrors = {};
+
+      /* if (validator.isEmpty(recaptchaResponse)) {
+        throw new ApolloError(
+          'Our security system could not determine if the request was made by a human. Try it again.',
+          'INVALID_CAPTCHA',
+        );
+      } */
+
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw new UserInputError(
+          'Failed to process your request due to validation errors',
+          {
+            validationErrors: paramsValidationErrors,
+          },
+        );
+      }
+
+      /* const isRecaptchaValid = await validateRecaptchaResponse(
+        recaptchaResponse,
+      );
+
+      if (!isRecaptchaValid) {
+        throw new ApolloError(
+          'Our security system could not determine if the request was made by a human. Try it again.',
+          'INVALID_CAPTCHA',
+        );
+      } */
+
+      console.log('got it');
+      console.log(requesterName);
+
+      return true;
+    },
     signUpUser: async (
       _,
       { recaptchaResponse, email, password, firstName, lastName, timezone },

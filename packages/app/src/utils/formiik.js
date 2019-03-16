@@ -34,7 +34,7 @@ ReactstrapInput.propTypes = {
 
 export const ReactstrapSelect = ({
   field: { ...fields },
-  form: { setFieldValue, touched, errors, isSubmitting },
+  form: { setFieldTouched, setFieldValue, touched, errors, isSubmitting },
   ...props
 }) => {
   const error = errors[fields.name];
@@ -48,12 +48,31 @@ export const ReactstrapSelect = ({
       <Select
         {...props}
         {...fields}
+        styles={{
+          control: provided => ({
+            ...provided,
+            borderColor: touch && error ? '#dc3545' : provided.borderColor,
+          }),
+        }}
         value={props.value}
-        onChange={option => setFieldValue(fields.name, option)}
-        onBlur={fields.onBlur}
-        disabled={isSubmitting}
+        onChange={value => setFieldValue(fields.name, value)}
+        onBlur={() => {
+          setFieldTouched(fields.name, true);
+        }}
+        disabled={isSubmitting || props.disabled}
       />
-      {touch && error && <FormFeedback>{error}</FormFeedback>}
+      {touch && error && (
+        <p
+          className="text-danger"
+          style={{
+            width: '100%',
+            marginTop: '0.25rem',
+            fontSize: '80%',
+          }}
+        >
+          {error}
+        </p>
+      )}
     </FormGroup>
   );
 };
@@ -62,6 +81,7 @@ ReactstrapSelect.propTypes = {
   form: PropTypes.object,
   label: PropTypes.string,
   value: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 export const ReactstrapCheckbox = ({

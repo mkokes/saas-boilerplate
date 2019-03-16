@@ -37,7 +37,7 @@ const siteConfig = {
   changelogUrl: 'https://changelog.domain.io',
   statusUrl: 'https://status.domain.io',
   emailContact: 'info@domain.io',
-  supportUrl: `${APP_URL}/support`,
+  supportUrl: `${APP_URL}/contact-support`,
   users: [
     {
       caption: 'Coinbase',

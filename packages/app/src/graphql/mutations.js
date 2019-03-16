@@ -2,7 +2,12 @@ import gql from 'graphql-tag';
 
 import { ProfileFields } from './fragments';
 
-// we use this one for checking if user is signed in
+export const ContactSupport = gql`
+  mutation contactSupport($form: ContactSupportInput!) {
+    form: contactSupport(form: $form) @disableAuth
+  }
+`;
+
 export const SignUpUser = gql`
   mutation signUpUser(
     $recaptchaResponse: String

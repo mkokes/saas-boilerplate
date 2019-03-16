@@ -15,6 +15,7 @@ import {
   Row,
   Col,
   Button,
+  Alert,
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -24,12 +25,22 @@ import { ReactstrapInput, ReactstrapSelect } from 'utils/formiik';
 import { ApolloConsumer } from 'react-apollo';
 
 import { GlobalConsumer } from 'GlobalState';
-import {} from 'graphql/mutations';
-// import { transformApolloErr } from "utils/apollo";
+import { ContactSupport } from 'graphql/mutations';
+import { transformApolloErr } from 'utils/apollo';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SupportPage extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      formErrorMessage: '',
+    };
+  }
+
   render() {
+    const { formErrorMessage } = this.state;
+
     return (
       <Fragment>
         <Helmet>
@@ -46,6 +57,15 @@ export default class SupportPage extends React.PureComponent {
                 </CardHeader>
                 <CardBody>
                   <Row>
+                    <Col className="text-center">
+                      {formErrorMessage && (
+                        <Alert color="danger" role="alert" fade={false}>
+                          <strong>{formErrorMessage}</strong>
+                        </Alert>
+                      )}
+                    </Col>
+                  </Row>
+                  <Row>
                     <Col>
                       <GlobalConsumer>
                         {({ userProfile }) => (
@@ -53,41 +73,88 @@ export default class SupportPage extends React.PureComponent {
                             {client => (
                               <Formik
                                 initialValues={{
-                                  requester_name: userProfile
+                                  requesterName: userProfile
                                     ? userProfile.firstName
                                     : '',
-                                  requester_email: userProfile
+                                  requesterEmail: userProfile
                                     ? userProfile.email
                                     : '',
                                   subject: '',
-                                  ticket_type: '',
                                   description: '',
+                                  ticketType: null,
                                 }}
-                                validationSchema={Yup.object().shape({})}
+                                validationSchema={Yup.object().shape({
+                                  requesterName: Yup.string().required(
+                                    'Required',
+                                  ),
+                                  requesterEmail: Yup.string()
+                                    .email('Invalid email')
+                                    .required('Required'),
+                                  subject: Yup.string().required('Required'),
+                                  ticketType: Yup.object()
+                                    .nullable()
+                                    .shape({
+                                      label: Yup.string().required(),
+                                      value: Yup.string().required(),
+                                    })
+                                    .required('Select an option'),
+                                  description: Yup.string()
+                                    .min(1)
+                                    .required('Required'),
+                                })}
                                 onSubmit={async (values, formikBag) => {
-                                  console.log(client);
-                                  console.log(values);
-                                  console.log(formikBag);
+                                  this.setState({
+                                    formErrorMessage: '',
+                                  });
+
+                                  const finalValues = values;
+                                  finalValues.ticketType =
+                                    finalValues.ticketType.value;
+
+                                  try {
+                                    await client.mutate({
+                                      mutation: ContactSupport,
+                                      variables: {
+                                        form: {
+                                          ...finalValues,
+                                        },
+                                      },
+                                    });
+
+                                    alert('success!');
+                                  } catch (e) {
+                                    const err = transformApolloErr(e);
+
+                                    if (err.type === 'BAD_USER_INPUT') {
+                                      formikBag.setErrors(err.data);
+                                    } else {
+                                      this.setState({
+                                        formErrorMessage: err.message,
+                                      });
+                                    }
+
+                                    formikBag.setSubmitting(false);
+                                  }
                                 }}
                               >
-                                {({ isSubmitting }) => (
+                                {({ values, isSubmitting }) => (
                                   <Form>
                                     <Field
                                       component={ReactstrapInput}
-                                      name="requester_name"
+                                      name="requesterName"
                                       type="text"
                                       label="Name"
                                       autoComplete="first-name"
-                                      disabled={userProfile}
+                                      disabled={!!userProfile}
                                       required
                                     />
                                     <Field
                                       component={ReactstrapInput}
-                                      name="requester_email"
+                                      name="requesterEmail"
                                       type="email"
                                       label="Email address"
                                       autoComplete="email"
-                                      disabled={userProfile}
+                                      disabled={!!userProfile}
                                       required
                                     />
                                     <Field
@@ -99,16 +166,32 @@ export default class SupportPage extends React.PureComponent {
                                     />
                                     <Field
                                       component={ReactstrapSelect}
-                                      name="ticket_type"
+                                      name="ticketType"
                                       label="I have a..."
                                       options={[
-                                        { label: 'Question', value: 0 },
-                                        { label: 'Incident', value: 1 },
-                                        { label: 'Problem', value: 2 },
-                                        { label: 'Feature Request', value: 3 },
-                                        { label: 'Bug Report', value: 4 },
-                                        { label: 'Lost 2FA', value: 5 },
+                                        {
+                                          label: 'Question',
+                                          value: 'QUESTION',
+                                        },
+                                        {
+                                          label: 'Incident',
+                                          value: 'INCIDENT',
+                                        },
+                                        { label: 'Problem', value: 'PROBLEM' },
+                                        {
+                                          label: 'Feature Request',
+                                          value: 'FEATURE_REQUEST',
+                                        },
+                                        {
+                                          label: 'Bug Report',
+                                          value: 'BUG_REPORT',
+                                        },
+                                        {
+                                          label: 'Lost 2FA',
+                                          value: 'LOST_2FA',
+                                        },
                                       ]}
+                                      value={values.ticketType}
                                       required
                                     />
                                     <Field

@@ -52,12 +52,27 @@ const typeDefs = `
     qrcode: String!
   }
 
+  enum ContactSupportTicketType {
+    QUESTION
+    INCIDENT
+    PROBLEM
+    FEATURE_REQUEST
+    BUG_REPORT
+    LOST_2FA
+  }
   enum LegalAgreementType {
     TERMS_AND_CONDITIONS
     PRIVACY_POLICY
     MARKETING_INFO
   }
 
+  input ContactSupportInput {
+    requesterName: String!
+    requesterEmail: String!
+    subject: String!
+    ticketType: ContactSupportTicketType!
+    description: String!
+  }
   input LegalAgreementInput {
     type: LegalAgreementType!
     accepted: String!

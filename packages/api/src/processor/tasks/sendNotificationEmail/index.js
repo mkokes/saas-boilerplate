@@ -42,7 +42,7 @@ module.exports = ({
   const POSTMARK_TEMPLATE_VALUES = {
     product_name: 'DCABot',
     product_url: PRODUCT_APP_URL,
-    support_url: 'https://support.dcabot.io',
+    support_url: `${PRODUCT_APP_URL}/contact-support`,
     company_name: 'AMGA Ventures Inc.',
     company_address: null,
   };
