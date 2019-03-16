@@ -25,7 +25,7 @@ import { ApolloConsumer } from 'react-apollo';
 
 import { GlobalConsumer } from 'GlobalState';
 import {} from 'graphql/mutations';
-// import { transformApolloErr } from 'utils/apollo';
+// import { transformApolloErr } from "utils/apollo";
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SupportPage extends React.PureComponent {
@@ -53,8 +53,12 @@ export default class SupportPage extends React.PureComponent {
                             {client => (
                               <Formik
                                 initialValues={{
-                                  requester_name: userProfile ? `${userProfile.firstName} ${userProfile.lastName}` : '',
-                                  requester_email: userProfile ? userProfile.email : '',
+                                  requester_name: userProfile
+                                    ? userProfile.firstName
+                                    : '',
+                                  requester_email: userProfile
+                                    ? userProfile.email
+                                    : '',
                                   subject: '',
                                   ticket_type: '',
                                   description: '',
