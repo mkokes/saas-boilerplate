@@ -86,7 +86,7 @@ steps:
   - name: web_build
     image: node:8.15.0
     commands:
-      - yarn build:web:stage
+      - yarn build:web
     when:
       branch:
         - master
@@ -97,7 +97,7 @@ steps:
   - name: app_build
     image: node:8.15.0
     commands:
-      - yarn build:app:stage
+      - yarn build:app
     when:
       branch:
         - master
