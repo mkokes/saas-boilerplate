@@ -1,5 +1,6 @@
 const postmark = require('postmark');
 const moment = require('moment-timezone');
+const safeGet = require('lodash.get');
 
 const {
   VERIFY_EMAIL,
@@ -13,6 +14,7 @@ const {
   ENABLED_2FA,
   DISABLED_2FA,
   SUPPORT_REQUEST,
+  SUPPORT_REQUEST_CONFIRMATION,
 } = require('../../../constants/notifications');
 
 module.exports = ({
@@ -38,7 +40,8 @@ module.exports = ({
     TRIAL_EXPIRED: 10141867,
     ENABLED_2FA: 10148059,
     DISABLED_2FA: 10148227,
-    SUPPORT_REQUEST: '@TODO',
+    SUPPORT_REQUEST: 10737235,
+    SUPPORT_REQUEST_CONFIRMATION: 123,
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
@@ -63,7 +66,8 @@ module.exports = ({
         ...notification.variables,
       };
 
-      let targetEmail = _user.email;
+      let targetEmail = safeGet(_user, 'email');
+      let targetReplyTo = null;
       /* eslint-disable default-case */
       switch (notification.type) {
         case VERIFY_EMAIL:
@@ -119,6 +123,10 @@ module.exports = ({
           templateModel.name = _user.firstName;
           break;
         case SUPPORT_REQUEST:
+          targetEmail = 'support@amgaventures.com';
+          targetReplyTo = templateModel.requesterEmail;
+          break;
+        case SUPPORT_REQUEST_CONFIRMATION:
           break;
       }
 
@@ -130,10 +138,11 @@ module.exports = ({
         TemplateId: POSTMARK_TEMPLATES_ID[notification.type],
         From: POSTMARK_SENDER_EMAIL,
         To: targetEmail,
+        ReplyTo: targetReplyTo,
         TemplateModel: templateModel,
         Metadata: {
           notification_id: notification._id,
-          user_id: _user._id,
+          user_id: safeGet(_user, 'email'),
         },
         TrackOpens: true,
         TrackLinks: 'TextOnly',

@@ -49,6 +49,7 @@
     "mixpanel": "^0.10.1",
     "moment-timezone": "^0.5.23",
     "mongoose": "^5.3.8",
+    "mongoose-shortid-nodeps": "^0.6.5",
     "mongoose-unique-validator": "^2.0.2",
     "otplib": "^11.0.0",
     "p-queue": "^3.0.0",

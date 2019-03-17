@@ -103,6 +103,9 @@ module.exports = ({
       if (validator.isEmpty(subject)) {
         paramsValidationErrors.subject = 'Subject is required';
       }
+      if (!validator.isLength(subject, { min: undefined, max: 33 })) {
+        paramsValidationErrors.subject = 'Too long!';
+      }
       if (validator.isEmpty(ticketType)) {
         paramsValidationErrors.ticketType = 'Select an option';
       }
@@ -143,7 +146,7 @@ module.exports = ({
       }
 
       await db.contactSupport(
-        user._id,
+        safeGet(user, '_id'),
         requesterName,
         requesterEmail,
         subject,

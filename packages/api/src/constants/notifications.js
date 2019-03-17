@@ -10,6 +10,7 @@ module.exports = [
   'ENABLED_2FA',
   'DISABLED_2FA',
   'SUPPORT_REQUEST',
+  'SUPPORT_REQUEST_CONFIRMATION',
 ].reduce((m, a) => {
   const k = m;
 

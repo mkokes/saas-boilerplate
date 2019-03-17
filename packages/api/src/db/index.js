@@ -668,16 +668,17 @@ class Db extends EventEmitter {
     ticketType,
     description,
   ) {
-    await new SupportTicket({
-      _user: userId || null,
+    const supportTicket = await new SupportTicket({
+      _user: userId,
       requesterName,
       requesterEmail,
       subject,
-      ticketType,
+      type: ticketType,
       description,
     }).save();
 
     this.notify(userId || null, SUPPORT_REQUEST, {
+      _ticketId: supportTicket._ticketId,
       requesterName,
       requesterEmail,
       subject,
