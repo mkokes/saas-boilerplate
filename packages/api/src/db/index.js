@@ -681,9 +681,9 @@ class Db extends EventEmitter {
       ticket_id: supportTicket._ticketId,
       requester_name: requesterName,
       requester_email: requesterEmail,
-      subject,
+      ticket_subject: subject,
       ticket_type: ticketType,
-      description,
+      ticket_description: description,
     });
   }
 

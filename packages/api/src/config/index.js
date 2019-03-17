@@ -19,8 +19,10 @@ const env = envalid.cleanEnv(
     RECAPTCHA_SECRET_KEY: str({
       default: '',
     }),
+    PRODUCT_NAME: str({ default: 'DCABot' }),
     PRODUCT_APP_URL: str({ default: 'http://localhost:3000' }),
     PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
+    COMPANY_NAME: str({ default: 'AMGA Ventures Inc.' }),
     LOG: str({ default: 'debug' }),
     API_SECRET_KEY: str({ default: 'foo' }),
     LOGDNA_API_KEY: str({ default: '' }),

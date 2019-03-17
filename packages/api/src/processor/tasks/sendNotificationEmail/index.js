@@ -19,8 +19,10 @@ const {
 
 module.exports = ({
   config: {
+    PRODUCT_NAME,
     PRODUCT_APP_URL,
     PRODUCT_TRIAL_DAYS_LENGTH,
+    COMPANY_NAME,
     POSTMARK_API_TOKEN,
     POSTMARK_SENDER_EMAIL,
     SUPPORT_EMAIL,
@@ -41,15 +43,15 @@ module.exports = ({
     TRIAL_EXPIRED: 10141867,
     ENABLED_2FA: 10148059,
     DISABLED_2FA: 10148227,
-    SUPPORT_REQUEST: 10737235,
-    SUPPORT_REQUEST_CONFIRMATION: 123,
+    SUPPORT_REQUEST: 10737319,
+    SUPPORT_REQUEST_CONFIRMATION: 10737781,
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
-    product_name: 'DCABot',
+    product_name: PRODUCT_NAME,
     product_url: PRODUCT_APP_URL,
     support_url: `${PRODUCT_APP_URL}/contact-support`,
-    company_name: 'AMGA Ventures Inc.',
+    company_name: COMPANY_NAME,
     company_address: null,
   };
 
@@ -131,7 +133,7 @@ module.exports = ({
           if (!targetEmail) {
             targetEmail = templateModel.requester_email;
           }
-          targetReplyTo = templateModel.requester_email;
+          targetReplyTo = SUPPORT_EMAIL;
 
           break;
       }
