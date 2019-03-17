@@ -9,6 +9,7 @@ module.exports = [
   'TRIAL_EXPIRED',
   'ENABLED_2FA',
   'DISABLED_2FA',
+  'SUPPORT_REQUEST',
 ].reduce((m, a) => {
   const k = m;
 

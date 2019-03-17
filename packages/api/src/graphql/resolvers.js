@@ -76,16 +76,51 @@ module.exports = ({
   Mutation: {
     contactSupport: async (
       _,
-      { requesterName, requesterEmail, subject, ticketType, description },
+      {
+        recaptchaResponse,
+        requesterName,
+        requesterEmail,
+        subject,
+        ticketType,
+        description,
+      },
+      { user },
     ) => {
       const paramsValidationErrors = {};
 
-      /* if (validator.isEmpty(recaptchaResponse)) {
+      if (validator.isEmpty(recaptchaResponse)) {
         throw new ApolloError(
           'Our security system could not determine if the request was made by a human. Try it again.',
           'INVALID_CAPTCHA',
         );
-      } */
+      }
+      if (validator.isEmpty(requesterName)) {
+        paramsValidationErrors.requesterName = 'Name is required';
+      }
+      if (!validator.isEmail(requesterEmail)) {
+        paramsValidationErrors.requesterEmail = 'Email is not valid';
+      }
+      if (validator.isEmpty(subject)) {
+        paramsValidationErrors.subject = 'Subject is required';
+      }
+      if (validator.isEmpty(ticketType)) {
+        paramsValidationErrors.ticketType = 'Select an option';
+      }
+      if (
+        !validator.isIn(ticketType, [
+          'QUESTION',
+          'INCIDENT',
+          'PROBLEM',
+          'FEATURE_REQUEST',
+          'BUG_REPORT',
+          'LOST_2FA',
+        ])
+      ) {
+        paramsValidationErrors.ticketType = 'Selected option is not valid';
+      }
+      if (!validator.isLength(description, { min: 50, max: undefined })) {
+        paramsValidationErrors.description = 'Too short!';
+      }
 
       if (Object.keys(paramsValidationErrors).length > 0) {
         throw new UserInputError(
@@ -96,7 +131,7 @@ module.exports = ({
         );
       }
 
-      /* const isRecaptchaValid = await validateRecaptchaResponse(
+      const isRecaptchaValid = await validateRecaptchaResponse(
         recaptchaResponse,
       );
 
@@ -105,10 +140,16 @@ module.exports = ({
           'Our security system could not determine if the request was made by a human. Try it again.',
           'INVALID_CAPTCHA',
         );
-      } */
+      }
 
-      console.log('got it');
-      console.log(requesterName);
+      await db.contactSupport(
+        user._id,
+        requesterName,
+        requesterEmail,
+        subject,
+        ticketType,
+        description,
+      );
 
       return true;
     },

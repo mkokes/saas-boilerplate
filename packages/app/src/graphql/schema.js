@@ -66,13 +66,6 @@ const typeDefs = `
     MARKETING_INFO
   }
 
-  input ContactSupportInput {
-    requesterName: String!
-    requesterEmail: String!
-    subject: String!
-    ticketType: ContactSupportTicketType!
-    description: String!
-  }
   input LegalAgreementInput {
     type: LegalAgreementType!
     accepted: String!

@@ -23,6 +23,8 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { ReactstrapInput, ReactstrapSelect } from 'utils/formiik';
 import { ApolloConsumer } from 'react-apollo';
+import Reaptcha from 'reaptcha';
+import _ from 'lodash';
 
 import { GlobalConsumer } from 'GlobalState';
 import { ContactSupport } from 'graphql/mutations';
@@ -34,12 +36,25 @@ export default class SupportPage extends React.PureComponent {
     super(props);
 
     this.state = {
+      recaptchaResponse: '',
+      recaptchaRendered: false,
       formErrorMessage: '',
     };
+
+    this.captcha = null;
+  }
+
+  resetCaptcha() {
+    this.setState({ recaptchaResponse: '' });
+    this.captcha.reset();
   }
 
   render() {
-    const { formErrorMessage } = this.state;
+    const {
+      recaptchaResponse,
+      recaptchaRendered,
+      formErrorMessage,
+    } = this.state;
 
     return (
       <Fragment>
@@ -107,17 +122,25 @@ export default class SupportPage extends React.PureComponent {
                                     formErrorMessage: '',
                                   });
 
-                                  const finalValues = values;
-                                  finalValues.ticketType =
-                                    finalValues.ticketType.value;
+                                  if (!recaptchaRendered)
+                                    await this.captcha.renderExplicitly();
+
+                                  if (!recaptchaResponse) {
+                                    await this.captcha.execute();
+                                    setTimeout(
+                                      () => formikBag.setSubmitting(false),
+                                      2000,
+                                    );
+                                    return;
+                                  }
 
                                   try {
                                     await client.mutate({
                                       mutation: ContactSupport,
                                       variables: {
-                                        form: {
-                                          ...finalValues,
-                                        },
+                                        recaptchaResponse,
+                                        ..._.omit(values, ['ticketType']),
+                                        ticketType: values.ticketType.value,
                                       },
                                     });
 
@@ -137,7 +160,7 @@ export default class SupportPage extends React.PureComponent {
                                   }
                                 }}
                               >
-                                {({ values, isSubmitting }) => (
+                                {({ submitForm, values, isSubmitting }) => (
                                   <Form>
                                     <Field
                                       component={ReactstrapInput}
@@ -219,6 +242,30 @@ export default class SupportPage extends React.PureComponent {
                                         />
                                         Submit
                                       </Button>
+
+                                      <Reaptcha
+                                        // eslint-disable-next-line
+                                        ref={e => (this.captcha = e)}
+                                        sitekey={
+                                          process.env
+                                            .REACT_APP_RECAPTCHA_SITE_KEY
+                                        }
+                                        onVerify={res => {
+                                          this.setState({
+                                            recaptchaResponse: res,
+                                          });
+                                          submitForm();
+                                        }}
+                                        onExpire={() => this.resetCaptcha}
+                                        onError={() => this.resetCaptcha}
+                                        onRender={() =>
+                                          this.setState({
+                                            recaptchaRendered: true,
+                                          })
+                                        }
+                                        size="invisible"
+                                        explicit
+                                      />
                                     </div>
                                   </Form>
                                 )}

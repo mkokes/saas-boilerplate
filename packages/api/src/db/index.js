@@ -10,6 +10,7 @@ const Subscription = require('./models/subscription');
 const Payment = require('./models/payment');
 const Notification = require('./models/notification');
 const ResetPasswordToken = require('./models/resetPasswordToken');
+const SupportTicket = require('./models/supportTicket');
 const { NOTIFICATION } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
@@ -21,6 +22,7 @@ const {
   EMAIL_CHANGED,
   ENABLED_2FA,
   DISABLED_2FA,
+  SUPPORT_REQUEST,
 } = require('../constants/notifications');
 
 class Db extends EventEmitter {
@@ -656,6 +658,32 @@ class Db extends EventEmitter {
     });
 
     return payment;
+  }
+
+  async contactSupport(
+    userId,
+    requesterName,
+    requesterEmail,
+    subject,
+    ticketType,
+    description,
+  ) {
+    await new SupportTicket({
+      _user: userId || null,
+      requesterName,
+      requesterEmail,
+      subject,
+      ticketType,
+      description,
+    }).save();
+
+    this.notify(userId || null, SUPPORT_REQUEST, {
+      requesterName,
+      requesterEmail,
+      subject,
+      ticketType,
+      description,
+    });
   }
 
   async notify(userId, type, variables) {

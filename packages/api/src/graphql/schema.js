@@ -69,13 +69,6 @@ module.exports = gql`
     MARKETING_INFO
   }
 
-  input ContactSupportInput {
-    requesterName: String!
-    requesterEmail: String!
-    subject: String!
-    ticketType: ContactSupportTicketType!
-    description: String!
-  }
   input LegalAgreementInput {
     type: LegalAgreementType!
     accepted: String!
@@ -101,7 +94,14 @@ module.exports = gql`
     activeSubscriptionPlans: [Plan]
   }
   type Mutation {
-    contactSupport(form: ContactSupportInput!): Boolean
+    contactSupport(
+      recaptchaResponse: String!
+      requesterName: String!
+      requesterEmail: String!
+      subject: String!
+      ticketType: ContactSupportTicketType!
+      description: String!
+    ): Boolean
     signUpUser(
       recaptchaResponse: String
       email: String!

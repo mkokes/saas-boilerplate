@@ -12,6 +12,7 @@ const {
   TRIAL_EXPIRED,
   ENABLED_2FA,
   DISABLED_2FA,
+  SUPPORT_REQUEST,
 } = require('../../../constants/notifications');
 
 module.exports = ({
@@ -37,6 +38,7 @@ module.exports = ({
     TRIAL_EXPIRED: 10141867,
     ENABLED_2FA: 10148059,
     DISABLED_2FA: 10148227,
+    SUPPORT_REQUEST: '@TODO',
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
@@ -115,6 +117,8 @@ module.exports = ({
           break;
         case DISABLED_2FA:
           templateModel.name = _user.firstName;
+          break;
+        case SUPPORT_REQUEST:
           break;
       }
 

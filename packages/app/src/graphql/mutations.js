@@ -3,8 +3,22 @@ import gql from 'graphql-tag';
 import { ProfileFields } from './fragments';
 
 export const ContactSupport = gql`
-  mutation contactSupport($form: ContactSupportInput!) {
-    form: contactSupport(form: $form) @disableAuth
+  mutation contactSupport(
+    $recaptchaResponse: String!
+    $requesterName: String!
+    $requesterEmail: String!
+    $subject: String!
+    $ticketType: ContactSupportTicketType!
+    $description: String!
+  ) {
+    contactSupport(
+      recaptchaResponse: $recaptchaResponse
+      requesterName: $requesterName
+      requesterEmail: $requesterEmail
+      subject: $subject
+      ticketType: $ticketType
+      description: $description
+    )
   }
 `;
 

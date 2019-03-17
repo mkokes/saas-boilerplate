@@ -59,7 +59,7 @@ export const ReactstrapSelect = ({
         onBlur={() => {
           setFieldTouched(fields.name, true);
         }}
-        disabled={isSubmitting || props.disabled}
+        isDisabled={isSubmitting || props.disabled}
       />
       {touch && error && (
         <p
