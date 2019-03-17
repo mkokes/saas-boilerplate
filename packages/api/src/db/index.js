@@ -23,6 +23,7 @@ const {
   ENABLED_2FA,
   DISABLED_2FA,
   SUPPORT_REQUEST,
+  SUPPORT_REQUEST_CONFIRMATION,
 } = require('../constants/notifications');
 
 class Db extends EventEmitter {
@@ -677,12 +678,20 @@ class Db extends EventEmitter {
       description,
     }).save();
 
-    this.notify(userId || null, SUPPORT_REQUEST, {
+    const targetUserId = userId || null;
+
+    this.notify(targetUserId, SUPPORT_REQUEST, {
       ticket_id: supportTicket._ticketId,
       requester_name: requesterName,
       requester_email: requesterEmail,
       ticket_subject: subject,
       ticket_type: ticketType,
+      ticket_description: description,
+    });
+    this.notify(targetUserId, SUPPORT_REQUEST_CONFIRMATION, {
+      ticket_id: supportTicket._ticketId,
+      requester_email: requesterEmail,
+      ticket_subject: subject,
       ticket_description: description,
     });
   }
