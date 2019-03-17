@@ -38,7 +38,7 @@ export default class SupportPage extends React.PureComponent {
     this.state = {
       recaptchaResponse: '',
       recaptchaRendered: false,
-      formErrorMessage: '',
+      formMsg: null,
     };
 
     this.captcha = null;
@@ -50,11 +50,7 @@ export default class SupportPage extends React.PureComponent {
   }
 
   render() {
-    const {
-      recaptchaResponse,
-      recaptchaRendered,
-      formErrorMessage,
-    } = this.state;
+    const { recaptchaResponse, recaptchaRendered, formMsg } = this.state;
 
     return (
       <Fragment>
@@ -73,9 +69,9 @@ export default class SupportPage extends React.PureComponent {
                 <CardBody>
                   <Row>
                     <Col className="text-center">
-                      {formErrorMessage && (
-                        <Alert color="danger" role="alert" fade={false}>
-                          <strong>{formErrorMessage}</strong>
+                      {formMsg && (
+                        <Alert color={formMsg.color} role="alert" fade={false}>
+                          <strong>{formMsg.text}</strong>
                         </Alert>
                       )}
                     </Col>
@@ -105,7 +101,9 @@ export default class SupportPage extends React.PureComponent {
                                   requesterEmail: Yup.string()
                                     .email('Invalid email')
                                     .required('Required'),
-                                  subject: Yup.string().required('Required'),
+                                  subject: Yup.string()
+                                    .max(33)
+                                    .required('Required'),
                                   ticketType: Yup.object()
                                     .nullable()
                                     .shape({
@@ -114,12 +112,12 @@ export default class SupportPage extends React.PureComponent {
                                     })
                                     .required('Select an option'),
                                   description: Yup.string()
-                                    .min(1)
+                                    .min(40)
                                     .required('Required'),
                                 })}
                                 onSubmit={async (values, formikBag) => {
                                   this.setState({
-                                    formErrorMessage: '',
+                                    formMsg: null,
                                   });
 
                                   if (!recaptchaRendered)
@@ -144,7 +142,15 @@ export default class SupportPage extends React.PureComponent {
                                       },
                                     });
 
-                                    alert('success!');
+                                    this.setState({
+                                      formMsg: {
+                                        color: 'success',
+                                        text: `Thanks for contacting us.`,
+                                      },
+                                    });
+
+                                    formikBag.setSubmitting(false);
+                                    formikBag.resetForm();
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 
@@ -152,16 +158,24 @@ export default class SupportPage extends React.PureComponent {
                                       formikBag.setErrors(err.data);
                                     } else {
                                       this.setState({
-                                        formErrorMessage: err.message,
+                                        formMsg: {
+                                          color: 'danger',
+                                          text: err.message,
+                                        },
                                       });
                                     }
 
+                                    this.resetCaptcha();
                                     formikBag.setSubmitting(false);
                                   }
                                 }}
                               >
                                 {({ submitForm, values, isSubmitting }) => (
-                                  <Form>
+                                  <Form
+                                    hidden={
+                                      formMsg && formMsg.color === 'success'
+                                    }
+                                  >
                                     <Field
                                       component={ReactstrapInput}
                                       name="requesterName"

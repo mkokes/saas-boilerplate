@@ -23,6 +23,7 @@ module.exports = ({
     PRODUCT_TRIAL_DAYS_LENGTH,
     POSTMARK_API_TOKEN,
     POSTMARK_SENDER_EMAIL,
+    SUPPORT_EMAIL,
   },
   log: parentLog,
   Sentry,
@@ -123,10 +124,15 @@ module.exports = ({
           templateModel.name = _user.firstName;
           break;
         case SUPPORT_REQUEST:
-          targetEmail = 'support@amgaventures.com';
-          targetReplyTo = templateModel.requesterEmail;
+          targetEmail = SUPPORT_EMAIL;
+          targetReplyTo = templateModel.requester_email;
           break;
         case SUPPORT_REQUEST_CONFIRMATION:
+          if (!targetEmail) {
+            targetEmail = templateModel.requester_email;
+          }
+          targetReplyTo = templateModel.requester_email;
+
           break;
       }
 

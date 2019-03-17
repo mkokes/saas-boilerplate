@@ -32,7 +32,8 @@ const env = envalid.cleanEnv(
     PADDLE_VENDOR_AUTH_CODE: str({ default: '' }),
     MIXPANEL_TOKEN: str({ default: '10d9e1131949749220397c144c4c6826' }),
     POSTMARK_API_TOKEN: str({ default: '' }),
-    POSTMARK_SENDER_EMAIL: str({ default: 'payments@amgaventures.com' }),
+    POSTMARK_SENDER_EMAIL: str({ default: 'support@amgaventures.com' }),
+    SUPPORT_EMAIL: str({ default: 'support@amgaventures.com' }),
   },
   {
     dotEnvPath: '.env',

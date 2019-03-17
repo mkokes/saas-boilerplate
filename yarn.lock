@@ -958,6 +958,13 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
+"@babel/runtime@^7.0.0":
+  version "7.3.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
+  integrity sha512-IvfvnMdSaLBateu0jfsYIpZTxAc2cKEXEMiezGGN75QcBcecDUKd3PgLAncT0oOgxKy8dd8hrJKj9MfzgfZd6g==
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
 "@babel/template@7.0.0-beta.44":
   version "7.0.0-beta.44"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.0.0-beta.44.tgz#f8832f4fdcee5d59bf515e595fc5106c529b394f"
@@ -10599,6 +10606,11 @@ mongodb@3.1.13:
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
+
+mongoose-shortid-nodeps@^0.6.5:
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/mongoose-shortid-nodeps/-/mongoose-shortid-nodeps-0.6.5.tgz#ddd667983d54dcf61f2375478373cf7eda30a491"
+  integrity sha1-3dZnmD1U3PYfI3VHg3PPftowpJE=
 
 mongoose-unique-validator@^2.0.2:
   version "2.0.2"

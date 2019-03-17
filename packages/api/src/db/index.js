@@ -678,11 +678,11 @@ class Db extends EventEmitter {
     }).save();
 
     this.notify(userId || null, SUPPORT_REQUEST, {
-      _ticketId: supportTicket._ticketId,
-      requesterName,
-      requesterEmail,
+      ticket_id: supportTicket._ticketId,
+      requester_name: requesterName,
+      requester_email: requesterEmail,
       subject,
-      ticketType,
+      ticket_type: ticketType,
       description,
     });
   }
