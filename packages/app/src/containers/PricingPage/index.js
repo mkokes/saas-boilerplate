@@ -85,15 +85,11 @@ export default class PricingPage extends React.PureComponent {
                 <div className="mt-5 text-center text-muted">
                   {userProfile ? (
                     <Link to="/dashboard/settings/billing">
-                      <Button color="link" className="text-muted">
-                        Return to the billing page
-                      </Button>
+                      Return to the billing page
                     </Link>
                   ) : (
                     <a href={process.env.REACT_APP_WEBSITE_URL}>
-                      <Button color="link" className="text-muted">
-                        Return to the homepage
-                      </Button>
+                      Return to the homepage
                     </a>
                   )}
                 </div>
