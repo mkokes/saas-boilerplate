@@ -64,7 +64,6 @@ class Footer extends React.Component {
             >
               Twitter
             </a>
-            <a href={this.props.config.linkedinUrl}>Linkedin</a>
           </div>
         </section>
 
