@@ -50,8 +50,8 @@
   color: #fff;
 }
 .button.hero:hover {
-  background-color: #fff;
-  color: $primaryColor;
+  background-color: $secondaryColor;
+  color: #fff;
 }
 
 .navigationSlider .slidingNav ul.nav-site a {
