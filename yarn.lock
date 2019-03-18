@@ -15670,8 +15670,9 @@ url@^0.11.0:
     querystring "0.2.0"
 
 use-async-effect@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/use-async-effect/-/use-async-effect-2.0.0.tgz#fbb1504b467cd35d89496f49ae57b0d2a0367c8b"
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/use-async-effect/-/use-async-effect-2.0.1.tgz#0572613f90e377144f02c3bccdf10575d28014cb"
+  integrity sha512-/9aa4Aijg0JQOOJ6Q5YKeu3tf3smZkOS6J8jcJt9o+xsL9/pTKDmpO9YExyeCcQ32pTUh/DvDZRlt8qwRLu9eA==
 
 use@^3.1.0:
   version "3.1.1"
