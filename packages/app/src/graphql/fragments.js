@@ -13,6 +13,7 @@ export const ProfileFields = gql`
     isSignUpEmailConfirmed
     isTwoFactorAuthenticationEnabled
     isInTrialPeriod
+    trialPeriodEndsAt
     timezone
     legal {
       type

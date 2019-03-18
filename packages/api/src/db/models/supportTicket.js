@@ -13,7 +13,7 @@ const SupportTicketSchema = new mongoose.Schema({
     len: 7,
     base: 64,
     alphabet: 'FTPLKMNWZSQXHJG0123456789',
-    retries: 7,
+    retries: 10,
     unique: true,
     uppercase: true,
     index: true,

@@ -4,6 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
 const uuidv4 = require('uuid/v4');
 const Identicon = require('identicon.js');
+const ShortId = require('mongoose-shortid-nodeps');
 
 const { Schema } = mongoose;
 const SALT_WORK_FACTOR = 10;
@@ -12,6 +13,16 @@ const SALT_WORK_FACTOR = 10;
  * User Schema
  */
 const UserSchema = new mongoose.Schema({
+  _shortId: {
+    type: ShortId,
+    len: 5,
+    base: 64,
+    alphabet: 'VBYRFTPLKMNWZSQXHJG0123456789',
+    retries: 10,
+    unique: true,
+    uppercase: true,
+    index: true,
+  },
   _subscription: {
     type: Schema.Types.ObjectId,
     ref: 'Subscription',
@@ -86,6 +97,10 @@ const UserSchema = new mongoose.Schema({
   trialPeriodStartedAt: {
     type: Date,
     default: Date.now,
+  },
+  trialPeriodEndsAt: {
+    type: Date,
+    required: true,
   },
   trialDaysLength: {
     type: Number,

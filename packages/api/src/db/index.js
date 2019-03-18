@@ -74,6 +74,7 @@ class Db extends EventEmitter {
       isSignUpEmailConfirmed,
       isTwoFactorAuthenticationEnabled,
       isInTrialPeriod,
+      trialPeriodEndsAt,
       timezone,
       legal,
     } = user;
@@ -95,6 +96,7 @@ class Db extends EventEmitter {
             isSignUpEmailConfirmed,
             isTwoFactorAuthenticationEnabled,
             isInTrialPeriod,
+            trialPeriodEndsAt,
             timezone,
             legal,
           }
@@ -165,6 +167,11 @@ class Db extends EventEmitter {
       nickname = `${nickname.substr(0, 13)}…`;
     }
 
+    const trialPeriodEndsAt = new Date();
+    trialPeriodEndsAt.setDate(
+      trialPeriodEndsAt.getDate() + this._config.PRODUCT_TRIAL_DAYS_LENGTH,
+    );
+
     const user = await new User({
       email,
       password,
@@ -178,6 +185,7 @@ class Db extends EventEmitter {
         },
         this._config.JWT_SECRET,
       ),
+      trialPeriodEndsAt,
       trialDaysLength: this._config.PRODUCT_TRIAL_DAYS_LENGTH,
     }).save();
 

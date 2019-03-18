@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 
-module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog }) => {
+const { HANDLE_USER_TRIALS } = require('../../constants/events');
+
+module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog, db }) => {
   const log = parentLog.create('api/private');
 
   const router = new Router();
@@ -17,7 +19,9 @@ module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog }) => {
     return next();
   };
 
-  router.post('/handle-users-trial', authMiddleware, async () => {});
+  router.post('/cron/handle-users-trial', authMiddleware, () =>
+    db.emit(HANDLE_USER_TRIALS),
+  );
 
   return router;
 };

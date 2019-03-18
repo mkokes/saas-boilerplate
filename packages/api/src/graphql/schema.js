@@ -17,6 +17,7 @@ module.exports = gql`
     isSignUpEmailConfirmed: Boolean
     isTwoFactorAuthenticationEnabled: Boolean
     isInTrialPeriod: Boolean
+    trialPeriodEndsAt: String
     timezone: String
     legal: [LegalAgreement]
   }

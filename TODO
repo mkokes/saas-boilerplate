@@ -6,6 +6,7 @@
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
+  ✔ Show trial end date in billing page @started(19-03-18 19:32) @done(19-03-18 20:13) @lasted(41m45s)
   ✔ Support page @started(19-03-16 22:50) @done(19-03-17 23:05) @lasted(1d15m47s)
     ✔ Add recaptcha @done(19-03-17 23:05)
     ✔ Refactor mutation parameters @done(19-03-17 23:05)
@@ -58,7 +59,7 @@
     ✔ Req validation @done(19-03-17 23:05)
     ✔ Send e-mail to `support@domain.io`. @done(19-03-17 23:05)
   ✔ Add Dokku CHECKS HTTP endpoint `/health` @done(19-03-12 20:42) @lasted(27s)
-  ☐ Emails provider @today
+  ☐ Emails provider @today @started(19-03-18 19:25)
     ☐ Templates
       ☐ Trial expiring
       ☐ Trial expired

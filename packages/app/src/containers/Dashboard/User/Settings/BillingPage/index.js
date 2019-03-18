@@ -242,7 +242,16 @@ export default class BillingPage extends React.PureComponent {
                                 <strong>
                                   {userProfile.isInTrialPeriod ? (
                                     <Fragment>
-                                      You are currently using trial version
+                                      You are currently in trial period (ends on{' '}
+                                      <strong>
+                                        <Moment
+                                          format="LL"
+                                          date={Number(
+                                            userProfile.trialPeriodEndsAt,
+                                          )}
+                                        />
+                                      </strong>
+                                      )
                                     </Fragment>
                                   ) : (
                                     <Fragment>
