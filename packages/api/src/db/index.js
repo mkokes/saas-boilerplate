@@ -711,10 +711,22 @@ class Db extends EventEmitter {
   }
 
   async userTrialExpiringWarning(userId) {
+    const user = await this.getUserById(userId);
+
+    user.trialExpiringNotified = true;
+
+    await user.save();
+
     this.notify(userId, TRIAL_EXPIRING);
   }
 
   async userTrialExpired(userId) {
+    const user = await this.getUserById(userId);
+
+    user.isInTrialPeriod = false;
+
+    await user.save();
+
     this.notify(userId, TRIAL_EXPIRED);
   }
 
