@@ -1,5 +1,6 @@
-const { NOTIFICATION, HANDLE_USER_TRIALS } = require('../constants/events');
+const { NOTIFICATION, HANDLE_USERS_TRIAL } = require('../constants/events');
 const SendNotificationEmail = require('./tasks/sendNotificationEmail');
+const HandleUsersTrial = require('./tasks/handleUsersTrial');
 
 module.exports = async ({ config, log: parentLog, db, Sentry }) => {
   const log = parentLog.create('processor');
@@ -10,8 +11,14 @@ module.exports = async ({ config, log: parentLog, db, Sentry }) => {
     db,
     Sentry,
   });
+  const handleUsersTrial = HandleUsersTrial({
+    config,
+    log,
+    db,
+    Sentry,
+  });
 
-  // listen for notifications
+  // listen for events
   db.on(NOTIFICATION, sendNotificationEmail);
-  db.on(HANDLE_USER_TRIALS, () => console.log('GOT IT! 123'));
+  db.on(HANDLE_USERS_TRIAL, handleUsersTrial);
 };

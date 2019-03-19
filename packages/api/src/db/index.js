@@ -24,6 +24,8 @@ const {
   DISABLED_2FA,
   SUPPORT_REQUEST,
   SUPPORT_REQUEST_CONFIRMATION,
+  TRIAL_EXPIRING,
+  TRIAL_EXPIRED,
 } = require('../constants/notifications');
 
 class Db extends EventEmitter {
@@ -51,6 +53,10 @@ class Db extends EventEmitter {
 
   async getUserById(id) {
     return User.findById(id).exec();
+  }
+
+  async getUsersInTrialPeriod() {
+    return User.find({ accountStatus: 'active', isInTrialPeriod: true }).exec();
   }
 
   async getUserProfile(userId, canViewPrivateFields = false) {
@@ -702,6 +708,14 @@ class Db extends EventEmitter {
       ticket_subject: subject,
       ticket_description: description,
     });
+  }
+
+  async userTrialExpiringWarning(userId) {
+    this.notify(userId, TRIAL_EXPIRING);
+  }
+
+  async userTrialExpired(userId) {
+    this.notify(userId, TRIAL_EXPIRED);
   }
 
   async notify(userId, type, variables) {

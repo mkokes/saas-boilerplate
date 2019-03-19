@@ -20,6 +20,7 @@ const env = envalid.cleanEnv(
       default: '',
     }),
     PRODUCT_NAME: str({ default: 'DCABot' }),
+    PRODUCT_FOUNDER_NAME: str({ default: 'Alfon' }),
     PRODUCT_APP_URL: str({ default: 'http://localhost:3000' }),
     PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
     COMPANY_NAME: str({ default: 'AMGA Ventures Inc.' }),

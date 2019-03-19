@@ -20,6 +20,7 @@ const {
 module.exports = ({
   config: {
     PRODUCT_NAME,
+    PRODUCT_FOUNDER_NAME,
     PRODUCT_APP_URL,
     PRODUCT_TRIAL_DAYS_LENGTH,
     COMPANY_NAME,
@@ -48,6 +49,7 @@ module.exports = ({
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
+    product_founder_name: PRODUCT_FOUNDER_NAME,
     product_name: PRODUCT_NAME,
     product_url: PRODUCT_APP_URL,
     support_url: `${PRODUCT_APP_URL}/contact-support`,
@@ -114,16 +116,12 @@ module.exports = ({
           templateModel.email = _user.email;
           break;
         case TRIAL_EXPIRING:
-          templateModel.name = _user.firstName;
           break;
         case TRIAL_EXPIRED:
-          templateModel.name = _user.firstName;
           break;
         case ENABLED_2FA:
-          templateModel.name = _user.firstName;
           break;
         case DISABLED_2FA:
-          templateModel.name = _user.firstName;
           break;
         case SUPPORT_REQUEST:
           targetEmail = SUPPORT_EMAIL;
