@@ -235,7 +235,11 @@ export default class BillingPage extends React.PureComponent {
                           if (!subscription) {
                             return (
                               <Alert
-                                color="warning"
+                                color={
+                                  userProfile.isInTrialPeriod
+                                    ? 'success'
+                                    : 'warning'
+                                }
                                 className="text-center"
                                 fade={false}
                               >
