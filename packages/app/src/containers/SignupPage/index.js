@@ -55,7 +55,6 @@ export default class SignupPage extends React.PureComponent {
   }
 
   async componentDidMount() {
-
     try {
       const response = await axios.get('https://ipinfo.io/ip');
       const { ip } = response;
