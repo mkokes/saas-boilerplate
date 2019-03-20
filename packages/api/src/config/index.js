@@ -25,7 +25,7 @@ const env = envalid.cleanEnv(
     PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
     COMPANY_NAME: str({ default: 'AMGA Ventures Inc.' }),
     LOG: str({ default: 'debug' }),
-    API_SECRET_KEY: str({ default: 'foo' }),
+    API_SECRET_KEY: str({ default: '' }),
     LOGDNA_API_KEY: str({ default: '' }),
     SENTRY_DSN: str({
       default: '',

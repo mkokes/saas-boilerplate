@@ -32,6 +32,7 @@ dokku config:set --no-restart api APP_MODE=live
 dokku config:set --no-restart api MONGO_URL=XXX
 dokku config:set --no-restart api RECAPTCHA_SECRET_KEY=XXX
 dokku config:set --no-restart api JWT_SECRET=XXX
+dokku config:set --no-restart api API_SECRET_KEY=XXX
 dokku config:set --no-restart api RECAPTCHA_SECRET_KEY=XXX
 dokku config:set --no-restart api PADDLE_VENDOR_ID=XXX
 dokku config:set --no-restart api PADDLE_VENDOR_AUTH_CODE=XXX
@@ -60,6 +61,7 @@ dokku config:set --no-restart api POSTMARK_API_TOKEN=XXX
 
   dokku config:set --no-restart scheduler NODE_ENV=production
   dokku config:set --no-restart scheduler APP_MODE=live
+  dokku config:set --no-restart api API_SECRET_KEY=XXX
 ```
 
 ## Adding a new application
