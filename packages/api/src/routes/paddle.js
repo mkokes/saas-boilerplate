@@ -18,7 +18,7 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
 -----END PUBLIC KEY-----`;
 
 module.exports = async ({ db, log: parentLog }) => {
-  const log = parentLog.create('paddle');
+  const log = parentLog.create('routes/paddle');
 
   const router = new Router();
   router.prefix('/paddle');

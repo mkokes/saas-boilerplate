@@ -3,7 +3,7 @@ const Router = require('koa-router');
 const { HANDLE_USERS_TRIAL } = require('../constants/events');
 
 module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog, db }) => {
-  const log = parentLog.create('api/private');
+  const log = parentLog.create('routes/private');
 
   const router = new Router();
   router.prefix('/private');
