@@ -53,7 +53,6 @@ const init = async () => {
     }),
   );
   server.use(async (ctx, nextHandler) => {
-    console.debug(JSON.stringify(ctx));
     ctx.res.statusCode = 200;
     await nextHandler();
   });

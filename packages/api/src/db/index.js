@@ -168,6 +168,7 @@ class Db extends EventEmitter {
     lastName,
     timezone,
     registrationSource,
+    registrationIP,
   ) {
     const fullNameInitials = `${firstName} ${lastName}`
       .split(/\s/)
@@ -209,6 +210,7 @@ class Db extends EventEmitter {
       trialPeriodEndsAt,
       trialDaysLength,
       registrationSource,
+      registrationIP,
     }).save();
 
     this.notify(user._id, VERIFY_EMAIL, {
@@ -220,6 +222,7 @@ class Db extends EventEmitter {
     this._mixpanel.people.set_once(user._id, {
       internal_id: user._id,
       $created: new Date(),
+      $ip: registrationIP,
     });
     this._mixpanel.people.set(user._id, {
       $email: user.email,

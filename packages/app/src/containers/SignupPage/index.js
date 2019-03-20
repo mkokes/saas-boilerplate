@@ -27,6 +27,7 @@ import { ApolloConsumer } from 'react-apollo';
 import Reaptcha from 'reaptcha';
 import MomentTimezone from 'moment-timezone';
 import queryString from 'query-string';
+import axios from 'axios';
 
 import { SignUpUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
@@ -47,9 +48,27 @@ export default class SignupPage extends React.PureComponent {
       signUpErrorMessage: '',
       alreadyTakenEmails: [],
       registrationSource: src,
+      registrationIP: '',
     };
 
     this.captcha = null;
+  }
+
+  async componentDidMount() {
+
+    try {
+      const response = await axios.get('https://ipinfo.io/ip');
+      const { ip } = response;
+
+      console.log(response);
+
+      this.setState({
+        registrationIP: ip,
+      });
+    } catch (e) {
+      /* eslint-disable-next-line */
+      console.debug('Unable to get user ip address from ipinfo.io', e);
+    }
   }
 
   resetCaptcha() {
@@ -64,6 +83,7 @@ export default class SignupPage extends React.PureComponent {
       signUpErrorMessage,
       alreadyTakenEmails,
       registrationSource,
+      registrationIP,
     } = this.state;
 
     return (
@@ -146,6 +166,7 @@ export default class SignupPage extends React.PureComponent {
                                         timezone: MomentTimezone.tz.guess(),
                                         recaptchaResponse,
                                         registrationSource,
+                                        registrationIP,
                                       },
                                     });
 

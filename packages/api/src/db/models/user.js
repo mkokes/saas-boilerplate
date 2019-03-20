@@ -137,6 +137,12 @@ const UserSchema = new mongoose.Schema({
   registrationSource: {
     type: String,
     default: null,
+    trim: true,
+  },
+  registrationIP: {
+    type: String,
+    default: null,
+    trim: true,
   },
 });
 
