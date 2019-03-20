@@ -63,7 +63,10 @@ module.exports = ({
       async () => {
         try {
           await notification
-            .populate('_user', 'email firstName timezone registeredAt')
+            .populate(
+              '_user',
+              'email firstName timezone trialDaysLength registeredAt',
+            )
             .execPopulate();
           const { _user } = notification;
 
@@ -87,7 +90,7 @@ module.exports = ({
               templateModel.login_url = `${PRODUCT_APP_URL}/auth/login`;
               templateModel.name = _user.firstName;
               templateModel.email = _user.email;
-              templateModel.trial_length = PRODUCT_TRIAL_DAYS_LENGTH;
+              templateModel.trial_length = _user.trialDaysLength;
               templateModel.trial_start_date = moment(
                 _user.registeredAt,
                 _user.timezone,
