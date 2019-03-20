@@ -57,13 +57,10 @@ export default class SignupPage extends React.PureComponent {
   async componentDidMount() {
     try {
       const response = await axios.get('https://ipinfo.io/ip');
-      const { ip } = response;
-
-      /* eslint-disable-next-line */
-      console.log(response);
+      const { data } = response;
 
       this.setState({
-        registrationIP: ip,
+        registrationIP: data,
       });
     } catch (e) {
       /* eslint-disable-next-line */
