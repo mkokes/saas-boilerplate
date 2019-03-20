@@ -195,15 +195,8 @@ module.exports = ({
       if (!validator.isLength(lastName, { min: 2, max: undefined })) {
         paramsValidationErrors.lastName = 'Too short!';
       }
-
-      console.log(registrationIP);
-
-      let isRegistrationIPValid = false;
-      if (registrationIP && validator.isIP(registrationIP)) {
-        isRegistrationIPValid = true;
-      }
-
-      console.log(isRegistrationIPValid);
+      /* if (registrationIP && validator.isIP(registrationIP)) {
+      } */
 
       if (Object.keys(paramsValidationErrors).length > 0) {
         throw new UserInputError('Failed to sign up due to validation errors', {
@@ -230,7 +223,7 @@ module.exports = ({
           lastName,
           timezone,
           registrationSource,
-          isRegistrationIPValid ? registrationIP : null,
+          registrationIP,
         );
 
         const accessToken = createAccessToken({
