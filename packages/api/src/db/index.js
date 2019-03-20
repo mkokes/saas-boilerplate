@@ -219,11 +219,16 @@ class Db extends EventEmitter {
       }`,
     });
 
-    this._mixpanel.people.set_once(user._id, {
-      internal_id: user._id,
-      $created: new Date(),
-      $ip: registrationIP,
-    });
+    this._mixpanel.people.set_once(
+      user._id,
+      {
+        internal_id: user._id,
+        $created: new Date(),
+      },
+      {
+        $ip: registrationIP,
+      },
+    );
     this._mixpanel.people.set(user._id, {
       $email: user.email,
       $first_name: user.firstName,
