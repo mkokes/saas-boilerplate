@@ -59,6 +59,7 @@ export default class SignupPage extends React.PureComponent {
       const response = await axios.get('https://ipinfo.io/ip');
       const { ip } = response;
 
+      /* eslint-disable-next-line */
       console.log(response);
 
       this.setState({
@@ -66,7 +67,7 @@ export default class SignupPage extends React.PureComponent {
       });
     } catch (e) {
       /* eslint-disable-next-line */
-      console.debug('Unable to get user ip address from ipinfo.io', e);
+      console.debug('Unable to get user IP address from ipinfo.io', e);
     }
   }
 
