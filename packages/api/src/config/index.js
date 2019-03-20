@@ -28,7 +28,7 @@ const env = envalid.cleanEnv(
     API_SECRET_KEY: str({ default: 'foo' }),
     LOGDNA_API_KEY: str({ default: '' }),
     SENTRY_DSN: str({
-      default: 'https://614c2c61a38141c584a4cc4e19a96f46@sentry.io/1385946',
+      default: '',
     }),
     GOOGLE_AUTHENTICATOR_DISPLAY_NAME: str({ default: 'BRAND_NAME' }),
     PADDLE_VENDOR_ID: str({ default: '' }),

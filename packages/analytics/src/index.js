@@ -5,7 +5,9 @@ const KoaRouter = require('koa-router');
 const globalTunnel = require('global-tunnel-ng');
 const Sentry = require('@sentry/node');
 
-const SENTRY_DSN = 'https://614c2c61a38141c584a4cc4e19a96f46@sentry.io/1385946';
+const { NODE_ENV, PROXY, HOST, PORT } = NODE_ENV;
+
+const SENTRY_DSN = NODE_ENV === 'production' ? '1' : 2;
 
 const MIXPANEL_API_URL = 'https://api.mixpanel.com';
 const MIXPANEL_JS_LIB_URL =
@@ -13,13 +15,9 @@ const MIXPANEL_JS_LIB_URL =
 
 const CODE_CACHE = new Map();
 
-const { PROXY } = process.env;
-const HOST = process.env.HOST || '0.0.0.0';
-const PORT = process.env.PORT || 3000;
-
 Sentry.init({
   dsn: SENTRY_DSN,
-  environment: process.env.NODE_ENV,
+  environment: NODE_ENV,
   serverName: 'Analytics proxy',
 });
 
@@ -83,7 +81,7 @@ const init = async () => {
   app.use(router.routes());
   app.use(router.allowedMethods());
 
-  app.listen(PORT, HOST, () => {
+  app.listen(PORT || '3000', HOST || '0.0.0.0', () => {
     console.log(`Listening on ${HOST}:${PORT}`);
   });
 };
