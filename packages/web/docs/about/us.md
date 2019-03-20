@@ -19,4 +19,4 @@ Samuel graduated from Washington & Lee University with a degree in Computer Scie
 
 ## Contact Us
 
-[info@domain.io](mailto:info@dcabot.io)
+[info@domain.io](mailto:info@amgaventures.io)
