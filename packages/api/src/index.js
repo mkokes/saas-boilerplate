@@ -16,6 +16,7 @@ const setupGraphQLEndpoint = require('./graphql');
 
 const init = async () => {
   const {
+    NODE_ENV,
     APP_MODE,
     SENTRY_DSN,
     SERVER_NAME,
@@ -28,7 +29,8 @@ const init = async () => {
 
   Sentry.init({
     dsn: SENTRY_DSN,
-    environment: APP_MODE,
+    environment: NODE_ENV,
+    appMode: APP_MODE,
     serverName: SERVER_NAME,
   });
 

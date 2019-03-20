@@ -8,13 +8,14 @@ const log = require('./log')(config);
 const createProcessor = require('./processor');
 
 const init = async () => {
-  const { APP_MODE, SENTRY_DSN, SERVER_NAME, PORT, HOST } = config;
+  const { NODE_ENV, APP_MODE, SENTRY_DSN, SERVER_NAME, PORT, HOST } = config;
 
   log.info(`App mode: ${APP_MODE}`);
 
   Sentry.init({
     dsn: SENTRY_DSN,
-    environment: APP_MODE,
+    environment: NODE_ENV,
+    appMode: APP_MODE,
     serverName: SERVER_NAME,
   });
 

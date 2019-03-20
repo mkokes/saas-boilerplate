@@ -1,3 +1,3 @@
 module.exports = {
-  API_URL: 'http://api.dcabot.io',
+  API_URL: 'https://api.dokku.amgaventures.com',
 };
