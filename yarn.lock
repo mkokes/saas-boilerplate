@@ -12963,9 +12963,9 @@ react-app-polyfill@^0.2.2:
     whatwg-fetch "3.0.0"
 
 react-confirm-alert@^2.0.7:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.3.0.tgz#c8a7282f06855235315840b72ed13374448161eb"
-  integrity sha512-4TWTzI0lx94eCJAnvFMF0ZUgCj680rxkL/0elIyB9uWXrrlKeZ4+84TMePKYWK9WZJIBKx5r87xfCk9c4Bx9Rg==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.4.0.tgz#347e9d007eff9fed128bc171460228346c4ae1f1"
+  integrity sha512-1rQR6TSFlchKPcNMlkH3G5HdMwBkjDRfe+yNl+bpu3KT0vygjBbe+lt4WtrwTNDv1NQyZ+mlnZOOMda3cN1Ymg==
 
 react-dev-utils@^5.0.2:
   version "5.0.3"
