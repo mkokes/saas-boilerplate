@@ -11,6 +11,11 @@ Dokku docs: <http://dokku.viewdocs.io/dokku>.
 
 ```bash
 dokku mongo:create db
+dokku mongo:expose db
+
+dokku mongo:connect-admin
+> use admin
+> db.createUser( { user: "user", pwd: "password", roles:["root"] })
 ```
 
 ## API
