@@ -78,7 +78,7 @@ module.exports = async ({ db, log: parentLog }) => {
     return next();
   };
 
-  router.post('/webhooks', paddleMiddleware, async ctx => {
+  router.post('/webhook', paddleMiddleware, async ctx => {
     const {
       alert_name: eventName,
       status,

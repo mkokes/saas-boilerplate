@@ -6,7 +6,7 @@ module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog, db }) => {
   const log = parentLog.create('api/private');
 
   const router = new Router();
-  router.prefix('/api/private');
+  router.prefix('/private');
 
   const authMiddleware = async (ctx, next) => {
     const { key } = ctx.request.body;
