@@ -29,6 +29,7 @@ module.exports = ({
     SUPPORT_EMAIL,
   },
   log: parentLog,
+  eventQueue,
   Sentry,
 }) => {
   const log = parentLog.create('sendNotificationEmail');
@@ -58,108 +59,113 @@ module.exports = ({
   };
 
   return async notification => {
-    try {
-      await notification
-        .populate('_user', 'email firstName timezone registeredAt')
-        .execPopulate();
-      const { _user } = notification;
+    eventQueue.add(
+      async () => {
+        try {
+          await notification
+            .populate('_user', 'email firstName timezone registeredAt')
+            .execPopulate();
+          const { _user } = notification;
 
-      const postmarkClient = new postmark.ServerClient(POSTMARK_API_TOKEN);
+          const postmarkClient = new postmark.ServerClient(POSTMARK_API_TOKEN);
 
-      const templateModel = {
-        ...POSTMARK_TEMPLATE_VALUES,
-        ...notification.variables,
-      };
+          const templateModel = {
+            ...POSTMARK_TEMPLATE_VALUES,
+            ...notification.variables,
+          };
 
-      let targetEmail = safeGet(_user, 'email');
-      let targetReplyTo = null;
-      /* eslint-disable default-case */
-      switch (notification.type) {
-        case VERIFY_EMAIL:
-          templateModel.action_url = notification.variables.action_url;
-          templateModel.name = _user.firstName;
-          break;
-        case WELCOME:
-          templateModel.action_url = `${PRODUCT_APP_URL}/dashboard`;
-          templateModel.login_url = `${PRODUCT_APP_URL}/auth/login`;
-          templateModel.name = _user.firstName;
-          templateModel.email = _user.email;
-          templateModel.trial_length = PRODUCT_TRIAL_DAYS_LENGTH;
-          templateModel.trial_start_date = moment(
-            _user.registeredAt,
-            _user.timezone,
-          ).format('LL');
+          let targetEmail = safeGet(_user, 'email');
+          let targetReplyTo = null;
+          /* eslint-disable default-case */
+          switch (notification.type) {
+            case VERIFY_EMAIL:
+              templateModel.action_url = notification.variables.action_url;
+              templateModel.name = _user.firstName;
+              break;
+            case WELCOME:
+              templateModel.action_url = `${PRODUCT_APP_URL}/dashboard`;
+              templateModel.login_url = `${PRODUCT_APP_URL}/auth/login`;
+              templateModel.name = _user.firstName;
+              templateModel.email = _user.email;
+              templateModel.trial_length = PRODUCT_TRIAL_DAYS_LENGTH;
+              templateModel.trial_start_date = moment(
+                _user.registeredAt,
+                _user.timezone,
+              ).format('LL');
 
-          /* eslint-disable no-case-declarations */
-          const trialEndDate = new Date(_user.registeredAt);
-          trialEndDate.setDate(
-            trialEndDate.getDate() + PRODUCT_TRIAL_DAYS_LENGTH,
-          );
-          templateModel.trial_end_date = moment(
-            trialEndDate,
-            _user.timezone,
-          ).format('LL');
-          break;
-        case FORGOT_PASSWORD:
-          templateModel.action_url = notification.variables.action_url;
-          templateModel.name = _user.firstName;
-          break;
-        case PASSWORD_RESETED:
-          templateModel.action_url = `${PRODUCT_APP_URL}/auth/reset-password`;
-          break;
-        case PASSWORD_CHANGED:
-          templateModel.action_url = `${PRODUCT_APP_URL}/auth/reset-password`;
-          break;
-        case EMAIL_CHANGED:
-          targetEmail = templateModel.old_email;
-          templateModel.name = _user.firstName;
-          templateModel.email = _user.email;
-          break;
-        case TRIAL_EXPIRING:
-          break;
-        case TRIAL_EXPIRED:
-          break;
-        case ENABLED_2FA:
-          break;
-        case DISABLED_2FA:
-          break;
-        case SUPPORT_REQUEST:
-          targetEmail = SUPPORT_EMAIL;
-          targetReplyTo = templateModel.requester_email;
-          break;
-        case SUPPORT_REQUEST_CONFIRMATION:
-          if (!targetEmail) {
-            targetEmail = templateModel.requester_email;
+              /* eslint-disable no-case-declarations */
+              const trialEndDate = new Date(_user.registeredAt);
+              trialEndDate.setDate(
+                trialEndDate.getDate() + PRODUCT_TRIAL_DAYS_LENGTH,
+              );
+              templateModel.trial_end_date = moment(
+                trialEndDate,
+                _user.timezone,
+              ).format('LL');
+              break;
+            case FORGOT_PASSWORD:
+              templateModel.action_url = notification.variables.action_url;
+              templateModel.name = _user.firstName;
+              break;
+            case PASSWORD_RESETED:
+              templateModel.action_url = `${PRODUCT_APP_URL}/auth/reset-password`;
+              break;
+            case PASSWORD_CHANGED:
+              templateModel.action_url = `${PRODUCT_APP_URL}/auth/reset-password`;
+              break;
+            case EMAIL_CHANGED:
+              targetEmail = templateModel.old_email;
+              templateModel.name = _user.firstName;
+              templateModel.email = _user.email;
+              break;
+            case TRIAL_EXPIRING:
+              break;
+            case TRIAL_EXPIRED:
+              break;
+            case ENABLED_2FA:
+              break;
+            case DISABLED_2FA:
+              break;
+            case SUPPORT_REQUEST:
+              targetEmail = SUPPORT_EMAIL;
+              targetReplyTo = templateModel.requester_email;
+              break;
+            case SUPPORT_REQUEST_CONFIRMATION:
+              if (!targetEmail) {
+                targetEmail = templateModel.requester_email;
+              }
+              targetReplyTo = SUPPORT_EMAIL;
+
+              break;
           }
-          targetReplyTo = SUPPORT_EMAIL;
 
-          break;
-      }
+          /* eslint-disable-next-line no-param-reassign */
+          notification.variables = templateModel;
+          await notification.save();
 
-      /* eslint-disable-next-line no-param-reassign */
-      notification.variables = templateModel;
-      await notification.save();
+          await postmarkClient.sendEmailWithTemplate({
+            TemplateId: POSTMARK_TEMPLATES_ID[notification.type],
+            From: POSTMARK_SENDER_EMAIL,
+            To: targetEmail,
+            ReplyTo: targetReplyTo,
+            TemplateModel: templateModel,
+            Metadata: {
+              notification_id: notification._id,
+              user_id: safeGet(_user, 'email'),
+            },
+            TrackOpens: true,
+            TrackLinks: 'TextOnly',
+          });
 
-      await postmarkClient.sendEmailWithTemplate({
-        TemplateId: POSTMARK_TEMPLATES_ID[notification.type],
-        From: POSTMARK_SENDER_EMAIL,
-        To: targetEmail,
-        ReplyTo: targetReplyTo,
-        TemplateModel: templateModel,
-        Metadata: {
-          notification_id: notification._id,
-          user_id: safeGet(_user, 'email'),
-        },
-        TrackOpens: true,
-        TrackLinks: 'TextOnly',
-      });
-
-      /* eslint-disable-next-line no-param-reassign */
-      notification.sent = true;
-      await notification.save();
-    } catch (err) {
-      log.error(err.message);
-      Sentry.captureException(new Error(err.message));
-    }
+          /* eslint-disable-next-line no-param-reassign */
+          notification.sent = true;
+          await notification.save();
+        } catch (err) {
+          log.error(err.message);
+          Sentry.captureException(new Error(err.message));
+        }
+      },
+      { name: 'sendNotificationEmail' },
+    );
   };
 };

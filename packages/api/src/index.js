@@ -6,6 +6,7 @@ const Sentry = require('@sentry/node');
 const Mixpanel = require('mixpanel');
 
 const config = require('./config');
+const setupEventQueue = require('./eventQueue');
 const log = require('./log')(config);
 const connectDb = require('./db');
 const createProcessor = require('./processor');
@@ -35,8 +36,9 @@ const init = async () => {
     protocol: 'https',
   });
   const db = await connectDb({ config, log, mixpanel });
+  const eventQueue = setupEventQueue({ log });
 
-  await createProcessor({ config, log, db, Sentry });
+  await createProcessor({ config, log, eventQueue, db, Sentry });
 
   const server = new Koa();
   const router = new Router();
