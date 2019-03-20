@@ -161,7 +161,14 @@ class Db extends EventEmitter {
     return user.comparePassword(password);
   }
 
-  async signUpUser(email, password, firstName, lastName, timezone) {
+  async signUpUser(
+    email,
+    password,
+    firstName,
+    lastName,
+    timezone,
+    registrationSource,
+  ) {
     const fullNameInitials = `${firstName} ${lastName}`
       .split(/\s/)
       /* eslint-disable-next-line */
@@ -173,10 +180,18 @@ class Db extends EventEmitter {
       nickname = `${nickname.substr(0, 13)}…`;
     }
 
+    let trialDaysLength;
+    switch (registrationSource) {
+      /* case 'facebook':
+        trialDaysLength = 30;
+        break; */
+      default:
+        trialDaysLength = this._config.PRODUCT_TRIAL_DAYS_LENGTH;
+        break;
+    }
+
     const trialPeriodEndsAt = new Date();
-    trialPeriodEndsAt.setDate(
-      trialPeriodEndsAt.getDate() + this._config.PRODUCT_TRIAL_DAYS_LENGTH,
-    );
+    trialPeriodEndsAt.setDate(trialPeriodEndsAt.getDate() + trialDaysLength);
 
     const user = await new User({
       email,
@@ -192,7 +207,8 @@ class Db extends EventEmitter {
         this._config.JWT_SECRET,
       ),
       trialPeriodEndsAt,
-      trialDaysLength: this._config.PRODUCT_TRIAL_DAYS_LENGTH,
+      trialDaysLength,
+      registrationSource,
     }).save();
 
     this.notify(user._id, VERIFY_EMAIL, {

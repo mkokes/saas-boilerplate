@@ -46,6 +46,7 @@ export default class SignupPage extends React.PureComponent {
       recaptchaRendered: false,
       signUpErrorMessage: '',
       alreadyTakenEmails: [],
+      registrationSource: src,
     };
 
     this.captcha = null;
@@ -62,6 +63,7 @@ export default class SignupPage extends React.PureComponent {
       recaptchaRendered,
       signUpErrorMessage,
       alreadyTakenEmails,
+      registrationSource,
     } = this.state;
 
     return (
@@ -143,6 +145,7 @@ export default class SignupPage extends React.PureComponent {
                                         ...values,
                                         timezone: MomentTimezone.tz.guess(),
                                         recaptchaResponse,
+                                        registrationSource,
                                       },
                                     });
 

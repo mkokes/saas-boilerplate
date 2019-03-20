@@ -121,7 +121,7 @@ export default function App() {
                       path="/confirm-email"
                       component={EmailConfirmationPage}
                       layout={TransactionalLayout}
-                      headerTitle="Confirm Your Email"
+                      headerTitle="Email address confirmation"
                     />
                     <Route
                       exact

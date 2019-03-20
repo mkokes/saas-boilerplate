@@ -134,6 +134,10 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  registrationSource: {
+    type: String,
+    default: null,
+  },
 });
 
 /**

@@ -158,7 +158,15 @@ module.exports = ({
     },
     signUpUser: async (
       _,
-      { recaptchaResponse, email, password, firstName, lastName, timezone },
+      {
+        recaptchaResponse,
+        email,
+        password,
+        firstName,
+        lastName,
+        timezone,
+        registrationSource,
+      },
     ) => {
       const paramsValidationErrors = {};
 
@@ -211,6 +219,7 @@ module.exports = ({
           firstName,
           lastName,
           timezone,
+          registrationSource,
         );
 
         const accessToken = createAccessToken({
