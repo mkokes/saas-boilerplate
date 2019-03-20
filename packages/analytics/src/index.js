@@ -5,7 +5,7 @@ const KoaRouter = require('koa-router');
 const globalTunnel = require('global-tunnel-ng');
 const Sentry = require('@sentry/node');
 
-const { NODE_ENV, PROXY, HOST, PORT } = NODE_ENV;
+const { NODE_ENV, PROXY, HOST, PORT } = process.env;
 
 const isProd = NODE_ENV === 'production';
 
