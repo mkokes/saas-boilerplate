@@ -59,10 +59,10 @@
     ✔ Req validation @done(19-03-17 23:05)
     ✔ Send e-mail to `support@domain.io`. @done(19-03-17 23:05)
   ✔ Add Dokku CHECKS HTTP endpoint `/health` @done(19-03-12 20:42) @lasted(27s)
-  ☐ Emails provider @today @started(19-03-18 19:25)
-    ☐ Templates
-      ☐ Trial expiring
-      ☐ Trial expired
+  ✔ Emails provider @today @started(19-03-18 19:25) @done(19-03-20 09:42) @lasted(1d14h17m14s)
+    ✔ Templates @done(19-03-20 09:42)
+      ✔ Trial expiring @done(19-03-20 09:42)
+      ✔ Trial expired @done(19-03-20 09:42)
 ✔ Analytics Server @done(18-12-28 05:33)
 ✔ Scheduler Server @done(19-02-03 22:11)
   ✔ Think about this.. how we are going to use it? @done(19-01-30 00:23)

@@ -6,6 +6,7 @@
 
 import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
 import {
   Container,
   Card,
@@ -25,6 +26,7 @@ import * as Yup from 'yup';
 import { ApolloConsumer } from 'react-apollo';
 import Reaptcha from 'reaptcha';
 import MomentTimezone from 'moment-timezone';
+import queryString from 'query-string';
 
 import { SignUpUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
@@ -34,6 +36,10 @@ import { GlobalConsumer } from 'GlobalState';
 export default class SignupPage extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    const { location } = props;
+    const urlParams = queryString.parse(location.search);
+    const { src } = urlParams;
 
     this.state = {
       recaptchaResponse: '',
@@ -304,3 +310,7 @@ export default class SignupPage extends React.PureComponent {
     );
   }
 }
+
+SignupPage.propTypes = {
+  location: PropTypes.object,
+};
