@@ -196,10 +196,14 @@ module.exports = ({
         paramsValidationErrors.lastName = 'Too short!';
       }
 
+      console.log(registrationIP);
+
       let isRegistrationIPValid = false;
       if (registrationIP && validator.isIP(registrationIP)) {
         isRegistrationIPValid = true;
       }
+
+      console.log(isRegistrationIPValid);
 
       if (Object.keys(paramsValidationErrors).length > 0) {
         throw new UserInputError('Failed to sign up due to validation errors', {
