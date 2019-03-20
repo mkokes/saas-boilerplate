@@ -22,7 +22,7 @@ const CODE_CACHE = new Map();
 Sentry.init({
   dsn: SENTRY_DSN,
   environment: NODE_ENV,
-  serverName: 'Analytics proxy',
+  serverName: 'Analytics',
 });
 
 if (PROXY) {
