@@ -32,7 +32,9 @@
     ✔ Confirm email page @done(19-01-29 16:36)
     ✔ Reset password page @done(19-01-29 16:36)
     ✔ Processing page @done(19-01-29 16:36)
-  ✔ Pricing page @done(19-01-28 22:59)
+  ☐ Pricing page
+    ☐ Dynamic header title
+      If user is logged then change it to 'Plans'
   ✔ Brand colors style @done(19-01-05 20:25)
   ✔ User Dashboard @done(19-01-28 13:17)
     ✔ Settings @done(19-01-27 23:17)
