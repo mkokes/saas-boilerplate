@@ -289,6 +289,13 @@ module.exports = ({
         throw logInErr;
       }
 
+      if (user.accountStatus !== 'active') {
+        throw new ApolloError(
+          'This account is blocked. Please contact support if you believe this is a mistake',
+          'ACCOUNT_BLOCKED',
+        );
+      }
+
       if (user.isTwoFactorAuthenticationEnabled) {
         const is2FAValid = await db.check2FAUser(user._id, token);
         if (!is2FAValid) {

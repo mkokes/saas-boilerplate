@@ -257,6 +257,9 @@ class Db extends EventEmitter {
     const user = await this._getUser(userId, { mustExist: true });
     const { passwordUpdatedAt } = user;
 
+    if (user.accountStatus !== 'active') {
+      throw new Error('user account status is not active');
+    }
     if (JWTiat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
       throw new Error('token iat must be greater than passwordUpdatedAt');
     }
