@@ -1,5 +1,13 @@
 ☐ Misc:
-  ✔ Create a new sandbox paddle.com account @today @done(19-03-13 21:20)
+  ☐ Mailchimp @today
+    https://github.com/thorning/node-mailchimp
+    https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members
+    ☐ Add user to list when:
+      ☐ Email confirmation after signup
+      ☐ Email change (only user preferences allows it)
+    ☐ Remove user from list when:
+      ☐ Change preferences to not receive news and announcements
+  ✔ Create a new sandbox paddle.com account @done(19-03-13 21:20)
   ✔ Do all src code @ todos @done(19-01-29 21:06)
   ✔ Add Sentry to frontend app and servers to track crashes/exceptions @done(19-02-03 23:35)
 ✔ Website @done(19-01-04 05:56)
@@ -54,12 +62,12 @@
   ✔ Tweak 2FA page @done(19-01-07 10:13) @lasted(15m12s)
   ✔ Refactor analytics to use GA @done(19-01-06 22:50)
   ✔ Fix login header UI @done(19-01-08 18:10)
-✔ API @done(19-01-07 22:43)
+☐ API
   ✔ Contact support @started(19-03-16 23:56) @done(19-03-17 23:05) @lasted(23h9m50s)
     ✔ Req validation @done(19-03-17 23:05)
     ✔ Send e-mail to `support@domain.io`. @done(19-03-17 23:05)
   ✔ Add Dokku CHECKS HTTP endpoint `/health` @done(19-03-12 20:42) @lasted(27s)
-  ✔ Emails provider @today @started(19-03-18 19:25) @done(19-03-20 09:42) @lasted(1d14h17m14s)
+  ✔ Emails provider @started(19-03-18 19:25) @done(19-03-20 09:42) @lasted(1d14h17m14s)
     ✔ Templates @done(19-03-20 09:42)
       ✔ Trial expiring @done(19-03-20 09:42)
       ✔ Trial expired @done(19-03-20 09:42)
