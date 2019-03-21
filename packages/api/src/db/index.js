@@ -798,7 +798,7 @@ class Db extends EventEmitter {
     this.notify(userId, TRIAL_EXPIRED);
   }
 
-  async setupSandbox() {
+  /* async sandboxFixtures() {
     await new Plan({
       _paddleProductId: '548124',
       name: 'Basic',
@@ -817,7 +817,7 @@ class Db extends EventEmitter {
       tier: 2,
       billingInterval: 'monthly',
     }).save();
-  }
+  } */
 
   async notify(userId, type, variables) {
     const notification = await new Notification({

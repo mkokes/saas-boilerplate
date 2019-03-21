@@ -42,7 +42,6 @@ const init = async () => {
   });
 
   const db = await connectDb({ config, log, mixpanel });
-  db.setupSandbox();
   const eventQueue = setupEventQueue({ log });
 
   await createProcessor({ config, log, eventQueue, db, mailchimp, Sentry });
