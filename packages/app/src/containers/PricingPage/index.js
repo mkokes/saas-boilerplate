@@ -30,7 +30,13 @@ export default class PricingPage extends React.PureComponent {
             <Fragment>
               <Container tag="main" className="text-center">
                 <h2 className="color-secondary-theme mb-4" style={{}}>
-                  Start with <strong>7-day free trial</strong>.
+                  {userProfile ? (
+                    <Fragment>Pack a plan that&apos;s right for you</Fragment>
+                  ) : (
+                    <Fragment>
+                      Start with <strong>7-day free trial</strong>.
+                    </Fragment>
+                  )}
                 </h2>
                 <div className="card-deck mb-3 text-center justify-content-center">
                   <SafeQuery

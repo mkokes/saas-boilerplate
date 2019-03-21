@@ -13,6 +13,7 @@ class Middleware extends React.PureComponent {
   render() {
     const { children, user, path, location } = this.props;
 
+    // If an authenticated user goes to an /auth route then redirect him.
     if (path) {
       if (path.indexOf('/auth') === 0) {
         let defaultRedirectTo = '/dashboard';
@@ -27,9 +28,13 @@ class Middleware extends React.PureComponent {
 
         if (user) return <Redirect to={defaultRedirectTo} />;
       }
+
+      // Authenticated users cannot go to signup page.
       if (path.indexOf('/signup') === 0) {
         if (user) return <Redirect to="/dashboard" />;
       }
+
+      // Users must verify his email address first before he can interact with dashboard pages
       if (path.indexOf('/dashboard') === 0) {
         const EMAIL_VERIFICATION_PATH = '/dashboard/email-verification';
 

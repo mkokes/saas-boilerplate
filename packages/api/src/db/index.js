@@ -11,6 +11,7 @@ const Payment = require('./models/payment');
 const Notification = require('./models/notification');
 const ResetPasswordToken = require('./models/resetPasswordToken');
 const SupportTicket = require('./models/supportTicket');
+
 const { NOTIFICATION, MANAGE_MAILCHIMP_LIST } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
@@ -792,6 +793,27 @@ class Db extends EventEmitter {
     await user.save();
 
     this.notify(userId, TRIAL_EXPIRED);
+  }
+
+  async setupSandbox() {
+    await new Plan({
+      _paddleProductId: '548124',
+      name: 'Basic',
+      description: 'This is the basic plan',
+      features: ['Wow', 'Amazing'],
+      price: 1,
+      tier: 1,
+      billingInterval: 'monthly',
+    }).save();
+    await new Plan({
+      _paddleProductId: '550286',
+      name: 'Pro',
+      description: 'This is the pro plan',
+      features: ['Wow', 'Amazing', 'Much better than basic'],
+      price: 2,
+      tier: 2,
+      billingInterval: 'monthly',
+    }).save();
   }
 
   async notify(userId, type, variables) {

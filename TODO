@@ -1,13 +1,13 @@
 ☐ Misc:
-  ☐ Mailchimp @today
+  ✔ Mailchimp @done(19-03-21 23:56)
     https://github.com/thorning/node-mailchimp
     https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members
-    ☐ Add user to list when:
-      ☐ Email is confirmed after signup
-    ☐ Update email address from list when:
-      ☐ User account email is changed
-    ☐ Remove user from list when:
-      ☐ User changes preferences to not receive news and announcements
+    ✔ Add user to list when: @done(19-03-21 23:56)
+      ✔ Email is confirmed after signup @done(19-03-21 23:56)
+    ✔ Update email address from list when: @done(19-03-21 23:56)
+      ✔ User account email is changed @done(19-03-21 23:56)
+    ✔ Remove user from list when: @done(19-03-21 23:56)
+      ✔ User changes preferences to not receive news and announcements @done(19-03-21 23:56)
   ✔ Create a new sandbox paddle.com account @done(19-03-13 21:20)
   ✔ Do all src code @ todos @done(19-01-29 21:06)
   ✔ Add Sentry to frontend app and servers to track crashes/exceptions @done(19-02-03 23:35)
@@ -32,8 +32,8 @@
     ✔ Confirm email page @done(19-01-29 16:36)
     ✔ Reset password page @done(19-01-29 16:36)
     ✔ Processing page @done(19-01-29 16:36)
-  ☐ Pricing page
-    ☐ Dynamic header title
+  ✔ Pricing page @started(19-03-21 23:56) @done(19-03-22 00:00) @lasted(4m55s)
+    ✔ Dynamic header title @done(19-03-22 00:00)
       If user is logged then change it to 'Plans'
   ✔ Brand colors style @done(19-01-05 20:25)
   ✔ User Dashboard @done(19-01-28 13:17)
