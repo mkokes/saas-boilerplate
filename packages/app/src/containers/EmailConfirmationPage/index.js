@@ -52,7 +52,7 @@ function EmailConfirmationPage(props) {
         <title>Email confirmation</title>
         <meta name="robots" content="noindex, follow" />
       </Helmet>
-      <Container tag="main">
+      <Container tag="main" style={{ marginBottom: '200px' }}>
         <Row>
           <Col md="12" className="text-center">
             {alertMessage ? (
