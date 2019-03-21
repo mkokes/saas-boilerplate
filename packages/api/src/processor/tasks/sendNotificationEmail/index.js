@@ -84,6 +84,10 @@ module.exports = ({
             case VERIFY_EMAIL:
               templateModel.action_url = notification.variables.action_url;
               templateModel.name = _user.firstName;
+
+              targetEmail =
+                safeGet(notification.variables, 'candidateEmail') ||
+                targetEmail;
               break;
             case WELCOME:
               templateModel.action_url = `${PRODUCT_APP_URL}/dashboard`;

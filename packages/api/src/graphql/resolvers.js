@@ -183,20 +183,22 @@ module.exports = ({
       if (validator.isEmpty(password)) {
         paramsValidationErrors.password = 'Password must be set';
       }
-      if (validator.isEmpty(firstName)) {
-        paramsValidationErrors.firstName = 'First name is required';
+      if (
+        typeof firstName !== 'string' ||
+        validator.isEmpty(firstName) ||
+        !/^[^0-9_]{2,48}$/.test(firstName)
+      ) {
+        paramsValidationErrors.firstName =
+          'First name must be between 2 and 48 characters and not contain numbers or underscores.';
       }
-      if (!validator.isLength(firstName, { min: 2, max: undefined })) {
-        paramsValidationErrors.firstName = 'Too short!';
+      if (
+        typeof lastName !== 'string' ||
+        validator.isEmpty(lastName) ||
+        !/^[^0-9_]{2,48}$/.test(lastName)
+      ) {
+        paramsValidationErrors.lastName =
+          'Last name must be between 2 and 48 characters and not contain numbers or underscores.';
       }
-      if (validator.isEmpty(lastName)) {
-        paramsValidationErrors.lastName = 'Last name is required';
-      }
-      if (!validator.isLength(lastName, { min: 2, max: undefined })) {
-        paramsValidationErrors.lastName = 'Too short!';
-      }
-      /* if (registrationIP && validator.isIP(registrationIP)) {
-      } */
 
       if (Object.keys(paramsValidationErrors).length > 0) {
         throw new UserInputError('Failed to sign up due to validation errors', {
@@ -575,7 +577,7 @@ module.exports = ({
 
       if (
         typeof firstName !== 'string' ||
-        !firstName ||
+        validator.isEmpty(firstName) ||
         !/^[^0-9_]{2,48}$/.test(firstName)
       ) {
         paramsValidationErrors.firstName =
@@ -583,7 +585,7 @@ module.exports = ({
       }
       if (
         typeof lastName !== 'string' ||
-        !lastName ||
+        validator.isEmpty(lastName) ||
         !/^[^0-9_]{2,48}$/.test(lastName)
       ) {
         paramsValidationErrors.lastName =

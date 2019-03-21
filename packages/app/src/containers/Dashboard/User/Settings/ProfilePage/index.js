@@ -418,7 +418,7 @@ export default class ProfilePage extends React.PureComponent {
                               toast.success(
                                 `We've sent an email to ${
                                   values.email
-                                } to confirm your email address. Click the link in that email to make the change effective.`,
+                                } to confirm your email address. Click on the link in that email to make the change effective.`,
                                 {
                                   position: toast.POSITION.TOP_CENTER,
                                   autoClose: 8000,

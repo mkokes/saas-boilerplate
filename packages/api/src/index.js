@@ -4,6 +4,7 @@ const cors = require('@koa/cors');
 const koaBody = require('koa-body');
 const Sentry = require('@sentry/node');
 const Mixpanel = require('mixpanel');
+const Mailchimp = require('mailchimp-api-v3');
 
 const config = require('./config');
 const setupEventQueue = require('./eventQueue');
@@ -20,7 +21,8 @@ const init = async () => {
     APP_MODE,
     SENTRY_DSN,
     SERVER_NAME,
-    MIXPANEL_TOKEN,
+    MIXPANEL_API_KEY,
+    MAILCHIMP_API_KEY,
     PORT,
     HOST,
   } = config;
@@ -34,13 +36,15 @@ const init = async () => {
     serverName: SERVER_NAME,
   });
 
-  const mixpanel = Mixpanel.init(MIXPANEL_TOKEN, {
+  const mailchimp = new Mailchimp(MAILCHIMP_API_KEY);
+  const mixpanel = Mixpanel.init(MIXPANEL_API_KEY, {
     protocol: 'https',
   });
+
   const db = await connectDb({ config, log, mixpanel });
   const eventQueue = setupEventQueue({ log });
 
-  await createProcessor({ config, log, eventQueue, db, Sentry });
+  await createProcessor({ config, log, eventQueue, db, mailchimp, Sentry });
 
   const server = new Koa();
   const router = new Router();

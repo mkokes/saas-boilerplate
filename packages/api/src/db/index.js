@@ -11,7 +11,7 @@ const Payment = require('./models/payment');
 const Notification = require('./models/notification');
 const ResetPasswordToken = require('./models/resetPasswordToken');
 const SupportTicket = require('./models/supportTicket');
-const { NOTIFICATION } = require('../constants/events');
+const { NOTIFICATION, MANAGE_MAILCHIMP_LIST } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
   VERIFY_EMAIL,
@@ -355,6 +355,7 @@ class Db extends EventEmitter {
     switch (decodedToken.type) {
       case 'signup':
         this.notify(user._id, WELCOME);
+        this.emit(MANAGE_MAILCHIMP_LIST, { user, actionType: 'ADD' });
         this._mixpanel.track('account email verification', {
           distinct_id: user._id,
           email: user.email,
@@ -363,6 +364,11 @@ class Db extends EventEmitter {
       case 'change':
         this.notify(user._id, EMAIL_CHANGED, {
           old_email: oldUserEmail,
+        });
+        this.emit(MANAGE_MAILCHIMP_LIST, {
+          user,
+          actionType: 'EMAIL_CHANGE',
+          oldEmail: oldUserEmail,
         });
         this._mixpanel.track('account email change', {
           distinct_id: user._id,
@@ -392,13 +398,13 @@ class Db extends EventEmitter {
     });
   }
 
-  async changeUserEmail(userId, newEmail) {
+  async changeUserEmail(userId, candidateEmail) {
     const user = await this._getUser(userId, true);
 
     user.emailConfirmationToken = jwt.sign(
       {
         type: 'change',
-        candidateEmail: newEmail,
+        candidateEmail,
       },
       this._config.JWT_SECRET,
     );
@@ -408,6 +414,7 @@ class Db extends EventEmitter {
       action_url: `${this._config.PRODUCT_APP_URL}/confirm-email?token=${
         user.emailConfirmationToken
       }`,
+      candidateEmail,
     });
   }
 
@@ -436,6 +443,11 @@ class Db extends EventEmitter {
     user.lastName = finalLastName;
     await user.save();
 
+    this.emit(MANAGE_MAILCHIMP_LIST, {
+      user,
+      actionType: 'UPDATE_MERGE_FIELDS',
+    });
+
     this._mixpanel.people.set(user._id, {
       $first_name: finalFirstName,
       $last_name: finalLastName,
@@ -448,7 +460,6 @@ class Db extends EventEmitter {
     const NOTIFICATIONS_KEYS = [MARKETING_INFO];
 
     const user = await this._getUser(userId, { mustExist: true });
-
     const { legal: existingLegal } = user;
 
     const existingLegalFiltered = existingLegal.filter(value => {
@@ -461,6 +472,23 @@ class Db extends EventEmitter {
     user.legal = finalLegal;
 
     await user.save();
+
+    const wasMarketingInfoAceptedBefore = existingLegal.find(
+      e => e.type === MARKETING_INFO,
+    );
+    const isMarketingInfoCurrentlyAcceptedNow = finalLegal.find(
+      e => e.type === MARKETING_INFO,
+    );
+    if (wasMarketingInfoAceptedBefore !== isMarketingInfoCurrentlyAcceptedNow) {
+      const mailchimpSubscriptionStatus = isMarketingInfoCurrentlyAcceptedNow
+        ? 'subscribed'
+        : 'unsubscribed';
+      this.emit(MANAGE_MAILCHIMP_LIST, {
+        user,
+        actionType: 'STATUS_CHANGE',
+        status: mailchimpSubscriptionStatus,
+      });
+    }
 
     return this.getUserProfile(userId, true);
   }
@@ -586,6 +614,18 @@ class Db extends EventEmitter {
       isInTrialPeriod: false, // suspend trial period if user decided to upgrade while trialing
     }).exec();
 
+    this.emit(MANAGE_MAILCHIMP_LIST, {
+      user: {
+        _id: userId,
+      },
+      actionType: 'UPDATE_TAGS',
+      tags: [
+        {
+          name: 'paying_subscription',
+          status: 'active',
+        },
+      ],
+    });
     this._mixpanel.people.set(userId, {
       internal_subscribed_plan_id: data._plan,
       trialing: false,
