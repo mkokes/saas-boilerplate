@@ -613,15 +613,13 @@ class Db extends EventEmitter {
       ...data,
     }).save();
 
-    await User.findByIdAndUpdate(userId, {
+    const user = await User.findByIdAndUpdate(userId, {
       _subscription: subscription._id,
       isInTrialPeriod: false, // suspend trial period if user decided to upgrade while trialing
     }).exec();
 
     this.emit(MANAGE_MAILCHIMP_LIST, {
-      user: {
-        _id: userId,
-      },
+      user,
       actionType: 'UPDATE_TAGS',
       tags: [
         {
