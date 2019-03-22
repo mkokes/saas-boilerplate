@@ -356,6 +356,7 @@ export default class BillingPage extends React.PureComponent {
                                           subscription.cancelURL,
                                         )
                                       }
+                                      color="link"
                                       size="sm"
                                       className="d-block text-muted"
                                     >
