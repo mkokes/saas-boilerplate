@@ -372,7 +372,7 @@ export default class BillingPage extends React.PureComponent {
                     </Fragment>
                   </Col>
                 </Row>
-                <legend>
+                <legend className="mt-3">
                   Plans{' '}
                   <NavLink to="/pricing" className="float-right">
                     <small>
@@ -404,7 +404,7 @@ export default class BillingPage extends React.PureComponent {
                     <Loader />
                   </Col>
                 </Row>
-                <legend>Receipts</legend>
+                <legend className="mt-3">Receipts</legend>
                 <Row>
                   <Col>
                     <SafeQuery
