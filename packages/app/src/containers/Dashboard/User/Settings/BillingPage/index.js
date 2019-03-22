@@ -283,11 +283,12 @@ export default class BillingPage extends React.PureComponent {
 
                               <Row>
                                 <Col sm="12" md="6">
-                                  <p>
+                                  <p className="mb-0">
                                     Current plan:{' '}
                                     <strong>{subscription._plan.name}</strong>
                                   </p>
                                   <p
+                                    className="mb-0"
                                     hidden={
                                       subscription.paymentStatus === 'active'
                                     }
@@ -301,7 +302,7 @@ export default class BillingPage extends React.PureComponent {
                                     </strong>
                                   </p>
                                   {subscription.paymentStatus === 'active' && (
-                                    <p>
+                                    <p className="mb-0">
                                       Next payment date at:{' '}
                                       <strong>
                                         <Moment
@@ -314,7 +315,7 @@ export default class BillingPage extends React.PureComponent {
                                     </p>
                                   )}
                                   {subscription.paymentStatus !== 'deleted' && (
-                                    <p>
+                                    <p className="mb-0">
                                       Required payment amount:{' '}
                                       <strong>
                                         ${subscription.unitPrice.toFixed(2)}
@@ -322,7 +323,7 @@ export default class BillingPage extends React.PureComponent {
                                     </p>
                                   )}
                                   {subscription.paymentStatus === 'deleted' && (
-                                    <p>
+                                    <p className="mb-0">
                                       Payment method status:{' '}
                                       <strong className="text-danger">
                                         Cancelled
