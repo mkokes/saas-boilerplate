@@ -714,7 +714,7 @@ class Db extends EventEmitter {
     });
   }
 
-  async receivedSubscriptionPayment(data) {
+  async subscriptionPaymentReceived(data) {
     const payment = await new Payment({
       ...data,
     }).save();

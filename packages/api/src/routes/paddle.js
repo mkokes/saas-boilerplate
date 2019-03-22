@@ -204,7 +204,7 @@ module.exports = async ({ db, log: parentLog }) => {
 
         const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
 
-        await db.receivedSubscriptionPayment({
+        await db.subscriptionPaymentReceived({
           _user: user._id,
           _plan: plan ? plan._id : null,
           _paddleSubscriptionId: paddleSubscriptionId,
