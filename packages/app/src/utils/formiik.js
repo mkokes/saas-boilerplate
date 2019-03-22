@@ -54,7 +54,7 @@ export const ReactstrapSelect = ({
             borderColor: touch && error ? '#dc3545' : provided.borderColor,
           }),
         }}
-        value={props.value}
+        value={typeof props.value === 'object' ? props.value : null}
         onChange={value => setFieldValue(fields.name, value)}
         onBlur={() => {
           setFieldTouched(fields.name, true);

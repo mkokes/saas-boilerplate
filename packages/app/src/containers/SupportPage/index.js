@@ -72,10 +72,9 @@ export default class SupportPage extends React.PureComponent {
       recaptchaResponse: '',
       recaptchaRendered: false,
       formMsg: null,
-      initialSubject: subject,
-      initialTicketType: this.TICKET_TYPE_OPTIONS.find(
-        e => e.value === ticketType,
-      ),
+      initialSubject: subject || '',
+      initialTicketType:
+        this.TICKET_TYPE_OPTIONS.find(e => e.value === ticketType) || null,
     };
 
     this.captcha = null;
