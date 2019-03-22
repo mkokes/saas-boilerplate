@@ -7,7 +7,14 @@
 import React, { Fragment } from 'react';
 // import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Container, Button } from 'reactstrap';
+import {
+  Container,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -29,9 +36,12 @@ export default class PricingPage extends React.PureComponent {
           {({ userProfile }) => (
             <Fragment>
               <Container tag="main" className="text-center">
-                <h2 className="color-secondary-theme mb-4" style={{}}>
+                <h2
+                  className="color-secondary-theme mb-4"
+                  style={{ marginTop: '-20px' }}
+                >
                   {userProfile ? (
-                    <Fragment>Pack a plan that&apos;s right for you</Fragment>
+                    <Fragment>Pick a plan that&apos;s right for you</Fragment>
                   ) : (
                     <Fragment>
                       Start with <strong>7-day free trial</strong>.
@@ -48,13 +58,13 @@ export default class PricingPage extends React.PureComponent {
                   >
                     {({ data: { plans } }) =>
                       plans.map(plan => (
-                        <div className="card mb-4 shadow-sm" key={plan._id}>
-                          <div className="card-header">
+                        <Card className="mb-4 shadow-sm" key={plan._id}>
+                          <CardHeader>
                             <h4 className="my-0 font-weight-normal">
                               {plan.name}
                             </h4>
-                          </div>
-                          <div className="card-body">
+                          </CardHeader>
+                          <CardBody>
                             <p className="lead mb-3">{plan.description}</p>
                             <h1 className="card-title pricing-card-title">
                               ${plan.price}{' '}
@@ -77,13 +87,15 @@ export default class PricingPage extends React.PureComponent {
                                 </li>
                               ))}
                             </ul>
+                          </CardBody>
+                          <CardFooter>
                             <Link to="/dashboard/settings/billing">
                               <Button size="lg" block className="btn-theme">
                                 Subscribe
                               </Button>
                             </Link>
-                          </div>
-                        </div>
+                          </CardFooter>
+                        </Card>
                       ))
                     }
                   </SafeQuery>
