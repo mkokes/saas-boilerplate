@@ -684,10 +684,23 @@ class Db extends EventEmitter {
         paymentStatus: 'deleted',
         cancelledAt: Date.now(),
       },
-    ).exec();
+    )
+      .populate('_user', '_id email')
+      .exec();
+    const { _user } = subscription;
 
+    this.emit(MANAGE_MAILCHIMP_LIST, {
+      user: _user,
+      actionType: 'UPDATE_TAGS',
+      tags: [
+        {
+          name: 'paying_subscription',
+          status: 'inactive',
+        },
+      ],
+    });
     this._mixpanel.people.set(
-      subscription._user,
+      _user._id,
       {
         internal_subscribed_plan_id: null,
       },
@@ -696,7 +709,7 @@ class Db extends EventEmitter {
       },
     );
     this._mixpanel.track('cancelled subscription plan', {
-      distinct_id: subscription._user,
+      distinct_id: _user._id,
       internal_plan_id: subscription._plan,
     });
   }
