@@ -287,7 +287,11 @@ export default class BillingPage extends React.PureComponent {
                                     Current plan:{' '}
                                     <strong>{subscription._plan.name}</strong>
                                   </p>
-                                  <p>
+                                  <p
+                                    hidden={
+                                      subscription.paymentStatus === 'active'
+                                    }
+                                  >
                                     Valid until:{' '}
                                     <strong>
                                       <Moment
