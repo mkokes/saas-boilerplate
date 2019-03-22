@@ -234,7 +234,7 @@ class Db extends EventEmitter {
       $email: user.email,
       $first_name: user.firstName,
       $last_name: user.lastName,
-      internal_subscribed_plan_id: null,
+      subscribed_plan_id: null,
       trialing: true,
     });
     this._mixpanel.track('sign up', {
@@ -629,12 +629,12 @@ class Db extends EventEmitter {
       ],
     });
     this._mixpanel.people.set(userId, {
-      internal_subscribed_plan_id: data._plan,
+      subscribed_plan_id: data._plan,
       trialing: false,
     });
     this._mixpanel.track('subscribed to a plan', {
       distinct_id: userId,
-      internal_plan_id: data._plan,
+      plan_id: data._plan,
     });
   }
 
@@ -662,7 +662,7 @@ class Db extends EventEmitter {
     this._mixpanel.people.set(
       subscription._user,
       {
-        internal_subscribed_plan_id: subscription._plan,
+        subscribed_plan_id: subscription._plan,
       },
       {
         $ignore_time: true,
@@ -702,7 +702,7 @@ class Db extends EventEmitter {
     this._mixpanel.people.set(
       _user._id,
       {
-        internal_subscribed_plan_id: null,
+        subscribed_plan_id: null,
       },
       {
         $ignore_time: true,
@@ -710,7 +710,7 @@ class Db extends EventEmitter {
     );
     this._mixpanel.track('cancelled subscription plan', {
       distinct_id: _user._id,
-      internal_plan_id: subscription._plan,
+      plan_id: subscription._plan,
     });
   }
 
@@ -722,8 +722,8 @@ class Db extends EventEmitter {
     this._mixpanel.people.track_charge(data._user, data.saleGross);
     this._mixpanel.track('subscription payment made', {
       distinct_id: data._user,
-      internal_payment_id: payment._id,
-      internal_plan_id: data._plan,
+      payment_id: payment._id,
+      plan_id: data._plan,
       amount: data.saleGross,
       method: data.paymentMethod,
       coupon: data.coupon,
@@ -746,8 +746,8 @@ class Db extends EventEmitter {
 
     this._mixpanel.track('subscription payment refunded', {
       distinct_id: data._user,
-      internal_payment_id: payment._user,
-      internal_plan_id: payment._plan,
+      payment_id: payment._user,
+      plan_id: payment._plan,
       amount: payment.saleGrossRefund,
     });
 
