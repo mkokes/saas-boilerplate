@@ -15,8 +15,8 @@
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
-  ☐ Login page
-    ☐ Show link to support for 2FA failed submission
+  ✔ Login page @done(19-03-22 23:48)
+    ✔ Show link to support for 2FA failed submission @done(19-03-22 23:48)
   ✔ Show trial end date in billing page @started(19-03-18 19:32) @done(19-03-18 20:13) @lasted(41m45s)
   ✔ Support page @started(19-03-16 22:50) @done(19-03-17 23:05) @lasted(1d15m47s)
     ✔ Add recaptcha @done(19-03-17 23:05)

@@ -178,13 +178,13 @@ export default class LoginPage extends React.PureComponent {
                                       autoComplete="off"
                                     />
                                     <Alert
-                                      hidden={show2FALostMsg}
-                                      color="info"
+                                      hidden={!show2FALostMsg}
+                                      color="warning"
                                       fade={false}
                                     >
                                       If you have lost your 2FA token, please
                                       open a{' '}
-                                      <Link to="/contact-support?subject=Lost%202FA&ticketType=LOST_2FA">
+                                      <Link to="/contact-support?subject=I%20lost%20my%202FA%20device&ticketType=LOST_2FA">
                                         support ticket
                                       </Link>
                                       .
