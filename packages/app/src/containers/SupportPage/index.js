@@ -5,7 +5,7 @@
  */
 
 import React, { Fragment } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import {
   Container,
@@ -26,6 +26,7 @@ import { ReactstrapInput, ReactstrapSelect } from 'utils/formiik';
 import { ApolloConsumer } from 'react-apollo';
 import Reaptcha from 'reaptcha';
 import _ from 'lodash';
+import queryString from 'query-string';
 
 import { GlobalConsumer } from 'GlobalState';
 import { ContactSupport } from 'graphql/mutations';
@@ -36,10 +37,45 @@ export default class SupportPage extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    const { location } = props;
+    const urlParams = queryString.parse(location.search);
+    const { subject, ticketType } = urlParams;
+
+    this.TICKET_TYPE_OPTIONS = [
+      {
+        label: 'Question',
+        value: 'QUESTION',
+      },
+      {
+        label: 'Incident',
+        value: 'INCIDENT',
+      },
+      {
+        label: 'Problem',
+        value: 'PROBLEM',
+      },
+      {
+        label: 'Feature Request',
+        value: 'FEATURE_REQUEST',
+      },
+      {
+        label: 'Bug Report',
+        value: 'BUG_REPORT',
+      },
+      {
+        label: 'Lost 2FA',
+        value: 'LOST_2FA',
+      },
+    ];
+
     this.state = {
       recaptchaResponse: '',
       recaptchaRendered: false,
       formMsg: null,
+      initialSubject: subject,
+      initialTicketType: this.TICKET_TYPE_OPTIONS.find((e) => {
+        return e.value === ticketType;
+      }),
     };
 
     this.captcha = null;
@@ -51,7 +87,13 @@ export default class SupportPage extends React.PureComponent {
   }
 
   render() {
-    const { recaptchaResponse, recaptchaRendered, formMsg } = this.state;
+    const {
+      recaptchaResponse,
+      recaptchaRendered,
+      formMsg,
+      initialSubject,
+      initialTicketType,
+    } = this.state;
 
     return (
       <Fragment>
@@ -96,9 +138,9 @@ export default class SupportPage extends React.PureComponent {
                                     requesterEmail: userProfile
                                       ? userProfile.email
                                       : '',
-                                    subject: '',
+                                    subject: initialSubject,
                                     description: '',
-                                    ticketType: null,
+                                    ticketType: initialTicketType,
                                   }}
                                   validationSchema={Yup.object().shape({
                                     requesterName: Yup.string().required(
@@ -211,32 +253,7 @@ export default class SupportPage extends React.PureComponent {
                                         component={ReactstrapSelect}
                                         name="ticketType"
                                         label="I have a..."
-                                        options={[
-                                          {
-                                            label: 'Question',
-                                            value: 'QUESTION',
-                                          },
-                                          {
-                                            label: 'Incident',
-                                            value: 'INCIDENT',
-                                          },
-                                          {
-                                            label: 'Problem',
-                                            value: 'PROBLEM',
-                                          },
-                                          {
-                                            label: 'Feature Request',
-                                            value: 'FEATURE_REQUEST',
-                                          },
-                                          {
-                                            label: 'Bug Report',
-                                            value: 'BUG_REPORT',
-                                          },
-                                          {
-                                            label: 'Lost 2FA',
-                                            value: 'LOST_2FA',
-                                          },
-                                        ]}
+                                        options={this.TICKET_TYPE_OPTIONS}
                                         value={values.ticketType}
                                         required
                                       />
@@ -319,4 +336,6 @@ export default class SupportPage extends React.PureComponent {
   }
 }
 
-SupportPage.propTypes = {};
+SupportPage.propTypes = {
+  location: PropTypes.object,
+};
