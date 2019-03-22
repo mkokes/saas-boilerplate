@@ -1780,14 +1780,14 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sentry/browser@4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.6.4.tgz#94e376be7bb313b6faf9e40950405897dd1c1605"
-  integrity sha512-w2ITpQbs2vTKS5vtPXDgeDyr+5C4lCnTXugJrqn8u8w/XaDb3vRogfMWpQcaUENllO5xdZSItSAAHsQucY/LvA==
+"@sentry/browser@4.6.5":
+  version "4.6.5"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.6.5.tgz#ecae280400117fef039db1b678e110a7d3e98a10"
+  integrity sha512-sIbEDTdZeRN+jzCEHGBOdidjSv+ZmJ9VPfek+bnP5FZNyUYfaZRrwWG0sJPPb8SlhSPUQXSI1t1saRhvd+Gs4A==
   dependencies:
-    "@sentry/core" "4.6.4"
+    "@sentry/core" "4.6.5"
     "@sentry/types" "4.5.3"
-    "@sentry/utils" "4.6.4"
+    "@sentry/utils" "4.6.5"
     tslib "^1.9.3"
 
 "@sentry/core@4.6.4":
@@ -1843,6 +1843,17 @@
   version "4.6.5"
   resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.6.5.tgz#64433d2c9fda69eedbb61855a7ff8905f7b19218"
   integrity sha512-tf+J+uUNmSgzC7d9JSN8Ekw1HeBAX87Efa/jyFbzLvaw80oibvTiLSLqDjQ9PgvyIzBUuuPImkS2NpvPQGWFtg==
+
+  dependencies:
+    "@sentry/hub" "4.6.5"
+    "@sentry/types" "4.5.3"
+    tslib "^1.9.3"
+
+"@sentry/node@4.6.4":
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-4.6.4.tgz#933c2e3ce93bc7861de6d4310ed1fe66f85da301"
+  integrity sha512-nfaLB+cE0dddjWD0yI0nB/UqXkPw/6FKDRpB1NZ61amAM4QRXa4hRTdHvqjUovzV/5/pVMQYsOyCk0pNWMtMUQ==
+
   dependencies:
     "@sentry/hub" "4.6.5"
     "@sentry/types" "4.5.3"
