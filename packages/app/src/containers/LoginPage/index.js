@@ -42,11 +42,12 @@ export default class LoginPage extends React.PureComponent {
 
     this.state = {
       loginErrorMessage: '',
+      show2FALostMsg: false,
     };
   }
 
   render() {
-    const { loginErrorMessage } = this.state;
+    const { loginErrorMessage, show2FALostMsg } = this.state;
 
     return (
       <GlobalConsumer>
@@ -93,6 +94,7 @@ export default class LoginPage extends React.PureComponent {
                                 onSubmit={async (values, formikBag) => {
                                   this.setState({
                                     loginErrorMessage: '',
+                                    show2FALostMsg: false,
                                   });
 
                                   try {
@@ -127,6 +129,9 @@ export default class LoginPage extends React.PureComponent {
                                             values.email,
                                           ],
                                         }));
+                                      }
+                                      if ('token' in err.data) {
+                                        this.setState({ show2FALostMsg: true });
                                       }
                                     } else {
                                       this.setState({
@@ -172,6 +177,18 @@ export default class LoginPage extends React.PureComponent {
                                       placeholder="Google Authenticator token"
                                       autoComplete="off"
                                     />
+                                    <Alert
+                                      hidden={show2FALostMsg}
+                                      color="info"
+                                      fade={false}
+                                    >
+                                      If you have lost your 2FA token, please
+                                      open a{' '}
+                                      <Link to="/contact-support?subject=Lost%202FA&ticketType=LOST_2FA">
+                                        support ticket
+                                      </Link>
+                                      .
+                                    </Alert>
                                     <div>
                                       <Button
                                         type="submit"
