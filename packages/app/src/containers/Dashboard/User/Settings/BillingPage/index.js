@@ -292,7 +292,7 @@ export default class BillingPage extends React.PureComponent {
                                       subscription.paymentStatus === 'active'
                                     }
                                   >
-                                    Valid until:{' '}
+                                    Access until:{' '}
                                     <strong>
                                       <Moment
                                         format="LL"

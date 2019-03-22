@@ -78,7 +78,7 @@ module.exports = ({
               );
               break;
             case 'UPDATE_TAGS':
-              await mailchimp.patch(
+              await mailchimp.post(
                 `/lists/${MAILCHIMP_LIST_ID}/members/${md5(email)}/tags`,
                 {
                   tags,
