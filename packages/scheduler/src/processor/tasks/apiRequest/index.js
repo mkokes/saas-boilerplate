@@ -8,7 +8,7 @@ module.exports = ({
   const log = parentLog.create('task/apiRequest');
 
   return async (method, url) => {
-    log.info(`Executing API request method: ${method} url: ${url}`);
+    log.info(`Executing API request method: "${method}" url: "${url}"`);
 
     try {
       await rp[method](`${API_URL}/private${url}`, {
