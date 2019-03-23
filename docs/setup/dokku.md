@@ -43,6 +43,8 @@ dokku config:set --no-restart api RECAPTCHA_SECRET_KEY=XXX
 dokku config:set --no-restart api PADDLE_VENDOR_ID=XXX
 dokku config:set --no-restart api PADDLE_VENDOR_AUTH_CODE=XXX
 dokku config:set --no-restart api POSTMARK_API_TOKEN=XXX
+dokku config:set --no-restart api PAPERTRAIL_APP_HOST=XXX
+dokku config:set --no-restart api PAPERTRAIL_APP_PORT=XXX
 ```
 
 ## Analytics
@@ -68,6 +70,8 @@ dokku config:set --no-restart api POSTMARK_API_TOKEN=XXX
   dokku config:set --no-restart scheduler NODE_ENV=production
   dokku config:set --no-restart scheduler APP_MODE=live
   dokku config:set --no-restart api API_SECRET_KEY=XXX
+  dokku config:set --no-restart api PAPERTRAIL_APP_HOST=XXX
+  dokku config:set --no-restart api PAPERTRAIL_APP_PORT=XXX
 ```
 
 ## Adding a new application
