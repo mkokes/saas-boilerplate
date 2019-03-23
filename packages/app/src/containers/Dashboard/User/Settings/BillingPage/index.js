@@ -88,7 +88,7 @@ export default class BillingPage extends React.PureComponent {
               })
             }
           >
-            Subscribe
+            <strong>Subscribe</strong>
           </Button>
         );
       }
@@ -192,10 +192,10 @@ export default class BillingPage extends React.PureComponent {
           key={plan._id}
           className="mt-2 mb-2 text-center text-md-left align-items-center"
         >
-          <Col xs="12" md="3">
+          <Col xs="12" md="3" style={{ fontSize: '20px' }}>
             <strong>{plan.name}</strong>
           </Col>
-          <Col xs="12" md="5">
+          <Col xs="12" md="5" style={{ fontSize: '19px' }}>
             ${plan.price.toFixed(2)}{' '}
             <span className="text-muted">/ {plan.billingInterval}</span>
           </Col>
