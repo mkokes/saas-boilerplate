@@ -6,6 +6,7 @@ Dokku docs: <http://dokku.viewdocs.io/dokku>.
 
 - `dokku-monorepo`: <https://github.com/notpushkin/dokku-monorepo>.
 - `dokku-mongo`: <https://github.com/dokku/dokku-mongo>.
+- `dokku-hostname`: <https://github.com/michaelshobbs/dokku-hostname>
 
 ## Create API DB
 
