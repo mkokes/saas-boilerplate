@@ -5,17 +5,19 @@ module.exports = ({
   config: { API_URL, API_SECRET_KEY },
   Sentry,
 }) => {
-  const log = parentLog.create('task/handleUsersTrial');
+  const log = parentLog.create('task/apiRequest');
 
-  return async () => {
+  return async (method, url) => {
     try {
-      await rp.post(`${API_URL}/api/private/handle-users-trial`, {
+      await rp[method](`${API_URL}/private${url}`, {
         form: { key: API_SECRET_KEY },
       });
       log.info('OK ✅');
     } catch (err) {
-      log.error(`Failed ❌: ${err.message}`);
-      Sentry.captureException(new Error(err.message));
+      log.error(`FAILED ❌`);
+      log.error(err);
+
+      Sentry.captureException(new Error(err));
     }
   };
 };
