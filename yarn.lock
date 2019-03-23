@@ -2357,10 +2357,6 @@ agent-base@4, agent-base@^4.1.0, agent-base@~4.2.0:
   dependencies:
     es6-promisify "^5.0.0"
 
-agentkeepalive@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/agentkeepalive/-/agentkeepalive-2.2.0.tgz#c5d1bd4b129008f1163f236f86e5faea2026e2ef"
-
 agentkeepalive@^3.4.1:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/agentkeepalive/-/agentkeepalive-3.5.2.tgz#a113924dd3fa24a0bc3b78108c450c2abee00f67"
@@ -2850,6 +2846,11 @@ asn1@~0.2.3:
   resolved "https://registry.yarnpkg.com/asn1/-/asn1-0.2.4.tgz#8d2475dfab553bb33e77b54e59e880bb8ce23136"
   dependencies:
     safer-buffer "~2.1.0"
+
+assert-plus@0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-0.1.5.tgz#ee74009413002d84cec7219c6ac811812e723160"
+  integrity sha1-7nQAlBMALYTOxyGcasgRgS5yMWA=
 
 assert-plus@1.0.0, assert-plus@^1.0.0:
   version "1.0.0"
@@ -3988,13 +3989,6 @@ buffer@^4.3.0:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-buffer@^5.0.6:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.2.1.tgz#dd57fa0f109ac59c602479044dca7b8b3d0b71d6"
-  dependencies:
-    base64-js "^1.0.2"
-    ieee754 "^1.1.4"
-
 builtin-modules@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-1.1.1.tgz#270f076c5a72c02f5b65a47df94c5fe3a278892f"
@@ -4006,6 +4000,14 @@ builtin-status-codes@^3.0.0:
 builtins@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
+
+bunyan-syslog@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/bunyan-syslog/-/bunyan-syslog-0.3.2.tgz#626c25f5da8b1a0f6a0230a0c9ce55345c38ecc1"
+  integrity sha512-K3sTccbeaDgqtLat9UImUyyJqLnOaGFyHXrfqOlR1Lr216oMjllPoa7Syp7hI+YP2xvEy51HmsTYyYb9Hs0NJA==
+  dependencies:
+    assert-plus "0.1.5"
+    nan "^2.10.0"
 
 bunyan@^1.8.12:
   version "1.8.12"
@@ -9772,7 +9774,7 @@ lodash.assignin@^4.0.9:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.assignin/-/lodash.assignin-4.2.0.tgz#ba8df5fb841eb0a3e8044232b0e263a8dc6a28a2"
 
-lodash.bind@^4.1.4, lodash.bind@^4.2.1:
+lodash.bind@^4.1.4:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/lodash.bind/-/lodash.bind-4.2.1.tgz#7ae3017e939622ac31b7d7d7dcb1b34db1690d35"
 
@@ -9800,7 +9802,7 @@ lodash.flatten@^4.2.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
 
-lodash.foreach@^4.1.0, lodash.foreach@^4.3.0, lodash.foreach@^4.5.0:
+lodash.foreach@^4.1.0, lodash.foreach@^4.3.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.foreach/-/lodash.foreach-4.5.0.tgz#1a6a35eace401280c7f06dddec35165ab27e3e53"
 
@@ -9945,25 +9947,6 @@ logalot@^2.0.0:
   dependencies:
     figures "^1.3.5"
     squeak "^1.0.0"
-
-logdna-bunyan@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/logdna-bunyan/-/logdna-bunyan-1.0.1.tgz#178f6a09f18f88df52ddd12cc1fb682ebe8c4fb1"
-  dependencies:
-    logdna "^2.0.0"
-
-logdna@^2.0.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/logdna/-/logdna-2.1.1.tgz#6f8efa33daf667b49a12bf9d161c25773c1c72e8"
-  dependencies:
-    agentkeepalive "^2.2.0"
-    json-stringify-safe "^5.0.1"
-    lodash.bind "^4.2.1"
-    lodash.foreach "^4.5.0"
-    lodash.isequal "^4.5.0"
-    object-sizeof "^1.0.10"
-    request "^2.73.0"
-    valid-url "^1.0.9"
 
 loglevel@^1.4.1:
   version "1.6.1"
@@ -11031,12 +11014,6 @@ object-keys@^1.0.11, object-keys@^1.0.12:
 object-path@^0.11.4:
   version "0.11.4"
   resolved "https://registry.yarnpkg.com/object-path/-/object-path-0.11.4.tgz#370ae752fbf37de3ea70a861c23bba8915691949"
-
-object-sizeof@^1.0.10:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/object-sizeof/-/object-sizeof-1.3.0.tgz#1f0bdcd911556b51520a721f3e8d00aab2f9ba57"
-  dependencies:
-    buffer "^5.0.6"
 
 object-visit@^1.0.0:
   version "1.0.1"
@@ -13691,7 +13668,7 @@ request-promise@^4.2.2:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request@^2.53.0, request@^2.73.0, request@^2.87.0, request@^2.88.0:
+request@^2.53.0, request@^2.87.0, request@^2.88.0:
   version "2.88.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
   dependencies:
@@ -15634,10 +15611,6 @@ v8flags@^2.0.10:
   resolved "https://registry.yarnpkg.com/v8flags/-/v8flags-2.1.1.tgz#aab1a1fa30d45f88dd321148875ac02c0b55e5b4"
   dependencies:
     user-home "^1.1.1"
-
-valid-url@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/valid-url/-/valid-url-1.0.9.tgz#1c14479b40f1397a75782f115e4086447433a200"
 
 validate-npm-package-license@^3.0.1, validate-npm-package-license@^3.0.3:
   version "3.0.4"

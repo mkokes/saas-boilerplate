@@ -24,9 +24,9 @@ const env = envalid.cleanEnv(
     PRODUCT_APP_URL: str({ default: '' }),
     PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
     COMPANY_NAME: str({ default: 'AMGA Ventures Inc.' }),
-    LOG: str({ default: 'debug' }),
+    PAPERTRAILAPP_HOST: str({ default: '' }),
+    PAPERTRAILAPP_PORT: num({ default: null }),
     API_SECRET_KEY: str({ default: '' }),
-    LOGDNA_API_KEY: str({ default: '' }),
     SENTRY_DSN: str({
       default: '',
     }),

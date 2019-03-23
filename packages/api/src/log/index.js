@@ -1,5 +1,5 @@
 const bunyan = require('bunyan');
-const { BunyanStream: LogDnaStream } = require('logdna-bunyan');
+const bsyslog = require('bunyan-syslog');
 
 class Log {
   constructor(opts) {
@@ -27,29 +27,39 @@ class Log {
 }
 
 module.exports = config => {
-  const streams = [];
-  const inTestMode = config.APP_MODE === 'test';
+  const {
+    APP_MODE,
+    PAPERTRAILAPP_HOST,
+    PAPERTRAILAPP_PORT,
+    SERVER_NAME,
+  } = config;
 
-  if (config.LOGDNA_API_KEY && !inTestMode) {
+  const streams = [];
+
+  const inTestMode = APP_MODE === 'test';
+  const isPapertrailappSetup = PAPERTRAILAPP_HOST && PAPERTRAILAPP_PORT;
+
+  if (isPapertrailappSetup && !inTestMode) {
     streams.push({
       type: 'raw',
-      level: config.LOG,
-      stream: new LogDnaStream({
-        key: config.LOGDNA_API_KEY,
-        hostname: config.SERVER_NAME,
-        env: config.APP_MODE,
+      level: 'debug',
+      stream: bsyslog.createBunyanStream({
+        // type: 'sys',
+        facility: bsyslog.local0,
+        host: PAPERTRAILAPP_HOST,
+        port: PAPERTRAILAPP_PORT,
       }),
     });
   }
 
   /* eslint-disable indent */
   return new Log({
-    name: 'root',
+    name: SERVER_NAME,
     streams: inTestMode
       ? []
       : [
           {
-            level: config.LOG,
+            level: 'debug',
             stream: process.stdout,
           },
           ...streams,
@@ -57,6 +67,6 @@ module.exports = config => {
     serializers: {
       err: bunyan.stdSerializers.err,
     },
-    appMode: config.APP_MODE,
+    appMode: APP_MODE,
   });
 };
