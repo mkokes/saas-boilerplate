@@ -145,6 +145,7 @@ export default function App() {
                       component={ResetPasswordPage}
                       layout={TransactionalLayout}
                       headerTitle="Reset Password"
+                      marginTop="-15em"
                     />
                     <Route
                       protected
