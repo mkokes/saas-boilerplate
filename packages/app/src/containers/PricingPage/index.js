@@ -91,7 +91,7 @@ export default class PricingPage extends React.PureComponent {
                           <CardFooter>
                             <Link to="/dashboard/settings/billing">
                               <Button size="lg" block className="btn-theme">
-                                Subscribe
+                                {userProfile ? 'SUBSCRIBE' : 'START TRIAL'}
                               </Button>
                             </Link>
                           </CardFooter>
