@@ -1,6 +1,6 @@
 ---
 id: faq
-title: Frequently asked questions
+title: Frequently asked questions (FAQ)
 ---
 
 ## How to view comments on videos

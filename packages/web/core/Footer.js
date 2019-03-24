@@ -40,6 +40,7 @@ class Footer extends React.Component {
             <a href={`${this.props.config.appUrl}/pricing`}>Pricing</a>
             <a href={this.props.config.changelogUrl}>Changelog</a>
             <a href={this.docUrl('api/information')}>API</a>
+            <a href={this.props.config.statusUrl}>Status Page</a>
           </div>
 
           <div>
@@ -50,8 +51,8 @@ class Footer extends React.Component {
           </div>
           <div>
             <h5>Help</h5>
+            <a href={this.docUrl('faq')}>FAQ</a>
             <a href={this.props.config.supportUrl}>Support</a>
-            <a href={this.props.config.statusUrl}>Status Page</a>
             <a href={`mailto:${this.props.config.emailContact}`}>
               Email Contact
             </a>

@@ -24,7 +24,7 @@ const siteConfig = {
     secondaryColor: '#40216F',
     accentColor: '#717171',
   },
-  copyright: `Copyright © ${new Date().getFullYear()} Brand name`,
+  copyright: `Copyright © ${new Date().getFullYear()} Brand name.`,
   highlight: {
     theme: 'default',
   },
