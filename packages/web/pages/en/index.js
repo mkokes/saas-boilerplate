@@ -24,10 +24,10 @@ class HomeSplash extends React.Component {
 
     const ProjectTitle = () => (
       <div className="projectTitleWrapper">
-        <h2 className="projectTitle">
+        <h1 className="projectTitle">
           Fast and Open Source
           <small>Data storage for React Native</small>
-        </h2>
+        </h1>
       </div>
     );
 

@@ -3,6 +3,10 @@
   display: block !important;
 }
 
+.projectTitle > small {
+  font-weight: 600;
+}
+
 .productShowcaseSection {
   padding-bottom: 0px !important;
 }
