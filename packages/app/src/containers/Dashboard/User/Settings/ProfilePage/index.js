@@ -81,6 +81,7 @@ export default class ProfilePage extends React.PureComponent {
                           src={`data:image/svg+xml;base64,${
                             userProfile.avatar
                           }`}
+                          className="mb-2"
                         />
                       </Col>
                       <Col xs="auto">
