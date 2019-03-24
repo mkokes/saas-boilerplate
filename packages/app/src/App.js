@@ -122,6 +122,7 @@ export default function App() {
                       component={EmailConfirmationPage}
                       layout={TransactionalLayout}
                       headerTitle="Email address confirmation"
+                      marginTop="-15em"
                     />
                     <Route
                       exact
