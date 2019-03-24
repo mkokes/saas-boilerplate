@@ -1,10 +1,10 @@
-const { APP_URL } = process.env;
+const { WEB_URL, APP_URL } = process.env;
 
 const siteConfig = {
   customDocsPath: 'web/docs',
   title: 'ACME',
   tagline: 'Tagline',
-  url: 'https://domain.io',
+  url: WEB_URL,
   baseUrl: '/',
   appUrl: APP_URL,
   docsUrl: '',
@@ -32,6 +32,7 @@ const siteConfig = {
   onPageNav: 'separate',
   cleanUrl: true,
   ogImage: 'img/docusaurus.png',
+  twitter: true,
   twitterImage: 'img/docusaurus.png',
   twitterUsername: '@demo',
   changelogUrl: 'https://changelog.domain.io',

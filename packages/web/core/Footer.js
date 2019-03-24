@@ -60,10 +60,12 @@ class Footer extends React.Component {
           <div>
             <h5>Social</h5>
             <a href="/blog/">{this.props.config.title} Blog</a>
+
             <a
               href={`https://twitter.com/${this.props.config.twitterUsername}`}
+              className="twitter-follow-button"
             >
-              Twitter
+              Follow @{this.props.config.twitterUsername}
             </a>
           </div>
         </section>
