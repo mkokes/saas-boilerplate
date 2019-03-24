@@ -39,7 +39,7 @@ class Footer extends React.Component {
             <h5>Product</h5>
             <a href={`${this.props.config.appUrl}/pricing`}>Pricing</a>
             <a href={this.props.config.changelogUrl}>Changelog</a>
-            <a href={this.props.config.statusUrl}>Status Page</a>
+            <a href={this.docUrl('api/information')}>API</a>
           </div>
 
           <div>
@@ -49,9 +49,9 @@ class Footer extends React.Component {
             <a href={this.docUrl('legal/terms-service')}>Terms of Service</a>
           </div>
           <div>
-            <h5>Resources</h5>
-            <a href={this.docUrl('api/information')}>API</a>
+            <h5>Help</h5>
             <a href={this.props.config.supportUrl}>Support</a>
+            <a href={this.props.config.statusUrl}>Status Page</a>
             <a href={`mailto:${this.props.config.emailContact}`}>
               Email Contact
             </a>

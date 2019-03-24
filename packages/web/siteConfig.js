@@ -13,6 +13,7 @@ const siteConfig = {
   headerLinks: [
     { href: `${APP_URL}/auth/login`, label: 'Log in' },
     { href: `${APP_URL}/signup`, label: 'Get started' },
+    { href: `${APP_URL}/pricing`, label: 'Pricing' },
     { blog: true, label: 'Blog' },
   ],
   headerIcon: 'img/logo.png',
