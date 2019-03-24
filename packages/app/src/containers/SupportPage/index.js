@@ -315,7 +315,7 @@ export default class SupportPage extends React.PureComponent {
                         </Row>
                       </CardBody>
                     </Card>
-                    <div className="mt-5 text-center">
+                    <div className="mt-5 mb-5 text-center">
                       {userProfile ? (
                         <Link to="/dashboard">Return to the dashboard</Link>
                       ) : (

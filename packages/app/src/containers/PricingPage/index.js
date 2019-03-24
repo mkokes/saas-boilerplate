@@ -100,7 +100,7 @@ export default class PricingPage extends React.PureComponent {
                     }
                   </SafeQuery>
                 </div>
-                <div className="mt-5 text-center text-muted">
+                <div className="mt-5 mb-5 text-center text-muted">
                   {userProfile ? (
                     <Link to="/dashboard/settings/billing">
                       Return to the billing page
