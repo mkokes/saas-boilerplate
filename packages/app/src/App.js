@@ -135,6 +135,7 @@ export default function App() {
                       path="/auth/forgot-password"
                       component={ForgotPasswordPage}
                       layout={TransactionalLayout}
+                      marginTop="-15em"
                     />
                     <Route
                       exact

@@ -12,11 +12,14 @@ const BaseLayoutContainer = styled.div`
 
 const DefaultLayout = ({ children }) => <BaseLayout>{children}</BaseLayout>;
 
-const TransactionalLayout = ({ headerTitle, children }) => (
+const TransactionalLayout = ({ headerTitle, marginTop, children }) => (
   <BaseLayout>
     <div
       className="pb-4 text-center"
-      style={{ marginBottom: !headerTitle ? '1em' : '' }}
+      style={{
+        marginTop: marginTop || '',
+        marginBottom: !headerTitle ? '1em' : '',
+      }}
     >
       <a href={process.env.REACT_APP_WEBSITE_URL}>
         <img src="/logo.png" alt="brand logo" width="112" height="112" />
@@ -87,6 +90,7 @@ DefaultLayout.propTypes = {
 TransactionalLayout.propTypes = {
   children: PropTypes.node,
   headerTitle: PropTypes.string,
+  marginTop: PropTypes.string,
 };
 
 BaseLayout.propTypes = {
