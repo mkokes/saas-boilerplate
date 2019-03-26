@@ -10451,9 +10451,9 @@ mixin-object@^2.0.1:
     is-extendable "^0.1.1"
 
 mixpanel@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/mixpanel/-/mixpanel-0.10.1.tgz#0845390cea3768f53dc8dd0cda80edbce571fc10"
-  integrity sha512-jP2z5mxsewcHHtx5ZPrDf7U/ERPKyNTbpjGN5fdUPxDQk8C7+XoDO5SYZgBUtQ8SqEjZ+Yvw9lot3ec++EaYGA==
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/mixpanel/-/mixpanel-0.10.2.tgz#10ff6cd76034b262d469094ad3d8c99039345376"
+  integrity sha512-+zbBQGd/Q5LLRooqJ2iyEDzKz2/ly4TipH5tE9te0BDMJpROxUMGffPulyHbh4FtMcbJuPmIUSIfy//JhhnlnA==
   dependencies:
     https-proxy-agent "2.2.1"
 
