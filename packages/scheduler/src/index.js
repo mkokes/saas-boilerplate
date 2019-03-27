@@ -46,7 +46,6 @@ const init = async () => {
       throw err;
     }
 
-    /* eslint-disable-next-line */
     log.info(`Listening on ${HOST}:${PORT}`);
   });
 };
