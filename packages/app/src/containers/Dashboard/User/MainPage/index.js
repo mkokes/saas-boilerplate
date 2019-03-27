@@ -8,6 +8,8 @@ import React, { Fragment } from 'react';
 import { Container, Alert } from 'reactstrap';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCreditCard } from '@fortawesome/free-regular-svg-icons';
 
 import { GlobalConsumer } from 'GlobalState';
 
@@ -24,6 +26,11 @@ export default class MainPage extends React.PureComponent {
             <Container tag="main">
               <Alert color="warning" fade={false} className="text-center">
                 <strong>
+                  <FontAwesomeIcon
+                    icon={faCreditCard}
+                    className="mr-2"
+                    size="lg"
+                  />
                   Please{' '}
                   <Link
                     to="/dashboard/settings/billing"
