@@ -1,6 +1,6 @@
 const envalid = require('envalid');
 
-const { str, num, bool } = envalid;
+const { str, num } = envalid;
 
 const env = envalid.cleanEnv(
   process.env,
