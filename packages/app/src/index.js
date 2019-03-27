@@ -41,7 +41,7 @@ Sentry.init({
   environment: process.env.NODE_ENV,
 });
 
-const MAINTENANCE_MODE = false;
+const MAINTENANCE_MODE = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
 
 if (!MAINTENANCE_MODE) {
   MomentTimezone.tz.setDefault('America/Los_Angeles');
