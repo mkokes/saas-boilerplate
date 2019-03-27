@@ -3,7 +3,7 @@ const { ApolloServer } = require('apollo-server-koa');
 const schema = require('./schema');
 const createResolvers = require('./resolvers');
 
-module.exports = ({ config, db, server: app, log: parentLog, mixpanel }) => {
+module.exports = ({ config, db, app, log: parentLog, mixpanel }) => {
   const { APP_MODE } = config;
 
   const log = parentLog.create('graphql');

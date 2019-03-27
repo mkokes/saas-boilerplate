@@ -25,6 +25,7 @@ const init = async () => {
     MAILCHIMP_API_KEY,
     PORT,
     HOST,
+    MAINTENANCE,
   } = config;
 
   log.info(`App mode: ${APP_MODE}`);
@@ -46,31 +47,39 @@ const init = async () => {
 
   await createProcessor({ config, log, eventQueue, db, mailchimp, Sentry });
 
-  const server = new Koa();
-  const router = new Router();
+  const app = new Koa();
 
-  server.use(koaBody());
-  server.use(
+  app.use(
     cors({
       origin: '*',
       credentials: true,
     }),
   );
-  server.use(async (ctx, nextHandler) => {
+  app.use(koaBody());
+
+  if (MAINTENANCE) {
+    log.info('Maintenance mode enabled');
+    app.use(async ctx => {
+      ctx.res.statusCode = 503;
+    });
+  }
+
+  app.use(async (ctx, nextHandler) => {
     ctx.res.statusCode = 200;
     await nextHandler();
   });
 
-  setupRoutes({ config, db, server, log });
-  setupAuthMiddleware({ config, db, server });
-  setupGraphQLEndpoint({ config, db, server, log, mixpanel });
+  setupRoutes({ config, db, app, log });
+  setupAuthMiddleware({ config, db, app });
+  setupGraphQLEndpoint({ config, db, app, log, mixpanel });
 
+  const router = new Router();
   router.get('/health', ctx => {
     ctx.status = 200;
   });
 
-  server.use(router.routes());
-  server.listen(PORT, HOST, err => {
+  app.use(router.routes());
+  app.listen(PORT, HOST, err => {
     if (err) {
       throw err;
     }

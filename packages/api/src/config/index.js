@@ -10,7 +10,7 @@ const env = envalid.cleanEnv(
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     SERVER_NAME: str({ default: 'API' }),
-    MAINTENANCE: bool({ default: false }),
+    MAINTENANCE: bool({ default: true }),
     MONGO_URL: str({
       default: '',
     }),

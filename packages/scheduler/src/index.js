@@ -21,17 +21,17 @@ const init = async () => {
 
   await createProcessor({ config, log, Sentry });
 
-  const server = new Koa();
+  const app = new Koa();
   const router = new Router();
 
-  server.use(
+  app.use(
     cors({
       origin: '*',
       credentials: true,
     }),
   );
 
-  server.use(async (ctx, nextHandler) => {
+  app.use(async (ctx, nextHandler) => {
     ctx.res.statusCode = 200;
     await nextHandler();
   });
@@ -40,8 +40,8 @@ const init = async () => {
     ctx.status = 200;
   });
 
-  server.use(router.routes());
-  server.listen(PORT, HOST, err => {
+  app.use(router.routes());
+  app.listen(PORT, HOST, err => {
     if (err) {
       throw err;
     }

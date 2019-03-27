@@ -1,14 +1,14 @@
 const setupApiPrivateRouting = require('./private');
 const setupPaddleRouting = require('./paddle');
 
-module.exports = async ({ config, db, server, log }) => {
+module.exports = async ({ config, db, app, log }) => {
   const apiPrivateRouter = await setupApiPrivateRouting({
     config,
     db,
     log,
   });
-  const paddleRouter = await setupPaddleRouting({ db, log, server });
+  const paddleRouter = await setupPaddleRouting({ db, log, app });
 
-  server.use(apiPrivateRouter.routes());
-  server.use(paddleRouter.routes());
+  app.use(apiPrivateRouter.routes());
+  app.use(paddleRouter.routes());
 };

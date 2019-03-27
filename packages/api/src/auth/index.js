@@ -2,8 +2,8 @@ const jwt = require('koa-jwt');
 
 const { assertAccessTokenPayload } = require('../utils/asserts');
 
-module.exports = ({ config: { JWT_SECRET }, server, db }) => {
-  server.use(
+module.exports = ({ config: { JWT_SECRET }, app, db }) => {
+  app.use(
     jwt({
       secret: JWT_SECRET,
       passthrough: true,
@@ -11,7 +11,7 @@ module.exports = ({ config: { JWT_SECRET }, server, db }) => {
     }),
   );
 
-  server.use(async (ctx, next) => {
+  app.use(async (ctx, next) => {
     // if we successfully decoded a JWT
     if (ctx.state.user) {
       try {
