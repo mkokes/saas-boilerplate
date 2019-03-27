@@ -43,7 +43,7 @@ export class FooterComponent extends React.PureComponent {
               />
             </Link>
             <span className="float-right">
-              ® {new Date().getFullYear()} ACME Inc.
+              ® {new Date().getFullYear()} LEGAL_COMPANY_NAME.
             </span>
           </div>
         </Container>

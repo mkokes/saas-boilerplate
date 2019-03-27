@@ -352,7 +352,7 @@ export default class SecurityPage extends React.PureComponent {
                                               <Field
                                                 component={ReactstrapInput}
                                                 name="token"
-                                                label="Enter your six-digit secret code from the authenticator app:"
+                                                label="Enter generated 2FA code:"
                                                 type="text"
                                                 autoComplete="off"
                                                 required

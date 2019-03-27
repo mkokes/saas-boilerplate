@@ -206,7 +206,7 @@ export class NavbarComponent extends React.PureComponent {
                                 verticalAlign: 'middle',
                               }}
                             >
-                              ACME
+                              PRODUCT_NAME
                             </span>
                           </NavbarBrand>
                         </NavLink>
