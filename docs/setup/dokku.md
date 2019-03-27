@@ -17,6 +17,10 @@ dokku mongo:expose db
 dokku mongo:connect-admin
 > use admin
 > db.createUser( { user: "user", pwd: "password", roles:["root"] })
+
+dokku mongo:backup-auth db AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+dokku mongo:backup db BUCKET_NAME
+dokku mongo:backup-schedule db CRON_SCHEDULE BUCKET_NAME
 ```
 
 ## API
