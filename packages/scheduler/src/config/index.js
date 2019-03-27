@@ -1,6 +1,6 @@
 const envalid = require('envalid');
 
-const { str, num } = envalid;
+const { str, num, bool } = envalid;
 
 const env = envalid.cleanEnv(
   process.env,
@@ -9,6 +9,7 @@ const env = envalid.cleanEnv(
     HOST: str({ default: '0.0.0.0' }),
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
+    MAINTENANCE: bool({ default: false }),
     API_SECRET_KEY: str({ default: '' }),
     API_URL: str({ default: '' }),
     PAPERTRAILAPP_HOST: str({ default: '' }),

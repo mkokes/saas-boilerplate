@@ -1,6 +1,6 @@
 const envalid = require('envalid');
 
-const { str, num } = envalid;
+const { str, num, bool } = envalid;
 
 const env = envalid.cleanEnv(
   process.env,
@@ -10,6 +10,7 @@ const env = envalid.cleanEnv(
     NODE_ENV: str({ default: 'development' }),
     APP_MODE: str({ default: 'dev' }),
     SERVER_NAME: str({ default: 'API' }),
+    MAINTENANCE: bool({ default: false }),
     MONGO_URL: str({
       default: '',
     }),
