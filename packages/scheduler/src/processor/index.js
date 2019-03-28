@@ -1,16 +1,16 @@
 const cronJobScheduler = require('node-schedule');
-const APIRequestTask = require('./tasks/apiRequest');
+const ApiRunTask = require('./tasks/apiRunTask');
 
 module.exports = async ({ config, log: parentLog, Sentry }) => {
   const log = parentLog.create('processor');
 
-  const apiRequestTask = APIRequestTask({
+  const apiRunTask = ApiRunTask({
     config,
     log,
     Sentry,
   });
 
   cronJobScheduler.scheduleJob('* * * * *', () =>
-    apiRequestTask('post', '/cron/handle-users-trial'),
+    apiRunTask('handle_users_trial'),
   );
 };

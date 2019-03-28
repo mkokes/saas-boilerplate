@@ -50,6 +50,10 @@ const Subscription = new mongoose.Schema({
     type: String,
     default: 'active',
   },
+  paymentCancelledAt: {
+    type: Date,
+    default: null,
+  },
   currency: {
     type: String,
     required: true,

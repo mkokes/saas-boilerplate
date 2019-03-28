@@ -60,6 +60,10 @@ class Db extends EventEmitter {
     return User.find({ accountStatus: 'active', isInTrialPeriod: true }).exec();
   }
 
+  async getUsersWithActiveSubscription() {
+    return User.find({ _subscription: { $ne: null } }).exec();
+  }
+
   async getUserProfile(userId, canViewPrivateFields = false) {
     const user = await this._getUser(userId);
 
@@ -675,19 +679,19 @@ class Db extends EventEmitter {
     return subscription;
   }
 
-  async cancelSubscriptionPayment(paddleSubscriptionId) {
-    const subscription = await Subscription.findOneAndUpdate(
-      {
-        _paddleSubscriptionId: paddleSubscriptionId,
-      },
-      {
-        paymentStatus: 'deleted',
-        cancelledAt: Date.now(),
-      },
-    )
+  async cancelSubscription(subscriptionId) {
+    const subscription = await Subscription.findByIdAndUpdate(subscriptionId, {
+      status: 'cancelled',
+      cancelledAt: Date.now(),
+    })
       .populate('_user', '_id email')
       .exec();
+
     const { _user } = subscription;
+
+    await User.findByIdAndUpdate(_user._id, {
+      _subscription: null,
+    }).exec();
 
     this.emit(MANAGE_MAILCHIMP_LIST, {
       user: _user,
@@ -709,6 +713,26 @@ class Db extends EventEmitter {
       },
     );
     this._mixpanel.track('cancelled subscription plan', {
+      distinct_id: _user._id,
+      plan_id: subscription._plan,
+    });
+  }
+
+  async cancelSubscriptionPayment(paddleSubscriptionId) {
+    const subscription = await Subscription.findOneAndUpdate(
+      {
+        _paddleSubscriptionId: paddleSubscriptionId,
+      },
+      {
+        paymentStatus: 'deleted',
+        paymentCancelledAt: Date.now(),
+      },
+    )
+      .populate('_user', '_id email')
+      .exec();
+    const { _user } = subscription;
+
+    this._mixpanel.track('cancelled subscription payment', {
       distinct_id: _user._id,
       plan_id: subscription._plan,
     });

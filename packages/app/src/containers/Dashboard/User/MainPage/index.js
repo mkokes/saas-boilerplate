@@ -33,12 +33,12 @@ export default class MainPage extends React.PureComponent {
                   userProfile._subscription === null
                 }
               >
+                <FontAwesomeIcon
+                  icon={faCreditCard}
+                  className="mr-2"
+                  size="lg"
+                />
                 <strong>
-                  <FontAwesomeIcon
-                    icon={faCreditCard}
-                    className="mr-2"
-                    size="lg"
-                  />
                   Please{' '}
                   <Link to="/dashboard/settings/billing">
                     upgrade your account

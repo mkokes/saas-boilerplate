@@ -1,10 +1,12 @@
 const {
   NOTIFICATION,
   HANDLE_USERS_TRIAL,
+  HANDLE_USERS_SUBSCRIPTION,
   MANAGE_MAILCHIMP_LIST,
 } = require('../constants/events');
 const SendNotificationEmail = require('./tasks/sendNotificationEmail');
 const HandleUsersTrial = require('./tasks/handleUsersTrial');
+const HandleUsersSubscription = require('./tasks/handleUsersSubscription');
 const ManageMailchimpList = require('./tasks/manageMailchimpList');
 
 module.exports = async ({
@@ -31,6 +33,13 @@ module.exports = async ({
     eventQueue,
     Sentry,
   });
+  const handleUsersSubscription = HandleUsersSubscription({
+    config,
+    log,
+    db,
+    eventQueue,
+    Sentry,
+  });
   const manageMailchimpList = ManageMailchimpList({
     config,
     log,
@@ -42,5 +51,6 @@ module.exports = async ({
   // listen for events
   db.on(NOTIFICATION, sendNotificationEmail);
   db.on(HANDLE_USERS_TRIAL, handleUsersTrial);
+  db.on(HANDLE_USERS_SUBSCRIPTION, handleUsersSubscription);
   db.on(MANAGE_MAILCHIMP_LIST, manageMailchimpList);
 };

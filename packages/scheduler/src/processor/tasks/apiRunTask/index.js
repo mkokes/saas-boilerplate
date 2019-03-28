@@ -5,14 +5,14 @@ module.exports = ({
   config: { API_URL, API_SECRET_KEY },
   Sentry,
 }) => {
-  const log = parentLog.create('task/apiRequest');
+  const log = parentLog.create('task/apiRunTask');
 
-  return async (method, url) => {
-    log.info(`Executing API request method: "${method}" url: "${url}"`);
+  return async type => {
+    log.info(`Executing API run task ${type}`);
 
     try {
-      await rp[method](`${API_URL}/private${url}`, {
-        form: { key: API_SECRET_KEY },
+      await rp.post(`${API_URL}/private/cron/run-task`, {
+        form: { key: API_SECRET_KEY, type },
       });
       log.info('OK ✅');
     } catch (err) {
