@@ -13,4 +13,7 @@ module.exports = async ({ config, log: parentLog, Sentry }) => {
   cronJobScheduler.scheduleJob('* * * * *', () =>
     apiRunTask('handle_users_trial'),
   );
+  cronJobScheduler.scheduleJob('* * * * *', () =>
+    apiRunTask('handle_users_subscription'),
+  );
 };
