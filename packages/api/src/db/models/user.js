@@ -126,6 +126,15 @@ const UserSchema = new mongoose.Schema({
       { type: 'MARKETING_INFO', accepted: Date.now().toString() },
     ],
   },
+  apiKey: {
+    type: String,
+    unique: true,
+    default: uuidv4(),
+  },
+  apiKeyStatus: {
+    type: String,
+    default: 'active',
+  },
   lastLoginAt: {
     type: Date,
     default: Date.now,

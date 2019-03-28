@@ -24,7 +24,15 @@ export default class MainPage extends React.PureComponent {
         <GlobalConsumer>
           {({ userProfile }) => (
             <Container tag="main">
-              <Alert color="warning" fade={false} className="text-center">
+              <Alert
+                color="warning"
+                fade={false}
+                className="text-center"
+                hidden={
+                  userProfile.isInTrialPeriod &&
+                  userProfile._subscription === null
+                }
+              >
                 <strong>
                   <FontAwesomeIcon
                     icon={faCreditCard}
@@ -32,10 +40,7 @@ export default class MainPage extends React.PureComponent {
                     size="lg"
                   />
                   Please{' '}
-                  <Link
-                    to="/dashboard/settings/billing"
-                    hidden={userProfile._subscription !== null}
-                  >
+                  <Link to="/dashboard/settings/billing">
                     upgrade your account
                   </Link>{' '}
                   to continue using PRODUCT_NAME.

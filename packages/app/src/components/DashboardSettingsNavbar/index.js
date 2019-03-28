@@ -45,7 +45,11 @@ class DashboardSettingsNavbar extends React.PureComponent {
               <h3>Settings</h3>
               <Nav className="flex-column">
                 <NavItem>
-                  <NavLink to="/dashboard/settings" exact tag={RRNavLink}>
+                  <NavLink
+                    to="/dashboard/settings/profile"
+                    exact
+                    tag={RRNavLink}
+                  >
                     My Profile
                   </NavLink>
                 </NavItem>

@@ -133,7 +133,7 @@ export class NavbarComponent extends React.PureComponent {
             className="mr-1"
           >
             <NavLink
-              to="/dashboard/settings"
+              to="/dashboard/settings/profile"
               activeClassName="active"
               tag={RRNavLink}
             >
@@ -273,7 +273,7 @@ export class NavbarComponent extends React.PureComponent {
                                       <Fragment>
                                         <DropdownItem divider />
                                         <DashboardDropdownItem
-                                          to="/dashboard/settings"
+                                          to="/dashboard/settings/profile"
                                           tag={RRNavLink}
                                         >
                                           Settings
