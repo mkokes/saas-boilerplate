@@ -30,7 +30,7 @@ module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog, db }) => {
       case 'handle_users_trial':
         db.emit(HANDLE_USERS_TRIAL);
         break;
-      case 'handle_users_subscriptions':
+      case 'handle_users_subscription':
         db.emit(HANDLE_USERS_SUBSCRIPTION);
         break;
     }
