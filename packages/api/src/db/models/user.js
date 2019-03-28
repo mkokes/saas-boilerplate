@@ -193,22 +193,6 @@ UserSchema.methods.comparePassword = async function cb(candidatePassword) {
  */
 UserSchema.statics = {
   /**
-   * Get user
-   * @param {ObjectId} id - The objectId of user.
-   * @returns {Promise<User, APIError>}
-   */
-  get(id) {
-    return this.findById(id)
-      .exec()
-      .then(user => {
-        if (user) {
-          return user;
-        }
-        return Promise.reject(new Error('user not found'));
-      });
-  },
-
-  /**
    * List users in descending order of 'createdAt' timestamp.
    * @param {number} skip - Number of users to be skipped.
    * @param {number} limit - Limit number of users to be returned.
