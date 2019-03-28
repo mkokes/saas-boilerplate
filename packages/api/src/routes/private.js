@@ -27,10 +27,10 @@ module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog, db }) => {
 
     /* eslint-disable-next-line default-case */
     switch (type) {
-      case 'handle_users_trial':
+      case HANDLE_USERS_TRIAL:
         db.emit(HANDLE_USERS_TRIAL);
         break;
-      case 'handle_users_subscription':
+      case HANDLE_USERS_SUBSCRIPTION:
         db.emit(HANDLE_USERS_SUBSCRIPTION);
         break;
     }

@@ -22,6 +22,26 @@ steps:
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/**']
 
+  - name: api_test
+    image: node:8.15.0
+    commands:
+      - yarn test:api
+    when:
+      branch:
+        - master
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/api/**']
+
+  - name: scheduler_test
+    image: node:8.15.0
+    commands:
+      - yarn test:scheduler
+    when:
+      branch:
+        - master
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/scheduler/**']
+
   - name: app_test
     image: node:8.15.0
     commands:

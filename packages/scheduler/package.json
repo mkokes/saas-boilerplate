@@ -6,13 +6,16 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --no-cache",
+    "test": "APP_MODE=test jest --no-cache",
+    "test:watch": "yarn test --watch",
+    "test:coverage": "yarn test --coverage",
     "lint": "npm run lint:js",
     "lint:js": "npm run lint:eslint -- .",
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix"
   },
   "jest": {
+    "verbose": true,
     "testEnvironment": "node",
     "testMatch": [
       "**/*.test.js"
@@ -20,11 +23,7 @@
     "collectCoverageFrom": [
       "src/**/*.js"
     ],
-    "coverageDirectory": "<rootDir>/test-coverage",
-    "transform": {
-      "^.+\\.js$": "<rootDir>/.jest/transform.js"
-    },
-    "setupTestFrameworkScriptFile": "<rootDir>/.jest/setupTestFrameworkScriptFile.js"
+    "coverageDirectory": "<rootDir>/test-coverage"
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
@@ -33,6 +32,7 @@
     "axios": "^0.18.0",
     "bunyan": "^1.8.12",
     "bunyan-syslog": "^0.3.2",
+    "delay": "^4.1.0",
     "envalid": "^4.1.4",
     "graphql": "^14.0.2",
     "koa": "^2.6.1",
@@ -44,9 +44,11 @@
     "request-promise": "^4.2.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.5.0",
     "babel-jest-assertions": "^0.1.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",

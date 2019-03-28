@@ -1,7 +1,11 @@
-const cronJobScheduler = require('node-schedule');
 const ApiRunTask = require('./tasks/apiRunTask');
 
-module.exports = async ({ config, log: parentLog, Sentry }) => {
+const {
+  HANDLE_USERS_TRIAL,
+  HANDLE_USERS_SUBSCRIPTION,
+} = require('../constants/tasks');
+
+module.exports = async ({ config, log: parentLog, scheduler, Sentry }) => {
   const log = parentLog.create('processor');
 
   const apiRunTask = ApiRunTask({
@@ -10,10 +14,10 @@ module.exports = async ({ config, log: parentLog, Sentry }) => {
     Sentry,
   });
 
-  cronJobScheduler.scheduleJob('* * * * *', () =>
-    apiRunTask('handle_users_trial'),
+  scheduler.schedule(HANDLE_USERS_TRIAL, 60, () =>
+    apiRunTask(HANDLE_USERS_TRIAL),
   );
-  cronJobScheduler.scheduleJob('* * * * *', () =>
-    apiRunTask('handle_users_subscription'),
+  scheduler.schedule(HANDLE_USERS_SUBSCRIPTION, 60, () =>
+    apiRunTask(HANDLE_USERS_SUBSCRIPTION),
   );
 };

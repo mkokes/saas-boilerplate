@@ -6,6 +6,7 @@ const Sentry = require('@sentry/node');
 const config = require('./config');
 const log = require('./log')(config);
 const createProcessor = require('./processor');
+const setupScheduler = require('./scheduler');
 
 const init = async () => {
   const { NODE_ENV, APP_MODE, SENTRY_DSN, SERVER_NAME, PORT, HOST } = config;
@@ -19,7 +20,8 @@ const init = async () => {
     serverName: SERVER_NAME,
   });
 
-  await createProcessor({ config, log, Sentry });
+  const scheduler = setupScheduler({ log });
+  await createProcessor({ config, log, scheduler, Sentry });
 
   const app = new Koa();
   const router = new Router();
