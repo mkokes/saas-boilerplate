@@ -22,7 +22,7 @@ module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog, db }) => {
     return next();
   };
 
-  router.post('/cron/run-task', authMiddleware, ctx => {
+  router.post('/processor/run-task', authMiddleware, ctx => {
     const { type } = ctx.request.body;
 
     /* eslint-disable-next-line default-case */

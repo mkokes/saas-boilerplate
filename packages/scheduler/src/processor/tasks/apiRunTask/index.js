@@ -15,7 +15,7 @@ module.exports = ({
     log.info(`Executing API run task ${type}`);
 
     try {
-      await rp.post(`${API_URL}/private/cron/run-task`, {
+      await rp.post(`${API_URL}/private/processor/run-task`, {
         form: { key: API_SECRET_KEY, type },
       });
       log.info('OK ✅');
