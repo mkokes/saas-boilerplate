@@ -6,14 +6,16 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --no-cache",
-    "test:coverage": "npm test --coverage",
+    "test": "APP_MODE=test jest --no-cache",
+    "test:watch": "yarn test --watch",
+    "test:coverage": "yarn test --coverage",
     "lint": "npm run lint:js",
     "lint:js": "npm run lint:eslint -- .",
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix"
   },
   "jest": {
+    "verbose": true,
     "testEnvironment": "node",
     "testMatch": [
       "**/*.test.js"
@@ -21,11 +23,7 @@
     "collectCoverageFrom": [
       "src/**/*.js"
     ],
-    "coverageDirectory": "<rootDir>/test-coverage",
-    "transform": {
-      "^.+\\.js$": "<rootDir>/.jest/transform.js"
-    },
-    "setupTestFrameworkScriptFile": "<rootDir>/.jest/setupTestFrameworkScriptFile.js"
+    "coverageDirectory": "<rootDir>/test-coverage"
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",

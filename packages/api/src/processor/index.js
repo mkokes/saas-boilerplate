@@ -9,14 +9,7 @@ const HandleUsersTrial = require('./tasks/handleUsersTrial');
 const HandleUsersSubscription = require('./tasks/handleUsersSubscription');
 const ManageMailchimpList = require('./tasks/manageMailchimpList');
 
-module.exports = async ({
-  config,
-  log: parentLog,
-  db,
-  eventQueue,
-  mailchimp,
-  Sentry,
-}) => {
+module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
   const log = parentLog.create('processor');
 
   const sendNotificationEmail = SendNotificationEmail({
@@ -44,7 +37,6 @@ module.exports = async ({
     config,
     log,
     eventQueue,
-    mailchimp,
     Sentry,
   });
 

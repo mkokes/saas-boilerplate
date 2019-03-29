@@ -1,13 +1,14 @@
+const Mailchimp = require('mailchimp-api-v3');
 const crypto = require('crypto');
 
 module.exports = ({
-  config: { MAILCHIMP_LIST_ID },
+  config: { MAILCHIMP_API_KEY, MAILCHIMP_LIST_ID },
   log: parentLog,
   eventQueue,
-  mailchimp,
   Sentry,
 }) => {
   const log = parentLog.create('manageMailchimpList');
+  const mailchimp = new Mailchimp(MAILCHIMP_API_KEY);
 
   return async ({
     user: { _id, firstName, lastName, email },
