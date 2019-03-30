@@ -1,5 +1,5 @@
 ☐ Misc:
-  ☐ Add unique prettier config for each package
+  ☐ Add unique prettier config for each package @today
   ✔ Mailchimp @done(19-03-21 23:56)
     https://github.com/thorning/node-mailchimp
     https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members
@@ -73,8 +73,8 @@
   ✔ S3 Backup @done(19-03-27 19:58)
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
-  ☐ packages/api/src/processor/tasks/handleUsersSubscription/index.js
-  ☐ Add tests
+  ☐ packages/api/src/processor/tasks/handleUsersSubscription/index.js @today
+  ☐ Add tests @today
     ☐ Signup
   ✔ Contact support @started(19-03-16 23:56) @done(19-03-17 23:05) @lasted(23h9m50s)
     ✔ Req validation @done(19-03-17 23:05)
@@ -85,7 +85,7 @@
       ✔ Trial expiring @done(19-03-20 09:42)
       ✔ Trial expired @done(19-03-20 09:42)
 ✔ Analytics Server @done(18-12-28 05:33)
-☐ Scheduler
+✔ Scheduler @done(19-03-30 04:04)
   ✔ Add tests @done(19-03-29 02:38)
   ✔ Think about this.. how we are going to use it? @done(19-01-30 00:23)
     We could use this for no mission-critical tasks (no one cares if it fails one time because it will be executed again soon).
