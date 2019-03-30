@@ -1,3 +1,3 @@
 module.exports = {
-  MONGO_URL: 'mongodb://mongo:27017/api',
+  MONGO_URL: 'mongodb://mongodb:27017/api',
 };

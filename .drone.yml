@@ -246,7 +246,7 @@ steps:
         - success
         - failure
 services:
-  - name: mongo
+  - name: mongodb
     image: mongo:3.4.9
     command: [--smallfiles]
     ports:
