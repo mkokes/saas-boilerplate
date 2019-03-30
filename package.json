@@ -11,6 +11,7 @@
   "scripts": {
     "test:app": "(cd packages/app && yarn test)",
     "test:api": "(cd packages/api && yarn test)",
+    "test:ci:api": "(cd packages/api && yarn test:ci)",
     "test:watch:api": "(cd packages/api && yarn test:watch)",
     "test:watch:scheduler": "(cd packages/api && yarn test:watch)",
     "test:scheduler": "(cd packages/scheduler && yarn test)",

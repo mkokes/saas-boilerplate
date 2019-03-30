@@ -25,7 +25,7 @@ steps:
   - name: api_test
     image: node:8.15.0
     commands:
-      - MONGO_URL=mongodb://mongo:27017/api yarn test:api
+      - MONGO_URL=mongodb://mongo:27017/api yarn test:ci:api
     when:
       branch:
         - master
