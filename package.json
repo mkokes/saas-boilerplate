@@ -38,7 +38,7 @@
       "git add --force"
     ],
     "*.{json,md}": [
-      "prettier --config ./.prettierrc --write",
+      "prettier --write",
       "git add --force"
     ]
   },
