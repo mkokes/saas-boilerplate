@@ -1,0 +1,4 @@
+packages/app/build/*
+packages/web/build/*
+**/node_modules/*
+yarn.lock

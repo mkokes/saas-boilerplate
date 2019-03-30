@@ -1,5 +1,5 @@
 ☐ Misc:
-  ☐ Add unique prettier config for each package @today
+  ✔ Add unique prettier config for each package @today @done(19-03-30 20:59)
   ✔ Mailchimp @done(19-03-21 23:56)
     https://github.com/thorning/node-mailchimp
     https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members
