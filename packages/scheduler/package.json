@@ -12,7 +12,8 @@
     "lint": "npm run lint:js",
     "lint:js": "npm run lint:eslint -- .",
     "lint:eslint": "eslint --ignore-path .gitignore",
-    "lint:eslint:fix": "eslint --ignore-path .gitignore --fix"
+    "lint:eslint:fix": "eslint --ignore-path .gitignore --fix",
+    "pretty": "prettier --config .prettierrc --write \"src/**/*.js\""
   },
   "jest": {
     "verbose": true,
