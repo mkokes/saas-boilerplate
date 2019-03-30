@@ -30,7 +30,8 @@
     "build:web:stage": "(cd packages/web && yarn build:stage)",
     "build:web": "(cd packages/web && yarn build:live)",
     "build:app:stage": "(cd packages/app && yarn build:stage)",
-    "build:app": "(cd packages/app && yarn build:live)"
+    "build:app": "(cd packages/app && yarn build:live)",
+    "db:fixtures:api": "(cd packages/api && yarn db:fixtures)"
   },
   "lint-staged": {
     "*.js": [

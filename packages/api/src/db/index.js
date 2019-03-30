@@ -218,7 +218,7 @@ class Db extends EventEmitter {
       trialPeriodEndsAt,
       trialDaysLength,
       registrationSource,
-      registrationIP,
+      registrationIP: registrationIP || null,
     }).save();
 
     this.notifyUser(user._id, VERIFY_EMAIL, {
