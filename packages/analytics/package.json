@@ -1,5 +1,5 @@
 {
-  "name": "analytics-server",
+  "name": "analytics",
   "description": "Analytics server which enables us to work around ad-blockers",
   "private": true,
   "version": "1.0.0",

@@ -1,5 +1,5 @@
 {
-  "name": "scheduler-server",
+  "name": "scheduler",
   "description": "Scheduler server which enables us to run repeated tasks every X seconds",
   "private": true,
   "version": "0.1.0",
