@@ -9,3 +9,6 @@ fixtures
   .then(() => fixtures.unload())
   .then(() => fixtures.load())
   .then(() => fixtures.disconnect());
+
+/* eslint-disable-next-line no-console */
+console.log('database fixtures generated');

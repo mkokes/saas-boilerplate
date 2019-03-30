@@ -954,27 +954,6 @@ class Db extends EventEmitter {
     this.notifyUser(userId, TRIAL_EXPIRED);
   }
 
-  /* async sandboxFixtures() {
-    await new Plans({
-      _paddleProductId: '548124',
-      name: 'Basic',
-      description: 'This is the basic plan',
-      features: ['Wow', 'Amazing'],
-      price: 1,
-      tier: 1,
-      billingInterval: 'monthly',
-    }).save();
-    await new Plans({
-      _paddleProductId: '550286',
-      name: 'Pro',
-      description: 'This is the pro plan',
-      features: ['Wow', 'Amazing', 'Much better than basic'],
-      price: 2,
-      tier: 2,
-      billingInterval: 'monthly',
-    }).save();
-  } */
-
   async notifyUser(userId, type, variables) {
     const notification = await new Notifications({
       _user: userId,
