@@ -109,6 +109,8 @@ export class NavbarComponent extends React.PureComponent {
   }
 
   renderDashboardNavItems() {
+    const { pathname } = this.props.location;
+
     return (
       <Fragment>
         <Nav navbar>
@@ -134,8 +136,10 @@ export class NavbarComponent extends React.PureComponent {
           >
             <NavLink
               to="/dashboard/settings/profile"
-              activeClassName="active"
               tag={RRNavLink}
+              className={
+                pathname.startsWith('/dashboard/settings') ? 'active' : ''
+              }
             >
               <FontAwesomeIcon icon={faCog} className="align-text-top mr-1" />
               Settings
