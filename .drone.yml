@@ -52,24 +52,6 @@ steps:
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/app/**']
 
-  - name: app_lint
-    image: node:8.15.0
-    commands:
-      - yarn lint:app
-    when:
-      branch:
-        - master
-      changeset:
-        includes: ['.prettierignore', '.prettierrc', 'packages/app/**']
-  - name: analytics_lint
-    image: node:8.15.0
-    commands:
-      - yarn lint:analytics
-    when:
-      branch:
-        - master
-      changeset:
-        includes: ['.prettierignore', '.prettierrc', 'packages/analytics/**']
   - name: api_lint
     image: node:8.15.0
     commands:
@@ -88,18 +70,25 @@ steps:
         - master
       changeset:
         includes: ['.prettierignore', '.prettierrc', 'packages/scheduler/**']
-
-  - name: web_build
+  - name: analytics_lint
     image: node:8.15.0
     commands:
-      - yarn build:web
+      - yarn lint:analytics
     when:
       branch:
         - master
-      event: push
-      status: success
       changeset:
-        includes: ['yarn.lock', 'package.json', 'packages/web/**']
+        includes: ['.prettierignore', '.prettierrc', 'packages/analytics/**']
+  - name: app_lint
+    image: node:8.15.0
+    commands:
+      - yarn lint:app
+    when:
+      branch:
+        - master
+      changeset:
+        includes: ['.prettierignore', '.prettierrc', 'packages/app/**']
+
   - name: app_build
     image: node:8.15.0
     commands:
@@ -113,15 +102,10 @@ steps:
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/app/**']
 
-  - name: web_publish
-    image: lucap/drone-netlify
-    settings:
-      token:
-        from_secret: netlify_account_token
-      site_id: 3ee97675-c7e2-47cc-8a8c-b6b24ca3fbf9
-      site_name: web-amgaventures
-      #domain: web.amgaventures.com
-      path: packages/web/build
+  - name: web_build
+    image: node:8.15.0
+    commands:
+      - yarn build:web
     when:
       branch:
         - master
@@ -129,44 +113,7 @@ steps:
       status: success
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/web/**']
-  - name: app_publish
-    image: lucap/drone-netlify
-    settings:
-      token:
-        from_secret: netlify_account_token
-      site_id: 7d8053d6-80e8-4751-9a57-f5b6e8f8c271
-      site_name: app-amgaventures
-      #domain: app.amgaventures.com
-      path: packages/app/build
-    when:
-      branch:
-        - master
-      event: push
-      status: success
-      changeset:
-        includes: ['yarn.lock', 'package.json', 'packages/app/**']
-  - name: analytics_publish
-    image: node:8.15.0
-    environment:
-      DOKKU_SSH_KEY:
-        from_secret: DOKKU_SSH_KEY
-    commands:
-      - mkdir /root/.ssh
-      - echo -n "$DOKKU_SSH_KEY" > /root/.ssh/id_rsa
-      - chmod 600 /root/.ssh/id_rsa
 
-      - touch /root/.ssh/known_hosts
-      - chmod 600 /root/.ssh/known_hosts
-      - ssh-keyscan -t rsa dokku.amgaventures.com > /etc/ssh/ssh_known_hosts 2> /dev/null
-
-      - git remote add analytics dokku@dokku.amgaventures.com:analytics
-      - git push analytics
-    when:
-      branch: master
-      event: push
-      status: success
-      changeset:
-        includes: ['yarn.lock', 'package.json', 'packages/analytics/**']
   - name: api_publish
     image: node:8.15.0
     environment:
@@ -212,6 +159,60 @@ steps:
       status: success
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/scheduler/**']
+  - name: analytics_publish
+    image: node:8.15.0
+    environment:
+      DOKKU_SSH_KEY:
+        from_secret: DOKKU_SSH_KEY
+    commands:
+      - mkdir /root/.ssh
+      - echo -n "$DOKKU_SSH_KEY" > /root/.ssh/id_rsa
+      - chmod 600 /root/.ssh/id_rsa
+
+      - touch /root/.ssh/known_hosts
+      - chmod 600 /root/.ssh/known_hosts
+      - ssh-keyscan -t rsa dokku.amgaventures.com > /etc/ssh/ssh_known_hosts 2> /dev/null
+
+      - git remote add analytics dokku@dokku.amgaventures.com:analytics
+      - git push analytics
+    when:
+      branch: master
+      event: push
+      status: success
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/analytics/**']
+  - name: app_publish
+    image: lucap/drone-netlify
+    settings:
+      token:
+        from_secret: netlify_account_token
+      site_id: 7d8053d6-80e8-4751-9a57-f5b6e8f8c271
+      site_name: app-amgaventures
+      #domain: app.amgaventures.com
+      path: packages/app/build
+    when:
+      branch:
+        - master
+      event: push
+      status: success
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/app/**']
+  - name: web_publish
+    image: lucap/drone-netlify
+    settings:
+      token:
+        from_secret: netlify_account_token
+      site_id: 3ee97675-c7e2-47cc-8a8c-b6b24ca3fbf9
+      site_name: web-amgaventures
+      #domain: web.amgaventures.com
+      path: packages/web/build
+    when:
+      branch:
+        - master
+      event: push
+      status: success
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/web/**']
 
   - name: notify
     image: plugins/slack
