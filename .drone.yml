@@ -24,6 +24,8 @@ steps:
 
   - name: api_test
     image: node:8.15.0
+    environment:
+      MONGO_URL: mongodb://mongo:27017/test-api-saas-boilerplate
     commands:
       - yarn test:api
     when:
@@ -246,7 +248,7 @@ steps:
         - success
         - failure
 services:
-  - name: api-db
+  - name: mongodb
     image: mongo:3.4.9
     command: [--smallfiles]
     ports:
