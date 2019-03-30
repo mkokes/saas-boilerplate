@@ -246,9 +246,9 @@ steps:
         - success
         - failure
 
-services:
-  - name: database
-    image: mongo:3.4.9
+  services:
+    - name: database
+      image: mongo:3.4.9
 
 volumes:
   - name: cache
