@@ -1,3 +1,5 @@
+// v1.0.0
+
 const EventEmitter = require('eventemitter3');
 
 const {
