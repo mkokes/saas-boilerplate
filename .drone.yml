@@ -1,5 +1,5 @@
 kind: pipeline
-name: CI/CD
+name: Pipeline
 
 platform:
   os: linux
