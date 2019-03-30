@@ -1,5 +1,3 @@
-// v1.0.32212322222
-
 const EventEmitter = require('eventemitter3');
 
 const {
