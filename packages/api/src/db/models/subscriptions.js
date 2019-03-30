@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 /**
- * Subscription Schema
+ * Subscriptions Schema
  */
-const Subscription = new mongoose.Schema({
+const Subscriptions = new mongoose.Schema({
   _plan: {
     type: Schema.Types.ObjectId,
     ref: 'Plan',
@@ -93,6 +93,6 @@ const Subscription = new mongoose.Schema({
 });
 
 /**
- * @typedef Subscription
+ * @typedef Subscriptions
  */
-module.exports = mongoose.model('Subscription', Subscription);
+module.exports = mongoose.model('Subscriptions', Subscriptions);

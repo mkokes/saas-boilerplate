@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 /**
- * Plan Schema
+ * Plans Schema
  */
-const Plan = new mongoose.Schema({
+const Plans = new mongoose.Schema({
   _paddleProductId: {
     type: Number,
     required: true,
@@ -45,6 +45,6 @@ const Plan = new mongoose.Schema({
 });
 
 /**
- * @typedef Plan
+ * @typedef Plans
  */
-module.exports = mongoose.model('Plan', Plan);
+module.exports = mongoose.model('Plans', Plans);

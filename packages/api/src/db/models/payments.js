@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 /**
- * Payment Schema
+ * Payments Schema
  */
-const Payment = new mongoose.Schema({
+const Payments = new mongoose.Schema({
   _user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -122,6 +122,6 @@ const Payment = new mongoose.Schema({
 });
 
 /**
- * @typedef Payment
+ * @typedef Payments
  */
-module.exports = mongoose.model('Payment', Payment);
+module.exports = mongoose.model('Payments', Payments);

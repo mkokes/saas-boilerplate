@@ -25,13 +25,13 @@ const {
 } = require('../constants/notifications');
 
 const setupDb = require('./setup');
-const User = require('./models/user');
-const Plan = require('./models/plan');
-const Subscription = require('./models/subscription');
-const Payment = require('./models/payment');
-const Notification = require('./models/notification');
-const ResetPasswordToken = require('./models/resetPasswordToken');
-const SupportTicket = require('./models/supportTicket');
+const Users = require('./models/users');
+const Plans = require('./models/plans');
+const Subscriptions = require('./models/subscriptions');
+const Payments = require('./models/payments');
+const Notifications = require('./models/notifications');
+const ResetPasswordTokens = require('./models/resetPasswordTokens');
+const SupportTickets = require('./models/supportTickets');
 
 class Db extends EventEmitter {
   constructor({ config, nativeDb, log: parentLog }) {
@@ -42,7 +42,7 @@ class Db extends EventEmitter {
   }
 
   async _getUser(userId, { mustExist = false } = {}) {
-    const user = await User.findOne({ _id: userId }).exec();
+    const user = await Users.findOne({ _id: userId }).exec();
 
     if (mustExist && !user) {
       throw new Error(`User not found: ${userId}`);
@@ -52,19 +52,22 @@ class Db extends EventEmitter {
   }
 
   async getUserByEmail(email) {
-    return User.findOne({ email }).exec();
+    return Users.findOne({ email }).exec();
   }
 
   async getUserById(id) {
-    return User.findById(id).exec();
+    return Users.findById(id).exec();
   }
 
   async getUsersInTrialPeriod() {
-    return User.find({ accountStatus: 'active', isInTrialPeriod: true }).exec();
+    return Users.find({
+      accountStatus: 'active',
+      isInTrialPeriod: true,
+    }).exec();
   }
 
   async getUsersWithActiveSubscription() {
-    return User.find({ _subscription: { $ne: null } }).exec();
+    return Users.find({ _subscription: { $ne: null } }).exec();
   }
 
   async getUserProfile(userId, canViewPrivateFields = false) {
@@ -134,7 +137,7 @@ class Db extends EventEmitter {
   }
 
   async getUserPayments(userId) {
-    const payments = await Payment.find({ _user: userId }).sort({
+    const payments = await Payments.find({ _user: userId }).sort({
       receivedAt: -1,
     });
 
@@ -142,7 +145,7 @@ class Db extends EventEmitter {
   }
 
   async getActiveSubscriptionPlans() {
-    const _plans = await Plan.find({ status: 'active' }).sort({
+    const _plans = await Plans.find({ status: 'active' }).sort({
       tier: 0,
       price: 0,
     });
@@ -158,7 +161,7 @@ class Db extends EventEmitter {
   }
 
   async existsUserWithEmail(email) {
-    const count = await User.countDocuments({ email }).exec();
+    const count = await Users.countDocuments({ email }).exec();
 
     return !!count;
   }
@@ -202,7 +205,7 @@ class Db extends EventEmitter {
     const trialPeriodEndsAt = new Date();
     trialPeriodEndsAt.setDate(trialPeriodEndsAt.getDate() + trialDaysLength);
 
-    const user = await new User({
+    const user = await new Users({
       email,
       password,
       firstName,
@@ -292,7 +295,7 @@ class Db extends EventEmitter {
   async forgotPasswordRequest(userId) {
     const user = await this._getUser(userId);
 
-    const resetPasswordToken = await new ResetPasswordToken({
+    const resetPasswordToken = await new ResetPasswordTokens({
       _user: user._id,
     }).save();
 
@@ -304,7 +307,7 @@ class Db extends EventEmitter {
   }
 
   async resetPasswordRequest(resetToken, newPassword) {
-    const resetPasswordToken = await ResetPasswordToken.findOne({
+    const resetPasswordToken = await ResetPasswordTokens.findOne({
       token: resetToken,
     })
       .populate('_user', '_id password')
@@ -341,7 +344,7 @@ class Db extends EventEmitter {
   }
 
   async confirmUserEmail(confirmationToken) {
-    const user = await User.findOne({
+    const user = await Users.findOne({
       emailConfirmationToken: confirmationToken,
     }).exec();
 
@@ -659,25 +662,25 @@ class Db extends EventEmitter {
   }
 
   async getPlanById(planId) {
-    return Plan.findById(planId).exec();
+    return Plans.findById(planId).exec();
   }
 
   async getPlanIdByPaddleId(paddlePlanId) {
-    return Plan.findOne({ _paddleProductId: paddlePlanId }).select('_id');
+    return Plans.findOne({ _paddleProductId: paddlePlanId }).select('_id');
   }
 
   async getSubscriptionByPaddleId(paddleSubscriptionId) {
-    return Subscription.findOne({
+    return Subscriptions.findOne({
       _paddleSubscriptionId: paddleSubscriptionId,
     }).select('_id');
   }
 
   async createSubscription(userId, data) {
-    const subscription = await new Subscription({
+    const subscription = await new Subscriptions({
       ...data,
     }).save();
 
-    const user = await User.findByIdAndUpdate(userId, {
+    const user = await Users.findByIdAndUpdate(userId, {
       _subscription: subscription._id,
       isInTrialPeriod: false, // suspend trial period if user decided to upgrade while trialing
     }).exec();
@@ -715,7 +718,7 @@ class Db extends EventEmitter {
   }
 
   async subscriptionPaymentPastDue(id) {
-    const subscription = await Subscription.findByIdAndUpdate(id, {
+    const subscription = await Subscriptions.findByIdAndUpdate(id, {
       paymentStatus: 'past_due',
       pastDueAt: Date.now(),
     }).exec();
@@ -735,7 +738,7 @@ class Db extends EventEmitter {
   }
 
   async subscriptionUpdated(id, data) {
-    const subscription = await Subscription.findByIdAndUpdate(id, {
+    const subscription = await Subscriptions.findByIdAndUpdate(id, {
       status: 'active',
       lastUpdatedAt: Date.now(),
       ...data,
@@ -767,7 +770,7 @@ class Db extends EventEmitter {
   }
 
   async cancelSubscription(subscriptionId) {
-    const subscription = await Subscription.findByIdAndUpdate(subscriptionId, {
+    const subscription = await Subscriptions.findByIdAndUpdate(subscriptionId, {
       status: 'cancelled',
       cancelledAt: Date.now(),
     })
@@ -776,7 +779,7 @@ class Db extends EventEmitter {
 
     const { _user } = subscription;
 
-    await User.findByIdAndUpdate(_user._id, {
+    await Users.findByIdAndUpdate(_user._id, {
       _subscription: null,
     }).exec();
 
@@ -816,7 +819,7 @@ class Db extends EventEmitter {
   }
 
   async cancelSubscriptionPayment(paddleSubscriptionId) {
-    const subscription = await Subscription.findOneAndUpdate(
+    const subscription = await Subscriptions.findOneAndUpdate(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
       },
@@ -842,7 +845,7 @@ class Db extends EventEmitter {
   }
 
   async subscriptionPaymentReceived(data) {
-    const payment = await new Payment({
+    const payment = await new Payments({
       ...data,
     }).save();
 
@@ -869,7 +872,7 @@ class Db extends EventEmitter {
   }
 
   async subscriptionPaymentRefunded(paddleOrderId, data) {
-    const payment = Payment.findOneAndUpdate(
+    const payment = Payments.findOneAndUpdate(
       {
         _paddleOrderId: paddleOrderId,
       },
@@ -904,7 +907,7 @@ class Db extends EventEmitter {
     ticketType,
     description,
   ) {
-    const supportTicket = await new SupportTicket({
+    const supportTicket = await new SupportTickets({
       _user: userId,
       requesterName,
       requesterEmail,
@@ -952,7 +955,7 @@ class Db extends EventEmitter {
   }
 
   /* async sandboxFixtures() {
-    await new Plan({
+    await new Plans({
       _paddleProductId: '548124',
       name: 'Basic',
       description: 'This is the basic plan',
@@ -961,7 +964,7 @@ class Db extends EventEmitter {
       tier: 1,
       billingInterval: 'monthly',
     }).save();
-    await new Plan({
+    await new Plans({
       _paddleProductId: '550286',
       name: 'Pro',
       description: 'This is the pro plan',
@@ -973,7 +976,7 @@ class Db extends EventEmitter {
   } */
 
   async notifyUser(userId, type, variables) {
-    const notification = await new Notification({
+    const notification = await new Notifications({
       _user: userId,
       type,
       variables,

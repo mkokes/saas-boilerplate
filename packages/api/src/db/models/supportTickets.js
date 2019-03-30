@@ -5,9 +5,9 @@ const uniqueValidator = require('mongoose-unique-validator');
 const { Schema } = mongoose;
 
 /**
- * SupportTicket Schema
+ * SupportTickets Schema
  */
-const SupportTicketSchema = new mongoose.Schema({
+const SupportTicketsSchema = new mongoose.Schema({
   _ticketId: {
     type: ShortId,
     len: 7,
@@ -59,11 +59,11 @@ const SupportTicketSchema = new mongoose.Schema({
 /**
  * Plugins
  */
-SupportTicketSchema.plugin(uniqueValidator, {
+SupportTicketsSchema.plugin(uniqueValidator, {
   type: 'mongoose-unique-validator',
 });
 
 /**
  * @typedef SupportTicket
  */
-module.exports = mongoose.model('SupportTicket', SupportTicketSchema);
+module.exports = mongoose.model('SupportTickets', SupportTicketsSchema);

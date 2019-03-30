@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 /**
  * resetPasswordToken Schema
  */
-const ResetPasswordToken = new mongoose.Schema({
+const ResetPasswordTokens = new mongoose.Schema({
   _user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -34,6 +34,6 @@ const ResetPasswordToken = new mongoose.Schema({
 });
 
 /**
- * @typedef resetPasswordToken
+ * @typedef resetPasswordTokens
  */
-module.exports = mongoose.model('ResetPasswordToken', ResetPasswordToken);
+module.exports = mongoose.model('ResetPasswordTokens', ResetPasswordTokens);
