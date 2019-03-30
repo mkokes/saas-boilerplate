@@ -246,6 +246,10 @@ steps:
         - success
         - failure
 
+services:
+  db:
+    image: mongo:3.4.9
+
 volumes:
   - name: cache
     host:

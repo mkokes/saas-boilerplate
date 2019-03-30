@@ -49,6 +49,7 @@ jest.mock('./tasks/sendNotificationEmail', () => {
 
   return fn;
 });
+
 jest.mock('./tasks/handleUsersTrial', () => {
   let setupArgs;
   let callArgs;
@@ -65,6 +66,7 @@ jest.mock('./tasks/handleUsersTrial', () => {
 
   return fn;
 });
+
 jest.mock('./tasks/handleUsersSubscription', () => {
   let setupArgs;
   let callArgs;
@@ -81,6 +83,7 @@ jest.mock('./tasks/handleUsersSubscription', () => {
 
   return fn;
 });
+
 jest.mock('./tasks/manageMailchimpList', () => {
   let setupArgs;
   let callArgs;
