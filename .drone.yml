@@ -24,10 +24,8 @@ steps:
 
   - name: api_test
     image: node:8.15.0
-    environment:
-      MONGO_URL: mongodb://mongo:27017/test-api-saas-boilerplate
     commands:
-      - yarn test:api
+      - MONGO_URL=mongodb://mongo:27017/api yarn test:api
     when:
       branch:
         - master
@@ -253,11 +251,6 @@ services:
     command: [--smallfiles]
     ports:
       - 27017
-    when:
-      branch:
-        - master
-      changeset:
-        includes: ['yarn.lock', 'package.json', 'packages/api/**']
 
 volumes:
   - name: cache
