@@ -253,6 +253,11 @@ services:
     command: [--smallfiles]
     ports:
       - 27017
+    when:
+      branch:
+        - master
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/api/**']
 
 volumes:
   - name: cache
