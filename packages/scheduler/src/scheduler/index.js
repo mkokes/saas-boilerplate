@@ -13,7 +13,7 @@ class Scheduler {
     const id = _idn(uuid(), name);
 
     this._log.info(
-      `Schedule job ${id} to run every ${intervalSeconds} seconds`,
+      `schedule job ${id} to run every ${intervalSeconds} seconds`,
     );
 
     this._jobs[id] = {
@@ -29,14 +29,14 @@ class Scheduler {
   }
 
   unschedule(id) {
-    this._log.info(`Unschedule job ${id}`);
+    this._log.info(`unschedule job ${id}`);
 
     delete this._jobs[id];
   }
 
   start() {
     if (!this._running) {
-      this._log.info('Start scheduler ...');
+      this._log.info('start scheduler ...');
 
       this._running = true;
       this._processJobs();
@@ -45,7 +45,7 @@ class Scheduler {
 
   stop() {
     if (this._running) {
-      this._log.info('Stop scheduler ...');
+      this._log.info('stop scheduler ...');
 
       this._running = false;
       clearTimeout(this._timer);

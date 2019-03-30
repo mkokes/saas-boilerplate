@@ -3,11 +3,11 @@ const { ApolloServer } = require('apollo-server-koa');
 const schema = require('./schema');
 const createResolvers = require('./resolvers');
 
-module.exports = ({ config, db, app, log: parentLog, mixpanel }) => {
+module.exports = ({ config, db, app, log: parentLog }) => {
   const { APP_MODE } = config;
 
   const log = parentLog.create('graphql');
-  const resolvers = createResolvers({ config, db, log, mixpanel });
+  const resolvers = createResolvers({ config, db, log });
 
   if (APP_MODE === 'dev') {
     /* eslint-disable-next-line */

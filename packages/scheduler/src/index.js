@@ -11,7 +11,7 @@ const setupScheduler = require('./scheduler');
 const init = async () => {
   const { NODE_ENV, APP_MODE, SENTRY_DSN, SERVER_NAME, PORT, HOST } = config;
 
-  log.info(`App mode: ${APP_MODE}`);
+  log.info(`app mode: ${APP_MODE}`);
 
   Sentry.init({
     dsn: SENTRY_DSN,
@@ -48,7 +48,7 @@ const init = async () => {
       throw err;
     }
 
-    log.info(`Listening on ${HOST}:${PORT}`);
+    log.info(`listening on ${HOST}:${PORT}`);
   });
 };
 

@@ -3,6 +3,7 @@ module.exports = [
   'HANDLE_USERS_TRIAL',
   'HANDLE_USERS_SUBSCRIPTION',
   'MANAGE_MAILCHIMP_LIST',
+  'MIXPANEL_EVENT',
 ].reduce((m, a) => {
   const k = m;
 

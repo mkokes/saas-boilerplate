@@ -12,7 +12,7 @@ module.exports = ({
       scope.setExtra('task_type', type);
     });
 
-    log.info(`Executing API run task ${type}`);
+    log.info(`executing API run task ${type}`);
 
     try {
       await rp.post(`${API_URL}/private/processor/run-task`, {

@@ -72,6 +72,7 @@
   ✔ S3 Backup @done(19-03-27 19:58)
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
+  ☐ packages/api/src/processor/tasks/handleUsersSubscription/index.js
   ☐ Add tests
   ✔ Contact support @started(19-03-16 23:56) @done(19-03-17 23:05) @lasted(23h9m50s)
     ✔ Req validation @done(19-03-17 23:05)

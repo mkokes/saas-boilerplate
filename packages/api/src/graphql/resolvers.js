@@ -5,7 +5,9 @@ const { ApolloError, UserInputError } = require('apollo-server-koa');
 const axios = require('axios');
 const momentTimezone = require('moment-timezone');
 
+const { MIXPANEL_EVENT } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
+
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
@@ -41,7 +43,6 @@ module.exports = ({
   config: { JWT_SECRET, PADDLE_VENDOR_ID, PADDLE_VENDOR_AUTH_CODE },
   db,
   log,
-  mixpanel,
 }) => ({
   Query: {
     userProfile: async (_, __, { user }) => {
@@ -714,10 +715,16 @@ module.exports = ({
           throw new Error(paddleResponse.error.message);
         }
 
-        mixpanel.track('subscription plan change', {
-          distinct_id: user._id,
-          old_plan_id: currentUserSubscription._plan._id,
-          new_plan_id: planId,
+        db.emit(MIXPANEL_EVENT, {
+          eventType: 'TRACK',
+          args: [
+            'subscription plan change',
+            {
+              distinct_id: user._id,
+              old_plan_id: currentUserSubscription._plan._id,
+              new_plan_id: planId,
+            },
+          ],
         });
       } catch (e) {
         log.error(e);
