@@ -61,6 +61,10 @@ module.exports = ({
   return async notification => {
     eventQueue.add(
       async () => {
+        Sentry.configureScope(scope => {
+          scope.setExtra('notification', notification);
+        });
+
         try {
           await notification
             .populate(
@@ -168,8 +172,8 @@ module.exports = ({
           notification.sent = true;
           await notification.save();
         } catch (err) {
-          log.error(err.message);
-          Sentry.captureException(new Error(err.message));
+          log.error(err);
+          Sentry.captureException(err);
         }
       },
       { name: 'sendNotificationEmail' },

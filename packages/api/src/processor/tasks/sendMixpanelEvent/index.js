@@ -7,6 +7,11 @@ module.exports = ({ config: { MIXPANEL_API_KEY }, log: parentLog, Sentry }) => {
   });
 
   return async ({ eventType, args }) => {
+    Sentry.configureScope(scope => {
+      scope.setExtra('eventType', eventType);
+      scope.setExtra('args', args);
+    });
+
     try {
       /* eslint-disable default-case */
       switch (eventType) {
@@ -23,9 +28,9 @@ module.exports = ({ config: { MIXPANEL_API_KEY }, log: parentLog, Sentry }) => {
           mixpanel.people.track_charge(...args);
           break;
       }
-    } catch (err) {
-      log.error(err);
-      Sentry.captureException(err);
+    } catch (e) {
+      log.error(e);
+      Sentry.captureException(e);
     }
   };
 };

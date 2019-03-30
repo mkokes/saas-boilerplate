@@ -35,9 +35,9 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
               log.info(`trial warning sent for user id ${user._id}`);
             }
           });
-        } catch (err) {
-          log.error(err.message);
-          Sentry.captureException(new Error(err.message));
+        } catch (e) {
+          log.error(e);
+          Sentry.captureException(e);
         }
       },
       { name: 'handleUsersTrials' },

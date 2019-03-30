@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const { NOTIFICATION } = require('../constants/events');
+
 const config = require('../config');
 const log = require('../log')(config);
 const createDb = require('./index');

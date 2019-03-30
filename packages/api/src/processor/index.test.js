@@ -6,6 +6,7 @@ const {
   HANDLE_USERS_SUBSCRIPTION,
   MANAGE_MAILCHIMP_LIST,
 } = require('../constants/events');
+
 const config = require('../config');
 const log = require('../log')(config);
 const createProcessor = require('./index');

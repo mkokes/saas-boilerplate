@@ -5,6 +5,7 @@ const {
   MANAGE_MAILCHIMP_LIST,
   MIXPANEL_EVENT,
 } = require('../constants/events');
+
 const SendNotificationEmail = require('./tasks/sendNotificationEmail');
 const HandleUsersTrial = require('./tasks/handleUsersTrial');
 const HandleUsersSubscription = require('./tasks/handleUsersSubscription');

@@ -90,9 +90,9 @@ module.exports = ({
               );
               break;
           }
-        } catch (err) {
-          log.error(err);
-          Sentry.captureException(err);
+        } catch (e) {
+          log.error(e);
+          Sentry.captureException(e);
         }
       },
       { name: 'manageMailchimpList' },

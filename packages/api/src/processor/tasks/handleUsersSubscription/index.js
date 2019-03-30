@@ -14,9 +14,9 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
 
             console.log(_id);
           });
-        } catch (err) {
-          log.error(err.message);
-          Sentry.captureException(new Error(err.message));
+        } catch (e) {
+          log.error(e);
+          Sentry.captureException(e);
         }
       },
       { name: 'handleUsersSubscription' },
