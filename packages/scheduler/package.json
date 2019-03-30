@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "APP_MODE=test jest --no-cache --forceExit",
+    "test": "APP_MODE=test jest --no-cache",
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
     "lint": "npm run lint:js",

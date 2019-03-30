@@ -8,10 +8,14 @@ const createDb = require('./index');
 
 describe('db', () => {
   let db;
+  let nativeDb;
 
   beforeAll(async () => {
     db = await createDb({ config, log });
+    nativeDb = db._nativeDb;
   });
+
+  afterAll(() => nativeDb.connection.close());
 
   describe('notifyUser', () => {
     it('emits an event', async () => {

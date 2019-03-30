@@ -36,7 +36,7 @@ module.exports = config => {
 
   const streams = [];
 
-  const inTestMode = APP_MODE === 'test';
+  const inTestMode = APP_MODE === 'test' || APP_MODE === 'ci';
   const isPapertrailappSetup = PAPERTRAILAPP_HOST && PAPERTRAILAPP_PORT;
 
   if (isPapertrailappSetup && !inTestMode) {
