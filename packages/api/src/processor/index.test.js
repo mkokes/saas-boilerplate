@@ -1,4 +1,4 @@
-// v1.0.322123222
+// v1.0.3221232222
 
 const EventEmitter = require('eventemitter3');
 
