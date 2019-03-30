@@ -74,6 +74,7 @@
 ☐ API
   ☐ packages/api/src/processor/tasks/handleUsersSubscription/index.js
   ☐ Add tests
+    ☐ Signup
   ✔ Contact support @started(19-03-16 23:56) @done(19-03-17 23:05) @lasted(23h9m50s)
     ✔ Req validation @done(19-03-17 23:05)
     ✔ Send e-mail to `support@domain.io`. @done(19-03-17 23:05)
