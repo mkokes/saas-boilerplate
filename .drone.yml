@@ -22,6 +22,26 @@ steps:
       changeset:
         includes: ['yarn.lock', 'package.json', 'packages/**']
 
+  - name: api_test
+    image: node:8.15.0
+    commands:
+      - yarn test:api
+    when:
+      branch:
+        - master
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/api/**']
+
+  - name: scheduler_test
+    image: node:8.15.0
+    commands:
+      - yarn test:scheduler
+    when:
+      branch:
+        - master
+      changeset:
+        includes: ['yarn.lock', 'package.json', 'packages/scheduler/**']
+
   - name: app_test
     image: node:8.15.0
     commands:
@@ -114,6 +134,7 @@ steps:
         from_secret: netlify_account_token
       site_id: 3ee97675-c7e2-47cc-8a8c-b6b24ca3fbf9
       site_name: web-amgaventures
+      #domain: web.amgaventures.com
       path: packages/web/build
     when:
       branch:
@@ -129,6 +150,7 @@ steps:
         from_secret: netlify_account_token
       site_id: 7d8053d6-80e8-4751-9a57-f5b6e8f8c271
       site_name: app-amgaventures
+      #domain: app.amgaventures.com
       path: packages/app/build
     when:
       branch:
