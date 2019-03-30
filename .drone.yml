@@ -60,8 +60,7 @@ steps:
       branch:
         - master
       changeset:
-        includes:
-          ['.eslintignore', '.prettierignore', '.prettierrc', 'packages/app/**']
+        includes: ['.prettierignore', '.prettierrc', 'packages/app/**']
   - name: analytics_lint
     image: node:8.15.0
     commands:
@@ -70,13 +69,7 @@ steps:
       branch:
         - master
       changeset:
-        includes:
-          [
-            '.eslintignore',
-            '.prettierignore',
-            '.prettierrc',
-            'packages/analytics/**',
-          ]
+        includes: ['.prettierignore', '.prettierrc', 'packages/analytics/**']
   - name: api_lint
     image: node:8.15.0
     commands:
@@ -85,8 +78,7 @@ steps:
       branch:
         - master
       changeset:
-        includes:
-          ['.eslintignore', '.prettierignore', '.prettierrc', 'packages/api/**']
+        includes: ['.prettierignore', '.prettierrc', 'packages/api/**']
   - name: scheduler_lint
     image: node:8.15.0
     commands:
@@ -95,13 +87,7 @@ steps:
       branch:
         - master
       changeset:
-        includes:
-          [
-            '.eslintignore',
-            '.prettierignore',
-            '.prettierrc',
-            'packages/scheduler/**',
-          ]
+        includes: ['.prettierignore', '.prettierrc', 'packages/scheduler/**']
 
   - name: web_build
     image: node:8.15.0
