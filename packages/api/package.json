@@ -14,6 +14,7 @@
     "lint:js": "npm run lint:eslint -- .",
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix",
+    "db:fixtures": "node scripts/fixtures/index.js",
     "pretty": "prettier --config .prettierrc --write \"src/**/*.js\""
   },
   "jest": {
@@ -54,6 +55,7 @@
     "mongoose": "^5.3.8",
     "mongoose-shortid-nodeps": "^0.6.5",
     "mongoose-unique-validator": "^2.0.2",
+    "node-mongodb-fixtures": "^3.0.1",
     "otplib": "^11.0.0",
     "p-queue": "^3.0.0",
     "php-serialize": "^2.0.1",
