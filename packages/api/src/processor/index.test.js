@@ -5,6 +5,7 @@ const {
   HANDLE_USERS_TRIAL,
   HANDLE_USERS_SUBSCRIPTION,
   MANAGE_MAILCHIMP_LIST,
+  MIXPANEL_EVENT,
 } = require('../constants/events');
 
 const config = require('../config');
@@ -27,6 +28,10 @@ const {
   getMailchimpListSetupArgs,
   getMailchimpListArgs,
 } = require('./tasks/manageMailchimpList');
+const {
+  getMixpanelEventSetupArgs,
+  getMixpanelEventArgs,
+} = require('./tasks/sendMixpanelEvent');
 
 jest.mock('./tasks/sendNotificationEmail', () => {
   let setupArgs;
@@ -89,6 +94,23 @@ jest.mock('./tasks/manageMailchimpList', () => {
 
   fn.getMailchimpListSetupArgs = () => setupArgs;
   fn.getMailchimpListArgs = () => callArgs;
+
+  return fn;
+});
+
+jest.mock('./tasks/sendMixpanelEvent', () => {
+  let setupArgs;
+  let syncArgs;
+
+  const fn = args => {
+    setupArgs = args;
+    return na => {
+      syncArgs = na;
+    };
+  };
+
+  fn.getMixpanelEventSetupArgs = () => setupArgs;
+  fn.getMixpanelEventArgs = () => syncArgs;
 
   return fn;
 });
@@ -179,5 +201,22 @@ describe('processor', () => {
 
     db.emit(MANAGE_MAILCHIMP_LIST, 123);
     expect(getMailchimpListArgs()).toEqual(123);
+  });
+
+  it('handles send_mixpanel_event events', async () => {
+    await createProcessor({
+      config,
+      log,
+      eventQueue,
+      db,
+      Sentry,
+    });
+
+    const setupArgs = getMixpanelEventSetupArgs();
+    expect(setupArgs.config).toEqual(config);
+    expect(setupArgs.Sentry).toEqual(Sentry);
+
+    db.emit(MIXPANEL_EVENT, 123);
+    expect(getMixpanelEventArgs()).toEqual(123);
   });
 });
