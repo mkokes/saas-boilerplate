@@ -246,8 +246,11 @@ steps:
         - success
         - failure
 services:
-  - name: database
+  - name: api-db
     image: mongo:3.4.9
+    command: [--smallfiles]
+    ports:
+      - 27017
 
 volumes:
   - name: cache
