@@ -247,7 +247,7 @@ steps:
         - failure
 
 services:
-  db:
+  - name: db
     image: mongo:3.4.9
 
 volumes:
