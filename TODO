@@ -74,8 +74,8 @@
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
   ☐ packages/api/src/processor/tasks/handleUsersSubscription/index.js @today
-  ☐ Add tests @today
-    ☐ Signup
+  ✔ Add tests @today @done(19-03-31 00:03)
+    ✔ Signup @done(19-03-31 00:03)
   ✔ Contact support @started(19-03-16 23:56) @done(19-03-17 23:05) @lasted(23h9m50s)
     ✔ Req validation @done(19-03-17 23:05)
     ✔ Send e-mail to `support@domain.io`. @done(19-03-17 23:05)

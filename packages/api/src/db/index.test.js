@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const delay = require('delay');
 
-const { NOTIFICATION } = require('../constants/events');
+const { NOTIFICATION, MIXPANEL_EVENT } = require('../constants/events');
 
 const config = require('../config');
 const log = require('../log')(config);
@@ -13,6 +14,8 @@ describe('db', () => {
   beforeAll(async () => {
     db = await createDb({ config, log });
     nativeDb = db._nativeDb;
+
+    await nativeDb.connection.db.dropDatabase();
   });
 
   afterAll(() => nativeDb.connection.close());
@@ -27,6 +30,33 @@ describe('db', () => {
       });
 
       expect(spy).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe('user', () => {
+    it('sign up', async () => {
+      const notificationSpy = jest.fn();
+      const mixpanelEventSpy = jest.fn();
+
+      db.on(NOTIFICATION, notificationSpy);
+      db.on(MIXPANEL_EVENT, mixpanelEventSpy);
+
+      const user = await db.signUpUser(
+        'user@domain.com',
+        'foo123456789',
+        'John',
+        'Doe',
+        'Europe/Madrid',
+        '',
+        '',
+      );
+
+      expect(user).toHaveProperty('_id');
+
+      await delay(100);
+
+      expect(notificationSpy).toHaveBeenCalledTimes(1);
+      expect(mixpanelEventSpy).toHaveBeenCalledTimes(3);
     });
   });
 });
