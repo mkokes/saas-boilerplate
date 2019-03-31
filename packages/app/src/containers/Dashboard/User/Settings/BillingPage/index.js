@@ -186,36 +186,40 @@ export default class BillingPage extends React.PureComponent {
       );
     };
 
-    return plans.map(plan => (
-      <Card
-        body
-        className="p-2 pl-3 pr-3 mb-2"
-        key={plan._id}
-        outline
-        color={
-          currentSubscription &&
-          currentSubscription._plan._paddleProductId === plan._paddleProductId
-            ? 'success'
-            : ''
-        }
-      >
-        <Row
+    return plans.map(plan => {
+      const isCurrentPlan =
+        currentSubscription &&
+        currentSubscription._plan._paddleProductId === plan._paddleProductId;
+
+      return (
+        <Card
+          body
+          className="p-2 pl-3 pr-3 mb-2"
           key={plan._id}
-          className="mt-2 mb-2 text-center text-md-left align-items-center"
+          outline
+          color={isCurrentPlan ? 'primary' : ''}
+          style={{
+            border: isCurrentPlan ? '3px solid' : undefined,
+          }}
         >
-          <Col xs="12" md="3" style={{ fontSize: '20px' }}>
-            <strong>{plan.name}</strong>
-          </Col>
-          <Col xs="12" md="5" style={{ fontSize: '19px' }}>
-            ${plan.price.toFixed(2)}{' '}
-            <span className="text-muted">/ {plan.billingInterval}</span>
-          </Col>
-          <Col xs="12" md="4">
-            {_renderPlanActionButton(plan)}
-          </Col>
-        </Row>
-      </Card>
-    ));
+          <Row
+            key={plan._id}
+            className="mt-2 mb-2 text-center text-md-left align-items-center"
+          >
+            <Col xs="12" md="3" style={{ fontSize: '20px' }}>
+              <strong>{plan.name}</strong>
+            </Col>
+            <Col xs="12" md="5" style={{ fontSize: '19px' }}>
+              ${plan.price.toFixed(2)}{' '}
+              <span className="text-muted">/ {plan.billingInterval}</span>
+            </Col>
+            <Col xs="12" md="4">
+              {_renderPlanActionButton(plan)}
+            </Col>
+          </Row>
+        </Card>
+      );
+    });
   }
 
   render() {
