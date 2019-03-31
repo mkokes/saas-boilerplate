@@ -9,9 +9,9 @@ const { Schema } = mongoose;
 const SALT_WORK_FACTOR = 10;
 
 /**
- * User Schema
+ * Users Schema
  */
-const UserSchema = new mongoose.Schema({
+const UsersSchema = new mongoose.Schema({
   _shortId: {
     type: ShortId,
     len: 5,
@@ -157,7 +157,7 @@ const UserSchema = new mongoose.Schema({
 /**
  * Plugins
  */
-UserSchema.plugin(uniqueValidator, {
+UsersSchema.plugin(uniqueValidator, {
   type: 'mongoose-unique-validator',
   message: 'Already in use, try another',
 });
@@ -165,7 +165,7 @@ UserSchema.plugin(uniqueValidator, {
 /**
  * Pre-save hooks
  */
-UserSchema.pre('save', function cb(next) {
+UsersSchema.pre('save', function cb(next) {
   const user = this;
 
   if (!user.isModified('password')) return next();
@@ -183,16 +183,16 @@ UserSchema.pre('save', function cb(next) {
 /**
  * Methods
  */
-UserSchema.methods.comparePassword = async function cb(candidatePassword) {
+UsersSchema.methods.comparePassword = async function cb(candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
 /**
  * Statics
  */
-UserSchema.statics = {};
+UsersSchema.statics = {};
 
 /**
- * @typedef User
+ * @typedef Users
  */
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Users', UsersSchema);

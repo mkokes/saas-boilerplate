@@ -45,7 +45,7 @@ class Db extends EventEmitter {
     const user = await Users.findOne({ _id: userId }).exec();
 
     if (mustExist && !user) {
-      throw new Error(`User not found: ${userId}`);
+      throw new Error(`user not found: ${userId}`);
     }
 
     return user;

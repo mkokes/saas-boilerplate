@@ -23,7 +23,7 @@ module.exports = ({ config: { JWT_SECRET }, app, db }) => {
           decodedJWT.iat,
         );
         if (!challengeStatus) {
-          throw new Error('User did not pass auth challenge');
+          throw new Error('user did not pass auth challenge');
         }
       } catch (err) {
         ctx.state.user = '';
