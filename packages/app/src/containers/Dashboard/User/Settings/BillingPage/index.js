@@ -195,7 +195,7 @@ export default class BillingPage extends React.PureComponent {
         color={
           currentSubscription &&
           currentSubscription._plan._paddleProductId === plan._paddleProductId
-            ? 'primary'
+            ? 'success'
             : ''
         }
       >
