@@ -41,7 +41,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
         try {
           const user = JSON.parse(passthrough);
 
-          switch (eventName) {
+          switch (eventName.toUpperCase()) {
             case 'SUBSCRIPTION_CREATED': {
               const plan = await db.getPlanIdByPaddleId(
                 paddleSubscriptionPlanId,
