@@ -7,12 +7,10 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
     eventQueue.add(
       async () => {
         try {
-          const usersInTrialPeriod = await db.getUsersWithActiveSubscription();
+          const subscriptions = await db.getActiveSubscriptionsWithNoPaymentAndExpiredAccess();
 
-          usersInTrialPeriod.forEach(async user => {
-            const { _id } = user;
-
-            console.log(_id);
+          subscriptions.forEach(async subscription => {
+            await db.cancelSubscription(subscription._id);
           });
         } catch (e) {
           log.error(e);

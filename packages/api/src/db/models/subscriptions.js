@@ -50,6 +50,10 @@ const Subscriptions = new mongoose.Schema({
     type: String,
     default: 'active',
   },
+  paymentPastDueAt: {
+    type: Date,
+    default: null,
+  },
   paymentCancelledAt: {
     type: Date,
     default: null,
@@ -77,10 +81,6 @@ const Subscriptions = new mongoose.Schema({
   subscribedAt: {
     type: Date,
     default: Date.now,
-  },
-  pastDueAt: {
-    type: Date,
-    default: null,
   },
   cancelledAt: {
     type: Date,

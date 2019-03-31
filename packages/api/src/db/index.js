@@ -66,8 +66,14 @@ class Db extends EventEmitter {
     }).exec();
   }
 
-  async getUsersWithActiveSubscription() {
-    return Users.find({ _subscription: { $ne: null } }).exec();
+  async getActiveSubscriptionsWithNoPaymentAndExpiredAccess() {
+    return Subscriptions.find({
+      status: 'active',
+      paymentStatus: 'deleted',
+      accessUntil: { $lt: new Date() },
+    })
+      .populate('_user', '_id')
+      .exec();
   }
 
   async getUserProfile(userId, canViewPrivateFields = false) {
@@ -676,6 +682,8 @@ class Db extends EventEmitter {
   }
 
   async createSubscription(userId, data) {
+    // @TODO: What to do if user has active subscription?
+
     const subscription = await new Subscriptions({
       ...data,
     }).save();
@@ -720,7 +728,7 @@ class Db extends EventEmitter {
   async subscriptionPaymentPastDue(id) {
     const subscription = await Subscriptions.findByIdAndUpdate(id, {
       paymentStatus: 'past_due',
-      pastDueAt: Date.now(),
+      paymentPastDueAt: Date.now(),
     }).exec();
 
     this.emit(MIXPANEL_EVENT, {
@@ -779,9 +787,12 @@ class Db extends EventEmitter {
 
     const { _user } = subscription;
 
-    await Users.findByIdAndUpdate(_user._id, {
-      _subscription: null,
-    }).exec();
+    await Users.updateOne(
+      { _id: _user._id },
+      {
+        _subscription: null,
+      },
+    ).exec();
 
     this.emit(MANAGE_MAILCHIMP_LIST, {
       user: _user,
@@ -805,7 +816,6 @@ class Db extends EventEmitter {
         },
       ],
     });
-
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
       args: [
