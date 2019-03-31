@@ -197,7 +197,7 @@ export default class BillingPage extends React.PureComponent {
           className="p-2 pl-3 pr-3 mb-2"
           key={plan._id}
           outline
-          color={isCurrentPlan ? 'primary' : ''}
+          color={isCurrentPlan ? 'primary' : undefined}
           style={{
             border: isCurrentPlan ? '3px solid' : undefined,
           }}
