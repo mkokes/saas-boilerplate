@@ -68,6 +68,10 @@ export default class BillingPage extends React.PureComponent {
     const { history } = this.props;
 
     const _renderPlanActionButton = plan => {
+      const isCurrentPlan =
+        currentSubscription &&
+        currentSubscription._plan._paddleProductId === plan._paddleProductId;
+
       if (!currentSubscription) {
         return (
           <Button
@@ -90,10 +94,43 @@ export default class BillingPage extends React.PureComponent {
         );
       }
 
-      if (
-        currentSubscription &&
-        currentSubscription._plan._paddleProductId === plan._paddleProductId
-      ) {
+      if (currentSubscription.paymentStatus === 'deleted') {
+        return (
+          <Button
+            color="primary"
+            block
+            onClick={() =>
+              confirmAlert({
+                title: 'Confirm new subscription',
+                message:
+                  'Are you sure you want to start a new subscription? your current subscription will be replaced.',
+                buttons: [
+                  {
+                    label: 'Confirm',
+                    onClick: async () =>
+                      PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
+                        history.replace(`/processing`);
+
+                        setTimeout(() => {
+                          history.replace(
+                            '/dashboard/settings/billing?success=subscribed',
+                          );
+                        }, 3000);
+                      }),
+                  },
+                  {
+                    label: 'Cancel',
+                  },
+                ],
+              })
+            }
+          >
+            <strong>Subscribe</strong>
+          </Button>
+        );
+      }
+
+      if (isCurrentPlan) {
         return (
           <Button color="primary" disabled block>
             Current Plan
@@ -108,8 +145,9 @@ export default class BillingPage extends React.PureComponent {
         },
       };
 
-      if (currentSubscription.paymentStatus === 'deleted') {
-        ctaButton = {
+      /*
+
+      ctaButton = {
           text: `Subscribe`,
           confirmAlert: {
             title: 'Confirm subscription',
@@ -117,7 +155,10 @@ export default class BillingPage extends React.PureComponent {
               'Are you sure you want to start a new subscription? your current subscription will be replaced.',
           },
         };
-      } else if (plan.tier > currentSubscription._plan.tier) {
+
+      */
+
+      if (plan.tier > currentSubscription._plan.tier) {
         ctaButton = {
           text: `Upgrade`,
           confirmAlert: {
@@ -126,7 +167,8 @@ export default class BillingPage extends React.PureComponent {
               'If chosen plan price is higher than your current plan then price will be pro-rate and bill immediately.',
           },
         };
-      } else if (plan.tier < currentSubscription._plan.tier) {
+      }
+      if (plan.tier < currentSubscription._plan.tier) {
         ctaButton = {
           text: 'Downgrade',
           confirmAlert: {
