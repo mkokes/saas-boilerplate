@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "APP_MODE=test jest --no-cache --detectOpenHandles",
-    "test:ci": "APP_MODE=ci jest --no-cache --detectOpenHandles",
+    "test:ci": "APP_MODE=ci jest --no-cache",
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
     "lint": "npm run lint:js",
