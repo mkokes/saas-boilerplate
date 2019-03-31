@@ -122,11 +122,10 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
               const plan = await db.getPlanIdByPaddleId(
                 paddleSubscriptionPlanId,
               );
-
-              const userSubscriptionId = await db.getUserById(user._id);
+              const userSubscription = await db.getUserSubscription(user._id);
 
               await db.subscriptionPaymentReceived({
-                _subscription: userSubscriptionId,
+                _subscription: userSubscription._id,
                 _user: user._id,
                 _plan: plan ? plan._id : null,
                 _paddleSubscriptionId: paddleSubscriptionId,
