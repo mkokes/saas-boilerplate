@@ -199,7 +199,7 @@ export default class BillingPage extends React.PureComponent {
           outline
           color={isCurrentPlan ? 'primary' : undefined}
           style={{
-            border: isCurrentPlan ? '3px solid' : undefined,
+            border: isCurrentPlan ? '2px solid' : undefined,
           }}
         >
           <Row
