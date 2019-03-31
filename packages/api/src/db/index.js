@@ -682,7 +682,14 @@ class Db extends EventEmitter {
   }
 
   async createSubscription(userId, data) {
-    // @TODO: What to do if user has active subscription?
+    // cancel previous user subscription if there's any
+    await Subscriptions.updateOne(
+      { _user: userId, status: 'active' },
+      {
+        status: 'cancelled',
+        cancelledAt: Date.now(),
+      },
+    ).exec();
 
     const subscription = await new Subscriptions({
       ...data,

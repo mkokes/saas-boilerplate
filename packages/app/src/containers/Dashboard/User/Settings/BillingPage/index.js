@@ -68,10 +68,7 @@ export default class BillingPage extends React.PureComponent {
     const { history } = this.props;
 
     const _renderPlanActionButton = plan => {
-      if (
-        !currentSubscription ||
-        currentSubscription.paymentStatus === 'deleted'
-      ) {
+      if (!currentSubscription) {
         return (
           <Button
             color="primary"
