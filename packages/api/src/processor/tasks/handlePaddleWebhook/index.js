@@ -118,7 +118,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
               log.info(`paddle subscription ${paddleSubscriptionId} cancelled`);
               break;
             }
-            case 'SUBSCRIPTION_PAYMENT_SUCCEDED': {
+            case 'SUBSCRIPTION_PAYMENT_SUCCEEDED': {
               const plan = await db.getPlanIdByPaddleId(
                 paddleSubscriptionPlanId,
               );
@@ -169,6 +169,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
 
           Sentry.configureScope(scope => {
             scope.setExtra('eventName', eventName);
+            scope.setExtra('passthrough', passthrough);
           });
           Sentry.captureException(e);
         }
