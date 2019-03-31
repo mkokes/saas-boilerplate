@@ -73,6 +73,9 @@
   ✔ S3 Backup @done(19-03-27 19:58)
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
+  ☐ Send email notification when subscription is cancelled because it is past due and no payment methods are attached
+    ☐ Postmark template
+    ☐ Code
   ✔ Refactor Paddle stuff to processor task event-driven @started(19-03-31 19:55) @done(19-03-31 21:18) @lasted(1h23m34s)
   ✔ processor/tasks/handleUsersSubscription @done(19-04-01 00:26)
     ✔ Test if it works as expected @done(19-04-01 00:26)
