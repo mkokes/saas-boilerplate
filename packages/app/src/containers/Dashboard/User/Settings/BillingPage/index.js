@@ -187,7 +187,17 @@ export default class BillingPage extends React.PureComponent {
     };
 
     return plans.map(plan => (
-      <Card body className="p-2 pl-3 pr-3 mb-2" key={plan._id}>
+      <Card
+        body
+        className="p-2 pl-3 pr-3 mb-2"
+        key={plan._id}
+        outline
+        color={
+          currentSubscription && currentSubscription._plan._id === plan._id
+            ? 'primary'
+            : ''
+        }
+      >
         <Row
           key={plan._id}
           className="mt-2 mb-2 text-center text-md-left align-items-center"
