@@ -111,7 +111,16 @@ export default class BillingPage extends React.PureComponent {
         },
       };
 
-      if (plan.tier > currentSubscription._plan.tier) {
+      if (currentSubscription.paymentStatus === 'deleted') {
+        ctaButton = {
+          text: `Subscribe`,
+          confirmAlert: {
+            title: 'Confirm subscription',
+            message:
+              'Are you sure that you want to start a new subscription? your current subscription will be replaced.',
+          },
+        };
+      } else if (plan.tier > currentSubscription._plan.tier) {
         ctaButton = {
           text: `Upgrade`,
           confirmAlert: {
@@ -120,8 +129,7 @@ export default class BillingPage extends React.PureComponent {
               'If chosen plan price is higher than your current plan then price will be pro-rate and bill immediately.',
           },
         };
-      }
-      if (plan.tier < currentSubscription._plan.tier) {
+      } else if (plan.tier < currentSubscription._plan.tier) {
         ctaButton = {
           text: 'Downgrade',
           confirmAlert: {
