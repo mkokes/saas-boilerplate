@@ -74,9 +74,8 @@
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
   ✔ Refactor Paddle stuff to processor task event-driven @started(19-03-31 19:55) @done(19-03-31 21:18) @lasted(1h23m34s)
-  ☐ processor/tasks/handleUsersSubscription
-    ☐ Test if it works as expected
-  ☐ Rename tasks names
+  ✔ processor/tasks/handleUsersSubscription @done(19-04-01 00:26)
+    ✔ Test if it works as expected @done(19-04-01 00:26)
   ✔ Add tests @done(19-03-31 00:03)
     ✔ Signup @done(19-03-31 00:03)
   ✔ Contact support @started(19-03-16 23:56) @done(19-03-17 23:05) @lasted(23h9m50s)
