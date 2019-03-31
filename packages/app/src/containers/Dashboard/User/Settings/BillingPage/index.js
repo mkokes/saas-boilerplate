@@ -98,7 +98,7 @@ export default class BillingPage extends React.PureComponent {
         currentSubscription._plan._paddleProductId === plan._paddleProductId
       ) {
         return (
-          <Button color="secondary" disabled block>
+          <Button color="primary" disabled block>
             Current Plan
           </Button>
         );
