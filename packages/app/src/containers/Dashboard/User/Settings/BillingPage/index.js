@@ -101,7 +101,7 @@ export default class BillingPage extends React.PureComponent {
             block
             onClick={() =>
               confirmAlert({
-                title: 'Confirm new subscription',
+                title: 'Confirm subscription',
                 message:
                   'Are you sure you want to start a new subscription? your current subscription will be replaced.',
                 buttons: [
