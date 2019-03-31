@@ -47,6 +47,8 @@ module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
   const sendMixpanelEvent = SendMixpanelEvent({
     config,
     log,
+    eventQueue,
+
     Sentry,
   });
   const handlePaddleWebhook = HandlePaddleWebhook({

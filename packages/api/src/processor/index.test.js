@@ -239,6 +239,7 @@ describe('processor', () => {
 
     const setupArgs = getMixpanelEventSetupArgs();
     expect(setupArgs.config).toEqual(config);
+    expect(setupArgs.eventQueue).toEqual(eventQueue);
     expect(setupArgs.Sentry).toEqual(Sentry);
 
     db.emit(MIXPANEL_EVENT, 123);
