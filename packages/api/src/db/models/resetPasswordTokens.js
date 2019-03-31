@@ -9,7 +9,7 @@ const { Schema } = mongoose;
 const ResetPasswordTokens = new mongoose.Schema({
   _user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     index: true,
     required: true,
   },

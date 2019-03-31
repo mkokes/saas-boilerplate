@@ -2,6 +2,8 @@ const Router = require('koa-router');
 const Serialize = require('php-serialize');
 const crypto = require('crypto');
 
+const { HANDLE_PADDLE_WEBHOOK } = require('../constants/events');
+
 const PADDLE_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyI5uVjrlEEIeyFcUkTMo
 LkKaZ/410F4jPFkUYRYsokFlaUvt1M/EAl3++GaLoQb7cwZ4oCxEvjBjdBFegCjr
@@ -67,6 +69,7 @@ module.exports = async ({ db, log: parentLog }) => {
 
       const verification = verifier.verify(PADDLE_PUBLIC_KEY, mySig);
       if (!verification) {
+        log.error('invalid paddle webhook signature received');
         throw new Error('INVALID_SIGNATURE');
       }
 
@@ -78,176 +81,9 @@ module.exports = async ({ db, log: parentLog }) => {
     return next();
   };
 
-  router.post('/webhook', paddleMiddleware, async ctx => {
-    const {
-      alert_name: eventName,
-      status,
-      subscription_id: paddleSubscriptionId,
-      passthrough: userData,
-    } = ctx.request.body;
-
-    log.debug(ctx.request.body);
-
-    const user = JSON.parse(userData);
-
-    /* eslint-disable default-case */
-    switch (eventName) {
-      case 'subscription_created': {
-        const {
-          subscription_plan_id: paddleSubscriptionPlanId,
-          checkout_id: checkoutId,
-          quantity,
-          unit_price: unitPrice,
-          currency,
-          update_url: updateURL,
-          cancel_url: cancelURL,
-          next_bill_date: nextBillDateAt,
-        } = ctx.request.body;
-
-        const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
-        if (!plan) {
-          throw new Error(
-            `Plan not found: Paddle ID. ${paddleSubscriptionPlanId}`,
-          );
-        }
-
-        await db.createSubscription(user._id, {
-          _plan: plan._id,
-          _user: user._id,
-          _paddleSubscriptionId: paddleSubscriptionId,
-          _paddlePlanId: paddleSubscriptionPlanId,
-          _paddleCheckoutId: checkoutId,
-          quantity,
-          unitPrice,
-          currency,
-          updateURL,
-          cancelURL,
-          nextBillDateAt,
-          accessUntil: nextBillDateAt,
-        });
-
-        break;
-      }
-      case 'subscription_updated': {
-        const subscription = await db.getSubscriptionByPaddleId(
-          paddleSubscriptionId,
-        );
-        if (!subscription) {
-          throw new Error(
-            `Subscription not found: Paddle ID. ${paddleSubscriptionId}`,
-          );
-        }
-
-        switch (status) {
-          case 'past_due': {
-            await db.subscriptionPaymentPastDue(subscription._id);
-            break;
-          }
-          case 'active': {
-            const {
-              subscription_plan_id: paddleSubscriptionPlanId,
-              checkout_id: checkoutId,
-              update_url: updateURL,
-              cancel_url: cancelURL,
-              new_quantity: quantity,
-              new_unit_price: unitPrice,
-              next_bill_date: nextBillDateAt,
-            } = ctx.request.body;
-
-            const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
-            if (!plan) {
-              throw new Error(
-                `Plan not found: Paddle ID. ${paddleSubscriptionPlanId}`,
-              );
-            }
-
-            await db.subscriptionUpdated(subscription._id, {
-              _plan: plan._id,
-              _paddlePlanId: paddleSubscriptionPlanId,
-              _paddleCheckoutId: checkoutId,
-              updateURL,
-              cancelURL,
-              quantity,
-              unitPrice,
-              nextBillDateAt,
-              accessUntil: nextBillDateAt,
-            });
-            break;
-          }
-        }
-        break;
-      }
-      case 'subscription_cancelled': {
-        await db.cancelSubscriptionPayment(paddleSubscriptionId);
-        break;
-      }
-      case 'subscription_payment_succeeded': {
-        const {
-          subscription_plan_id: paddleSubscriptionPlanId,
-          order_id: orderId,
-          checkout_id: checkoutId,
-          user_id: userId,
-          quantity,
-          unit_price: unitPrice,
-          sale_gross: saleGross,
-          fee,
-          earnings,
-          payment_tax: tax,
-          payment_method: paymentMethod,
-          coupon,
-          receipt_url: receiptURL,
-          customer_name: customerName,
-          country: customerCountry,
-          currency,
-          next_bill_date: nextBillDateAt,
-        } = ctx.request.body;
-
-        const plan = await db.getPlanIdByPaddleId(paddleSubscriptionPlanId);
-
-        await db.subscriptionPaymentReceived({
-          _user: user._id,
-          _plan: plan ? plan._id : null,
-          _paddleSubscriptionId: paddleSubscriptionId,
-          _paddlePlanId: paddleSubscriptionPlanId,
-          _paddleOrderId: orderId,
-          _paddleCheckoutId: checkoutId,
-          _paddleUserId: userId,
-          quantity,
-          unitPrice,
-          saleGross,
-          fee,
-          earnings,
-          tax,
-          paymentMethod,
-          coupon,
-          customerName,
-          customerCountry,
-          currency,
-          receiptURL,
-          nextBillDateAt,
-        });
-
-        break;
-      }
-      case 'subscription_payment_refunded': {
-        const {
-          order_id: orderId,
-          amount: amountRefund,
-          gross_refund: saleGrossRefund,
-          tax_refund: taxRefund,
-          fee_refund: feeRefund,
-        } = ctx.request.body;
-
-        await db.subscriptionPaymentRefunded(orderId, {
-          amountRefund,
-          saleGrossRefund,
-          feeRefund,
-          taxRefund,
-        });
-        break;
-      }
-    }
-  });
+  router.post('/webhook', paddleMiddleware, async ctx =>
+    db.emit(HANDLE_PADDLE_WEBHOOK, { body: ctx.request.body }),
+  );
 
   return router;
 };

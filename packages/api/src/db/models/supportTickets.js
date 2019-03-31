@@ -20,7 +20,7 @@ const SupportTicketsSchema = new mongoose.Schema({
   },
   _user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     default: null,
     index: true,
   },

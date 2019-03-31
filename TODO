@@ -73,7 +73,7 @@
   ✔ S3 Backup @done(19-03-27 19:58)
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
-  ☐ Refactor Paddle stuff to processor task event-driven
+  ☐ Refactor Paddle stuff to processor task event-driven @started(19-03-31 19:55)
   ☐ processor/tasks/handleUsersSubscription
     ☐ Test if it works as expected
   ☐ Rename tasks names

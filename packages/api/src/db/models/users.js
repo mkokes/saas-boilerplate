@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
   },
   _subscription: {
     type: Schema.Types.ObjectId,
-    ref: 'Subscription',
+    ref: 'Subscriptions',
     default: null,
     index: true,
   },

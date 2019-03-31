@@ -6,6 +6,7 @@ const {
   HANDLE_USERS_SUBSCRIPTION,
   MANAGE_MAILCHIMP_LIST,
   MIXPANEL_EVENT,
+  HANDLE_PADDLE_WEBHOOK,
 } = require('../constants/events');
 
 const config = require('../config');
@@ -32,6 +33,10 @@ const {
   getMixpanelEventSetupArgs,
   getMixpanelEventArgs,
 } = require('./tasks/sendMixpanelEvent');
+const {
+  getHandlePaddleWebhookSetupArgs,
+  getHandlePaddleWebhookArgs,
+} = require('./tasks/handlePaddleWebhook');
 
 jest.mock('./tasks/sendNotificationEmail', () => {
   let setupArgs;
@@ -103,17 +108,34 @@ jest.mock('./tasks/manageMailchimpList', () => {
 
 jest.mock('./tasks/sendMixpanelEvent', () => {
   let setupArgs;
-  let syncArgs;
+  let callArgs;
 
   const fn = args => {
     setupArgs = args;
     return na => {
-      syncArgs = na;
+      callArgs = na;
     };
   };
 
   fn.getMixpanelEventSetupArgs = () => setupArgs;
-  fn.getMixpanelEventArgs = () => syncArgs;
+  fn.getMixpanelEventArgs = () => callArgs;
+
+  return fn;
+});
+
+jest.mock('./tasks/handlePaddleWebhook', () => {
+  let setupArgs;
+  let callArgs;
+
+  const fn = args => {
+    setupArgs = args;
+    return na => {
+      callArgs = na;
+    };
+  };
+
+  fn.getHandlePaddleWebhookSetupArgs = () => setupArgs;
+  fn.getHandlePaddleWebhookArgs = () => callArgs;
 
   return fn;
 });
@@ -221,5 +243,23 @@ describe('processor', () => {
 
     db.emit(MIXPANEL_EVENT, 123);
     expect(getMixpanelEventArgs()).toEqual(123);
+  });
+
+  it('handles handle_paddle_webhook events', async () => {
+    await createProcessor({
+      config,
+      log,
+      eventQueue,
+      db,
+      Sentry,
+    });
+
+    const setupArgs = getHandlePaddleWebhookSetupArgs();
+    expect(setupArgs.db).toEqual(db);
+    expect(setupArgs.eventQueue).toEqual(eventQueue);
+    expect(setupArgs.Sentry).toEqual(Sentry);
+
+    db.emit(HANDLE_PADDLE_WEBHOOK, 123);
+    expect(getHandlePaddleWebhookArgs()).toEqual(123);
   });
 });

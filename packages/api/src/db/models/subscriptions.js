@@ -8,13 +8,13 @@ const { Schema } = mongoose;
 const Subscriptions = new mongoose.Schema({
   _plan: {
     type: Schema.Types.ObjectId,
-    ref: 'Plan',
+    ref: 'Plans',
     required: true,
     index: true,
   },
   _user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     required: true,
     index: true,
   },

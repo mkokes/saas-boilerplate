@@ -6,21 +6,27 @@ const { Schema } = mongoose;
  * Payments Schema
  */
 const Payments = new mongoose.Schema({
+  _subscription: {
+    type: Schema.Types.ObjectId,
+    ref: 'Subscriptions',
+    default: null,
+    index: true,
+  },
   _user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     default: null,
     index: true,
   },
   _plan: {
     type: Schema.Types.ObjectId,
-    ref: 'Plan',
+    ref: 'Plans',
     default: null,
     index: true,
   },
   _paddleSubscriptionId: {
     type: Number,
-    required: true,
+    default: null,
     index: true,
   },
   _paddlePlanId: {
