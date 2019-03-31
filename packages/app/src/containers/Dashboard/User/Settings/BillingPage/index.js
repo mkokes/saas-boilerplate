@@ -114,7 +114,7 @@ export default class BillingPage extends React.PureComponent {
           confirmAlert: {
             title: 'Confirm subscription',
             message:
-              'Are you sure that you want to start a new subscription? your current subscription will be replaced.',
+              'Are you sure you want to start a new subscription? your current subscription will be replaced.',
           },
         };
       } else if (plan.tier > currentSubscription._plan.tier) {
@@ -132,7 +132,7 @@ export default class BillingPage extends React.PureComponent {
           confirmAlert: {
             title: 'Confirm downgrade',
             message:
-              'Are you sure that you want to downgrade? you will lose all benefits of your current plan.',
+              'Are you sure you want to downgrade? you will lose all benefits of your current plan.',
           },
         };
       }
