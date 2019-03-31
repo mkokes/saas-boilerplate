@@ -29,8 +29,8 @@ export default class MainPage extends React.PureComponent {
                 fade={false}
                 className="text-center"
                 hidden={
-                  userProfile.isInTrialPeriod &&
-                  userProfile._subscription === null
+                  userProfile.isInTrialPeriod ||
+                  userProfile._subscription !== null
                 }
               >
                 <FontAwesomeIcon
