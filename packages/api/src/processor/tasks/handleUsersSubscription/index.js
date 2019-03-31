@@ -1,5 +1,3 @@
-// const moment = require('moment');
-
 module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
   const log = parentLog.create('handleUsersSubscription');
 
