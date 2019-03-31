@@ -193,7 +193,8 @@ export default class BillingPage extends React.PureComponent {
         key={plan._id}
         outline
         color={
-          currentSubscription && currentSubscription._plan._id === plan._id
+          currentSubscription &&
+          currentSubscription._plan._paddleProductId === plan._paddleProductId
             ? 'primary'
             : ''
         }
