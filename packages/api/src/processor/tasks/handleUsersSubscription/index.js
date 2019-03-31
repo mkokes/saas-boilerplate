@@ -11,7 +11,7 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
             await db.cancelSubscription(subscription._id);
           });
         } catch (e) {
-          log.error(e);
+          log.error(e.message);
           Sentry.captureException(e);
         }
       },

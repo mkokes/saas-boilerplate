@@ -34,10 +34,6 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
   }) => {
     eventQueue.add(
       async () => {
-        Sentry.configureScope(scope => {
-          scope.setExtra('eventName', eventName);
-        });
-
         try {
           const user = JSON.parse(passthrough);
 
@@ -169,7 +165,11 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
               throw new Error('unhandled event');
           }
         } catch (e) {
-          log.error(e);
+          log.error(e.message);
+
+          Sentry.configureScope(scope => {
+            scope.setExtra('eventName', eventName);
+          });
           Sentry.captureException(e);
         }
       },

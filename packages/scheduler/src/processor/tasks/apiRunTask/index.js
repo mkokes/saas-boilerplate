@@ -8,10 +8,6 @@ module.exports = ({
   const log = parentLog.create('task/apiRunTask');
 
   return async type => {
-    Sentry.configureScope(scope => {
-      scope.setExtra('task_type', type);
-    });
-
     log.info(`executing API run task ${type}`);
 
     try {
@@ -19,9 +15,13 @@ module.exports = ({
         form: { key: API_SECRET_KEY, type },
       });
       log.info('OK ✅');
-    } catch (err) {
+    } catch (e) {
       log.error(`FAILED ❌`);
-      Sentry.captureException(new Error(err));
+
+      Sentry.configureScope(scope => {
+        scope.setExtra('task_type', type);
+      });
+      Sentry.captureException(new Error(e));
     }
   };
 };

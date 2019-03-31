@@ -61,10 +61,6 @@ module.exports = ({
   return async notification => {
     eventQueue.add(
       async () => {
-        Sentry.configureScope(scope => {
-          scope.setExtra('notification', notification);
-        });
-
         try {
           await notification
             .populate(
@@ -171,9 +167,13 @@ module.exports = ({
           /* eslint-disable-next-line no-param-reassign */
           notification.sent = true;
           await notification.save();
-        } catch (err) {
-          log.error(err);
-          Sentry.captureException(err);
+        } catch (e) {
+          log.error(e.message);
+
+          Sentry.configureScope(scope => {
+            scope.setExtra('notification', notification);
+          });
+          Sentry.captureException(e);
         }
       },
       { name: 'sendNotificationEmail' },

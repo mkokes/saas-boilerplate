@@ -91,7 +91,7 @@ module.exports = ({
               break;
           }
         } catch (e) {
-          log.error(e);
+          log.error(e.message);
           Sentry.captureException(e);
         }
       },

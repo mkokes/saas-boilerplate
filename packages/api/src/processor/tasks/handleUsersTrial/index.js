@@ -36,7 +36,7 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
             }
           });
         } catch (e) {
-          log.error(e);
+          log.error(e.message);
           Sentry.captureException(e);
         }
       },

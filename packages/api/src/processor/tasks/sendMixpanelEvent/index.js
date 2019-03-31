@@ -7,11 +7,6 @@ module.exports = ({ config: { MIXPANEL_API_KEY }, log: parentLog, Sentry }) => {
   });
 
   return async ({ eventType, args }) => {
-    Sentry.configureScope(scope => {
-      scope.setExtra('eventType', eventType);
-      scope.setExtra('args', args);
-    });
-
     try {
       /* eslint-disable default-case */
       switch (eventType) {
@@ -29,7 +24,12 @@ module.exports = ({ config: { MIXPANEL_API_KEY }, log: parentLog, Sentry }) => {
           break;
       }
     } catch (e) {
-      log.error(e);
+      log.error(e.message);
+
+      Sentry.configureScope(scope => {
+        scope.setExtra('eventType', eventType);
+        scope.setExtra('args', args);
+      });
       Sentry.captureException(e);
     }
   };
