@@ -110,7 +110,8 @@ steps:
     when:
       branch:
         - master
-      event: push
+      event:
+        - push
       status:
         - success
       changeset:
