@@ -96,9 +96,10 @@ steps:
     when:
       branch:
         - master
-
-      event: push
-      status: success
+      event:
+        - push
+      status:
+        - success
       changeset:
         includes: ["yarn.lock", "package.json", "packages/app/**"]
 
@@ -110,7 +111,8 @@ steps:
       branch:
         - master
       event: push
-      status: success
+      status:
+        - success
       changeset:
         includes: ["yarn.lock", "package.json", "packages/web/**"]
 
@@ -131,9 +133,12 @@ steps:
       - git remote add api dokku@dokku.amgaventures.com:api
       - git push api
     when:
-      branch: master
-      event: push
-      status: success
+      branch:
+        - master
+      event:
+        - push
+      status:
+        - success
       changeset:
         includes: ["yarn.lock", "package.json", "packages/api/**"]
 
@@ -154,9 +159,12 @@ steps:
       - git remote add scheduler dokku@dokku.amgaventures.com:scheduler
       - git push scheduler
     when:
-      branch: master
-      event: push
-      status: success
+      branch:
+        - master
+      event:
+        - push
+      status:
+        - success
       changeset:
         includes: ["yarn.lock", "package.json", "packages/scheduler/**"]
   - name: analytics_publish
@@ -176,9 +184,12 @@ steps:
       - git remote add analytics dokku@dokku.amgaventures.com:analytics
       - git push analytics
     when:
-      branch: master
-      event: push
-      status: success
+      branch:
+        - master
+      event:
+        - push
+      status:
+        - success
       changeset:
         includes: ["yarn.lock", "package.json", "packages/analytics/**"]
   - name: app_publish
@@ -193,8 +204,10 @@ steps:
     when:
       branch:
         - master
-      event: push
-      status: success
+      event:
+        - push
+      status:
+        - success
       changeset:
         includes: ["yarn.lock", "package.json", "packages/app/**"]
   - name: web_publish
@@ -209,8 +222,10 @@ steps:
     when:
       branch:
         - master
-      event: push
-      status: success
+      event:
+        - push
+      status:
+        - success
       changeset:
         includes: ["yarn.lock", "package.json", "packages/web/**"]
 
@@ -227,8 +242,10 @@ steps:
         build {{build.number}} failed ({{build.link}}). Fix me please. <@channel>
       {{/success}}
     when:
-      branch: master
-      event: push
+      branch:
+        - master
+      event:
+        - push
       status:
         - success
         - failure
