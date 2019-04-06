@@ -72,7 +72,7 @@
     "react-select": "^2.2.0",
     "react-table": "^6.8.6",
     "react-toastify": "^4.5.0",
-    "reactstrap": "^7.0.2",
+    "reactstrap": "^8.0.0",
     "reaptcha": "^1.4.0",
     "sanitize.css": "^8.0.0",
     "styled-components": "^4.0.3",
