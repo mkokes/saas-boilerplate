@@ -1,64 +1,65 @@
 const { WEB_URL, APP_URL } = process.env;
 
 const siteConfig = {
-  customDocsPath: 'web/docs',
-  title: 'ACME',
-  tagline: 'Tagline',
+  customDocsPath: "web/docs",
+  title: "ACME",
+  tagline: "Tagline",
   url: WEB_URL,
-  baseUrl: '/',
+  baseUrl: "/",
   appUrl: APP_URL,
-  docsUrl: '',
-  gaTrackingId: '',
-  projectName: '',
+  docsUrl: "",
+  gaTrackingId: "",
+  projectName: "",
   headerLinks: [
-    { href: `${APP_URL}/auth/login`, label: 'Log in' },
-    { href: `${APP_URL}/signup`, label: 'Get started' },
-    { href: `${APP_URL}/pricing`, label: 'Pricing' },
-    { blog: true, label: 'Blog' },
+    { href: `${APP_URL}/auth/login`, label: "Log in" },
+    { href: `${APP_URL}/signup`, label: "Get started" },
+    { href: `${APP_URL}/pricing`, label: "Pricing" },
+    { blog: true, label: "Blog" }
   ],
-  headerIcon: 'img/logo.png',
-  footerIcon: 'img/logo.png',
-  favicon: 'img/logo.png',
+  headerIcon: "img/logo.png",
+  footerIcon: "img/logo.png",
+  favicon: "img/logo.png",
   colors: {
-    primaryColor: '#764ABC',
-    secondaryColor: '#40216F',
-    accentColor: '#717171',
+    primaryColor: "#764ABC",
+    secondaryColor: "#40216F",
+    accentColor: "#717171"
   },
   copyright: `Copyright © ${new Date().getFullYear()} Brand name.`,
   highlight: {
-    theme: 'default',
+    theme: "default"
   },
   scripts: [],
-  onPageNav: 'separate',
+  onPageNav: "separate",
   cleanUrl: true,
-  ogImage: 'img/docusaurus.png',
+  ogImage: "img/docusaurus.png",
   twitter: true,
-  twitterImage: 'img/docusaurus.png',
-  twitterUsername: '@demo',
-  changelogUrl: 'https://changelog.domain.io',
-  statusUrl: 'https://status.domain.io',
-  emailContact: 'info@domain.io',
+  twitterImage: "img/docusaurus.png",
+  twitterUsername: "@demo",
+  changelogUrl: "https://changelog.domain.io",
+  statusUrl: "https://status.domain.io",
+  emailContact: "info@domain.io",
   supportUrl: `${APP_URL}/contact-support`,
   users: [
     {
-      caption: 'Coinbase',
-      image: '/img/homepage/users/coinbase.png',
-      infoLink: 'https://www.coinbase.com',
-      pinned: true,
+      caption: "Coinbase",
+      image: "/img/homepage/users/coinbase.png",
+      infoLink: "https://www.coinbase.com",
+      pinned: true
     },
     {
-      caption: 'Binance',
-      image: '/img/homepage/users/binance.svg',
-      infoLink: 'https://www.binance.com',
-      pinned: true,
+      caption: "Binance",
+      image: "/img/homepage/users/binance.svg",
+      infoLink: "https://www.binance.com",
+      pinned: true
     },
     {
-      caption: 'Bitfinex',
-      image: '/img/homepage/users/bitfinex.png',
-      infoLink: 'https://www.bitfinex.com',
-      pinned: true,
-    },
+      caption: "Bitfinex",
+      image: "/img/homepage/users/bitfinex.png",
+      infoLink: "https://www.bitfinex.com",
+      pinned: true
+    }
   ],
+  scrollToTop: true
 };
 
 module.exports = siteConfig;
