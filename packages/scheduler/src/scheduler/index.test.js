@@ -10,6 +10,7 @@ describe('scheduler', () => {
 
   beforeEach(() => {
     scheduler = initScheduler({
+      config,
       log,
     });
   });
