@@ -394,7 +394,7 @@ export default class BillingPage extends React.PureComponent {
                                     </p>
                                   )}
                                 </Col>
-                                <Col sm="12" md="6">
+                                <Col sm="12" md="6" className="mt-sm-3 mt-md-1">
                                   <span>
                                     {subscription.paymentStatus !==
                                       'deleted' && (
