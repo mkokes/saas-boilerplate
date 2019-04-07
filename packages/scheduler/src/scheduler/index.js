@@ -3,7 +3,8 @@ const uuid = require('uuid');
 const _idn = (id, name) => `${name}-${id}`;
 
 class Scheduler {
-  constructor({ log }) {
+  constructor({ config, log }) {
+    this._config = config;
     this._log = log.create('scheduler');
 
     this._jobs = {};
@@ -63,7 +64,11 @@ class Scheduler {
       const now = Date.now();
 
       if (now - lastRun >= intervalMs) {
-        this._log.debug(`Sending job to queue: ${id} ...`);
+        const { APP_MODE } = this._config;
+
+        if (APP_MODE === 'dev') {
+          this._log.debug(`Sending job to queue: ${id} ...`);
+        }
 
         job.lastRun = now;
 

@@ -20,7 +20,7 @@ const init = async () => {
     serverName: SERVER_NAME,
   });
 
-  const scheduler = setupScheduler({ log });
+  const scheduler = setupScheduler({ config, log });
   await createProcessor({ config, log, scheduler, Sentry });
 
   const app = new Koa();
