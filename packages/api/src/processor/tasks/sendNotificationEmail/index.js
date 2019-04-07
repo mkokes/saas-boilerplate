@@ -15,7 +15,7 @@ const {
   DISABLED_2FA,
   SUPPORT_REQUEST,
   SUPPORT_REQUEST_CONFIRMATION,
-  SUBSCRIPTION_CANCELLED,
+  SUBSCRIPTION_ENDED,
   SUBSCRIPTION_PAYMENT_METHOD_DELETED,
 } = require('../../../constants/notifications');
 
@@ -49,7 +49,7 @@ module.exports = ({
     DISABLED_2FA: 10148227,
     SUPPORT_REQUEST: 10737319,
     SUPPORT_REQUEST_CONFIRMATION: 10737781,
-    SUBSCRIPTION_CANCELLED: 11044969,
+    SUBSCRIPTION_ENDED: 11044969,
     SUBSCRIPTION_PAYMENT_METHOD_DELETED: 11043751,
   };
 
@@ -148,7 +148,7 @@ module.exports = ({
               targetReplyTo = SUPPORT_EMAIL;
 
               break;
-            case SUBSCRIPTION_CANCELLED:
+            case SUBSCRIPTION_ENDED:
               break;
             case SUBSCRIPTION_PAYMENT_METHOD_DELETED:
               break;

@@ -22,7 +22,7 @@ const {
   SUPPORT_REQUEST_CONFIRMATION,
   TRIAL_EXPIRING,
   TRIAL_EXPIRED,
-  SUBSCRIPTION_CANCELLED,
+  SUBSCRIPTION_ENDED,
   SUBSCRIPTION_PAYMENT_METHOD_DELETED,
 } = require('../constants/notifications');
 
@@ -836,7 +836,7 @@ class Db extends EventEmitter {
       ],
     });
 
-    this.notifyUser(_user._id, SUBSCRIPTION_CANCELLED);
+    this.notifyUser(_user._id, SUBSCRIPTION_ENDED);
   }
 
   async cancelSubscriptionPaymentMethod(paddleSubscriptionId) {
