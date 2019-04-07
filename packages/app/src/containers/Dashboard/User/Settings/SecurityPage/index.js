@@ -237,6 +237,10 @@ export default class SecurityPage extends React.PureComponent {
                                     secret2FA: secret,
                                     qrcode2FA: qrcode,
                                   });
+                                  window.scrollTo(
+                                    0,
+                                    document.body.scrollHeight,
+                                  );
                                 } catch (e) {
                                   const err = transformApolloErr(e);
 
