@@ -853,6 +853,8 @@ class Db extends EventEmitter {
       .exec();
     const { _user } = subscription;
 
+    this.notifyUser(_user._id, SUBSCRIPTION_PAYMENT_METHOD_DELETED);
+
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
       args: [
@@ -863,8 +865,6 @@ class Db extends EventEmitter {
         },
       ],
     });
-
-    this.notifyUser(_user._id, SUBSCRIPTION_PAYMENT_METHOD_DELETED);
   }
 
   async subscriptionPaymentReceived(data) {
@@ -973,6 +973,16 @@ class Db extends EventEmitter {
     user.isInTrialPeriod = false;
 
     await user.save();
+
+    this.emit(MIXPANEL_EVENT, {
+      eventType: 'PEOPLE_SET',
+      args: [
+        userId,
+        {
+          trialing: false,
+        },
+      ],
+    });
 
     this.notifyUser(userId, TRIAL_EXPIRED);
   }
