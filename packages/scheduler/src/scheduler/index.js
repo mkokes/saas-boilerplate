@@ -13,7 +13,7 @@ class Scheduler {
     const id = _idn(uuid(), name);
 
     this._log.info(
-      `schedule job ${id} to run every ${intervalSeconds} seconds`,
+      `scheduled job ${id} to run every ${intervalSeconds} seconds`,
     );
 
     this._jobs[id] = {
