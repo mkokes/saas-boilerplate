@@ -1,3 +1,6 @@
+const delay = require('delay');
+const safeGet = require('lodash.get');
+
 module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
   const log = parentLog.create('handlePaddleWebhook');
 
@@ -122,12 +125,14 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
               const plan = await db.getPlanIdByPaddleId(
                 paddleSubscriptionPlanId,
               );
+
+              delay(2500);
               const userSubscription = await db.getUserSubscription(user._id);
 
               await db.subscriptionPaymentReceived({
-                _subscription: userSubscription._id,
+                _subscription: safeGet(userSubscription, '_id') || undefined,
                 _user: user._id,
-                _plan: plan ? plan._id : null,
+                _plan: plan._id,
                 _paddleSubscriptionId: paddleSubscriptionId,
                 _paddlePlanId: paddleSubscriptionPlanId,
                 _paddleOrderId: orderId,
