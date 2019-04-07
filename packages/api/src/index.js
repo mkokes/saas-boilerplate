@@ -34,7 +34,7 @@ const init = async () => {
   });
 
   const db = await connectDb({ config, log });
-  const eventQueue = setupEventQueue({ log });
+  const eventQueue = setupEventQueue({ config, log });
 
   await createProcessor({ config, log, eventQueue, db, Sentry });
 

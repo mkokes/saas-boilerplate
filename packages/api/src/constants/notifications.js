@@ -11,6 +11,7 @@ module.exports = [
   'DISABLED_2FA',
   'SUPPORT_REQUEST',
   'SUPPORT_REQUEST_CONFIRMATION',
+  'SUBSCRIPTION_CANCELLED',
 ].reduce((m, a) => {
   const k = m;
 

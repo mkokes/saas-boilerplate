@@ -14,9 +14,9 @@ module.exports = ({
       await rp.post(`${API_URL}/private/processor/run-task`, {
         form: { key: API_SECRET_KEY, type },
       });
-      log.info('OK ✅');
     } catch (e) {
       log.error(`FAILED ❌`);
+      log.error(e.message);
 
       Sentry.configureScope(scope => {
         scope.setExtra('task_type', type);

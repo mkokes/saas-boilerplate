@@ -1,6 +1,6 @@
 const PQueue = require('p-queue');
 
-const createQueueClass = ({ log }) =>
+const createQueueClass = ({ config: { APP_MODE }, log }) =>
   class Queue {
     constructor() {
       this._queue = [];
@@ -8,14 +8,17 @@ const createQueueClass = ({ log }) =>
     }
 
     enqueue(fn, { name }) {
-      this._log.debug(`Adding job ${name} to queue ...`);
+      if (APP_MODE === 'dev') {
+        this._log.debug(`Adding job ${name} to queue ...`);
+      }
+
       this._queue.push({ name, fn });
     }
 
     dequeue() {
       const { name, fn } = this._queue.shift() || {};
 
-      if (name) {
+      if (name && APP_MODE === 'dev') {
         this._log.debug(`Running job ${name} from queue ...`);
       }
 
