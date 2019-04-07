@@ -26,7 +26,7 @@ class HomeSplash extends React.Component {
       <h1 className="projectTitle">
         <img
           alt="Docusaurus with Keytar"
-          class="index-hero-logo"
+          className="index-hero-logo"
           src="/img/hero-logo.svg"
           width="130px"
         />
