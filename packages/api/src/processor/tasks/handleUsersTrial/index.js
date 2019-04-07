@@ -21,14 +21,14 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
             );
 
             if (isTrialExpired === true) {
-              db.userTrialExpired(user._id);
+              await db.userTrialExpired(user._id);
               log.info(`trial expired for user id ${user._id}`);
             } else if (
               !trialExpiringNotified &&
               daysLeftUntilTrialExpiration === 2
             ) {
               // send trial expiring notification when 3 days left until expiration
-              db.userTrialExpiringWarning(user._id);
+              await db.userTrialExpiringWarning(user._id);
               log.info(`trial warning sent for user id ${user._id}`);
             }
           });
