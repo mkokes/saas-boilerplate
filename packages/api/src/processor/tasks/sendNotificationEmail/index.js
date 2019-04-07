@@ -16,6 +16,7 @@ const {
   SUPPORT_REQUEST,
   SUPPORT_REQUEST_CONFIRMATION,
   SUBSCRIPTION_CANCELLED,
+  SUBSCRIPTION_PAYMENT_METHOD_DELETED,
 } = require('../../../constants/notifications');
 
 module.exports = ({
@@ -48,7 +49,8 @@ module.exports = ({
     DISABLED_2FA: 10148227,
     SUPPORT_REQUEST: 10737319,
     SUPPORT_REQUEST_CONFIRMATION: 10737781,
-    SUBSCRIPTION_CANCELLED: 11043751,
+    SUBSCRIPTION_CANCELLED: 11044969,
+    SUBSCRIPTION_PAYMENT_METHOD_DELETED: 11043751,
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
@@ -147,6 +149,8 @@ module.exports = ({
 
               break;
             case SUBSCRIPTION_CANCELLED:
+              break;
+            case SUBSCRIPTION_PAYMENT_METHOD_DELETED:
               break;
           }
 

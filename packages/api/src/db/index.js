@@ -23,6 +23,7 @@ const {
   TRIAL_EXPIRING,
   TRIAL_EXPIRED,
   SUBSCRIPTION_CANCELLED,
+  SUBSCRIPTION_PAYMENT_METHOD_DELETED,
 } = require('../constants/notifications');
 
 const setupDb = require('./setup');
@@ -838,7 +839,7 @@ class Db extends EventEmitter {
     this.notifyUser(_user._id, SUBSCRIPTION_CANCELLED);
   }
 
-  async cancelSubscriptionPayment(paddleSubscriptionId) {
+  async cancelSubscriptionPaymentMethod(paddleSubscriptionId) {
     const subscription = await Subscriptions.findOneAndUpdate(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
@@ -862,6 +863,8 @@ class Db extends EventEmitter {
         },
       ],
     });
+
+    this.notifyUser(_user._id, SUBSCRIPTION_PAYMENT_METHOD_DELETED);
   }
 
   async subscriptionPaymentReceived(data) {

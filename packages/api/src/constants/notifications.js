@@ -12,6 +12,7 @@ module.exports = [
   'SUPPORT_REQUEST',
   'SUPPORT_REQUEST_CONFIRMATION',
   'SUBSCRIPTION_CANCELLED',
+  'SUBSCRIPTION_PAYMENT_METHOD_DELETED',
 ].reduce((m, a) => {
   const k = m;
 

@@ -117,7 +117,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
               break;
             }
             case 'SUBSCRIPTION_CANCELLED': {
-              await db.cancelSubscriptionPayment(paddleSubscriptionId);
+              await db.cancelSubscriptionPaymentMethod(paddleSubscriptionId);
               log.info(`paddle subscription ${paddleSubscriptionId} cancelled`);
               break;
             }
