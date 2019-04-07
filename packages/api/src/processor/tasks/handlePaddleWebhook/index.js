@@ -126,7 +126,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 paddleSubscriptionPlanId,
               );
 
-              delay(2500);
+              delay(2000); // wait 2s for user subscription creation (race condition)
               const userSubscription = await db.getUserSubscription(user._id);
 
               await db.subscriptionPaymentReceived({
