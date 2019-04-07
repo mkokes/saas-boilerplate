@@ -26,7 +26,7 @@ const siteConfig = {
   },
   copyright: `Copyright © ${new Date().getFullYear()} Brand name.`,
   highlight: {
-    theme: "default"
+    theme: "atom-one-dark"
   },
   scripts: [],
   onPageNav: "separate",

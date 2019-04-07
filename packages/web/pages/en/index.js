@@ -1,6 +1,6 @@
-const React = require('react');
+const React = require("react");
 
-const CompLibrary = require('../../core/CompLibrary.js');
+const CompLibrary = require("../../core/CompLibrary.js");
 
 const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
 const Container = CompLibrary.Container;
@@ -8,10 +8,10 @@ const GridBlock = CompLibrary.GridBlock;
 
 class HomeSplash extends React.Component {
   render() {
-    const { siteConfig, language = '' } = this.props;
+    const { siteConfig, language = "" } = this.props;
     const { baseUrl, appUrl, docsUrl } = siteConfig;
-    const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
-    const langPart = `${language ? `${language}/` : ''}`;
+    const docsPart = `${docsUrl ? `${docsUrl}/` : ""}`;
+    const langPart = `${language ? `${language}/` : ""}`;
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
 
     const SplashContainer = props => (
@@ -23,12 +23,16 @@ class HomeSplash extends React.Component {
     );
 
     const ProjectTitle = () => (
-      <div className="projectTitleWrapper">
-        <h1 className="projectTitle">
-          Fast and Open Source
-          <small>Data storage for React Native</small>
-        </h1>
-      </div>
+      <h1 className="projectTitle">
+        <img
+          alt="Docusaurus with Keytar"
+          class="index-hero-logo"
+          src="/img/hero-logo.svg"
+          width="130px"
+        />
+        Fast and Open Source
+        <small>Data storage for React Native</small>
+      </h1>
     );
 
     const PromoSection = props => (
@@ -62,12 +66,12 @@ class HomeSplash extends React.Component {
 
 class Index extends React.Component {
   render() {
-    const { config: siteConfig, language = '' } = this.props;
+    const { config: siteConfig, language = "" } = this.props;
     const { baseUrl } = siteConfig;
 
     const Block = props => (
       <Container
-        padding={['bottom', 'top']}
+        padding={["bottom", "top"]}
         id={props.id}
         background={props.background}
       >
@@ -82,7 +86,7 @@ class Index extends React.Component {
     const FeatureCallout = () => (
       <div
         className="productShowcaseSection paddingBottom"
-        style={{ textAlign: 'center' }}
+        style={{ textAlign: "center" }}
       >
         <h2>Feature Callout</h2>
         <MarkdownBlock>These are features of this project</MarkdownBlock>
@@ -93,11 +97,11 @@ class Index extends React.Component {
       <Block id="try">
         {[
           {
-            content: 'Talk about trying this out',
+            content: "Talk about trying this out",
             image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'left',
-            title: 'Try it Out',
-          },
+            imageAlign: "left",
+            title: "Try it Out"
+          }
         ]}
       </Block>
     );
@@ -107,11 +111,11 @@ class Index extends React.Component {
         {[
           {
             content:
-              'This is another description of how this project is useful',
+              "This is another description of how this project is useful",
             image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'right',
-            title: 'Description',
-          },
+            imageAlign: "right",
+            title: "Description"
+          }
         ]}
       </Block>
     );
@@ -120,11 +124,11 @@ class Index extends React.Component {
       <Block background="light">
         {[
           {
-            content: 'Talk about learning how to use this',
+            content: "Talk about learning how to use this",
             image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: 'right',
-            title: 'Learn How',
-          },
+            imageAlign: "right",
+            title: "Learn How"
+          }
         ]}
       </Block>
     );
@@ -133,30 +137,30 @@ class Index extends React.Component {
       <Block layout="fourColumn" background="light">
         {[
           {
-            content: 'Integrate services using serverless functions and APIs',
+            content: "Integrate services using serverless functions and APIs",
             image: `${baseUrl}img/homepage/features/1.svg`,
-            imageAlign: 'top',
-            title: 'Feature One',
+            imageAlign: "top",
+            title: "Feature One"
           },
           {
-            content: 'Serverless webs, contact forms, and applications',
+            content: "Serverless webs, contact forms, and applications",
             image: `${baseUrl}img/homepage/features/2.svg`,
-            imageAlign: 'top',
-            title: 'Feature Two',
+            imageAlign: "top",
+            title: "Feature Two"
           },
           {
-            content: 'A React single-page app with a serverless backend API',
+            content: "A React single-page app with a serverless backend API",
             image: `${baseUrl}img/homepage/features/3.svg`,
-            imageAlign: 'top',
-            title: 'Feature Two',
+            imageAlign: "top",
+            title: "Feature Two"
           },
           {
             content:
-              'Hook into the server or client lifecycle with the help of extensions. Use middlewares or the validation library of your choice.',
+              "Hook into the server or client lifecycle with the help of extensions. Use middlewares or the validation library of your choice.",
             image: `${baseUrl}img/homepage/features/4.svg`,
-            imageAlign: 'top',
-            title: 'Feature Two',
-          },
+            imageAlign: "top",
+            title: "Feature Two"
+          }
         ]}
       </Block>
     );
@@ -198,16 +202,16 @@ class Index extends React.Component {
                     this.props.language
                   }/site-creation)
                     quickly without having to worry about site design.`,
-                  imageAlign: 'right',
+                  imageAlign: "right",
                   image: `https://docusaurus.io/img/docusaurus_speed.svg`,
-                  imageAlt: 'Docusaurus on a Scooter',
-                  title: 'Quick Setup',
-                },
+                  imageAlt: "Docusaurus on a Scooter",
+                  title: "Quick Setup"
+                }
               ]}
               layout="twoColumn"
             />
           </Container>
-          <Container padding={['bottom', 'top']} background="light">
+          <Container padding={["bottom", "top"]} background="light">
             <GridBlock
               contents={[
                 {
@@ -221,11 +225,11 @@ class Index extends React.Component {
                     your site to GitHub pages or other static file hosts
                     manually, using a script, or with continuous integration
                     like CircleCI.`,
-                  imageAlign: 'left',
+                  imageAlign: "left",
                   image: `https://docusaurus.io/img/docusaurus_live.gif`,
-                  imageAlt: 'Docusaurus Demo',
-                  title: 'Develop and Deploy',
-                },
+                  imageAlt: "Docusaurus Demo",
+                  title: "Develop and Deploy"
+                }
               ]}
               layout="twoColumn"
             />
