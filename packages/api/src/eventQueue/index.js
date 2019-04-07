@@ -30,9 +30,9 @@ const createQueueClass = ({ config: { APP_MODE }, log }) =>
     }
   };
 
-module.exports = ({ log }) =>
+module.exports = ({ config, log }) =>
   new PQueue({
     concurrency: 1,
     autoStart: true,
-    queueClass: createQueueClass({ log }),
+    queueClass: createQueueClass({ config, log }),
   });
