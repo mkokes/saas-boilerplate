@@ -20,6 +20,8 @@ dokku mongo:connect-admin
 
 dokku mongo:backup-auth db AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 dokku mongo:backup db BUCKET_NAME
+
+# CRON_SCHEDULE is a crontab expression, eg. "0 3 * * *" for each day at 3am
 dokku mongo:backup-schedule db CRON_SCHEDULE BUCKET_NAME
 ```
 
