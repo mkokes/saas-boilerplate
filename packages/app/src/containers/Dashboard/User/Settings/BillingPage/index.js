@@ -419,7 +419,7 @@ export default class BillingPage extends React.PureComponent {
                                       size="sm"
                                       className="d-block text-muted"
                                     >
-                                      Cancel subscription payment
+                                      Cancel subscription renewal
                                     </Button>
                                   )}
                                 </Col>
