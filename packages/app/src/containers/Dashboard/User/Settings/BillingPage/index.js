@@ -33,6 +33,7 @@ import {
 import { PaddleApi } from 'api/vendors';
 import { ChageUserSubscriptionPlan } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
+import { displayBillingInterval } from 'utils/core';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class BillingPage extends React.PureComponent {
@@ -259,7 +260,9 @@ export default class BillingPage extends React.PureComponent {
             </Col>
             <Col xs="12" md="5" style={{ fontSize: '19px' }}>
               ${plan.price.toFixed(2)}{' '}
-              <span className="text-muted">/ {plan.billingInterval}</span>
+              <span className="text-muted">
+                / {displayBillingInterval(plan.billingInterval)}
+              </span>
             </Col>
             <Col xs="12" md="4">
               {_renderPlanActionButton(plan)}

@@ -22,6 +22,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
 import { ActivePlans } from 'graphql/queries';
+import { displayBillingInterval } from 'utils/core';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class PricingPage extends React.PureComponent {
@@ -69,7 +70,7 @@ export default class PricingPage extends React.PureComponent {
                             <h1 className="card-title pricing-card-title">
                               ${plan.price}{' '}
                               <small className="text-muted">
-                                / {plan.billingInterval}
+                                / {displayBillingInterval(plan.billingInterval)}
                               </small>
                             </h1>
                             <ul
