@@ -7,6 +7,7 @@ export const AnalyticsApi = {
   mixpanel: {
     setup() {
       if (MIXPANEL_ID && window.mixpanel) {
+        console.debug('setup analytics');
         window.mixpanel.init(MIXPANEL_ID);
       }
     },

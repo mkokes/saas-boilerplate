@@ -20,7 +20,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import * as serviceWorker from 'serviceWorker';
 
-import { AnalyticsApi } from 'api/vendors';
+import { AnalyticsApi, PaddleApi } from 'api/vendors';
 
 import { GlobalProvider } from 'GlobalState';
 import GlobalStyle from 'GlobalStyle';
@@ -33,7 +33,6 @@ const {
   NODE_ENV,
   REACT_APP_SENTRY_DSN,
   REACT_APP_MAINTENANCE_MODE,
-  REACT_APP_PADDLE_VENDOR_ID,
 } = process.env;
 
 const APP_THEME = {
@@ -52,10 +51,9 @@ const MAINTENANCE_MODE = REACT_APP_MAINTENANCE_MODE === 'true';
 
 if (!MAINTENANCE_MODE) {
   MomentTimezone.tz.setDefault('America/Los_Angeles');
+
   AnalyticsApi.mixpanel.setup();
-  window.Paddle.Setup({
-    vendor: parseInt(REACT_APP_PADDLE_VENDOR_ID, 10),
-  });
+  PaddleApi.setup();
 
   ReactDOM.render(
     <ApolloProvider client={clientInstance}>

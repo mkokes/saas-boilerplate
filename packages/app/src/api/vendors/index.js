@@ -1,3 +1,3 @@
 export { AnalyticsApi } from './analytics';
 export { LocalStorageApi } from './localStorage';
-export { PaddleCheckoutAPI } from './paddle';
+export { PaddleApi } from './paddle';

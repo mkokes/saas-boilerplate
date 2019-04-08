@@ -1,6 +1,15 @@
 import { getProvider as getGlobalProvider } from 'GlobalState';
 
-export const PaddleCheckoutAPI = {
+const PADDLE_VENDOR_ID = process.env.REACT_APP_PADDLE_VENDOR_ID;
+
+export const PaddleApi = {
+  setup() {
+    if (window.Paddle) {
+      window.Paddle.Setup({
+        vendor: parseInt(PADDLE_VENDOR_ID, 10),
+      });
+    }
+  },
   async checkout(productId, cb) {
     if (window.Paddle) {
       const globalProvider = await getGlobalProvider();

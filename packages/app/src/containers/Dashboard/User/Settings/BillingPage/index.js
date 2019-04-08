@@ -30,7 +30,7 @@ import {
   UserPaymentReceipts,
   ActiveSubscriptionPlans,
 } from 'graphql/queries';
-import { PaddleCheckoutAPI } from 'api/vendors';
+import { PaddleApi } from 'api/vendors';
 import { ChageUserSubscriptionPlan } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 
@@ -78,7 +78,7 @@ export default class BillingPage extends React.PureComponent {
             color="primary"
             block
             onClick={() =>
-              PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
+              PaddleApi.checkout(plan._paddleProductId, () => {
                 history.replace(`/processing`);
 
                 setTimeout(() => {
@@ -108,7 +108,7 @@ export default class BillingPage extends React.PureComponent {
                   {
                     label: 'Confirm',
                     onClick: async () =>
-                      PaddleCheckoutAPI.checkout(plan._paddleProductId, () => {
+                      PaddleApi.checkout(plan._paddleProductId, () => {
                         history.replace(`/processing`);
 
                         setTimeout(() => {
@@ -400,9 +400,7 @@ export default class BillingPage extends React.PureComponent {
                                       'deleted' && (
                                       <Button
                                         onClick={() =>
-                                          PaddleCheckoutAPI.open(
-                                            subscription.updateURL,
-                                          )
+                                          PaddleApi.open(subscription.updateURL)
                                         }
                                         className="mr-2"
                                       >
@@ -415,9 +413,7 @@ export default class BillingPage extends React.PureComponent {
                                   {subscription.paymentStatus === 'active' && (
                                     <Button
                                       onClick={() =>
-                                        PaddleCheckoutAPI.open(
-                                          subscription.cancelURL,
-                                        )
+                                        PaddleApi.open(subscription.cancelURL)
                                       }
                                       color="link"
                                       size="sm"
