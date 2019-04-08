@@ -16,6 +16,9 @@
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
+  ☐ Plans monthly/annual toggler
+    ☐ Pricing page
+    ☐ Billing page
   ✔ If user is not trialing and no subscribed then show alert on dashboard page @done(19-03-27 23:28)
   ✔ Login page @done(19-03-22 23:48)
     ✔ Show link to support for 2FA failed submission @done(19-03-22 23:48)

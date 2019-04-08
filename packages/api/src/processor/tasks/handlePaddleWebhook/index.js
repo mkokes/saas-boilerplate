@@ -13,6 +13,8 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       subscription_plan_id: paddleSubscriptionPlanId,
       checkout_id: checkoutId,
       quantity,
+      new_quantity: newQuantity,
+      new_unit_price: newUnitPrice,
       next_bill_date: nextBillDateAt,
       unit_price: unitPrice,
       currency,
@@ -91,7 +93,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                   );
                   if (!plan) {
                     throw new Error(
-                      `Plan not found: Paddle ID. ${paddleSubscriptionPlanId}`,
+                      `Plan not found: Paddle plan ID. ${paddleSubscriptionPlanId}`,
                     );
                   }
 
@@ -101,8 +103,8 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                     _paddleCheckoutId: checkoutId,
                     updateURL,
                     cancelURL,
-                    quantity,
-                    unitPrice,
+                    quantity: newQuantity,
+                    unitPrice: newUnitPrice,
                     nextBillDateAt,
                     accessUntil: nextBillDateAt,
                   });
