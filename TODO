@@ -74,16 +74,12 @@
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
   ☐ Annual billing
+    - Subscribers cannot be moved to a plan where billing interval is lower than their current plan.
+    - Recurring coupons will be removed when using the update subscription API.
   ✔ Send email notification when subscription payment method is deleted @done(19-04-07 23:22)
   ✔ Send email notification when subscription is cancelled because it is past due and no payment methods are attached @started(19-04-07 20:18) @done(19-04-07 22:30) @lasted(2h12m50s)
     ✔ Postmark template @done(19-04-07 22:30)
     ✔ Code @done(19-04-07 22:30)
-  ☐ Refactor `Plans` PaddleProductID schema @started(19-04-07 23:22)
-    Plan can have multiple paddle plan ids
-    ☐ Schema
-    ☐ GraphQL
-    ☐ Frontend
-      ☐ Billing page
   ✔ Refactor Paddle stuff to processor task event-driven @started(19-03-31 19:55) @done(19-03-31 21:18) @lasted(1h23m34s)
   ✔ processor/tasks/handleUsersSubscription @done(19-04-01 00:26)
     ✔ Test if it works as expected @done(19-04-01 00:26)

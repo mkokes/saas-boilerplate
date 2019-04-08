@@ -236,7 +236,7 @@ export default class BillingPage extends React.PureComponent {
     return plans.map(plan => {
       const isCurrentPlan =
         currentSubscription &&
-        currentSubscription.paymentStatus === 'active' &&
+        currentSubscription.paymentStatus !== 'deleted' &&
         currentSubscription._plan._paddleProductId === plan._paddleProductId;
 
       return (
