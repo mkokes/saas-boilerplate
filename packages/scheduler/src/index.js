@@ -52,7 +52,7 @@ const init = async () => {
   });
 };
 
-init().catch(err => {
-  log.error(err);
-  Sentry.captureException(err);
+init().catch(e => {
+  log.error(e.message);
+  Sentry.captureException(e);
 });

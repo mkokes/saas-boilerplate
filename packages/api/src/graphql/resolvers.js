@@ -673,17 +673,15 @@ module.exports = ({
       }
       if (currentUserSubscription.paymentStatus !== 'active') {
         throw new ApolloError(
-          'Cannot change subscription plan because your current subscription is not active',
-          'USER_SUBSCRIPTION_NOT_ACTIVE',
+          'Cannot change subscription plan because your payment method is not active',
+          'USER_SUBSCRIPTION_PAYMENT_METHOD_NOT_ACTIVE',
         );
       }
       if (currentUserSubscription._plan._id.toString() === planId) {
-        if (!currentUserSubscription) {
-          throw new ApolloError(
-            'Cannot change subscription plan to same plan',
-            'CANNOT_CHANGE_SAME_PLAN',
-          );
-        }
+        throw new ApolloError(
+          'Cannot change subscription plan to same plan',
+          'CANNOT_CHANGE_SAME_PLAN',
+        );
       }
 
       const plan = await db.getPlanById(planId);
@@ -694,6 +692,15 @@ module.exports = ({
         throw new ApolloError(
           'Requested plan is not active',
           'PLAN_NOT_ACTIVE',
+        );
+      }
+      if (
+        plan.billingInterval === 'monthly' &&
+        currentUserSubscription._plan.billingInterval === 'yearly'
+      ) {
+        throw new ApolloError(
+          'Cannot downgrade to a lower billing interval plan',
+          'CANNOT_DOWNGRADE_LOWER_BILLING_INTERVAL',
         );
       }
 
@@ -726,7 +733,7 @@ module.exports = ({
           ],
         });
       } catch (e) {
-        log.error(e);
+        log.error(e.message);
         throw e;
       }
 

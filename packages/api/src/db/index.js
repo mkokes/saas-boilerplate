@@ -154,7 +154,6 @@ class Db extends EventEmitter {
 
   async getActiveSubscriptionPlans() {
     const _plans = await Plans.find({ status: 'active' }).sort({
-      tier: 0,
       price: 0,
     });
 
