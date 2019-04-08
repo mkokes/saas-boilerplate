@@ -29,6 +29,13 @@ import App from 'App';
 import MaintenancePage from 'containers/MaintenancePage/Loadable';
 import { clientInstance } from './graphql';
 
+const {
+  NODE_ENV,
+  REACT_APP_SENTRY_DSN,
+  REACT_APP_MAINTENANCE_MODE,
+  REACT_APP_PADDLE_VENDOR_ID,
+} = process.env;
+
 const APP_THEME = {
   primaryColor: '#764ABC',
   secondaryColor: '#40216F',
@@ -37,15 +44,18 @@ const APP_THEME = {
 };
 
 Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN,
-  environment: process.env.NODE_ENV,
+  dsn: REACT_APP_SENTRY_DSN,
+  environment: NODE_ENV,
 });
 
-const MAINTENANCE_MODE = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
+const MAINTENANCE_MODE = REACT_APP_MAINTENANCE_MODE === 'true';
 
 if (!MAINTENANCE_MODE) {
   MomentTimezone.tz.setDefault('America/Los_Angeles');
   AnalyticsApi.mixpanel.setup();
+  window.Paddle.Setup({
+    vendor: parseInt(REACT_APP_PADDLE_VENDOR_ID, 10),
+  });
 
   ReactDOM.render(
     <ApolloProvider client={clientInstance}>
