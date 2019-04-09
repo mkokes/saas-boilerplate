@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
   const log = parentLog.create('handleUsersSubscription');
 
@@ -5,10 +7,18 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
     eventQueue.add(
       async () => {
         try {
-          const subscriptions = await db.getActiveSubscriptionsWithNoPaymentAndExpiredAccess();
+          const subscriptions = await db.getActiveSubscriptionsWithNoPaymentMethod();
 
           subscriptions.forEach(async subscription => {
-            await db.cancelSubscription(subscription._id);
+            const { accessUntil } = subscription;
+
+            const isAccessExpired = moment().isSameOrAfter(
+              moment(accessUntil).startOf('day'),
+            );
+
+            if (isAccessExpired) {
+              await db.cancelSubscription(subscription._id);
+            }
           });
         } catch (e) {
           log.error(e.message);

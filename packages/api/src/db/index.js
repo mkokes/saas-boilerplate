@@ -68,11 +68,10 @@ class Db extends EventEmitter {
     }).exec();
   }
 
-  async getActiveSubscriptionsWithNoPaymentAndExpiredAccess() {
+  async getActiveSubscriptionsWithNoPaymentMethod() {
     return Subscriptions.find({
       status: 'active',
       paymentStatus: 'deleted',
-      accessUntil: { $lt: new Date() },
     })
       .populate('_user', '_id')
       .exec();

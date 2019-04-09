@@ -12,11 +12,11 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
           usersInTrialPeriod.forEach(async user => {
             const { trialPeriodEndsAt, trialExpiringNotified } = user;
 
-            const isTrialExpired = moment(new Date()).isSameOrAfter(
+            const isTrialExpired = moment().isSameOrAfter(
               moment(trialPeriodEndsAt),
             );
             const daysLeftUntilTrialExpiration = moment(trialPeriodEndsAt).diff(
-              moment(new Date()),
+              moment(),
               'days',
             );
 

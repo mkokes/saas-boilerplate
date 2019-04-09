@@ -1,6 +1,5 @@
 const delay = require('delay');
 const safeGet = require('lodash.get');
-const Moment = require('moment');
 
 module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
   const log = parentLog.create('handlePaddleWebhook');
@@ -16,7 +15,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       quantity,
       new_quantity: newQuantity,
       new_unit_price: newUnitPrice,
-      next_bill_date: nextBillDate,
+      next_bill_date: nextBillDateAt,
       unit_price: unitPrice,
       currency,
       update_url: updateURL,
@@ -42,16 +41,6 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       async () => {
         try {
           const user = JSON.parse(passthrough);
-
-          log.debug(`received date ${nextBillDate}`);
-          let nextBillDateAt;
-          if (nextBillDate) {
-            nextBillDateAt = Moment(nextBillDate)
-              .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-              .format();
-
-            log.debug(`after date trans ${nextBillDateAt}`);
-          }
 
           switch (eventName.toUpperCase()) {
             case 'SUBSCRIPTION_CREATED': {
