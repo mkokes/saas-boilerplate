@@ -42,9 +42,13 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       async () => {
         try {
           const user = JSON.parse(passthrough);
-          log.debug(nextBillDate);
-          const nextBillDateAt = nextBillDate ? Moment(nextBillDate) : null;
-          log.debug(nextBillDateAt);
+
+          let nextBillDateAt;
+          if (nextBillDate) {
+            nextBillDateAt = Moment(nextBillDate)
+              .startOf('day')
+              .toDate();
+          }
 
           switch (eventName.toUpperCase()) {
             case 'SUBSCRIPTION_CREATED': {
