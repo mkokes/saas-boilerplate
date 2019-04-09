@@ -47,8 +47,8 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
           let nextBillDateAt;
           if (nextBillDate) {
             nextBillDateAt = Moment(nextBillDate)
-              .startOf('day')
-              .toISOString();
+              .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+              .format();
 
             log.debug(`after date trans ${nextBillDateAt}`);
           }
