@@ -137,7 +137,11 @@ export default class PricingPage extends React.PureComponent {
                             </ul>
                           </CardBody>
                           <CardFooter>
-                            <Link to="/dashboard/settings/billing">
+                            <Link
+                              to={`/dashboard/settings/billing?interval=${
+                                !billingIntervalToggler ? 'monthly' : 'yearly'
+                              }`}
+                            >
                               <Button size="lg" block className="btn-theme">
                                 {userProfile ? 'SUBSCRIBE' : 'START TRIAL'}
                               </Button>
