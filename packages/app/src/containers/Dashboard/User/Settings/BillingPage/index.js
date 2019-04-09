@@ -281,7 +281,7 @@ export default class BillingPage extends React.PureComponent {
             <Fragment>
               <h1 className="mb-3">Billing</h1>
               <Card body>
-                <legend>Current subscription plan</legend>
+                <legend>Your current subscription</legend>
                 <Row>
                   <Col>
                     <Fragment>
@@ -345,7 +345,7 @@ export default class BillingPage extends React.PureComponent {
                               <Row>
                                 <Col sm="12" md="6">
                                   <p className="mb-0">
-                                    Current plan:{' '}
+                                    Plan name:{' '}
                                     <strong>{subscription._plan.name}</strong>
                                   </p>
                                   <p
