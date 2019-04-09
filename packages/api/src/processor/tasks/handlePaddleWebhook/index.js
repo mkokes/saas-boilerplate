@@ -48,8 +48,8 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
           if (nextBillDate) {
             nextBillDateAt = Moment(nextBillDate)
               .startOf('day')
-              .local()
-              .format();
+              .toISOString();
+
             log.debug(`after date trans ${nextBillDateAt}`);
           }
 
