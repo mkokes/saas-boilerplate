@@ -13,7 +13,7 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
             const { trialPeriodEndsAt, trialExpiringNotified } = user;
 
             const isTrialExpired = moment().isSameOrAfter(
-              moment(trialPeriodEndsAt),
+              moment(trialPeriodEndsAt).startOf('day'),
             );
             const daysLeftUntilTrialExpiration = moment(trialPeriodEndsAt).diff(
               moment(),
