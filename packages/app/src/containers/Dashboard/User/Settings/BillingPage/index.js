@@ -104,7 +104,7 @@ export default class BillingPage extends React.PureComponent {
               confirmAlert({
                 title: 'Confirm subscription',
                 message:
-                  'Are you sure you want to start a new subscription? your current subscription will be replaced.',
+                  'Are you sure you want to start a new subscription? your current subscription will be ended.',
                 buttons: [
                   {
                     label: 'Confirm',
@@ -145,19 +145,6 @@ export default class BillingPage extends React.PureComponent {
           title: 'Confirm plan change',
         },
       };
-
-      /*
-
-      ctaButton = {
-          text: `Subscribe`,
-          confirmAlert: {
-            title: 'Confirm subscription',
-            message:
-              'Are you sure you want to start a new subscription? your current subscription will be replaced.',
-          },
-        };
-
-      */
 
       if (plan.tier > currentSubscription._plan.tier) {
         ctaButton = {
