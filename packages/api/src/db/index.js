@@ -755,7 +755,6 @@ class Db extends EventEmitter {
   async subscriptionUpdated(id, data) {
     const subscription = await Subscriptions.findByIdAndUpdate(id, {
       status: 'active',
-      lastUpdatedAt: Date.now(),
       ...data,
     }).exec();
 

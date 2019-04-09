@@ -83,8 +83,8 @@
   ☐ Annual billing
     - Subscribers cannot be moved to a plan where billing interval is lower than their current plan.
       ✔ Avoid downgrade from `yearly` plan to `monthly` plan @done(19-04-09 03:35)
-  ☐ Refactor db schemas to use timestamps https://mongoosejs.com/docs/guide.html#timestamps
-    ☐ updated at
+  ✔ Refactor db schemas to use timestamps https://mongoosejs.com/docs/guide.html#timestamps @done(19-04-09 19:56)
+    ✔ updated at @done(19-04-09 19:56)
   ✔ Send email notification when subscription payment method is deleted @done(19-04-07 23:22)
   ✔ Send email notification when subscription is cancelled because it is past due and no payment methods are attached @started(19-04-07 20:18) @done(19-04-07 22:30) @lasted(2h12m50s)
     ✔ Postmark template @done(19-04-07 22:30)

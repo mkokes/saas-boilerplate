@@ -11,148 +11,155 @@ const SALT_WORK_FACTOR = 10;
 /**
  * Users Schema
  */
-const UsersSchema = new mongoose.Schema({
-  _shortId: {
-    type: ShortId,
-    len: 5,
-    base: 64,
-    alphabet: 'VBYRFTPLKMNWZSQXHJG0123456789',
-    retries: 10,
-    unique: true,
-    uppercase: true,
-    index: true,
+const UsersSchema = new mongoose.Schema(
+  {
+    _shortId: {
+      type: ShortId,
+      len: 5,
+      base: 64,
+      alphabet: 'VBYRFTPLKMNWZSQXHJG0123456789',
+      retries: 10,
+      unique: true,
+      uppercase: true,
+      index: true,
+    },
+    _subscription: {
+      type: Schema.Types.ObjectId,
+      ref: 'Subscriptions',
+      default: null,
+      index: true,
+    },
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: true,
+      unique: true,
+      index: true,
+    },
+    emailConfirmationToken: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    passwordUpdatedAt: {
+      type: Date,
+      default: null,
+    },
+    isTwoFactorAuthenticationEnabled: {
+      type: Boolean,
+      default: false,
+    },
+    twoFactorAuthenticationSecret: {
+      type: String,
+      default: null,
+    },
+    firstName: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    nickname: {
+      type: String,
+      trim: true,
+      index: true,
+      required: true,
+    },
+    avatar: {
+      type: String,
+      default: () =>
+        new Identicon(uuidv4(), { margin: 0.2, format: 'svg', size: '128' }),
+    },
+    isSignUpEmailConfirmed: {
+      type: Boolean,
+      default: false,
+    },
+    emailConfirmedAt: {
+      type: Date,
+      default: null,
+    },
+    accountStatus: {
+      type: String,
+      default: 'active',
+    },
+    isInTrialPeriod: {
+      type: Boolean,
+      default: true,
+    },
+    trialPeriodStartedAt: {
+      type: Date,
+      default: Date.now,
+    },
+    trialPeriodEndsAt: {
+      type: Date,
+      required: true,
+    },
+    trialDaysLength: {
+      type: Number,
+      required: true,
+    },
+    trialExpiringNotified: {
+      type: Boolean,
+      default: false,
+    },
+    timezone: {
+      type: String,
+      default: 'America/Los_Angeles',
+    },
+    roles: {
+      type: Array,
+      default: [],
+    },
+    legal: {
+      type: Array,
+      default: [
+        { type: 'TERMS_AND_CONDITIONS', accepted: Date.now().toString() },
+        { type: 'PRIVACY_POLICY', accepted: Date.now().toString() },
+        { type: 'MARKETING_INFO', accepted: Date.now().toString() },
+      ],
+    },
+    apiKey: {
+      type: String,
+      unique: true,
+      default: uuidv4(),
+    },
+    apiKeyStatus: {
+      type: String,
+      default: 'active',
+    },
+    lastLoginAt: {
+      type: Date,
+      default: Date.now,
+    },
+    registeredAt: {
+      type: Date,
+      default: Date.now,
+    },
+    registrationSource: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    registrationIP: {
+      type: String,
+      default: null,
+      trim: true,
+    },
   },
-  _subscription: {
-    type: Schema.Types.ObjectId,
-    ref: 'Subscriptions',
-    default: null,
-    index: true,
+  {
+    timestamps: {
+      updatedAt: 'updatedAt',
+    },
   },
-  email: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    required: true,
-    unique: true,
-    index: true,
-  },
-  emailConfirmationToken: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  passwordUpdatedAt: {
-    type: Date,
-    default: null,
-  },
-  isTwoFactorAuthenticationEnabled: {
-    type: Boolean,
-    default: false,
-  },
-  twoFactorAuthenticationSecret: {
-    type: String,
-    default: null,
-  },
-  firstName: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  nickname: {
-    type: String,
-    trim: true,
-    index: true,
-    required: true,
-  },
-  avatar: {
-    type: String,
-    default: () =>
-      new Identicon(uuidv4(), { margin: 0.2, format: 'svg', size: '128' }),
-  },
-  isSignUpEmailConfirmed: {
-    type: Boolean,
-    default: false,
-  },
-  emailConfirmedAt: {
-    type: Date,
-    default: null,
-  },
-  accountStatus: {
-    type: String,
-    default: 'active',
-  },
-  isInTrialPeriod: {
-    type: Boolean,
-    default: true,
-  },
-  trialPeriodStartedAt: {
-    type: Date,
-    default: Date.now,
-  },
-  trialPeriodEndsAt: {
-    type: Date,
-    required: true,
-  },
-  trialDaysLength: {
-    type: Number,
-    required: true,
-  },
-  trialExpiringNotified: {
-    type: Boolean,
-    default: false,
-  },
-  timezone: {
-    type: String,
-    default: 'America/Los_Angeles',
-  },
-  roles: {
-    type: Array,
-    default: [],
-  },
-  legal: {
-    type: Array,
-    default: [
-      { type: 'TERMS_AND_CONDITIONS', accepted: Date.now().toString() },
-      { type: 'PRIVACY_POLICY', accepted: Date.now().toString() },
-      { type: 'MARKETING_INFO', accepted: Date.now().toString() },
-    ],
-  },
-  apiKey: {
-    type: String,
-    unique: true,
-    default: uuidv4(),
-  },
-  apiKeyStatus: {
-    type: String,
-    default: 'active',
-  },
-  lastLoginAt: {
-    type: Date,
-    default: Date.now,
-  },
-  registeredAt: {
-    type: Date,
-    default: Date.now,
-  },
-  registrationSource: {
-    type: String,
-    default: null,
-    trim: true,
-  },
-  registrationIP: {
-    type: String,
-    default: null,
-    trim: true,
-  },
-});
+);
 
 /**
  * Plugins
