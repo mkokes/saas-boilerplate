@@ -64,7 +64,7 @@ export default class PricingPage extends React.PureComponent {
                     </Fragment>
                   )}
                 </h2>
-                <div className="mb-4 text-right" style={{ fontSize: '24px' }}>
+                <div className="mb-4 text-right" style={{ fontSize: '1.4em' }}>
                   <span
                     className={
                       !billingIntervalToggler

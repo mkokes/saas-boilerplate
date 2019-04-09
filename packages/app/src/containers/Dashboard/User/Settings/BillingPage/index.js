@@ -68,8 +68,12 @@ export default class BillingPage extends React.PureComponent {
 
     this.state = {
       subscriptionPlansLoading: false,
+      billingIntervalToggler: false,
     };
     this.renderSubscriptionPlans = this.renderSubscriptionPlans.bind(this);
+    this.handleChangeBillingIntervalToggler = this.handleChangeBillingIntervalToggler.bind(
+      this,
+    );
   }
 
   renderSubscriptionPlans(currentSubscription, plans) {
@@ -267,9 +271,13 @@ export default class BillingPage extends React.PureComponent {
     });
   }
 
+  handleChangeBillingIntervalToggler(billingIntervalToggler) {
+    this.setState({ billingIntervalToggler });
+  }
+
   render() {
     const { history } = this.props;
-    const { subscriptionPlansLoading } = this.state;
+    const { subscriptionPlansLoading, billingIntervalToggler } = this.state;
 
     return (
       <Fragment>
