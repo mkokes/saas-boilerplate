@@ -739,6 +739,43 @@ module.exports = ({
 
       return true;
     },
+    cancelSubscriptionRenewal: async (_, __, { user }) => {
+      await assertUser(user);
+
+      const subscription = await db.getUserSubscription(user._id);
+      if (!subscription) {
+        throw new ApolloError(
+          'Subscription not found',
+          'SUBSCRIPTION_NOT_FOUND',
+        );
+      }
+      if (subscription.paymentStatus === 'deleted') {
+        throw new ApolloError(
+          'Subscription renewal was already cancelled',
+          'SUBSCRIPTION_PAYMENT_METHOD_ALREADY_DELETED',
+        );
+      }
+
+      try {
+        const response = await axios.post(
+          'https://vendors.paddle.com/api/2.0/subscription/users_cancel',
+          {
+            vendor_id: PADDLE_VENDOR_ID,
+            vendor_auth_code: PADDLE_VENDOR_AUTH_CODE,
+            subscription_id: subscription._paddleSubscriptionId,
+          },
+        );
+        const paddleResponse = response.data;
+        if (!paddleResponse.success) {
+          throw new Error(paddleResponse.error.message);
+        }
+      } catch (e) {
+        log.error(e.message);
+        throw e;
+      }
+
+      return true;
+    },
     requestEnable2FA: async (_, __, { user }) => {
       await assertUser(user);
 

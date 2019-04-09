@@ -31,7 +31,10 @@ import {
   ActiveSubscriptionPlans,
 } from 'graphql/queries';
 import { PaddleApi } from 'api/vendors';
-import { ChageUserSubscriptionPlan } from 'graphql/mutations';
+import {
+  CancelSubscriptionRenewal,
+  ChageUserSubscriptionPlan,
+} from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { displayBillingInterval } from 'utils/core';
 
@@ -55,7 +58,11 @@ export default class BillingPage extends React.PureComponent {
         toast.success('Plan was changed successfully!', {
           position: toast.POSITION.TOP_CENTER,
         });
-
+        break;
+      case 'subscription_renewal_cancelled':
+        toast.success('Subscription renewal was cancelled successfully!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
         break;
     }
 
@@ -261,6 +268,7 @@ export default class BillingPage extends React.PureComponent {
   }
 
   render() {
+    const { history } = this.props;
     const { subscriptionPlansLoading } = this.state;
 
     return (
@@ -401,16 +409,59 @@ export default class BillingPage extends React.PureComponent {
                                     )}
                                   </span>
                                   {subscription.paymentStatus === 'active' && (
-                                    <Button
-                                      onClick={() =>
-                                        PaddleApi.open(subscription.cancelURL)
-                                      }
-                                      color="link"
-                                      size="sm"
-                                      className="d-block text-muted"
-                                    >
-                                      Cancel subscription renewal
-                                    </Button>
+                                    <ApolloConsumer>
+                                      {client => (
+                                        <Button
+                                          onClick={() =>
+                                            confirmAlert({
+                                              title:
+                                                'Confirm renewal cancellation',
+                                              message:
+                                                'If you confirm and end your subscription now, you can still access to it until it expires.',
+                                              buttons: [
+                                                {
+                                                  label: 'Confirm',
+                                                  onClick: async () => {
+                                                    try {
+                                                      await client.mutate({
+                                                        mutation: CancelSubscriptionRenewal,
+                                                      });
+
+                                                      history.replace(
+                                                        `/processing`,
+                                                      );
+                                                      setTimeout(() => {
+                                                        history.replace(
+                                                          '/dashboard/settings/billing?success=subscription_renewal_cancelled',
+                                                        );
+                                                      }, 3000);
+                                                    } catch (e) {
+                                                      const err = transformApolloErr(
+                                                        e,
+                                                      );
+
+                                                      toast.error(err.message, {
+                                                        position:
+                                                          toast.POSITION
+                                                            .TOP_CENTER,
+                                                      });
+                                                    }
+                                                  },
+                                                },
+                                                {
+                                                  label: 'Cancel',
+                                                },
+                                              ],
+                                            })
+                                          }
+                                          color="link"
+                                          size="sm"
+                                          className="d-block text-muted"
+                                        >
+                                          Cancel subscription renewal
+                                        </Button>
+                                      )}
+                                    </ApolloConsumer>
                                   )}
                                 </Col>
                               </Row>

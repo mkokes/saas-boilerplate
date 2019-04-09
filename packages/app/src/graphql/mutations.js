@@ -154,6 +154,12 @@ export const ChageUserSubscriptionPlan = gql`
   }
 `;
 
+export const CancelSubscriptionRenewal = gql`
+  mutation cancelSubscriptionRenewal() {
+    success: cancelSubscriptionRenewal() @requireAuth
+  }
+`;
+
 export const RequestEnable2FA = gql`
   mutation requestEnable2FA {
     requestEnable2FA @requireAuth {

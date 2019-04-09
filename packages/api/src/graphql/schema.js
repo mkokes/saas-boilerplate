@@ -128,6 +128,7 @@ module.exports = gql`
     ): UserProfile
     updateUserPreferences(preferences: UserPreferencesInput!): UserProfile
     chageUserSubscriptionPlan(planId: String!): Boolean
+    cancelSubscriptionRenewal: Boolean
     requestEnable2FA: TwoFactorAuthentication
     confirmEnable2FA(password: String!, token: String!): Boolean
     disable2FA(token: String!): Boolean

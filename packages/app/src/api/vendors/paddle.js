@@ -18,7 +18,10 @@ export const PaddleApi = {
       window.Paddle.Checkout.open({
         product: productId,
         email: user.email,
-        passthrough: JSON.stringify({ _id: user._id }),
+        passthrough: JSON.stringify({
+          host: window.location.host,
+          _id: user._id,
+        }),
         disableLogout: true,
         successCallback: () => {
           cb();
