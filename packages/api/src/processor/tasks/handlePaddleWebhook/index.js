@@ -43,11 +43,13 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
         try {
           const user = JSON.parse(passthrough);
 
+          log.debug(`received date ${nextBillDate}`);
           let nextBillDateAt;
           if (nextBillDate) {
             nextBillDateAt = Moment(nextBillDate)
               .startOf('day')
               .toDate();
+            log.debug(`after date trans ${nextBillDateAt}`);
           }
 
           switch (eventName.toUpperCase()) {
