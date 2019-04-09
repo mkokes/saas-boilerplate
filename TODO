@@ -79,6 +79,7 @@
   ✔ S3 Backup @done(19-03-27 19:58)
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
+  ☐ https://chartmogul.com integration
   ☐ Annual billing
     - Subscribers cannot be moved to a plan where billing interval is lower than their current plan.
       ☐ Avoid downgrade from `yearly` plan to `monthly` plan
