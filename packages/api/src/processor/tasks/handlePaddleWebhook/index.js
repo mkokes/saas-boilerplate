@@ -128,8 +128,17 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 paddleSubscriptionPlanId,
               );
 
-              delay(2000); // wait 2s for user subscription creation (race condition)
+              delay(3000); // wait 3s for user subscription creation (race condition)
               const userSubscription = await db.getUserSubscription(user._id);
+
+              // race condition failed
+              if (!userSubscription) {
+                log.error(
+                  `received SUBSCRIPTION_PAYMENT_SUCCEEDED event before SUBSCRIPTION_CREATED event. User #${
+                    user._id
+                  }`,
+                );
+              }
 
               await db.subscriptionPaymentReceived({
                 _subscription: safeGet(userSubscription, '_id') || undefined,
