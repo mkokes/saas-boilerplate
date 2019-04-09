@@ -11,7 +11,11 @@
     <meta name="theme-color" content="#000000" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>SaaS Boilerplate</title>
+  </head>
 
+  <body>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <div id="app"></div>
     <script type="text/javascript">
       window.MIXPANEL_CUSTOM_LIB_URL = '%REACT_APP_MIXPANEL_CUSTOM_LIB_URL%';
       (function(e, a) {
@@ -82,12 +86,7 @@
         }
       })(document, window.mixpanel || []);
     </script>
-    <script async src="//cdn.headwayapp.co/widget.js"></script>
-  </head>
-
-  <body>
-    <noscript> You need to enable JavaScript to run this app. </noscript>
-    <div id="app"></div>
+    <script src="//cdn.headwayapp.co/widget.js"></script>
     <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
   </body>
 </html>
