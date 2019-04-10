@@ -536,11 +536,10 @@ export default class BillingPage extends React.PureComponent {
                               checked={
                                 /* eslint-disable */
                                 billingIntervalToggler === undefined
-                                  ? currentSubscription._plan
-                                      .billingInterval ===
-                                    (billingIntervalToggler
-                                      ? 'monthly'
-                                      : 'yearly')
+                                  ? !(
+                                      currentSubscription._plan
+                                        .billingInterval === 'monthly'
+                                    )
                                   : billingIntervalToggler
                                 /* eslint-enable */
                               }
