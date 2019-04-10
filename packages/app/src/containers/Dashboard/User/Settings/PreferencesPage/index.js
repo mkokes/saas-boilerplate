@@ -35,24 +35,6 @@ export default class PreferencesPage extends React.PureComponent {
   render() {
     return (
       <Fragment>
-        <Switch
-                              onChange={this.handleChangeBillingIntervalToggler}
-                              checked={
-                                billingIntervalToggler === undefined
-                                  ? currentSubscription._plan
-                                    .billingInterval ===
-                                    (billingIntervalToggler
-                                      ? 'monthly'
-                                      : 'yearly')
-                                  : billingIntervalToggler
-                              }
-                              uncheckedIcon={false}
-                              checkedIcon={false}
-                              onColor="#888888"
-                              height={18}
-                              width={36}
-                              className="align-middle mr-2 ml-2"
-                            />
         <Helmet>
           <title>PreferencesPage</title>
         </Helmet>
