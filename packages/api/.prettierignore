@@ -1,4 +1,3 @@
-packages/app/build/*
-packages/web/build/*
+**/build/*
 **/node_modules/*
 yarn.lock
