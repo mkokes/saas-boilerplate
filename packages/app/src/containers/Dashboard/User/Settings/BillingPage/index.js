@@ -533,16 +533,7 @@ export default class BillingPage extends React.PureComponent {
                             </span>
                             <Switch
                               onChange={this.handleChangeBillingIntervalToggler}
-                              checked={
-                                /* eslint-disable */
-                                billingIntervalToggler === undefined
-                                  ? !(
-                                      currentSubscription._plan
-                                        .billingInterval === 'monthly'
-                                    )
-                                  : billingIntervalToggler
-                                /* eslint-enable */
-                              }
+                              checked={billingIntervalToggler}
                               uncheckedIcon={false}
                               checkedIcon={false}
                               onColor="#888888"
