@@ -45,8 +45,17 @@ export default class BillingPage extends React.PureComponent {
     super(props);
 
     const { location } = props;
+    const { interval, success } = queryString.parse(location.search);
 
-    const { success } = queryString.parse(location.search);
+    let billingIntervalToggler;
+    switch (interval) {
+      case 'yearly':
+        billingIntervalToggler = true;
+        break;
+      default:
+        billingIntervalToggler = false;
+        break;
+    }
 
     // eslint-disable-next-line default-case
     switch (success) {
@@ -69,7 +78,7 @@ export default class BillingPage extends React.PureComponent {
 
     this.state = {
       subscriptionPlansLoading: false,
-      billingIntervalToggler: false,
+      billingIntervalToggler,
     };
     this.renderSubscriptionPlans = this.renderSubscriptionPlans.bind(this);
     this.handleChangeBillingIntervalToggler = this.handleChangeBillingIntervalToggler.bind(
@@ -79,6 +88,7 @@ export default class BillingPage extends React.PureComponent {
 
   renderSubscriptionPlans(currentSubscription, plans) {
     const { history } = this.props;
+    const { billingIntervalToggler } = this.state;
 
     const _renderPlanActionButton = plan => {
       const isCurrentPlan =
@@ -103,6 +113,20 @@ export default class BillingPage extends React.PureComponent {
             }
           >
             <strong>Subscribe</strong>
+          </Button>
+        );
+      }
+
+      if (isCurrentPlan) {
+        this.setState({
+          billingIntervalToggler:
+            plan.billingInterval ===
+            (billingIntervalToggler ? 'monthly' : 'yearly'),
+        });
+
+        return (
+          <Button color="primary" disabled block>
+            Current Plan
           </Button>
         );
       }
@@ -139,14 +163,6 @@ export default class BillingPage extends React.PureComponent {
             }
           >
             <strong>Subscribe</strong>
-          </Button>
-        );
-      }
-
-      if (isCurrentPlan) {
-        return (
-          <Button color="primary" disabled block>
-            Current Plan
           </Button>
         );
       }
@@ -249,6 +265,10 @@ export default class BillingPage extends React.PureComponent {
           style={{
             border: isCurrentPlan ? '2px solid' : undefined,
           }}
+          hidden={
+            plan.billingInterval ===
+            (billingIntervalToggler ? 'monthly' : 'yearly')
+          }
         >
           <Row
             key={plan._id}
