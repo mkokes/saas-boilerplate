@@ -118,12 +118,6 @@ export default class BillingPage extends React.PureComponent {
       }
 
       if (isCurrentPlan) {
-        this.setState({
-          billingIntervalToggler:
-            plan.billingInterval ===
-            (billingIntervalToggler ? 'monthly' : 'yearly'),
-        });
-
         return (
           <Button color="primary" disabled block>
             Current Plan
