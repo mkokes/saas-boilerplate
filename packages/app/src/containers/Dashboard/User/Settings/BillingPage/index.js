@@ -52,8 +52,11 @@ export default class BillingPage extends React.PureComponent {
       case 'yearly':
         billingIntervalToggler = true;
         break;
-      default:
+      case 'monthly':
         billingIntervalToggler = false;
+        break;
+      default:
+        billingIntervalToggler = undefined;
         break;
     }
 
@@ -506,39 +509,6 @@ export default class BillingPage extends React.PureComponent {
                 </legend>
                 <Row>
                   <Col hidden={subscriptionPlansLoading}>
-                    <div
-                      className="mb-3 text-right"
-                      style={{ fontSize: '0.9em' }}
-                    >
-                      <span
-                        className={
-                          !billingIntervalToggler
-                            ? 'font-weight-bold'
-                            : 'text-muted'
-                        }
-                      >
-                        Monthly
-                      </span>
-                      <Switch
-                        onChange={this.handleChangeBillingIntervalToggler}
-                        checked={billingIntervalToggler}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        onColor="#888888"
-                        height={18}
-                        width={36}
-                        className="align-middle mr-2 ml-2"
-                      />
-                      <span
-                        className={
-                          billingIntervalToggler
-                            ? 'font-weight-bold'
-                            : 'text-muted'
-                        }
-                      >
-                        Yearly (10% OFF)
-                      </span>
-                    </div>
                     <SafeQuery
                       query={ActiveSubscriptionPlans}
                       fetchPolicy="network-only"
@@ -546,30 +516,55 @@ export default class BillingPage extends React.PureComponent {
                       showLoading
                       showError
                     >
-                      {({ data: { currentSubscription, plans = [] } }) => {
-                        plans.forEach(plan => {
-                          if (
-                            currentSubscription &&
-                            currentSubscription._plan._paddleProductId ===
-                              plan._paddleProductId
-                          ) {
-                            this.setState({
-                              billingIntervalToggler:
-                                plan.billingInterval ===
-                                (billingIntervalToggler ? 'monthly' : 'yearly'),
-                            });
-                          }
-                        });
-
-                        return (
-                          <Container>
-                            {this.renderSubscriptionPlans(
-                              currentSubscription,
-                              plans,
-                            )}
-                          </Container>
-                        );
-                      }}
+                      {({ data: { currentSubscription, plans = [] } }) => (
+                        <Container>
+                          <div
+                            className="mb-3 text-right"
+                            style={{ fontSize: '0.9em' }}
+                          >
+                            <span
+                              className={
+                                !billingIntervalToggler
+                                  ? 'font-weight-bold'
+                                  : 'text-muted'
+                              }
+                            >
+                              Monthly
+                            </span>
+                            <Switch
+                              onChange={this.handleChangeBillingIntervalToggler}
+                              checked={
+                                billingIntervalToggler === undefined
+                                  ? currentSubscription._plan
+                                    .billingInterval ===
+                                    (billingIntervalToggler
+                                      ? 'monthly'
+                                      : 'yearly')
+                                  : billingIntervalToggler
+                              }
+                              uncheckedIcon={false}
+                              checkedIcon={false}
+                              onColor="#888888"
+                              height={18}
+                              width={36}
+                              className="align-middle mr-2 ml-2"
+                            />
+                            <span
+                              className={
+                                billingIntervalToggler
+                                  ? 'font-weight-bold'
+                                  : 'text-muted'
+                              }
+                            >
+                              Yearly (10% OFF)
+                            </span>
+                          </div>
+                          {this.renderSubscriptionPlans(
+                            currentSubscription,
+                            plans,
+                          )}
+                        </Container>
+                      )}
                     </SafeQuery>
                   </Col>
                   <Col hidden={!subscriptionPlansLoading}>
