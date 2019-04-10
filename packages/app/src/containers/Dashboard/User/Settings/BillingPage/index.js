@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import { NavLink } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
+import Switch from 'react-switch';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
@@ -491,6 +492,39 @@ export default class BillingPage extends React.PureComponent {
                 </legend>
                 <Row>
                   <Col hidden={subscriptionPlansLoading}>
+                    <div
+                      className="mb-3 text-right"
+                      style={{ fontSize: '0.9em' }}
+                    >
+                      <span
+                        className={
+                          !billingIntervalToggler
+                            ? 'font-weight-bold'
+                            : 'text-muted'
+                        }
+                      >
+                        Monthly
+                      </span>
+                      <Switch
+                        onChange={this.handleChangeBillingIntervalToggler}
+                        checked={billingIntervalToggler}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        onColor="#888888"
+                        height={18}
+                        width={36}
+                        className="align-middle mr-2 ml-2"
+                      />
+                      <span
+                        className={
+                          billingIntervalToggler
+                            ? 'font-weight-bold'
+                            : 'text-muted'
+                        }
+                      >
+                        Yearly (10% OFF)
+                      </span>
+                    </div>
                     <SafeQuery
                       query={ActiveSubscriptionPlans}
                       fetchPolicy="network-only"

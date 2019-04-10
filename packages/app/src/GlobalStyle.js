@@ -89,14 +89,6 @@ const GlobalStyle = createGlobalStyle`
   .react-confirm-alert-body > h1 {
     font-size: 2.2em;
   }
-
-  .react-switch-bg {
-    box-shadow: 0px 0px 0px 2px ${props => props.theme.color3};
-    background: #FFFFFF !important;
-  }
-  .react-switch-handle {
-    background: ${props => props.theme.primaryColor} !important;
-  }
 `;
 
 export default GlobalStyle;

@@ -79,6 +79,7 @@ export default class PricingPage extends React.PureComponent {
                     checked={billingIntervalToggler}
                     uncheckedIcon={false}
                     checkedIcon={false}
+                    onColor="#888888"
                     className="align-middle mr-2 ml-2"
                   />
                   <span
