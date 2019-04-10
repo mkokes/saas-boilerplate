@@ -546,14 +546,30 @@ export default class BillingPage extends React.PureComponent {
                       showLoading
                       showError
                     >
-                      {({ data: { currentSubscription, plans = [] } }) => (
-                        <Container>
-                          {this.renderSubscriptionPlans(
-                            currentSubscription,
-                            plans,
-                          )}
-                        </Container>
-                      )}
+                      {({ data: { currentSubscription, plans = [] } }) => {
+                        plans.forEach(plan => {
+                          if (
+                            currentSubscription &&
+                            currentSubscription._plan._paddleProductId ===
+                              plan._paddleProductId
+                          ) {
+                            this.setState({
+                              billingIntervalToggler:
+                                plan.billingInterval ===
+                                (billingIntervalToggler ? 'monthly' : 'yearly'),
+                            });
+                          }
+                        });
+
+                        return (
+                          <Container>
+                            {this.renderSubscriptionPlans(
+                              currentSubscription,
+                              plans,
+                            )}
+                          </Container>
+                        );
+                      }}
                     </SafeQuery>
                   </Col>
                   <Col hidden={!subscriptionPlansLoading}>
