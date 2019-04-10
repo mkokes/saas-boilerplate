@@ -531,12 +531,13 @@ export default class BillingPage extends React.PureComponent {
                             >
                               Monthly
                             </span>
+                            /* eslint-disable */
                             <Switch
                               onChange={this.handleChangeBillingIntervalToggler}
                               checked={
                                 billingIntervalToggler === undefined
                                   ? currentSubscription._plan
-                                    .billingInterval ===
+                                      .billingInterval ===
                                     (billingIntervalToggler
                                       ? 'monthly'
                                       : 'yearly')
@@ -549,6 +550,7 @@ export default class BillingPage extends React.PureComponent {
                               width={36}
                               className="align-middle mr-2 ml-2"
                             />
+                            /* eslint-enable */
                             <span
                               className={
                                 billingIntervalToggler
