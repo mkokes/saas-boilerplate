@@ -97,7 +97,7 @@ export default class PricingPage extends React.PureComponent {
                   <SafeQuery
                     query={PLANS_QUERY}
                     keepExistingResultDuringRefetch
-                    fetchPolicy="network-only"
+                    fetchPolicy="cache-and-network"
                     showLoading
                     showError
                   >
