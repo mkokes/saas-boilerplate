@@ -1,8 +1,8 @@
 ☐ Misc:
-  ☐ Add `app` and `web` staging domains under `amgaventures.com`
-    ☐ Cloudflare
-    ☐ Netlify
-    ☐ Drone
+  ✔ Add `app` and `web` staging domains under `amgaventures.com` @done(19-04-11 20:02)
+    ✔ Cloudflare @done(19-04-11 20:02)
+    ✔ Netlify @done(19-04-11 20:02)
+    ✔ Drone @done(19-04-11 20:02)
   ☐ POC access to app specific features if user is `trialing` or `subscribed`
   ☐ Postmark templates
     ☐ Add aliases
