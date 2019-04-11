@@ -1903,14 +1903,14 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sentry/browser@5.0.6":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.0.6.tgz#69add774de20d801942d71c836dd7295cbbb5af3"
-  integrity sha512-I0/3aRECsH0CYxdI9cdUKZdhGAJC5hZXRJjTMVZkShUCiVKFt5uLfZWqc3nnJCKksEeFvJHJ530f9nZ7d0I03Q==
+"@sentry/browser@5.0.7":
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.0.7.tgz#50932313e5949d086c5537663390fe7d84588edd"
+  integrity sha512-/vaC+oJkZzDK0hIqX5L6fSPn5KZupqv8QW6Svhs5CrPgEFEpIY0CKY4CQyUpq8KysXayKHtkEfEDt3xbxlW3gg==
   dependencies:
-    "@sentry/core" "5.0.6"
+    "@sentry/core" "5.0.7"
     "@sentry/types" "5.0.6"
-    "@sentry/utils" "5.0.6"
+    "@sentry/utils" "5.0.7"
     tslib "^1.9.3"
 
 "@sentry/core@5.0.6":
@@ -13341,9 +13341,9 @@ react-app-polyfill@^0.2.2:
     whatwg-fetch "3.0.0"
 
 react-confirm-alert@^2.0.7:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.4.0.tgz#347e9d007eff9fed128bc171460228346c4ae1f1"
-  integrity sha512-1rQR6TSFlchKPcNMlkH3G5HdMwBkjDRfe+yNl+bpu3KT0vygjBbe+lt4WtrwTNDv1NQyZ+mlnZOOMda3cN1Ymg==
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.4.1.tgz#cc0837edd80271ea1c5e93840537399e99b07ff3"
+  integrity sha512-Sc2N1paCTCS5HWEAhik2IQa9/vwSQLAoCT5uccjPH/VyTaBAkRPZPx9sUqFTy3q5VnnGwCPsoz7fnw54x79d/w==
 
 react-dev-utils@^5.0.2:
   version "5.0.3"
