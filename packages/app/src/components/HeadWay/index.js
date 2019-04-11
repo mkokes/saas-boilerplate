@@ -11,6 +11,10 @@ import { NavItem, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 
+import config from 'config';
+
+const { HEADWAY_ID } = config;
+
 const ChangelogNavItem = styled(NavItem)`
   display: flex;
   cursor: pointer;
@@ -24,7 +28,7 @@ class HeadWay extends React.PureComponent {
     window.Headway.init({
       selector: '.headway',
       trigger: '.headway-trigger',
-      account: 'xaEvgx',
+      account: HEADWAY_ID,
     });
   }
 
