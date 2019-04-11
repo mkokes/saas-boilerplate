@@ -6,12 +6,22 @@ Website: <https://www.netlify.com>.
 
 - Generate a Netlify `personal access token` (URL: <https://app.netlify.com/account/applications>) to add it as `secret` to Drone.io system.
 
-## Adding sites (web, front-end client app or a new one)
+## Screenshots
 
-Repeat this for each site:
+# General
 
-- Go to Netlify and click on `add site`.
-- Site settings -> Deploys -> click on `Stop auto publishing`.
-- Site settings -> Build & deploy -> set `Deploy log visibility to private`, `turn off deploy previews` and `enable Slack notifications` (`Send message to Slack #dev when deploy is locked`).
-- Site settings -> Domains -> `Add custom domain`.
-- Update `.drone.yml` file to auto-publish the site when new changes are pushed.
+![1](img/1.png)
+
+# Build & deploy
+
+![2](img/2.png)
+![3](img/3.png)
+
+# Domain management
+
+![3](img/4.png)
+![5](img/5.png)
+
+# Cloudflare DNS
+
+![6](img/6.png)
