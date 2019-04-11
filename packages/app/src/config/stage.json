@@ -1,5 +1,6 @@
 {
   "API_URL": "https://stage.api.dokku.amgaventures.com",
+  "WEBSITE_URL": "https://www.stage.web.saas.amgaventures.com",
   "RECAPTCHA_SITE_KEY": "6LdLQ3sUAAAAAKF9xzwObsKByPi0aUwa34atJWYH",
   "MIXPANEL_ID": "10d9e1131949749220397c144c4c6826",
   "MIXPANEL_CUSTOM_LIB_URL": "https://analytics.dokku.amgaventures.com/client.js",

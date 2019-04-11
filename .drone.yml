@@ -199,7 +199,7 @@ steps:
       token:
         from_secret: netlify_account_token
       site_id: 65e749f7-5aa6-462b-b590-09fa795645d6
-      site_name: app-amgaventures
+      site_name: app-saas-amgaventures
       domain: app.saas.amgaventures.com
       path: packages/app/build
     when:
@@ -217,8 +217,8 @@ steps:
       token:
         from_secret: netlify_account_token
       site_id: 3ee97675-c7e2-47cc-8a8c-b6b24ca3fbf9
-      site_name: web-amgaventures
-      #domain: web.amgaventures.com
+      site_name: web-saas-amgaventures
+      domain: www.web.saas.amgaventures.com
       path: packages/web/build
     when:
       branch:
