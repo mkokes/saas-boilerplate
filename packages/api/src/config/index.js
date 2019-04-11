@@ -40,6 +40,8 @@ const env = envalid.cleanEnv(
     POSTMARK_API_TOKEN: str({ default: '' }),
     POSTMARK_SENDER_EMAIL: str({ default: 'support@amgaventures.com' }),
     SUPPORT_EMAIL: str({ default: 'support@amgaventures.com' }),
+    CHARTMOGUL_ACCOUNT_TOKEN: str({ default: '' }),
+    CHARTMOGUL_SECRET_KEY: str({ default: '' }),
   },
   {
     dotEnvPath: '.env',

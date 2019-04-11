@@ -4497,6 +4497,15 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
 
+chartmogul-node@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/chartmogul-node/-/chartmogul-node-1.0.9.tgz#892ccee0db8f91703966e45b0524e7999b7a8a9d"
+  integrity sha512-BQCV8XtCW1V/iKxwdfct3xI8L3wVEWTZd0gqngJCuBN4SF8XHH/fcRDfk0xdyr01CTWmgtM8TbC2TI5sz2b4xw==
+  dependencies:
+    request "^2.87.0"
+    retry "^0.12.0"
+    uri-templates "^0.2.0"
+
 check-types@^7.3.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/check-types/-/check-types-7.4.0.tgz#0378ec1b9616ec71f774931a3c6516fad8c152f4"
@@ -10298,11 +10307,6 @@ loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
 
-logrocket@^0.6.20:
-  version "0.6.20"
-  resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-0.6.20.tgz#704c3a6670edec7e413f104910146604c4d974b4"
-  integrity sha512-My3lR6Hm3NH+sBF50F8tf2aMLQdSHZV2DZNWRkZiVSX482W+ByD40x+UJWfkShJeoPhAOJciP7iylFrMGir6UA==
-
 long-timeout@0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/long-timeout/-/long-timeout-0.1.1.tgz#9721d788b47e0bcb5a24c2e2bee1a0da55dab514"
@@ -14177,7 +14181,7 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
 
-retry@0.12.0:
+retry@0.12.0, retry@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
 
@@ -15943,6 +15947,11 @@ uri-js@^4.2.2:
   resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.2.2.tgz#94c540e1ff772956e2299507c010aea6c8838eb0"
   dependencies:
     punycode "^2.1.0"
+
+uri-templates@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/uri-templates/-/uri-templates-0.2.0.tgz#2b5784511cc909868731e9233c268097d10b499f"
+  integrity sha1-K1eEURzJCYaHMekjPCaAl9ELSZ8=
 
 urijs@^1.19.0:
   version "1.19.1"
