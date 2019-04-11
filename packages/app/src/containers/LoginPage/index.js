@@ -26,7 +26,7 @@ import styled from 'styled-components';
 import { ApolloConsumer } from 'react-apollo';
 
 import { GlobalConsumer } from 'GlobalState';
-import { LoginUser } from 'graphql/mutations';
+import { LOGIN_USER } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 
 const ForgotPasswordContainer = styled.div`
@@ -99,7 +99,7 @@ export default class LoginPage extends React.PureComponent {
 
                                   try {
                                     const { data } = await client.mutate({
-                                      mutation: LoginUser,
+                                      mutation: LOGIN_USER,
                                       variables: {
                                         ...values,
                                       },

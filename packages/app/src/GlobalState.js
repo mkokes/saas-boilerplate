@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode';
 import MomentTimezone from 'moment-timezone';
 
 import { LocalStorageApi, AnalyticsApi } from 'api/vendors';
-import { LoginUserNoAuth, RefreshAccessToken } from 'graphql/mutations';
+import { LOGIN_USER_NO_AUTH, REFRESH_ACCESS_TOKEN } from 'graphql/mutations';
 import { buildAuthHeader } from './utils/requests';
 
 const GlobalContext = createContext({});
@@ -85,7 +85,7 @@ class Provider extends Component {
       const {
         data: { profile },
       } = await this.apolloClient().mutate({
-        mutation: LoginUserNoAuth,
+        mutation: LOGIN_USER_NO_AUTH,
         context: {
           headers: buildAuthHeader(accessToken),
         },
@@ -145,7 +145,7 @@ class Provider extends Component {
       throw new Error('no refresh token to renew access token');
 
     const { data } = await this.apolloClient().mutate({
-      mutation: RefreshAccessToken,
+      mutation: REFRESH_ACCESS_TOKEN,
       variables: {
         refreshToken,
       },

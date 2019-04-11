@@ -18,8 +18,8 @@ import { toast } from 'react-toastify';
 import { GlobalConsumer } from 'GlobalState';
 import { ReactstrapSelect, ReactstrapCheckbox } from 'utils/formiik';
 import {
-  UpdateUserNotificationsPreferences,
-  UpdateUserPreferences,
+  UPDATE_USER_NOTIFICATIONS_PREFERENCES,
+  UPDATE_USER_PREFERENCES,
 } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { getTimezones } from 'utils/moment';
@@ -65,7 +65,7 @@ export default class PreferencesPage extends React.PureComponent {
                               const {
                                 data: { profile },
                               } = await client.mutate({
-                                mutation: UpdateUserPreferences,
+                                mutation: UPDATE_USER_PREFERENCES,
                                 variables: {
                                   preferences: {
                                     timezone,
@@ -161,7 +161,7 @@ export default class PreferencesPage extends React.PureComponent {
                               const {
                                 data: { profile },
                               } = await client.mutate({
-                                mutation: UpdateUserNotificationsPreferences,
+                                mutation: UPDATE_USER_NOTIFICATIONS_PREFERENCES,
                                 variables: {
                                   notifications: {
                                     notifications,

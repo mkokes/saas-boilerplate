@@ -29,9 +29,9 @@ import QRCode from 'qrcode.react';
 import { GlobalConsumer } from 'GlobalState';
 import { ReactstrapInput } from 'utils/formiik';
 import {
-  RequestEnable2FA,
-  ConfirmEnable2FA,
-  Disable2F,
+  REQUEST_ENABLE_2FA,
+  CONFIRM_ENABLE_2FA,
+  DISABLE_2FA,
 } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 
@@ -135,7 +135,7 @@ export default class SecurityPage extends React.PureComponent {
 
                                   try {
                                     await client.mutate({
-                                      mutation: Disable2F,
+                                      mutation: DISABLE_2FA,
                                       variables: {
                                         token,
                                       },
@@ -231,7 +231,7 @@ export default class SecurityPage extends React.PureComponent {
                                       requestEnable2FA: { secret, qrcode },
                                     },
                                   } = await client.mutate({
-                                    mutation: RequestEnable2FA,
+                                    mutation: REQUEST_ENABLE_2FA,
                                   });
                                   this.setState({
                                     secret2FA: secret,
@@ -302,7 +302,7 @@ export default class SecurityPage extends React.PureComponent {
 
                                           try {
                                             await client.mutate({
-                                              mutation: ConfirmEnable2FA,
+                                              mutation: CONFIRM_ENABLE_2FA,
                                               variables: {
                                                 password,
                                                 token,

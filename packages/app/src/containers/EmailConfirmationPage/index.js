@@ -12,7 +12,7 @@ import { Container, Row, Col, Alert, Button } from 'reactstrap';
 import queryString from 'query-string';
 import { withApollo } from 'react-apollo';
 
-import { ConfirmUserEmail } from 'graphql/mutations';
+import { CONFIRM_USER_EMAIL } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import Loader from 'components/Loader';
 
@@ -28,7 +28,7 @@ function EmailConfirmationPage(props) {
     async () => {
       try {
         await client.mutate({
-          mutation: ConfirmUserEmail,
+          mutation: CONFIRM_USER_EMAIL,
           variables: { confirmationToken: token || '' },
         });
 

@@ -29,7 +29,7 @@ import _ from 'lodash';
 import queryString from 'query-string';
 
 import { GlobalConsumer } from 'GlobalState';
-import { ContactSupport } from 'graphql/mutations';
+import { CONTACT_SUPPORT } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import config from 'config';
 
@@ -184,7 +184,7 @@ export default class SupportPage extends React.PureComponent {
 
                                     try {
                                       await client.mutate({
-                                        mutation: ContactSupport,
+                                        mutation: CONTACT_SUPPORT,
                                         variables: {
                                           recaptchaResponse,
                                           ..._.omit(values, ['ticketType']),

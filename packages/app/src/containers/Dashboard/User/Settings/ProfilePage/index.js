@@ -28,10 +28,10 @@ import { toast } from 'react-toastify';
 import { ReactstrapInput } from 'utils/formiik';
 import { GlobalConsumer } from 'GlobalState';
 import {
-  ChangeUserPassword,
-  UpdateUserProfile,
-  UpdateUserPersonalDetails,
-  ChangeUserEmail,
+  CHANGE_USER_PASSWORD,
+  UPDATE_USER_PROFILE,
+  UPDATE_PERSONAL_DETAILS,
+  CHANGE_USER_EMAIL,
 } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import Avatar from 'components/Avatar';
@@ -164,7 +164,7 @@ export default class ProfilePage extends React.PureComponent {
                                     },
                                   },
                                 } = await client.mutate({
-                                  mutation: ChangeUserPassword,
+                                  mutation: CHANGE_USER_PASSWORD,
                                   variables: values,
                                 });
 
@@ -308,7 +308,7 @@ export default class ProfilePage extends React.PureComponent {
                               const {
                                 data: { profile },
                               } = await client.mutate({
-                                mutation: UpdateUserProfile,
+                                mutation: UPDATE_USER_PROFILE,
                                 variables: {
                                   profile: values,
                                 },
@@ -410,7 +410,7 @@ export default class ProfilePage extends React.PureComponent {
 
                             try {
                               await client.mutate({
-                                mutation: ChangeUserEmail,
+                                mutation: CHANGE_USER_EMAIL,
                                 variables: values,
                               });
 
@@ -511,7 +511,7 @@ export default class ProfilePage extends React.PureComponent {
                               const {
                                 data: { profile },
                               } = await client.mutate({
-                                mutation: UpdateUserPersonalDetails,
+                                mutation: UPDATE_PERSONAL_DETAILS,
                                 variables: {
                                   profile: values,
                                 },

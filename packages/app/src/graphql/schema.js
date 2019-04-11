@@ -19,7 +19,7 @@ const typeDefs = `
     timezone: String
     legal: [LegalAgreement]
   }
-  type UserPaymentReceipts {
+  type UserPaymentReceiptsQuery {
     saleGross: String
     receiptURL: String
     receivedAt: String

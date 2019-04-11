@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 import { ProfileFields } from './fragments';
 
-export const ContactSupport = gql`
+export const CONTACT_SUPPORT = gql`
   mutation contactSupport(
     $recaptchaResponse: String!
     $requesterName: String!
@@ -22,7 +22,7 @@ export const ContactSupport = gql`
   }
 `;
 
-export const SignUpUser = gql`
+export const SIGNUP_USER = gql`
   mutation signUpUser(
     $recaptchaResponse: String
     $email: String!
@@ -49,7 +49,7 @@ export const SignUpUser = gql`
   }
 `;
 
-export const LoginUser = gql`
+export const LOGIN_USER = gql`
   mutation loginUser($email: String!, $password: String!, $token: String) {
     loginUser(email: $email, password: $password, token: $token) @disableAuth {
       accessToken
@@ -58,7 +58,7 @@ export const LoginUser = gql`
   }
 `;
 
-export const LoginUserNoAuth = gql`
+export const LOGIN_USER_NO_AUTH = gql`
   ${ProfileFields}
 
   mutation loginUserNoAuth {
@@ -68,7 +68,7 @@ export const LoginUserNoAuth = gql`
   }
 `;
 
-export const RefreshAccessToken = gql`
+export const REFRESH_ACCESS_TOKEN = gql`
   mutation refreshAccessToken($refreshToken: String!) {
     refreshAccessToken(refreshToken: $refreshToken) @disableAuth {
       accessToken
@@ -76,26 +76,26 @@ export const RefreshAccessToken = gql`
   }
 `;
 
-export const ForgotPassword = gql`
+export const FORGOT_PASSWORD = gql`
   mutation forgotPassword($email: String!) {
     forgotPassword(email: $email) @disableAuth
   }
 `;
 
-export const ResetPassword = gql`
+export const RESET_PASSWORD = gql`
   mutation forgotPassword($resetToken: String!, $newPassword: String!) {
     resetPassword(resetToken: $resetToken, newPassword: $newPassword)
       @disableAuth
   }
 `;
 
-export const ConfirmUserEmail = gql`
+export const CONFIRM_USER_EMAIL = gql`
   mutation confirmUserEmail($confirmationToken: String!) {
     confirmUserEmail(confirmationToken: $confirmationToken) @disableAuth
   }
 `;
 
-export const ChangeUserPassword = gql`
+export const CHANGE_USER_PASSWORD = gql`
   mutation changeUserPassword($oldPassword: String!, $newPassword: String!) {
     changeUserPassword(oldPassword: $oldPassword, newPassword: $newPassword)
       @requireAuth {
@@ -105,7 +105,7 @@ export const ChangeUserPassword = gql`
   }
 `;
 
-export const UpdateUserProfile = gql`
+export const UPDATE_USER_PROFILE = gql`
   ${ProfileFields}
   mutation updateUserProfile($profile: UserProfileInput!) {
     profile: updateUserProfile(profile: $profile) @requireAuth {
@@ -114,7 +114,7 @@ export const UpdateUserProfile = gql`
   }
 `;
 
-export const UpdateUserPersonalDetails = gql`
+export const UPDATE_PERSONAL_DETAILS = gql`
   ${ProfileFields}
   mutation updateUserProfile($profile: UserPersonalDetailsInput!) {
     profile: updateUserPersonalDetails(profile: $profile) @requireAuth {
@@ -123,13 +123,13 @@ export const UpdateUserPersonalDetails = gql`
   }
 `;
 
-export const ChangeUserEmail = gql`
+export const CHANGE_USER_EMAIL = gql`
   mutation changeUserEmail($password: String!, $email: String!) {
     changeUserEmail(password: $password, email: $email) @requireAuth
   }
 `;
 
-export const UpdateUserNotificationsPreferences = gql`
+export const UPDATE_USER_NOTIFICATIONS_PREFERENCES = gql`
   ${ProfileFields}
   mutation updateUserNotificationsPreferences(
     $notifications: UserNotificationsPreferencesInput!
@@ -141,7 +141,7 @@ export const UpdateUserNotificationsPreferences = gql`
   }
 `;
 
-export const UpdateUserPreferences = gql`
+export const UPDATE_USER_PREFERENCES = gql`
   ${ProfileFields}
   mutation updateUserPreferences($preferences: UserPreferencesInput!) {
     profile: updateUserPreferences(preferences: $preferences) @requireAuth {
@@ -150,19 +150,19 @@ export const UpdateUserPreferences = gql`
   }
 `;
 
-export const ChageUserSubscriptionPlan = gql`
+export const CHANGE_USER_SUBSCRIPTION_PLAN = gql`
   mutation chageUserSubscriptionPlan($planId: String!) {
     success: chageUserSubscriptionPlan(planId: $planId) @requireAuth
   }
 `;
 
-export const CancelSubscriptionRenewal = gql`
+export const CANCEL_SUBSCRIPTION_RENEWAL = gql`
   mutation cancelSubscriptionRenewal {
     success: cancelSubscriptionRenewal @requireAuth
   }
 `;
 
-export const RequestEnable2FA = gql`
+export const REQUEST_ENABLE_2FA = gql`
   mutation requestEnable2FA {
     requestEnable2FA @requireAuth {
       secret
@@ -171,13 +171,13 @@ export const RequestEnable2FA = gql`
   }
 `;
 
-export const ConfirmEnable2FA = gql`
+export const CONFIRM_ENABLE_2FA = gql`
   mutation confirmEnable2FA($password: String!, $token: String!) {
     confirmEnable2FA(password: $password, token: $token) @requireAuth
   }
 `;
 
-export const Disable2F = gql`
+export const DISABLE_2FA = gql`
   mutation disable2FA($token: String!) {
     disable2FA(token: $token) @requireAuth
   }

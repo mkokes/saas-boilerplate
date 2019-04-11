@@ -29,7 +29,7 @@ import MomentTimezone from 'moment-timezone';
 import queryString from 'query-string';
 import axios from 'axios';
 
-import { SignUpUser } from 'graphql/mutations';
+import { SIGNUP_USER } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { GlobalConsumer } from 'GlobalState';
 import config from 'config';
@@ -160,7 +160,7 @@ export default class SignupPage extends React.PureComponent {
 
                                   try {
                                     const { data } = await client.mutate({
-                                      mutation: SignUpUser,
+                                      mutation: SIGNUP_USER,
                                       variables: {
                                         ...values,
                                         timezone: MomentTimezone.tz.guess(),

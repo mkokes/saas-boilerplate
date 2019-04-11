@@ -28,13 +28,13 @@ import SafeQuery from 'components/graphql/SafeQuery';
 import Loader from 'components/Loader';
 import {
   UserSubscriptionQuery,
-  UserPaymentReceipts,
-  ActiveSubscriptionPlans,
+  UserPaymentReceiptsQuery,
+  ActiveSubscriptionPlansQuery,
 } from 'graphql/queries';
 import { PaddleApi } from 'api/vendors';
 import {
-  CancelSubscriptionRenewal,
-  ChageUserSubscriptionPlan,
+  CANCEL_SUBSCRIPTION_RENEWAL,
+  CHANGE_USER_SUBSCRIPTION_PLAN,
 } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { displayBillingInterval } from 'utils/core';
@@ -228,7 +228,7 @@ class BillingPage extends React.PureComponent {
 
                         try {
                           await client.mutate({
-                            mutation: ChageUserSubscriptionPlan,
+                            mutation: CHANGE_USER_SUBSCRIPTION_PLAN,
                             variables: {
                               planId: plan._id,
                             },
@@ -468,7 +468,7 @@ class BillingPage extends React.PureComponent {
                                                   onClick: async () => {
                                                     try {
                                                       await client.mutate({
-                                                        mutation: CancelSubscriptionRenewal,
+                                                        mutation: CANCEL_SUBSCRIPTION_RENEWAL,
                                                       });
 
                                                       history.replace(
@@ -532,7 +532,7 @@ class BillingPage extends React.PureComponent {
                 <Row>
                   <Col hidden={subscriptionPlansLoading}>
                     <SafeQuery
-                      query={ActiveSubscriptionPlans}
+                      query={ActiveSubscriptionPlansQuery}
                       fetchPolicy="network-only"
                       keepExistingResultDuringRefetch
                       showLoading
@@ -589,7 +589,7 @@ class BillingPage extends React.PureComponent {
                 <Row>
                   <Col>
                     <SafeQuery
-                      query={UserPaymentReceipts}
+                      query={UserPaymentReceiptsQuery}
                       fetchPolicy="network-only"
                       keepExistingResultDuringRefetch
                       showLoading

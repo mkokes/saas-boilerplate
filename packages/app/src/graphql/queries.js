@@ -11,7 +11,7 @@ export const UserProfileQuery = gql`
   }
 `;
 
-export const UserPaymentReceipts = gql`
+export const UserPaymentReceiptsQuery = gql`
   query getUserPaymentReceipts {
     payments: userPaymentReceipts @requireAuth {
       saleGross
@@ -21,7 +21,7 @@ export const UserPaymentReceipts = gql`
   }
 `;
 
-export const ActivePlans = gql`
+export const ActivePlansQuery = gql`
   query getActivePlans {
     plans: activeSubscriptionPlans {
       _id
@@ -34,7 +34,7 @@ export const ActivePlans = gql`
   }
 `;
 
-export const ActiveSubscriptionPlans = gql`
+export const ActiveSubscriptionPlansQuery = gql`
   query getActiveSubscriptionPlans {
     currentSubscription: userSubscription @requireAuth {
       _plan {

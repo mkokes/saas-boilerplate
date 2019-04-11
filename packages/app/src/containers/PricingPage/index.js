@@ -22,7 +22,7 @@ import Switch from 'react-switch';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
-import { ActivePlans } from 'graphql/queries';
+import { ActivePlansQuery } from 'graphql/queries';
 import { displayBillingInterval } from 'utils/core';
 import config from 'config';
 
@@ -95,7 +95,7 @@ export default class PricingPage extends React.PureComponent {
                 </div>
                 <div className="card-deck mb-3 text-center justify-content-center">
                   <SafeQuery
-                    query={ActivePlans}
+                    query={ActivePlansQuery}
                     keepExistingResultDuringRefetch
                     fetchPolicy="network-only"
                     showLoading
