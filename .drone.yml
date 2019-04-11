@@ -198,7 +198,7 @@ steps:
     settings:
       token:
         from_secret: netlify_account_token
-      site_id: 7d8053d6-80e8-4751-9a57-f5b6e8f8c271
+      site_id: 65e749f7-5aa6-462b-b590-09fa795645d6
       site_name: app-amgaventures
       domain: app.saas.amgaventures.com
       path: packages/app/build
