@@ -1913,17 +1913,6 @@
     "@sentry/utils" "5.0.7"
     tslib "^1.9.3"
 
-"@sentry/core@5.0.6":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-5.0.6.tgz#e8c052d2db3fac50cd6e0bd58ff226233ee76068"
-  integrity sha512-+SOoxMAmi6yhu3ROuUj3qQIedvtpt2XVSoT8iYUwN1U2LZVYM2KFpJKqdpuQt3r1SvEGGEQKYVdGhCGhb6L88Q==
-  dependencies:
-    "@sentry/hub" "5.0.6"
-    "@sentry/minimal" "5.0.6"
-    "@sentry/types" "5.0.6"
-    "@sentry/utils" "5.0.6"
-    tslib "^1.9.3"
-
 "@sentry/core@5.0.7":
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-5.0.7.tgz#231d2f1105bdbb1dde95bfc04803d6f06a7b62d8"
@@ -1935,15 +1924,6 @@
     "@sentry/utils" "5.0.7"
     tslib "^1.9.3"
 
-"@sentry/hub@5.0.6":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-5.0.6.tgz#d8f71c0ca2f47676c06c1e98c26182e9c4c33e17"
-  integrity sha512-ku4rYu2Fy4VLCzPQGY+Oh6dOcDHC4q98hiMR7+adJ79vHjxAL0H+ig1WUGkuWsFZE87VZ+2NhR08l4rpmsEB9g==
-  dependencies:
-    "@sentry/types" "5.0.6"
-    "@sentry/utils" "5.0.6"
-    tslib "^1.9.3"
-
 "@sentry/hub@5.0.7":
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-5.0.7.tgz#7fdcad68b487680c963fefa516bfbaf2101a09ba"
@@ -1951,15 +1931,6 @@
   dependencies:
     "@sentry/types" "5.0.6"
     "@sentry/utils" "5.0.7"
-    tslib "^1.9.3"
-
-"@sentry/minimal@5.0.6":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-5.0.6.tgz#7ba633d8d7057e56703124ff30b987021dfb4188"
-  integrity sha512-xPaokcBUlc6excZdfswnZceISpb43elhqHmW2BZ5SXemEOQ6OsUPQ1TosgsQQXqTJ6E0LIltBZoV+eA1FsKj3Q==
-  dependencies:
-    "@sentry/hub" "5.0.6"
-    "@sentry/types" "5.0.6"
     tslib "^1.9.3"
 
 "@sentry/minimal@5.0.7":
@@ -1989,14 +1960,6 @@
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-5.0.6.tgz#df1b318977e5308741049cc4f35986cf8255115f"
   integrity sha512-EJYzjfnTfTQgqR3p6dSvIVZe0xe2Jz+tSmvuPABf7VoCmrFtEYkMCSf5IshMHeebmXUS5prrPSCAgVcIrJC+Bw==
-
-"@sentry/utils@5.0.6":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-5.0.6.tgz#2c4371edc7660f395e6229c0fce234a6c0822802"
-  integrity sha512-JsDlCY3t5g+E1a34IqCpqvj8ZGv/t1nPpySxmlXuk4awnvgGTm+zsN+bauzYPTucqqJLHEILsQnasbJa2H15TA==
-  dependencies:
-    "@sentry/types" "5.0.6"
-    tslib "^1.9.3"
 
 "@sentry/utils@5.0.7":
   version "5.0.7"
@@ -10334,6 +10297,11 @@ logalot@^2.0.0:
 loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
+
+logrocket@^0.6.20:
+  version "0.6.20"
+  resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-0.6.20.tgz#704c3a6670edec7e413f104910146604c4d974b4"
+  integrity sha512-My3lR6Hm3NH+sBF50F8tf2aMLQdSHZV2DZNWRkZiVSX482W+ByD40x+UJWfkShJeoPhAOJciP7iylFrMGir6UA==
 
 long-timeout@0.1.1:
   version "0.1.1"

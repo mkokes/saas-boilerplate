@@ -4,7 +4,7 @@ import { withApollo } from 'react-apollo';
 import jwtDecode from 'jwt-decode';
 import MomentTimezone from 'moment-timezone';
 
-import { LocalStorageApi, AnalyticsApi } from 'api/vendors';
+import { LocalStorageApi, AnalyticsApi, LogRocketApi } from 'api/vendors';
 import { LOGIN_USER_NO_AUTH, REFRESH_ACCESS_TOKEN } from 'graphql/mutations';
 import { buildAuthHeader } from './utils/requests';
 
@@ -121,6 +121,7 @@ class Provider extends Component {
       AnalyticsApi.mixpanel.people.set({
         $last_seen: new Date(),
       });
+      LogRocketApi.identify(profile);
     }
   };
 

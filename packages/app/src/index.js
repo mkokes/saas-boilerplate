@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-table/react-table.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-import { AnalyticsApi, PaddleApi } from 'api/vendors';
+import { AnalyticsApi, PaddleApi, LogRocketApi } from 'api/vendors';
 import { GlobalProvider } from 'GlobalState';
 import GlobalStyle from 'GlobalStyle';
 import App from 'App';
@@ -38,6 +38,7 @@ Sentry.init({
 if (!MAINTENANCE_MODE) {
   MomentTimezone.tz.setDefault('America/Los_Angeles');
   AnalyticsApi.mixpanel.setup();
+  LogRocketApi.setup();
   PaddleApi.setup();
 
   ReactDOM.render(

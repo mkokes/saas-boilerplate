@@ -7,5 +7,6 @@
   "SENTRY_DSN": "",
   "GOOGLE_ANALYTICS": "",
   "RECAPTCHA_SITE_KEY": "6LdLQ3sUAAAAAKF9xzwObsKByPi0aUwa34atJWYH",
-  "HEADWAY_ID": "xaEvgx"
+  "HEADWAY_ID": "xaEvgx",
+  "LOGROCKET_TOKEN": "mgmbxo/sandbox"
 }
