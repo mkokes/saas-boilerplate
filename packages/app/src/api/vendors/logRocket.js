@@ -1,4 +1,4 @@
-import LogRocket from 'logrocket';
+/* import LogRocket from 'logrocket';
 
 import config from 'config';
 
@@ -22,3 +22,4 @@ export const LogRocketApi = {
     }
   },
 };
+ */
