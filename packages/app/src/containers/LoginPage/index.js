@@ -62,7 +62,7 @@ export default class LoginPage extends React.PureComponent {
                 <Col md={{ size: 6, offset: 3 }}>
                   <Card>
                     <CardHeader>
-                      <h3 className="mb-0">Log In2</h3>
+                      <h3 className="mb-0">Log In</h3>
                     </CardHeader>
                     <CardBody>
                       <Row>
