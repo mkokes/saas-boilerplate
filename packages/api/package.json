@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
-    "@sentry/node": "5.0.6",
+    "@sentry/node": "5.0.7",
     "add": "^2.0.6",
     "apollo-server-koa": "^2.1.0",
     "axios": "^0.18.0",

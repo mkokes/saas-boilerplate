@@ -18,7 +18,7 @@
     "got": "^9.2.2",
     "koa": "^2.5.3",
     "koa-router": "^7.4.0",
-    "@sentry/node": "5.0.6"
+    "@sentry/node": "5.0.7"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
