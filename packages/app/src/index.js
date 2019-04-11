@@ -1,9 +1,3 @@
-/**
- * index.js
- *
- * This is the entry file for the application
- */
-
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
@@ -18,22 +12,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-table/react-table.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-import * as serviceWorker from 'serviceWorker';
-
 import { AnalyticsApi, PaddleApi } from 'api/vendors';
-
 import { GlobalProvider } from 'GlobalState';
 import GlobalStyle from 'GlobalStyle';
-
 import App from 'App';
 import MaintenancePage from 'containers/MaintenancePage/Loadable';
+import config from 'config';
 import { clientInstance } from './graphql';
 
-const {
-  NODE_ENV,
-  REACT_APP_SENTRY_DSN,
-  REACT_APP_MAINTENANCE_MODE,
-} = process.env;
+const { NODE_ENV } = process.env;
+const { SENTRY_DSN, MAINTENANCE_MODE } = config;
 
 const APP_THEME = {
   primaryColor: '#764ABC',
@@ -43,15 +31,12 @@ const APP_THEME = {
 };
 
 Sentry.init({
-  dsn: REACT_APP_SENTRY_DSN,
+  dsn: SENTRY_DSN,
   environment: NODE_ENV,
 });
 
-const MAINTENANCE_MODE = REACT_APP_MAINTENANCE_MODE === 'true';
-
 if (!MAINTENANCE_MODE) {
   MomentTimezone.tz.setDefault('America/Los_Angeles');
-
   AnalyticsApi.mixpanel.setup();
   PaddleApi.setup();
 
@@ -80,5 +65,3 @@ if (!MAINTENANCE_MODE) {
     document.getElementById('app'),
   );
 }
-
-serviceWorker.unregister();

@@ -57,6 +57,7 @@ export const LoginUser = gql`
     }
   }
 `;
+
 export const LoginUserNoAuth = gql`
   ${ProfileFields}
 
@@ -80,6 +81,7 @@ export const ForgotPassword = gql`
     forgotPassword(email: $email) @disableAuth
   }
 `;
+
 export const ResetPassword = gql`
   mutation forgotPassword($resetToken: String!, $newPassword: String!) {
     resetPassword(resetToken: $resetToken, newPassword: $newPassword)

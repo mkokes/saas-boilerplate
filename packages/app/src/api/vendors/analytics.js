@@ -1,7 +1,8 @@
 import ReactGA from 'react-ga';
 
-const MIXPANEL_ID = process.env.REACT_APP_MIXPANEL_ID;
-const GA_ID = process.env.REACT_APP_GOOGLE_ANALYTICS;
+import config from 'config';
+
+const { MIXPANEL_ID, GOOGLE_ANALYTICS } = config;
 
 export const AnalyticsApi = {
   mixpanel: {
@@ -35,12 +36,12 @@ export const AnalyticsApi = {
   },
   ga: {
     initialize() {
-      if (GA_ID) {
-        ReactGA.initialize(GA_ID);
+      if (GOOGLE_ANALYTICS) {
+        ReactGA.initialize(GOOGLE_ANALYTICS);
       }
     },
     pageview(path) {
-      if (GA_ID) {
+      if (GOOGLE_ANALYTICS) {
         ReactGA.pageview(path);
       }
     },

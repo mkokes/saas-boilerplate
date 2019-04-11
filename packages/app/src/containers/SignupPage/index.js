@@ -32,6 +32,9 @@ import axios from 'axios';
 import { SignUpUser } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { GlobalConsumer } from 'GlobalState';
+import config from 'config';
+
+const { RECAPTCHA_SITE_KEY, WEBSITE_URL } = config;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SignupPage extends React.PureComponent {
@@ -268,9 +271,7 @@ export default class SignupPage extends React.PureComponent {
                                     <Reaptcha
                                       // eslint-disable-next-line
                                       ref={e => (this.captcha = e)}
-                                      sitekey={
-                                        process.env.REACT_APP_RECAPTCHA_SITE_KEY
-                                      }
+                                      sitekey={RECAPTCHA_SITE_KEY}
                                       onVerify={res => {
                                         this.setState({
                                           recaptchaResponse: res,
@@ -290,18 +291,14 @@ export default class SignupPage extends React.PureComponent {
                                     <p className="mt-1 pr-5 pl-5 text-center text-muted small">
                                       By signing up, you agree to our{' '}
                                       <a
-                                        href={`${
-                                          process.env.REACT_APP_WEBSITE_URL
-                                        }/legal/terms-service`}
+                                        href={`${WEBSITE_URL}/legal/terms-service`}
                                         target="popup"
                                       >
                                         Terms of Service
                                       </a>{' '}
                                       and that you have read our{' '}
                                       <a
-                                        href={`${
-                                          process.env.REACT_APP_WEBSITE_URL
-                                        }/legal/privacy-policy`}
+                                        href={`${WEBSITE_URL}/legal/privacy-policy`}
                                         target="popup"
                                       >
                                         Privacy Policy

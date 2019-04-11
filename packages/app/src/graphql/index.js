@@ -10,3 +10,13 @@ export const clientInstance = new ApolloClient({
   cache,
   link: createLinks({ cache }),
 });
+
+export const removeTypename = item =>
+  Object.keys(item).reduce((m, v) => {
+    const _m = m;
+
+    if (v !== '__typename') {
+      _m[v] = item[v];
+    }
+    return _m;
+  }, {});

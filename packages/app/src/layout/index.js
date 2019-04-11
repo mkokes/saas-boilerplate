@@ -6,6 +6,9 @@ import Navbar from 'components/Navbar';
 import Footer from 'components/Footer';
 import DashboardSettingsNavbar from 'components/DashboardSettingsNavbar/Loadable';
 
+import config from 'config';
+const { WEBSITE_URL } = config;
+
 const BaseLayoutContainer = styled.div`
   min-height: 100vh;
 `;
@@ -21,7 +24,7 @@ const TransactionalLayout = ({ headerTitle, marginTop, children }) => (
         marginBottom: !headerTitle ? '1em' : '',
       }}
     >
-      <a href={process.env.REACT_APP_WEBSITE_URL}>
+      <a href={WEBSITE_URL}>
         <img src="/logo.png" alt="brand logo" width="112" height="112" />
       </a>
       {headerTitle && <h1>{headerTitle}</h1>}

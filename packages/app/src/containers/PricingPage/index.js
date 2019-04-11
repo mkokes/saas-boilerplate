@@ -24,6 +24,9 @@ import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
 import { ActivePlans } from 'graphql/queries';
 import { displayBillingInterval } from 'utils/core';
+import config from 'config';
+
+const { WEBSITE_URL } = config;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class PricingPage extends React.PureComponent {
@@ -159,9 +162,7 @@ export default class PricingPage extends React.PureComponent {
                       Return to the billing page
                     </Link>
                   ) : (
-                    <a href={process.env.REACT_APP_WEBSITE_URL}>
-                      Return to the homepage
-                    </a>
+                    <a href={WEBSITE_URL}>Return to the homepage</a>
                   )}
                 </div>
               </Container>

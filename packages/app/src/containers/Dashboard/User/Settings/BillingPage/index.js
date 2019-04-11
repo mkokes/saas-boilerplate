@@ -16,14 +16,14 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTable from 'react-table';
 import Moment from 'react-moment';
-import { ApolloConsumer } from 'react-apollo';
+import { withApollo, ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import { NavLink } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import Switch from 'react-switch';
 
-import { GlobalConsumer } from 'GlobalState';
+import { getProvider as getGlobalProvider, GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
 import Loader from 'components/Loader';
 import {
@@ -40,7 +40,7 @@ import { transformApolloErr } from 'utils/apollo';
 import { displayBillingInterval } from 'utils/core';
 
 /* eslint-disable react/prefer-stateless-function */
-export default class BillingPage extends React.PureComponent {
+class BillingPage extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -48,15 +48,13 @@ export default class BillingPage extends React.PureComponent {
     const { interval, success } = queryString.parse(location.search);
 
     let billingIntervalToggler;
+    // eslint-disable-next-line default-case
     switch (interval) {
       case 'yearly':
         billingIntervalToggler = true;
         break;
       case 'monthly':
         billingIntervalToggler = false;
-        break;
-      default:
-        billingIntervalToggler = undefined;
         break;
     }
 
@@ -87,6 +85,26 @@ export default class BillingPage extends React.PureComponent {
     this.handleChangeBillingIntervalToggler = this.handleChangeBillingIntervalToggler.bind(
       this,
     );
+  }
+
+  async componentDidMount() {
+    // const { client: apolloClient } = this.props;
+    const { billingIntervalToggler } = this.state;
+
+    if (billingIntervalToggler !== undefined) return;
+
+    const globalProvider = await getGlobalProvider();
+    const user = await globalProvider.state.auth.profile;
+
+    if (user._subscription) {
+      /* const {
+        data: { plan },
+      } = await apolloClient.query({
+        query: ,
+      });
+
+      console.debug(plan); */
+    }
   }
 
   renderSubscriptionPlans(currentSubscription, plans) {
@@ -503,7 +521,11 @@ export default class BillingPage extends React.PureComponent {
                   <NavLink to="/pricing" className="float-right">
                     <small>
                       Pricing page{' '}
-                      <FontAwesomeIcon icon={faQuestionCircle} size="xs" />
+                      <FontAwesomeIcon
+                        icon={faQuestionCircle}
+                        size="xs"
+                        className="align-middle"
+                      />
                     </small>
                   </NavLink>{' '}
                 </legend>
@@ -641,3 +663,5 @@ BillingPage.propTypes = {
   location: PropTypes.object,
   history: PropTypes.object,
 };
+
+export default withApollo(BillingPage);

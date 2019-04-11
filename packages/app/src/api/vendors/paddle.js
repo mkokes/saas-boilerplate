@@ -1,6 +1,8 @@
 import { getProvider as getGlobalProvider } from 'GlobalState';
 
-const PADDLE_VENDOR_ID = process.env.REACT_APP_PADDLE_VENDOR_ID;
+import config from 'config';
+
+const { PADDLE_VENDOR_ID } = config;
 
 export const PaddleApi = {
   setup() {

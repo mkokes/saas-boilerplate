@@ -31,6 +31,9 @@ import queryString from 'query-string';
 import { GlobalConsumer } from 'GlobalState';
 import { ContactSupport } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
+import config from 'config';
+
+const { RECAPTCHA_SITE_KEY, WEBSITE_URL } = config;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SupportPage extends React.PureComponent {
@@ -285,10 +288,7 @@ export default class SupportPage extends React.PureComponent {
                                         <Reaptcha
                                           // eslint-disable-next-line
                                           ref={e => (this.captcha = e)}
-                                          sitekey={
-                                            process.env
-                                              .REACT_APP_RECAPTCHA_SITE_KEY
-                                          }
+                                          sitekey={RECAPTCHA_SITE_KEY}
                                           onVerify={res => {
                                             this.setState({
                                               recaptchaResponse: res,
@@ -319,9 +319,7 @@ export default class SupportPage extends React.PureComponent {
                       {userProfile ? (
                         <Link to="/dashboard">Return to the dashboard</Link>
                       ) : (
-                        <a href={process.env.REACT_APP_WEBSITE_URL}>
-                          Return to the homepage
-                        </a>
+                        <a href={WEBSITE_URL}>Return to the homepage</a>
                       )}
                     </div>
                   </Fragment>
