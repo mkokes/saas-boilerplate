@@ -22,9 +22,9 @@ export const USER_PAYMENTS_RECEIPT_QUERY = gql`
   }
 `;
 
-export const ACTIVE_PLANS_QUERY = gql`
-  query getActivePlans {
-    plans: activeSubscriptionPlans {
+export const PLANS_QUERY = gql`
+  query getPlans {
+    plans: plans {
       _id
       name
       price
@@ -36,7 +36,7 @@ export const ACTIVE_PLANS_QUERY = gql`
 `;
 
 export const ACTIVE_SUBSCRIPTION_PLANS_QUERY = gql`
-  query getActiveSubscriptionPlans {
+  query getActivePlans {
     currentSubscription: userSubscription @requireAuth {
       _plan {
         _paddleProductId
@@ -44,7 +44,7 @@ export const ACTIVE_SUBSCRIPTION_PLANS_QUERY = gql`
       }
       paymentStatus
     }
-    plans: activeSubscriptionPlans @requireAuth {
+    plans: plans @requireAuth {
       _id
       _paddleProductId
       name

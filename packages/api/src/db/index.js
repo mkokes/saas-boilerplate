@@ -151,7 +151,7 @@ class Db extends EventEmitter {
     return payments;
   }
 
-  async getActiveSubscriptionPlans() {
+  async getActivePlans() {
     const _plans = await Plans.find({ status: 'active' }).sort({
       price: 0,
     });

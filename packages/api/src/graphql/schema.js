@@ -92,7 +92,7 @@ module.exports = gql`
     userProfile: UserProfile
     userSubscription: Subscription
     userPaymentsReceipt: [userPaymentsReceipt]
-    activeSubscriptionPlans: [Plan]
+    plans: [Plan]
   }
   type Mutation {
     contactSupport(

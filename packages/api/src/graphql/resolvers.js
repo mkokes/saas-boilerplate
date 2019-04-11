@@ -67,8 +67,8 @@ module.exports = ({
 
       return payments;
     },
-    activeSubscriptionPlans: async () => {
-      const plans = await db.getActiveSubscriptionPlans();
+    plans: async () => {
+      const plans = await db.getActivePlans();
 
       return plans;
     },
