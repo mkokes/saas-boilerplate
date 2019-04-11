@@ -1,11 +1,7 @@
-.env
-
-# Cruft
 node_modules/*
 **/node_modules/*
 .yarn-cache/*
 .DS_Store
-
 package-lock.json
 yarn-debug.log*
 yarn-error.log*
