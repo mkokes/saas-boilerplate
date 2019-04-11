@@ -23,9 +23,9 @@
 ☐ App
   ☐ https://logrocket.com integration
   ☐ Optimize logo.png aka avoid HTML re-scaling
-  ☐ Plans monthly/annual toggler
-    ☐ Pricing page
-    ☐ Billing page
+  ✔ Plans monthly/annual toggler @done(19-04-11 02:43)
+    ✔ Pricing page @done(19-04-11 02:43)
+    ✔ Billing page @done(19-04-11 02:43)
   ☐ Billing page
     ☐ Show error alert when user tries to downgrade from `yearly` plan to `monthly` plan
   ✔ If user is not trialing and no subscribed then show alert on dashboard page @done(19-03-27 23:28)

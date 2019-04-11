@@ -32,6 +32,7 @@ const HeaderTitle = styled.h1`
 `;
 const SubHeaderTitle = styled.p`
   font-size: 1.6em;
+  font-weight: 600;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -45,8 +46,10 @@ export default class NotFound extends React.PureComponent {
         </Helmet>
         <Container>
           <HeaderTitle className="pb-4">404</HeaderTitle>
-          <SubHeaderTitle>Page Not Found.</SubHeaderTitle>
-          <Link to="/">
+          <SubHeaderTitle>
+            Oops! Looks like this page doesn&apos;t exist.
+          </SubHeaderTitle>
+          <Link to="/dashboard">
             <Button
               size="lg"
               className="btn-theme mt-4"
