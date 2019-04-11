@@ -16,8 +16,8 @@ export const LogRocketApi = {
         name: `${userProfile.firstName} ${userProfile.lastName}` || 'Unknown',
         email: userProfile.email,
 
-        isTrialing: userProfile.isTrialing,
-        subscriptionId: userProfile._subscription,
+        isInTrialPeriod: userProfile.isInTrialPeriod,
+        _subscription: userProfile._subscription,
       });
     }
   },
