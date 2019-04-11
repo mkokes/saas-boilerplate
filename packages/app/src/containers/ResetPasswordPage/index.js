@@ -26,7 +26,7 @@ import * as Yup from 'yup';
 import { ReactstrapInput } from 'utils/formiik';
 import { ApolloConsumer } from 'react-apollo';
 
-import { RESET_PASSWORD } from 'graphql/mutations';
+import { RESET_USER_PASSWORD } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 import { equalTo } from 'utils/yup';
 
@@ -107,7 +107,7 @@ export default class ResetPasswordPage extends React.PureComponent {
 
                               try {
                                 await client.mutate({
-                                  mutation: RESET_PASSWORD,
+                                  mutation: RESET_USER_PASSWORD,
                                   variables: {
                                     resetToken: values.resetToken,
                                     newPassword: values.newPassword,

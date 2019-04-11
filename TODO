@@ -1,4 +1,5 @@
 ☐ Misc:
+  ☐ POC access to app specific features if user is `trialing` or `subscribed`
   ☐ Postmark templates
     ☐ Add aliases
     ☐ Re-write them

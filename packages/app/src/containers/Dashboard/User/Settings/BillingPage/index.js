@@ -27,9 +27,9 @@ import { getProvider as getGlobalProvider, GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
 import Loader from 'components/Loader';
 import {
-  UserSubscriptionQuery,
-  UserPaymentReceiptsQuery,
-  ActiveSubscriptionPlansQuery,
+  USER_SUBSCRIPTION_QUERY,
+  USER_PAYMENTS_RECEIPT_QUERY,
+  ACTIVE_SUBSCRIPTION_PLANS_QUERY,
 } from 'graphql/queries';
 import { PaddleApi } from 'api/vendors';
 import {
@@ -330,7 +330,7 @@ class BillingPage extends React.PureComponent {
                   <Col>
                     <Fragment>
                       <SafeQuery
-                        query={UserSubscriptionQuery}
+                        query={USER_SUBSCRIPTION_QUERY}
                         keepExistingResultDuringRefetch
                         fetchPolicy="network-only"
                         showLoading
@@ -532,7 +532,7 @@ class BillingPage extends React.PureComponent {
                 <Row>
                   <Col hidden={subscriptionPlansLoading}>
                     <SafeQuery
-                      query={ActiveSubscriptionPlansQuery}
+                      query={ACTIVE_SUBSCRIPTION_PLANS_QUERY}
                       fetchPolicy="network-only"
                       keepExistingResultDuringRefetch
                       showLoading
@@ -589,7 +589,7 @@ class BillingPage extends React.PureComponent {
                 <Row>
                   <Col>
                     <SafeQuery
-                      query={UserPaymentReceiptsQuery}
+                      query={USER_PAYMENTS_RECEIPT_QUERY}
                       fetchPolicy="network-only"
                       keepExistingResultDuringRefetch
                       showLoading

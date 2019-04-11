@@ -2,8 +2,9 @@ import gql from 'graphql-tag';
 
 import { ProfileFields } from './fragments';
 
-export const UserProfileQuery = gql`
+export const USER_PROFILE_QUERY = gql`
   ${ProfileFields}
+
   query getUserProfile {
     profile: userProfile @requireAuth {
       ...ProfileFields
@@ -11,9 +12,9 @@ export const UserProfileQuery = gql`
   }
 `;
 
-export const UserPaymentReceiptsQuery = gql`
-  query getUserPaymentReceipts {
-    payments: userPaymentReceipts @requireAuth {
+export const USER_PAYMENTS_RECEIPT_QUERY = gql`
+  query getUserPaymentsReceipt {
+    payments: userPaymentsReceipt @requireAuth {
       saleGross
       receiptURL
       receivedAt
@@ -21,7 +22,7 @@ export const UserPaymentReceiptsQuery = gql`
   }
 `;
 
-export const ActivePlansQuery = gql`
+export const ACTIVE_PLANS_QUERY = gql`
   query getActivePlans {
     plans: activeSubscriptionPlans {
       _id
@@ -34,7 +35,7 @@ export const ActivePlansQuery = gql`
   }
 `;
 
-export const ActiveSubscriptionPlansQuery = gql`
+export const ACTIVE_SUBSCRIPTION_PLANS_QUERY = gql`
   query getActiveSubscriptionPlans {
     currentSubscription: userSubscription @requireAuth {
       _plan {
@@ -54,7 +55,7 @@ export const ActiveSubscriptionPlansQuery = gql`
   }
 `;
 
-export const UserSubscriptionQuery = gql`
+export const USER_SUBSCRIPTION_QUERY = gql`
   query getUserSubscription {
     subscription: userSubscription @requireAuth {
       _plan {
@@ -72,7 +73,7 @@ export const UserSubscriptionQuery = gql`
   }
 `;
 
-export const IsUserEmailConfirmedQuery = gql`
+export const IS_USER_EMAIL_CONFIRMED_QUERY = gql`
   query getUserProfile {
     profile: userProfile @requireAuth {
       isSignUpEmailConfirmed

@@ -76,13 +76,13 @@ export const REFRESH_ACCESS_TOKEN = gql`
   }
 `;
 
-export const FORGOT_PASSWORD = gql`
+export const FORGOT_PASSWORD_REQUEST = gql`
   mutation forgotPassword($email: String!) {
     forgotPassword(email: $email) @disableAuth
   }
 `;
 
-export const RESET_PASSWORD = gql`
+export const RESET_USER_PASSWORD = gql`
   mutation forgotPassword($resetToken: String!, $newPassword: String!) {
     resetPassword(resetToken: $resetToken, newPassword: $newPassword)
       @disableAuth

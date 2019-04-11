@@ -21,7 +21,7 @@ module.exports = gql`
     timezone: String
     legal: [LegalAgreement]
   }
-  type UserPaymentReceipts {
+  type userPaymentsReceipt {
     saleGross: String
     receiptURL: String
     receivedAt: String
@@ -91,7 +91,7 @@ module.exports = gql`
   type Query {
     userProfile: UserProfile
     userSubscription: Subscription
-    userPaymentReceipts: [UserPaymentReceipts]
+    userPaymentsReceipt: [userPaymentsReceipt]
     activeSubscriptionPlans: [Plan]
   }
   type Mutation {

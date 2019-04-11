@@ -25,7 +25,7 @@ import styled from 'styled-components';
 import { ReactstrapInput } from 'utils/formiik';
 import { ApolloConsumer } from 'react-apollo';
 
-import { FORGOT_PASSWORD } from 'graphql/mutations';
+import { FORGOT_PASSWORD_REQUEST } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
 
 const PasswordResetText = styled('div')`
@@ -90,7 +90,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
 
                               try {
                                 await client.mutate({
-                                  mutation: FORGOT_PASSWORD,
+                                  mutation: FORGOT_PASSWORD_REQUEST,
                                   variables: {
                                     ...values,
                                   },

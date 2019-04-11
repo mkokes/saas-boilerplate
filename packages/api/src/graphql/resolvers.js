@@ -60,7 +60,7 @@ module.exports = ({
 
       return subscription;
     },
-    userPaymentReceipts: async (_, __, { user }) => {
+    userPaymentsReceipt: async (_, __, { user }) => {
       await assertUser(user);
 
       const payments = await db.getUserPayments(user._id);
