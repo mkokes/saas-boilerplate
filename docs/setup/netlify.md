@@ -4,7 +4,8 @@ Website: <https://www.netlify.com>.
 
 ## Requirements
 
-- Generate a Netlify `personal access token` (URL: <https://app.netlify.com/account/applications>) to add it as `secret` to Drone.io system.
+- Generate `Personal access token` (URL: <https://app.netlify.com/account/applications>) to add it as `secret` to our Drone.io system.
+- We'll need each site `API ID` (Site settings -> Site details) to publish deploys.
 
 ## Screenshots (example config for each site)
 
