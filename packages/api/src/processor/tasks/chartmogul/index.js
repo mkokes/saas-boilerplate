@@ -13,7 +13,7 @@ module.exports = ({
 }) => {
   const log = parentLog.create('chartmogul');
 
-  return async ({ eventType, user, subscription, payment }) => {
+  return async ({ eventType, user, subscription }) => {
     eventQueue.add(
       async () => {
         try {
@@ -42,13 +42,13 @@ module.exports = ({
               ChartMogul.Invoice.create(config, user._chartmogulCustomerUUID, {
                 invoices: [
                   {
-                    external_id: undefined,
+                    external_id: undefined, // payment id?
                     date: undefined,
                     currency: 'USD',
                     line_items: [
                       {
                         type: 'subscription',
-                        subscription_external_id: undefined,
+                        subscription_external_id: undefined, // paddle sub id
                         plan_uuid: undefined,
                         service_period_start: undefined,
                         service_period_end: undefined,

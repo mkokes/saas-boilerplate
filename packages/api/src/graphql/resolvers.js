@@ -167,6 +167,8 @@ module.exports = ({
         timezone,
         signupSource,
         signupIP,
+        signupCity,
+        signupCountry,
       },
     ) => {
       const paramsValidationErrors = {};
@@ -226,6 +228,8 @@ module.exports = ({
           timezone,
           signupSource,
           signupIP,
+          signupCity,
+          signupCountry,
         );
 
         const accessToken = createAccessToken({
