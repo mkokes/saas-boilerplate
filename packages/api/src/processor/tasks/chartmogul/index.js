@@ -32,6 +32,8 @@ module.exports = ({
                 email: user.email,
                 country: user.signupCountry,
                 city: user.signupCity,
+                lead_created_at: user.signupAt,
+                free_trial_started_at: user.trialPeriodStartedAt,
               });
 
               break;
@@ -40,8 +42,8 @@ module.exports = ({
               ChartMogul.Invoice.create(config, user._chartmogulCustomerUUID, {
                 invoices: [
                   {
-                    external_id: payment._paddleOrderId,
-                    date: new Date().toISOString(),
+                    external_id: undefined,
+                    date: undefined,
                     currency: 'USD',
                     line_items: [
                       {
@@ -51,11 +53,17 @@ module.exports = ({
                         service_period_start: undefined,
                         service_period_end: undefined,
                         amount_in_cents: undefined,
+                        quantity: 1,
+                        discount_code: undefined,
+                        discount_amount_in_cents: undefined,
+                        tax_amount_in_cents: undefined,
+                        transaction_fees_in_cents: undefined,
+                        prorated: undefined,
                       },
                     ],
                     transactions: [
                       {
-                        date: new Date().toISOString(),
+                        date: undefined,
                         type: 'payment',
                         result: 'successful',
                       },

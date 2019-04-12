@@ -701,11 +701,6 @@ class Db extends EventEmitter {
       isInTrialPeriod: false, // suspend trial period if user decided to upgrade while trialing
     }).exec();
 
-    this.emit(CHARTMOGUL, {
-      eventType: 'CREATE_CUSTOMER',
-      user,
-    });
-
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
       args: [
