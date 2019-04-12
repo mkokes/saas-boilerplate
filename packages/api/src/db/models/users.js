@@ -139,16 +139,26 @@ const UsersSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    registeredAt: {
+    signupAt: {
       type: Date,
       default: Date.now,
     },
-    registrationSource: {
+    signupSource: {
       type: String,
       default: null,
       trim: true,
     },
-    registrationIP: {
+    signupIP: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    signupCountry: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    signupCity: {
       type: String,
       default: null,
       trim: true,

@@ -5,6 +5,7 @@ module.exports = [
   'MANAGE_MAILCHIMP_LIST',
   'MIXPANEL_EVENT',
   'HANDLE_PADDLE_WEBHOOK',
+  'CHARTMOGUL',
 ].reduce((m, a) => {
   const k = m;
 

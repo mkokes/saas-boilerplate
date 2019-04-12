@@ -35,6 +35,11 @@ const Subscriptions = new mongoose.Schema(
       required: true,
       index: true,
     },
+    _chartmogulCustomerUUID: {
+      type: String,
+      required: true,
+      index: true,
+    },
     quantity: {
       type: Number,
       required: true,

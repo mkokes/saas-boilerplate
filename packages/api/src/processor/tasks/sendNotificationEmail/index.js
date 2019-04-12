@@ -69,7 +69,7 @@ module.exports = ({
           await notification
             .populate(
               '_user',
-              'email firstName timezone trialDaysLength registeredAt',
+              'email firstName timezone trialDaysLength signupAt',
             )
             .execPopulate();
           const { _user } = notification;
@@ -100,12 +100,12 @@ module.exports = ({
               templateModel.email = _user.email;
               templateModel.trial_length = _user.trialDaysLength;
               templateModel.trial_start_date = moment(
-                _user.registeredAt,
+                _user.signupAt,
                 _user.timezone,
               ).format('LL');
 
               /* eslint-disable no-case-declarations */
-              const trialEndDate = new Date(_user.registeredAt);
+              const trialEndDate = new Date(_user.signupAt);
               trialEndDate.setDate(
                 trialEndDate.getDate() + PRODUCT_TRIAL_DAYS_LENGTH,
               );

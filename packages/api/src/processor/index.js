@@ -5,6 +5,7 @@ const {
   MANAGE_MAILCHIMP_LIST,
   MIXPANEL_EVENT,
   HANDLE_PADDLE_WEBHOOK,
+  CHARTMOGUL,
 } = require('../constants/events');
 
 const SendNotificationEmail = require('./tasks/sendNotificationEmail');
@@ -13,6 +14,7 @@ const HandleUsersSubscription = require('./tasks/handleUsersSubscription');
 const ManageMailchimpList = require('./tasks/manageMailchimpList');
 const SendMixpanelEvent = require('./tasks/sendMixpanelEvent');
 const HandlePaddleWebhook = require('./tasks/handlePaddleWebhook');
+const Chartmogul = require('./tasks/chartmogul');
 
 module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
   const log = parentLog.create('processor');
@@ -48,10 +50,16 @@ module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
     config,
     log,
     eventQueue,
-
     Sentry,
   });
   const handlePaddleWebhook = HandlePaddleWebhook({
+    log,
+    eventQueue,
+    db,
+    Sentry,
+  });
+  const chartmogul = Chartmogul({
+    config,
     log,
     eventQueue,
     db,
@@ -65,4 +73,5 @@ module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
   db.on(MANAGE_MAILCHIMP_LIST, manageMailchimpList);
   db.on(MIXPANEL_EVENT, sendMixpanelEvent);
   db.on(HANDLE_PADDLE_WEBHOOK, handlePaddleWebhook);
+  db.on(CHARTMOGUL, chartmogul);
 };

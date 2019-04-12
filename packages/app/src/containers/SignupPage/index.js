@@ -50,8 +50,8 @@ export default class SignupPage extends React.PureComponent {
       recaptchaRendered: false,
       signUpErrorMessage: '',
       alreadyTakenEmails: [],
-      registrationSource: src,
-      registrationIP: '',
+      signupSource: src,
+      signupIP: '',
     };
 
     this.captcha = null;
@@ -63,7 +63,7 @@ export default class SignupPage extends React.PureComponent {
       const { data } = response;
 
       this.setState({
-        registrationIP: data,
+        signupIP: data,
       });
     } catch (e) {
       /* eslint-disable-next-line */
@@ -82,8 +82,8 @@ export default class SignupPage extends React.PureComponent {
       recaptchaRendered,
       signUpErrorMessage,
       alreadyTakenEmails,
-      registrationSource,
-      registrationIP,
+      signupSource,
+      signupIP,
     } = this.state;
 
     return (
@@ -165,8 +165,8 @@ export default class SignupPage extends React.PureComponent {
                                         ...values,
                                         timezone: MomentTimezone.tz.guess(),
                                         recaptchaResponse,
-                                        registrationSource,
-                                        registrationIP,
+                                        signupSource,
+                                        signupIP,
                                       },
                                     });
 

@@ -7,6 +7,7 @@ const {
   NOTIFICATION,
   MANAGE_MAILCHIMP_LIST,
   MIXPANEL_EVENT,
+  CHARTMOGUL,
 } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
@@ -89,7 +90,7 @@ class Db extends EventEmitter {
       _subscription,
       accountStatus,
       lastLoginAt,
-      registeredAt,
+      signupAt,
       email,
       firstName,
       lastName,
@@ -116,7 +117,7 @@ class Db extends EventEmitter {
             lastName,
             email,
             lastLoginAt,
-            registeredAt,
+            signupAt,
             isSignUpEmailConfirmed,
             isTwoFactorAuthenticationEnabled,
             isInTrialPeriod,
@@ -184,8 +185,8 @@ class Db extends EventEmitter {
     firstName,
     lastName,
     timezone,
-    registrationSource,
-    registrationIP,
+    signupSource,
+    signupIP,
   ) {
     const fullNameInitials = `${firstName} ${lastName}`
       .split(/\s/)
@@ -199,7 +200,7 @@ class Db extends EventEmitter {
     }
 
     let trialDaysLength;
-    switch (registrationSource) {
+    switch (signupSource) {
       /* case 'facebook':
         trialDaysLength = 30;
         break; */
@@ -226,8 +227,8 @@ class Db extends EventEmitter {
       ),
       trialPeriodEndsAt,
       trialDaysLength,
-      registrationSource,
-      registrationIP: registrationIP || null,
+      signupSource,
+      signupIP: signupIP || null,
     }).save();
 
     this.notifyUser(user._id, VERIFY_EMAIL, {
@@ -245,7 +246,7 @@ class Db extends EventEmitter {
           $created: new Date(),
         },
         {
-          $ip: registrationIP,
+          $ip: signupIP,
         },
       ],
     });
@@ -700,16 +701,11 @@ class Db extends EventEmitter {
       isInTrialPeriod: false, // suspend trial period if user decided to upgrade while trialing
     }).exec();
 
-    this.emit(MANAGE_MAILCHIMP_LIST, {
+    this.emit(CHARTMOGUL, {
+      eventType: 'CREATE_CUSTOMER',
       user,
-      actionType: 'UPDATE_TAGS',
-      tags: [
-        {
-          name: 'paying_subscription',
-          status: 'active',
-        },
-      ],
     });
+
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
       args: [
@@ -727,6 +723,16 @@ class Db extends EventEmitter {
         {
           distinct_id: userId,
           plan_id: data._plan,
+        },
+      ],
+    });
+    this.emit(MANAGE_MAILCHIMP_LIST, {
+      user,
+      actionType: 'UPDATE_TAGS',
+      tags: [
+        {
+          name: 'paying_subscription',
+          status: 'active',
         },
       ],
     });
