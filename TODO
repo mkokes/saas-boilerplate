@@ -3,8 +3,8 @@
     ✔ Cloudflare @done(19-04-11 20:02)
     ✔ Netlify @done(19-04-11 20:02)
     ✔ Drone @done(19-04-11 20:02)
-  ☐ POC access to app specific features if user is `trialing` or `subscribed`
-  ☐ Postmark templates
+  ☐ POC access to app specific features if user is `trialing` or `subscribed` @critical
+  ☐ Postmark templates @low
     ☐ Add aliases
     ☐ Re-write them
       ☐ Avoid product_name in subject
@@ -26,11 +26,11 @@
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
-  ☐ Get country code and city name when signup
+  ☐ Get country code and city name when signup @high
   ✔ Plans monthly/annual toggler @done(19-04-11 02:43)
     ✔ Pricing page @done(19-04-11 02:43)
     ✔ Billing page @done(19-04-11 02:43)
-  ☐ Billing page
+  ☐ Billing page @high
     ☐ Add default view to `plans billing interval type` when there's an `active subscription`
     ☐ Show error alert when user tries to downgrade from `yearly` plan to `monthly` plan
   ✔ If user is not trialing and no subscribed then show alert on dashboard page @done(19-03-27 23:28)
@@ -90,7 +90,7 @@
   ✔ S3 Backup @done(19-03-27 19:58)
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
-  ☐ https://chartmogul.com integration
+  ☐ https://chartmogul.com integration @high
   ✔ Annual billing @done(19-04-11 22:56)
     - Subscribers cannot be moved to a plan where billing interval is lower than their current plan.
       ✔ Avoid downgrade from `yearly` plan to `monthly` plan @done(19-04-09 03:35)
