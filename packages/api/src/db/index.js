@@ -7,7 +7,6 @@ const {
   NOTIFICATION,
   MANAGE_MAILCHIMP_LIST,
   MIXPANEL_EVENT,
-  CHARTMOGUL,
 } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
