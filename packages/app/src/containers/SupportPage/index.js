@@ -88,7 +88,7 @@ export default class SupportPage extends React.PureComponent {
     try {
       this.captcha.reset();
       // eslint-disable-next-line no-empty
-    } catch (_) {}
+    } catch (__) {}
   }
 
   render() {
