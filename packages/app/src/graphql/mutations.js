@@ -44,6 +44,8 @@ export const SIGNUP_USER = gql`
       timezone: $timezone
       signupSource: $signupSource
       signupIP: $signupIP
+      signupCity: $signupCity
+      signupCountry: $signupCountry
     ) @disableAuth {
       accessToken
       refreshToken
