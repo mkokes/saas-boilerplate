@@ -52,6 +52,8 @@ export default class SignupPage extends React.PureComponent {
       alreadyTakenEmails: [],
       signupSource: src,
       signupIP: '',
+      signupCity: '',
+      signupCountry: '',
     };
 
     this.captcha = null;
@@ -59,21 +61,27 @@ export default class SignupPage extends React.PureComponent {
 
   async componentDidMount() {
     try {
-      const response = await axios.get('https://ipinfo.io/ip');
+      const response = await axios.get('https://ipinfo.io/json');
       const { data } = response;
 
       this.setState({
-        signupIP: data,
+        signupIP: data.ip,
+        signupCity: data.city,
+        signupCountry: data.country,
       });
     } catch (e) {
       /* eslint-disable-next-line */
-      console.debug('Unable to get user IP address from ipinfo.io', e);
+      console.warn('Unable to get user IP address from ipinfo.io', e);
     }
   }
 
   resetCaptcha() {
     this.setState({ recaptchaResponse: '' });
-    this.captcha.reset();
+
+    try {
+      this.captcha.reset();
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
   }
 
   render() {
@@ -84,6 +92,8 @@ export default class SignupPage extends React.PureComponent {
       alreadyTakenEmails,
       signupSource,
       signupIP,
+      signupCity,
+      signupCountry,
     } = this.state;
 
     return (
@@ -167,6 +177,8 @@ export default class SignupPage extends React.PureComponent {
                                         recaptchaResponse,
                                         signupSource,
                                         signupIP,
+                                        signupCity,
+                                        signupCountry,
                                       },
                                     });
 

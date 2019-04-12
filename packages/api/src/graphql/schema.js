@@ -112,6 +112,8 @@ module.exports = gql`
       timezone: String
       signupSource: String
       signupIP: String
+      signupCity: String
+      signupCountry: String
     ): AuthTokens
     loginUser(email: String!, password: String!, token: String): AuthTokens
     loginUserNoAuth: UserProfile

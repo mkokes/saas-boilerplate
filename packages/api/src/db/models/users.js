@@ -29,6 +29,10 @@ const UsersSchema = new mongoose.Schema(
       default: null,
       index: true,
     },
+    _chartmogulCustomerUUID: {
+      type: String,
+      default: null,
+    },
     email: {
       type: String,
       trim: true,
@@ -153,12 +157,12 @@ const UsersSchema = new mongoose.Schema(
       default: null,
       trim: true,
     },
-    signupCountry: {
+    signupCity: {
       type: String,
       default: null,
       trim: true,
     },
-    signupCity: {
+    signupCountry: {
       type: String,
       default: null,
       trim: true,

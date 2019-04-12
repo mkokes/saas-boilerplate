@@ -7,7 +7,6 @@ const {
   NOTIFICATION,
   MANAGE_MAILCHIMP_LIST,
   MIXPANEL_EVENT,
-  CHARTMOGUL,
 } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
@@ -187,6 +186,8 @@ class Db extends EventEmitter {
     timezone,
     signupSource,
     signupIP,
+    signupCity,
+    signupCountry,
   ) {
     const fullNameInitials = `${firstName} ${lastName}`
       .split(/\s/)
@@ -229,6 +230,8 @@ class Db extends EventEmitter {
       trialDaysLength,
       signupSource,
       signupIP: signupIP || null,
+      signupCity: signupCity || null,
+      signupCountry: signupCountry || null,
     }).save();
 
     this.notifyUser(user._id, VERIFY_EMAIL, {

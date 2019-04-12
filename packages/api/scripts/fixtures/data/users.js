@@ -31,9 +31,9 @@ module.exports = [
     ],
     apiKeyStatus: 'active',
     signupSource: null,
-    signupCountry: null,
-    signupCity: null,
     signupIP: null,
+    signupCity: null,
+    signupCountry: null,
     email: 'me@alfon.io',
     password: '$2a$10$V5Cd0AUc6Fb.SyRjytLSs.yY2.zPFN9yn838AfraNJ25DXRMI2ExO', // foo
     firstName: 'Alfonso Manuel',

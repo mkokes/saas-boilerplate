@@ -85,7 +85,10 @@ export default class SupportPage extends React.PureComponent {
 
   resetCaptcha() {
     this.setState({ recaptchaResponse: '' });
-    this.captcha.reset();
+    try {
+      this.captcha.reset();
+      // eslint-disable-next-line no-empty
+    } catch (__) {}
   }
 
   render() {

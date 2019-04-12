@@ -32,6 +32,8 @@ export const SIGNUP_USER = gql`
     $timezone: String
     $signupSource: String
     $signupIP: String
+    $signupCity: String
+    $signupCountry: String
   ) {
     signUpUser(
       recaptchaResponse: $recaptchaResponse
@@ -42,6 +44,8 @@ export const SIGNUP_USER = gql`
       timezone: $timezone
       signupSource: $signupSource
       signupIP: $signupIP
+      signupCity: $signupCity
+      signupCountry: $signupCountry
     ) @disableAuth {
       accessToken
       refreshToken
