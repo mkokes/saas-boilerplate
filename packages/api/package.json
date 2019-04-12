@@ -39,7 +39,7 @@
     "bunyan-syslog": "^0.3.2",
     "chartmogul-node": "^1.0.9",
     "delay": "^4.1.0",
-    "envalid": "^4.1.4",
+    "envalid": "^5.0.0",
     "graphql": "^14.0.2",
     "identicon.js": "^2.3.3",
     "jsonwebtoken": "^8.4.0",
