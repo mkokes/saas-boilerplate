@@ -40,7 +40,7 @@ module.exports = gql`
     _id: String
     _plan: Plan
     status: String
-    accessUntil: String
+    servicePeriodEnd: String
     paymentStatus: String
     unitPrice: Float
     updateURL: String

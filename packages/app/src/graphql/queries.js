@@ -63,7 +63,7 @@ export const USER_SUBSCRIPTION_QUERY = gql`
         billingInterval
       }
       status
-      accessUntil
+      servicePeriodEnd
       paymentStatus
       unitPrice
       updateURL

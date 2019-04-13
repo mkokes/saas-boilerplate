@@ -23,18 +23,19 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       order_id: orderId,
       user_id: userId,
       sale_gross: saleGross,
-      fee,
+      fee: feeAmount,
+      payment_tax: taxAmount,
       earnings,
-      payment_tax: tax,
       payment_method: paymentMethod,
       coupon,
       receipt_url: receiptURL,
       customer_name: customerName,
       country: customerCountry,
-      amount: amountRefund,
       gross_refund: saleGrossRefund,
-      tax_refund: taxRefund,
+      earnings_decreased: earningsDecreased,
       fee_refund: feeRefund,
+      tax_refund: taxRefund,
+      refund_type: refundType,
     },
   }) => {
     eventQueue.add(
@@ -65,10 +66,8 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 updateURL,
                 cancelURL,
                 nextBillDateAt,
-                accessUntil: nextBillDateAt,
+                servicePeriodEnd: nextBillDateAt,
               });
-
-              log.info(`subscription created for user ${user._id}`);
               break;
             }
             case 'SUBSCRIPTION_UPDATED': {
@@ -106,10 +105,9 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                     quantity: newQuantity,
                     unitPrice: newUnitPrice,
                     nextBillDateAt,
-                    accessUntil: nextBillDateAt,
+                    servicePeriodEnd: nextBillDateAt,
                   });
 
-                  log.info(`subscription ${subscription._id} updated`);
                   break;
                 }
                 default:
@@ -134,9 +132,9 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
               // race condition failed
               if (!userSubscription) {
                 log.error(
-                  `received SUBSCRIPTION_PAYMENT_SUCCEEDED event before SUBSCRIPTION_CREATED event. User #${
+                  `received SUBSCRIPTION_PAYMENT_SUCCEEDED event before SUBSCRIPTION_CREATED event (race condition error). User #${
                     user._id
-                  }`,
+                  } payment needs to be linked manually.`,
                 );
               }
 
@@ -152,9 +150,9 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 quantity,
                 unitPrice,
                 saleGross,
-                fee,
+                feeAmount,
                 earnings,
-                tax,
+                taxAmount,
                 paymentMethod,
                 coupon,
                 customerName,
@@ -163,14 +161,13 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 receiptURL,
                 nextBillDateAt,
               });
-
-              log.info(`payment succeded from user ${user._id} for`);
               break;
             }
             case 'SUBSCRIPTION_PAYMENT_REFUNDED': {
               await db.subscriptionPaymentRefunded(orderId, {
-                amountRefund,
+                refundType,
                 saleGrossRefund,
+                earningsDecreased,
                 feeRefund,
                 taxRefund,
               });

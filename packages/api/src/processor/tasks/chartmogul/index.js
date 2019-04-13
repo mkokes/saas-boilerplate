@@ -13,11 +13,11 @@ module.exports = ({
 }) => {
   const log = parentLog.create('chartmogul');
 
-  return async ({ eventType, user, subscription }) => {
+  return async ({ eventType, user, subscription, payment, isProrated }) => {
     eventQueue.add(
       async () => {
         try {
-          const config = ChartMogul.Config(
+          const config = new ChartMogul.Config(
             CHARTMOGUL_ACCOUNT_TOKEN,
             CHARTMOGUL_SECRET_KEY,
           );
@@ -25,7 +25,9 @@ module.exports = ({
           /* eslint-disable default-case */
           switch (eventType) {
             case 'CREATE_CUSTOMER': {
-              await ChartMogul.Customer.create(config, {
+              const _user = user;
+
+              const customer = await ChartMogul.Customer.create(config, {
                 data_source_uuid: CHARTMOGUL_DATA_SOURCE_UUID,
                 external_id: user._id,
                 name: `${user.firstName} ${user.lastName}`,
@@ -36,34 +38,36 @@ module.exports = ({
                 free_trial_started_at: user.trialPeriodStartedAt,
               });
 
+              _user._chartmogulCustomerUUID = customer.uuid;
+              await _user.save();
+
+              log.info(`Created customer for user ${_user._id}`);
               break;
             }
             case 'CREATE_INVOICE':
               ChartMogul.Invoice.create(config, user._chartmogulCustomerUUID, {
                 invoices: [
                   {
-                    external_id: undefined, // payment id?
-                    date: undefined,
+                    external_id: payment._id,
+                    date: payment.receivedAt,
                     currency: 'USD',
                     line_items: [
                       {
                         type: 'subscription',
-                        subscription_external_id: undefined, // paddle sub id
-                        plan_uuid: undefined,
-                        service_period_start: undefined,
-                        service_period_end: undefined,
-                        amount_in_cents: undefined,
+                        subscription_external_id: subscription._id,
+                        plan_uuid: subscription._plan._chartmogulPlanUUID,
+                        service_period_start: subscription.subscribedAt,
+                        service_period_end: subscription.servicePeriodEnd,
+                        amount_in_cents: subscription.unitPrice,
                         quantity: 1,
-                        discount_code: undefined,
-                        discount_amount_in_cents: undefined,
-                        tax_amount_in_cents: undefined,
-                        transaction_fees_in_cents: undefined,
-                        prorated: undefined,
+                        tax_amount_in_cents: payment.taxAmount,
+                        transaction_fees_in_cents: payment.feesAmount,
+                        prorated: isProrated,
                       },
                     ],
                     transactions: [
                       {
-                        date: undefined,
+                        date: payment.receivedAt,
                         type: 'payment',
                         result: 'successful',
                       },
@@ -75,7 +79,10 @@ module.exports = ({
             case 'CANCEL_SUBSCRIPTION':
               ChartMogul.Subscription.cancel(
                 config,
-                subscription._chartmogulCustomerUUID,
+                subscription._paddleSubscriptionId,
+                {
+                  cancelled_at: new Date(),
+                },
               );
               break;
           }

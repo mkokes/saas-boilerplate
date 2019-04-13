@@ -402,7 +402,9 @@ class BillingPage extends React.PureComponent {
                                     <strong>
                                       <Moment
                                         format="LL"
-                                        date={Number(subscription.accessUntil)}
+                                        date={Number(
+                                          subscription.servicePeriodEnd,
+                                        )}
                                       />
                                     </strong>
                                   </p>

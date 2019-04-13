@@ -53,6 +53,10 @@ const Payments = new mongoose.Schema({
     type: String,
     default: 'ok',
   },
+  refundType: {
+    type: String,
+    default: null,
+  },
   quantity: {
     type: Number,
     default: null,
@@ -65,23 +69,11 @@ const Payments = new mongoose.Schema({
     type: Number,
     default: null,
   },
-  fee: {
-    type: Number,
-    default: null,
-  },
-  tax: {
-    type: Number,
-    default: null,
-  },
-  earnings: {
-    type: Number,
-    default: null,
-  },
-  amountRefund: {
-    type: Number,
-    default: null,
-  },
   saleGrossRefund: {
+    type: Number,
+    default: null,
+  },
+  feeAmount: {
     type: Number,
     default: null,
   },
@@ -89,7 +81,19 @@ const Payments = new mongoose.Schema({
     type: Number,
     default: null,
   },
+  taxAmount: {
+    type: Number,
+    default: null,
+  },
   taxRefund: {
+    type: Number,
+    default: null,
+  },
+  earnings: {
+    type: Number,
+    default: null,
+  },
+  earningsDecreased: {
     type: Number,
     default: null,
   },

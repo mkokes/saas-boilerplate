@@ -5,7 +5,6 @@ const { ApolloError, UserInputError } = require('apollo-server-koa');
 const axios = require('axios');
 const momentTimezone = require('moment-timezone');
 
-const { MIXPANEL_EVENT } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 
 const { assertRefreshTokenPayload } = require('../utils/asserts');
@@ -724,18 +723,6 @@ module.exports = ({
         if (!paddleResponse.success) {
           throw new Error(paddleResponse.error.message);
         }
-
-        db.emit(MIXPANEL_EVENT, {
-          eventType: 'TRACK',
-          args: [
-            'subscription plan change',
-            {
-              distinct_id: user._id,
-              old_plan_id: currentUserSubscription._plan._id,
-              new_plan_id: planId,
-            },
-          ],
-        });
       } catch (e) {
         log.error(e.message);
         throw e;

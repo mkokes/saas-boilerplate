@@ -7,6 +7,7 @@ const {
   NOTIFICATION,
   MANAGE_MAILCHIMP_LIST,
   MIXPANEL_EVENT,
+  CHARTMOGUL,
 } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
@@ -240,6 +241,10 @@ class Db extends EventEmitter {
       }`,
     });
 
+    this.emit(CHARTMOGUL, {
+      eventType: 'CREATE_CUSTOMER',
+      user,
+    });
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET_ONCE',
       args: [
@@ -686,6 +691,22 @@ class Db extends EventEmitter {
   }
 
   async createSubscription(userId, data) {
+    const {
+      _plan,
+      _user,
+      _paddleSubscriptionId,
+      _paddlePlanId,
+      _paddleCheckoutId,
+      quantity,
+      unitPrice,
+      currency,
+      updateURL,
+      cancelURL,
+      nextBillDateAt,
+
+      servicePeriodEnd,
+    } = data;
+
     // cancel previous user subscription if there's any
     await Subscriptions.updateOne(
       { _user: userId, status: 'active' },
@@ -696,7 +717,18 @@ class Db extends EventEmitter {
     ).exec();
 
     const subscription = await new Subscriptions({
-      ...data,
+      _plan,
+      _user,
+      _paddleSubscriptionId,
+      _paddlePlanId,
+      _paddleCheckoutId,
+      quantity,
+      unitPrice,
+      currency,
+      updateURL,
+      cancelURL,
+      nextBillDateAt,
+      servicePeriodEnd,
     }).save();
 
     const user = await Users.findByIdAndUpdate(userId, {
@@ -704,6 +736,13 @@ class Db extends EventEmitter {
       isInTrialPeriod: false, // suspend trial period if user decided to upgrade while trialing
     }).exec();
 
+    this._log.info(`subscription created for user ${user._id}`);
+
+    this.emit(CHARTMOGUL, {
+      eventType: 'CREATE_INVOICE',
+      user,
+      subscription,
+    });
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
       args: [
@@ -757,34 +796,70 @@ class Db extends EventEmitter {
   }
 
   async subscriptionUpdated(id, data) {
-    const subscription = await Subscriptions.findByIdAndUpdate(id, {
+    const {
+      _plan,
+      _paddlePlanId,
+      _paddleCheckoutId,
+      updateURL,
+      cancelURL,
+      quantity,
+      unitPrice,
+      nextBillDateAt,
+      servicePeriodEnd,
+    } = data;
+
+    const _subscription = await Subscriptions.findById(id).exec();
+
+    await Subscriptions.findByIdAndUpdate(id, {
       status: 'active',
-      ...data,
+      _plan,
+      _paddlePlanId,
+      _paddleCheckoutId,
+      updateURL,
+      cancelURL,
+      quantity,
+      unitPrice,
+      nextBillDateAt,
+      servicePeriodEnd,
     }).exec();
 
-    this.emit(MIXPANEL_EVENT, {
-      eventType: 'PEOPLE_SET',
-      args: [
-        subscription._user,
-        {
-          subscribed_plan_id: subscription._plan,
-        },
-        {
-          $ignore_time: true,
-        },
-      ],
-    });
+    this._log.info(`subscription ${_subscription._id} updated`);
+
+    // changed plan (upgrade or downgrade)
+    if (_subscription._plan !== _plan) {
+      this.emit(MIXPANEL_EVENT, {
+        eventType: 'TRACK',
+        args: [
+          'subscription plan change',
+          {
+            distinct_id: _subscription._user,
+            old_plan_id: _subscription._plan,
+            new_plan_id: _plan,
+          },
+        ],
+      });
+      this.emit(MIXPANEL_EVENT, {
+        eventType: 'PEOPLE_SET',
+        args: [
+          _subscription._user,
+          {
+            subscribed_plan_id: _plan,
+          },
+          {
+            $ignore_time: true,
+          },
+        ],
+      });
+    }
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
       args: [
         'subscription updated',
         {
-          distinct_id: subscription._user,
+          distinct_id: _subscription._user,
         },
       ],
     });
-
-    return subscription;
   }
 
   async cancelSubscription(subscriptionId) {
@@ -804,6 +879,10 @@ class Db extends EventEmitter {
       },
     ).exec();
 
+    this.emit(CHARTMOGUL, {
+      eventType: 'CANCE_SUBSCRIPTION',
+      subscription,
+    });
     this.emit(MANAGE_MAILCHIMP_LIST, {
       user: _user,
       actionType: 'UPDATE_TAGS',
@@ -869,9 +948,55 @@ class Db extends EventEmitter {
   }
 
   async subscriptionPaymentReceived(data) {
+    const {
+      _subscription,
+      _user,
+      _plan,
+      _paddleSubscriptionId,
+      _paddlePlanId,
+      _paddleOrderId,
+      _paddleCheckoutId,
+      _paddleUserId,
+      quantity,
+      unitPrice,
+      saleGross,
+      feeAmount,
+      earnings,
+      taxAmount,
+      paymentMethod,
+      coupon,
+      customerName,
+      customerCountry,
+      currency,
+      receiptURL,
+      nextBillDateAt,
+    } = data;
+
     const payment = await new Payments({
-      ...data,
+      _subscription,
+      _user,
+      _plan,
+      _paddleSubscriptionId,
+      _paddlePlanId,
+      _paddleOrderId,
+      _paddleCheckoutId,
+      _paddleUserId,
+      quantity,
+      unitPrice,
+      saleGross,
+      feeAmount,
+      earnings,
+      taxAmount,
+      paymentMethod,
+      coupon,
+      customerName,
+      customerCountry,
+      currency,
+      receiptURL,
+      nextBillDateAt,
     }).save();
+
+    this._log.info(`payment received #${payment._id} +$${earnings}`);
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_TRACK_CHARGE',
@@ -896,6 +1021,14 @@ class Db extends EventEmitter {
   }
 
   async subscriptionPaymentRefunded(paddleOrderId, data) {
+    const {
+      refundType,
+      saleGrossRefund,
+      feeRefund,
+      taxRefund,
+      earningsDecreased,
+    } = data;
+
     const payment = Payments.findOneAndUpdate(
       {
         _paddleOrderId: paddleOrderId,
@@ -903,9 +1036,15 @@ class Db extends EventEmitter {
       {
         status: 'refunded',
         refundedAt: Date.now(),
-        ...data,
+        saleGrossRefund,
+        feeRefund,
+        taxRefund,
+        earningsDecreased,
+        refundType,
       },
     ).exec();
+
+    this._log.info(`payment refunded #${payment._id} -$${saleGrossRefund}`);
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
