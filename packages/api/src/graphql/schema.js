@@ -91,6 +91,7 @@ module.exports = gql`
   type Query {
     userProfile: UserProfile
     userSubscription: Subscription
+    userSubscriptionPlan: Plan
     userPaymentsReceipt: [userPaymentsReceipt]
     plans: [Plan]
   }

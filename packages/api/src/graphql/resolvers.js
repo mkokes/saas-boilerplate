@@ -59,6 +59,13 @@ module.exports = ({
 
       return subscription;
     },
+    userSubscriptionPlan: async (_, __, { user }) => {
+      await assertUser(user);
+
+      const plan = await db.getUserSubscriptionPlan(user._id);
+
+      return plan;
+    },
     userPaymentsReceipt: async (_, __, { user }) => {
       await assertUser(user);
 

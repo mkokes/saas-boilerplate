@@ -55,6 +55,14 @@ export const ACTIVE_SUBSCRIPTION_PLANS_QUERY = gql`
   }
 `;
 
+export const USER_SUBSCRIPTION_PLAN = gql`
+  query getUserSubscriptionPlan {
+    plan: userSubscriptionPlan @requireAuth {
+      billingInterval
+    }
+  }
+`;
+
 export const USER_SUBSCRIPTION_QUERY = gql`
   query getUserSubscription {
     subscription: userSubscription @requireAuth {

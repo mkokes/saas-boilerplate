@@ -144,6 +144,20 @@ class Db extends EventEmitter {
     return user._subscription;
   }
 
+  async getUserSubscriptionPlan(userId) {
+    const user = await this.getUserById(userId);
+
+    if (!user._subscription) {
+      return null;
+    }
+
+    await user
+      .populate({ path: '_subscription', populate: { path: '_plan' } })
+      .execPopulate();
+
+    return user._subscription._plan;
+  }
+
   async getUserPayments(userId) {
     const payments = await Payments.find({ _user: userId }).sort({
       receivedAt: -1,

@@ -30,6 +30,7 @@ import {
   USER_SUBSCRIPTION_QUERY,
   USER_PAYMENTS_RECEIPT_QUERY,
   ACTIVE_SUBSCRIPTION_PLANS_QUERY,
+  USER_SUBSCRIPTION_PLAN,
 } from 'graphql/queries';
 import { PaddleApi } from 'api/vendors';
 import {
@@ -88,7 +89,7 @@ class BillingPage extends React.PureComponent {
   }
 
   async componentDidMount() {
-    // const { client: apolloClient } = this.props;
+    const { client: apolloClient } = this.props;
     const { billingIntervalToggler } = this.state;
 
     if (billingIntervalToggler !== undefined) return;
@@ -97,13 +98,19 @@ class BillingPage extends React.PureComponent {
     const user = await globalProvider.state.auth.profile;
 
     if (user._subscription) {
-      /* const {
-        data: { plan },
-      } = await apolloClient.query({
-        query: ,
-      });
+      try {
+        const {
+          data: { plan },
+        } = await apolloClient.query({
+          query: USER_SUBSCRIPTION_PLAN,
+        });
 
-      console.debug(plan); */
+        this.setState({
+          billingIntervalToggler: plan.billingInterval !== 'monthly',
+        });
+
+        // eslint-disable-next-line no-empty
+      } catch (_) {}
     }
   }
 
@@ -664,6 +671,7 @@ class BillingPage extends React.PureComponent {
 BillingPage.propTypes = {
   location: PropTypes.object,
   history: PropTypes.object,
+  client: PropTypes.object,
 };
 
 export default withApollo(BillingPage);
