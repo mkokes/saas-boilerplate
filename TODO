@@ -37,7 +37,7 @@ Paddle webhook url
   ☐ Billing page @high
     ✔ Better alert confirmation when plan subscribing/changing @done(19-04-20 00:31)
     ✔ Add default view to `plans billing interval type` when there's an `active subscription` @started(19-04-19 18:44) @done(19-04-19 23:35) @lasted(4h51m56s)
-    ☐ Show error alert when user tries to downgrade from `yearly` plan to `monthly` plan
+    ✔ Show error alert when user tries to downgrade from `yearly` plan to `monthly` plan @done(19-04-20 00:53)
   ✔ If user is not trialing and no subscribed then show alert on dashboard page @done(19-03-27 23:28)
   ✔ Login page @done(19-03-22 23:48)
     ✔ Show link to support for 2FA failed submission @done(19-03-22 23:48)

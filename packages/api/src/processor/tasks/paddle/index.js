@@ -1,6 +1,3 @@
-const delay = require('delay');
-const safeGet = require('lodash.get');
-
 module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
   const log = parentLog.create('paddle');
 
