@@ -21,3 +21,16 @@ export const ProfileFields = gql`
     }
   }
 `;
+
+export const PlanFields = gql`
+  fragment PlanFields on Plan {
+    _id
+    _paddleProductId
+    name
+    tier
+    price
+    description
+    features
+    billingInterval
+  }
+`;

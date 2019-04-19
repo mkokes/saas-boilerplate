@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { ProfileFields } from './fragments';
+import { ProfileFields, PlanFields } from './fragments';
 
 export const USER_PROFILE_QUERY = gql`
   ${ProfileFields}
@@ -23,19 +23,28 @@ export const USER_PAYMENTS_RECEIPT_QUERY = gql`
 `;
 
 export const PLANS_QUERY = gql`
+  ${PlanFields}
+
   query getPlans {
     plans: plans {
-      _id
-      name
-      price
-      description
-      features
-      billingInterval
+      ...PlanFields
     }
   }
 `;
 
-export const ACTIVE_SUBSCRIPTION_PLANS_QUERY = gql`
+export const USER_SUBSCRIPTION_PLAN = gql`
+  ${PlanFields}
+
+  query getUserSubscriptionPlan {
+    plan: userSubscriptionPlan @requireAuth {
+      ...PlanFields
+    }
+  }
+`;
+
+export const BILLING_SHOW_PLANS_QUERY = gql`
+  ${PlanFields}
+
   query getActivePlans {
     currentSubscription: userSubscription @requireAuth {
       _plan {
@@ -44,32 +53,22 @@ export const ACTIVE_SUBSCRIPTION_PLANS_QUERY = gql`
       }
       paymentStatus
     }
+    currentPlan: userSubscriptionPlan @requireAuth {
+      ...PlanFields
+    }
     plans: plans @requireAuth {
-      _id
-      _paddleProductId
-      name
-      price
-      tier
-      billingInterval
+      ...PlanFields
     }
   }
 `;
+export const BILLING_CURRENT_SUBSCRIPTION = gql`
+  ${PlanFields}
 
-export const USER_SUBSCRIPTION_PLAN = gql`
-  query getUserSubscriptionPlan {
-    plan: userSubscriptionPlan @requireAuth {
-      billingInterval
-    }
-  }
-`;
-
-export const USER_SUBSCRIPTION_QUERY = gql`
   query getUserSubscription {
+    plan: userSubscriptionPlan @requireAuth {
+      ...PlanFields
+    }
     subscription: userSubscription @requireAuth {
-      _plan {
-        name
-        billingInterval
-      }
       status
       servicePeriodEnd
       paymentStatus

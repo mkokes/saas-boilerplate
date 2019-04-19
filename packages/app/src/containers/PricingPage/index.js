@@ -68,30 +68,52 @@ export default class PricingPage extends React.PureComponent {
                   )}
                 </h2>
                 <div className="mb-4 text-right" style={{ fontSize: '1.4em' }}>
-                  <span
+                  <Button
+                    color="link"
                     className={
                       !billingIntervalToggler
-                        ? 'font-weight-bold'
+                        ? 'font-weight-bold text-dark'
                         : 'text-muted'
+                    }
+                    style={{
+                      cursor: billingIntervalToggler && 'pointer',
+                      textDecoration: 'none',
+                      padding: '0',
+                      fontSize: '1.15em',
+                    }}
+                    onClick={() =>
+                      this.setState({ billingIntervalToggler: false })
                     }
                   >
                     Monthly
-                  </span>
+                  </Button>
                   <Switch
                     onChange={this.handleChangeBillingIntervalToggler}
                     checked={billingIntervalToggler}
                     uncheckedIcon={false}
                     checkedIcon={false}
                     onColor="#888888"
-                    className="align-middle mr-2 ml-2"
+                    className="align-middle mt-1 mr-2 ml-2"
                   />
-                  <span
+                  <Button
+                    color="link"
                     className={
-                      billingIntervalToggler ? 'font-weight-bold' : 'text-muted'
+                      billingIntervalToggler
+                        ? 'font-weight-bold text-dark'
+                        : 'text-muted'
+                    }
+                    style={{
+                      cursor: !billingIntervalToggler && 'pointer',
+                      textDecoration: 'none',
+                      padding: '0',
+                      fontSize: '1.15em',
+                    }}
+                    onClick={() =>
+                      this.setState({ billingIntervalToggler: true })
                     }
                   >
                     Yearly (10% OFF)
-                  </span>
+                  </Button>
                 </div>
                 <div className="card-deck mb-3 text-center justify-content-center">
                   <SafeQuery
