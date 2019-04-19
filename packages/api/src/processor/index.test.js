@@ -4,7 +4,7 @@ const {
   NOTIFICATION,
   HANDLE_USERS_TRIAL,
   HANDLE_USERS_SUBSCRIPTION,
-  MANAGE_MAILCHIMP_LIST,
+  MAILCHIMP,
   MIXPANEL_EVENT,
   PADDLE,
 } = require('../constants/events');
@@ -28,7 +28,7 @@ const {
 const {
   getMailchimpListSetupArgs,
   getMailchimpListArgs,
-} = require('./tasks/manageMailchimpList');
+} = require('./tasks/mailchimp');
 const {
   getMixpanelEventSetupArgs,
   getMixpanelEventArgs,
@@ -86,7 +86,7 @@ jest.mock('./tasks/handleUsersSubscription', () => {
   return fn;
 });
 
-jest.mock('./tasks/manageMailchimpList', () => {
+jest.mock('./tasks/mailchimp', () => {
   let setupArgs;
   let callArgs;
 
@@ -207,7 +207,7 @@ describe('processor', () => {
     expect(getUsersSubscriptionArgs()).toEqual(123);
   });
 
-  it('handles manage_mailchimp_list events', async () => {
+  it('handles mailchimp events', async () => {
     await createProcessor({
       config,
       log,
@@ -221,7 +221,7 @@ describe('processor', () => {
     expect(setupArgs.eventQueue).toEqual(eventQueue);
     expect(setupArgs.Sentry).toEqual(Sentry);
 
-    db.emit(MANAGE_MAILCHIMP_LIST, 123);
+    db.emit(MAILCHIMP, 123);
     expect(getMailchimpListArgs()).toEqual(123);
   });
 

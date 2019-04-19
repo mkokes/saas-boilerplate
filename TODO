@@ -34,7 +34,7 @@ Paddle webhook url
   ✔ Plans monthly/annual toggler @done(19-04-11 02:43)
     ✔ Pricing page @done(19-04-11 02:43)
     ✔ Billing page @done(19-04-11 02:43)
-  ☐ Billing page @high
+  ✔ Billing page @high @done(19-04-20 01:18)
     ✔ Better alert confirmation when plan subscribing/changing @done(19-04-20 00:31)
     ✔ Add default view to `plans billing interval type` when there's an `active subscription` @started(19-04-19 18:44) @done(19-04-19 23:35) @lasted(4h51m56s)
     ✔ Show error alert when user tries to downgrade from `yearly` plan to `monthly` plan @done(19-04-20 00:53)

@@ -2,7 +2,7 @@ const {
   NOTIFICATION,
   HANDLE_USERS_TRIAL,
   HANDLE_USERS_SUBSCRIPTION,
-  MANAGE_MAILCHIMP_LIST,
+  MAILCHIMP,
   MIXPANEL_EVENT,
   PADDLE,
   CHARTMOGUL,
@@ -11,7 +11,7 @@ const {
 const SendNotificationEmail = require('./tasks/sendNotificationEmail');
 const HandleUsersTrial = require('./tasks/handleUsersTrial');
 const HandleUsersSubscription = require('./tasks/handleUsersSubscription');
-const ManageMailchimpList = require('./tasks/manageMailchimpList');
+const Mailchimp = require('./tasks/mailchimp');
 const SendMixpanelEvent = require('./tasks/sendMixpanelEvent');
 const Paddle = require('./tasks/paddle');
 const Chartmogul = require('./tasks/chartmogul');
@@ -40,7 +40,7 @@ module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
     eventQueue,
     Sentry,
   });
-  const manageMailchimpList = ManageMailchimpList({
+  const mailchimp = Mailchimp({
     config,
     log,
     eventQueue,
@@ -70,7 +70,7 @@ module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
   db.on(NOTIFICATION, sendNotificationEmail);
   db.on(HANDLE_USERS_TRIAL, handleUsersTrial);
   db.on(HANDLE_USERS_SUBSCRIPTION, handleUsersSubscription);
-  db.on(MANAGE_MAILCHIMP_LIST, manageMailchimpList);
+  db.on(MAILCHIMP, mailchimp);
   db.on(MIXPANEL_EVENT, sendMixpanelEvent);
   db.on(PADDLE, paddle);
   db.on(CHARTMOGUL, chartmogul);

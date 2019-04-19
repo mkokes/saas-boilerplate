@@ -5,7 +5,7 @@ const authenticator = require('otplib/authenticator');
 
 const {
   NOTIFICATION,
-  MANAGE_MAILCHIMP_LIST,
+  MAILCHIMP,
   MIXPANEL_EVENT,
   CHARTMOGUL,
 } = require('../constants/events');
@@ -420,7 +420,7 @@ class Db extends EventEmitter {
       case 'signup':
         this.notifyUser(user._id, WELCOME);
 
-        this.emit(MANAGE_MAILCHIMP_LIST, { user, actionType: 'ADD' });
+        this.emit(MAILCHIMP, { user, actionType: 'ADD' });
         this.emit(MIXPANEL_EVENT, {
           eventType: 'TRACK',
           args: [
@@ -436,7 +436,7 @@ class Db extends EventEmitter {
         this.notifyUser(user._id, EMAIL_CHANGED, {
           old_email: oldUserEmail,
         });
-        this.emit(MANAGE_MAILCHIMP_LIST, {
+        this.emit(MAILCHIMP, {
           user,
           actionType: 'EMAIL_CHANGE',
           oldEmail: oldUserEmail,
@@ -526,7 +526,7 @@ class Db extends EventEmitter {
     user.lastName = finalLastName;
     await user.save();
 
-    this.emit(MANAGE_MAILCHIMP_LIST, {
+    this.emit(MAILCHIMP, {
       user,
       actionType: 'UPDATE_MERGE_FIELDS',
     });
@@ -571,7 +571,7 @@ class Db extends EventEmitter {
       const mailchimpSubscriptionStatus = isMarketingInfoCurrentlyAcceptedNow
         ? 'subscribed'
         : 'unsubscribed';
-      this.emit(MANAGE_MAILCHIMP_LIST, {
+      this.emit(MAILCHIMP, {
         user,
         actionType: 'STATUS_CHANGE',
         status: mailchimpSubscriptionStatus,
@@ -777,7 +777,7 @@ class Db extends EventEmitter {
         },
       ],
     });
-    this.emit(MANAGE_MAILCHIMP_LIST, {
+    this.emit(MAILCHIMP, {
       user,
       actionType: 'UPDATE_TAGS',
       tags: [
@@ -897,7 +897,7 @@ class Db extends EventEmitter {
       eventType: 'CANCE_SUBSCRIPTION',
       subscription,
     });
-    this.emit(MANAGE_MAILCHIMP_LIST, {
+    this.emit(MAILCHIMP, {
       user: _user,
       actionType: 'UPDATE_TAGS',
       tags: [

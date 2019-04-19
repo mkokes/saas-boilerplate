@@ -7,7 +7,7 @@ module.exports = ({
   eventQueue,
   Sentry,
 }) => {
-  const log = parentLog.create('manageMailchimpList');
+  const log = parentLog.create('mailchimp');
   const mailchimp = new Mailchimp(MAILCHIMP_API_KEY);
 
   return async ({
@@ -95,7 +95,7 @@ module.exports = ({
           Sentry.captureException(e);
         }
       },
-      { name: 'manageMailchimpList' },
+      { name: 'mailchimp' },
     );
   };
 };
