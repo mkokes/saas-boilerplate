@@ -6,12 +6,6 @@ const { Schema } = mongoose;
  * Payments Schema
  */
 const Payments = new mongoose.Schema({
-  _subscription: {
-    type: Schema.Types.ObjectId,
-    ref: 'Subscriptions',
-    default: null,
-    index: true,
-  },
   _user: {
     type: Schema.Types.ObjectId,
     ref: 'Users',

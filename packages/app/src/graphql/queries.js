@@ -32,6 +32,14 @@ export const PLANS_QUERY = gql`
   }
 `;
 
+export const USER_SUBSCRIPTION = gql`
+  query getUserSubscription {
+    subscription: userSubscription @requireAuth {
+      paymentStatus
+    }
+  }
+`;
+
 export const USER_SUBSCRIPTION_PLAN = gql`
   ${PlanFields}
 
@@ -47,10 +55,6 @@ export const BILLING_SHOW_PLANS_QUERY = gql`
 
   query getActivePlans {
     currentSubscription: userSubscription @requireAuth {
-      _plan {
-        _paddleProductId
-        tier
-      }
       paymentStatus
     }
     currentPlan: userSubscriptionPlan @requireAuth {

@@ -121,11 +121,7 @@ class BillingPage extends React.PureComponent {
     const { history } = this.props;
     const { billingIntervalToggler } = this.state;
 
-    const _renderPlanActionButton = plan => {
-      const isCurrentPlan =
-        currentSubscription &&
-        currentSubscription._plan._paddleProductId === plan._paddleProductId;
-
+    const _renderPlanActionButton = (plan, isCurrentPlan) => {
       if (!currentSubscription) {
         return (
           <Button
@@ -192,6 +188,19 @@ class BillingPage extends React.PureComponent {
         );
       }
 
+      if (
+        plan.billingInterval === 'monthly' &&
+        currentPlan.billingInterval === 'yearly'
+      ) {
+        return (
+          <Fragment>
+            <Button color="primary" disabled block>
+              Change from annual plan to monthly plan is not allowed
+            </Button>
+          </Fragment>
+        );
+      }
+
       let ctaButton = {
         text: 'Change Plan',
         confirmAlert: {
@@ -199,17 +208,17 @@ class BillingPage extends React.PureComponent {
         },
       };
 
-      if (plan.tier > currentSubscription._plan.tier) {
+      if (plan.tier > currentPlan.tier || plan.price > currentPlan.price) {
         ctaButton = {
           text: `Upgrade`,
           confirmAlert: {
             title: 'Confirm upgrade',
             message:
-              'If chosen plan price is higher than your current plan then price will be pro-rate and bill immediately.',
+              'As chosen plan price is higher than your current plan then price will be pro-rate and bill immediately.',
           },
         };
       }
-      if (plan.tier < currentSubscription._plan.tier) {
+      if (plan.tier < currentPlan.tier) {
         ctaButton = {
           text: 'Downgrade',
           confirmAlert: {
@@ -278,7 +287,7 @@ class BillingPage extends React.PureComponent {
       const isCurrentPlan =
         currentSubscription &&
         currentSubscription.paymentStatus !== 'deleted' &&
-        currentSubscription._plan._paddleProductId === plan._paddleProductId;
+        currentPlan._paddleProductId === plan._paddleProductId;
 
       return (
         <Card
@@ -309,7 +318,7 @@ class BillingPage extends React.PureComponent {
               </span>
             </Col>
             <Col xs="12" md="4">
-              {_renderPlanActionButton(plan)}
+              {_renderPlanActionButton(plan, isCurrentPlan)}
             </Col>
           </Row>
         </Card>
@@ -470,7 +479,7 @@ class BillingPage extends React.PureComponent {
                                             title:
                                               'Confirm renewal cancellation',
                                             message:
-                                              'If you confirm and end your subscription now, you can still access to it until it expires.',
+                                              'If you confirm and end your subscription renewal now, you can still access to it until it expires.',
                                             buttons: [
                                               {
                                                 label: 'Confirm',
@@ -524,7 +533,7 @@ class BillingPage extends React.PureComponent {
                     </SafeQuery>
                   </Col>
                 </Row>
-                <legend className="mt-3">
+                <legend className="mt-3 mb-3">
                   Plans{' '}
                   <NavLink to="/pricing" className="float-right">
                     <small>

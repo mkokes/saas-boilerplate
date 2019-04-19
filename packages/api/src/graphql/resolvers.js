@@ -687,7 +687,9 @@ module.exports = ({
           'USER_SUBSCRIPTION_PAYMENT_METHOD_NOT_ACTIVE',
         );
       }
-      if (currentUserSubscription._plan._id.toString() === planId) {
+
+      const currentUserPlan = await db.getUserSubscriptionPlan(user._id);
+      if (currentUserPlan._id.toString() === planId) {
         throw new ApolloError(
           'Cannot change subscription plan to same plan',
           'CANNOT_CHANGE_SAME_PLAN',
@@ -706,7 +708,7 @@ module.exports = ({
       }
       if (
         plan.billingInterval === 'monthly' &&
-        currentUserSubscription._plan.billingInterval === 'yearly'
+        currentUserPlan.billingInterval === 'yearly'
       ) {
         throw new ApolloError(
           'Cannot downgrade to a lower billing interval plan',

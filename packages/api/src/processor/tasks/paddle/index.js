@@ -133,19 +133,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 paddleSubscriptionPlanId,
               );
 
-              delay(2500); // wait 2500ms for user subscription creation (race condition)
-              const userSubscription = await db.getUserSubscription(userId);
-
-              // race condition
-              if (!userSubscription) {
-                const _errMsg = `race condition for webhook alert id #${eventId}`;
-
-                log.error(_errMsg);
-                throw new Error(_errMsg);
-              }
-
               await db.subscriptionPaymentReceived({
-                _subscription: safeGet(userSubscription, '_id') || undefined,
                 _user: userId,
                 _plan: plan._id,
                 _paddleSubscriptionId: paddleSubscriptionId,

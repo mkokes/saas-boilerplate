@@ -137,11 +137,11 @@ class Db extends EventEmitter {
       return null;
     }
 
-    await user
-      .populate({ path: '_subscription', populate: { path: '_plan' } })
-      .execPopulate();
+    const subscription = await Subscriptions.findById(
+      user._subscription,
+    ).exec();
 
-    return user._subscription;
+    return subscription;
   }
 
   async getUserSubscriptionPlan(userId) {
@@ -963,7 +963,6 @@ class Db extends EventEmitter {
 
   async subscriptionPaymentReceived(data) {
     const {
-      _subscription,
       _user,
       _plan,
       _paddleSubscriptionId,
@@ -987,7 +986,6 @@ class Db extends EventEmitter {
     } = data;
 
     const payment = await new Payments({
-      _subscription,
       _user,
       _plan,
       _paddleSubscriptionId,
