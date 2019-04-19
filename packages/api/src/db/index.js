@@ -806,11 +806,10 @@ class Db extends EventEmitter {
       unitPrice,
       nextBillDateAt,
       servicePeriodEnd,
+      oldSubscriptionPlanId,
     } = data;
 
-    const _subscription = await Subscriptions.findById(id).exec();
-
-    await Subscriptions.findByIdAndUpdate(id, {
+    const subscription = await Subscriptions.findByIdAndUpdate(id, {
       status: 'active',
       _plan,
       _paddlePlanId,
@@ -823,17 +822,17 @@ class Db extends EventEmitter {
       servicePeriodEnd,
     }).exec();
 
-    this._log.info(`subscription ${_subscription._id} updated`);
+    this._log.info(`subscription ${subscription._id} updated`);
 
-    // changed plan (upgrade or downgrade)
-    if (_subscription._plan !== _plan) {
+    // handle plan upgrade or downgrade
+    if (_plan !== oldSubscriptionPlanId) {
       this.emit(MIXPANEL_EVENT, {
         eventType: 'TRACK',
         args: [
           'subscription plan change',
           {
-            distinct_id: _subscription._user,
-            old_plan_id: _subscription._plan,
+            distinct_id: subscription._user,
+            old_plan_id: subscription._plan,
             new_plan_id: _plan,
           },
         ],
@@ -841,7 +840,7 @@ class Db extends EventEmitter {
       this.emit(MIXPANEL_EVENT, {
         eventType: 'PEOPLE_SET',
         args: [
-          _subscription._user,
+          subscription._user,
           {
             subscribed_plan_id: _plan,
           },
@@ -851,12 +850,13 @@ class Db extends EventEmitter {
         ],
       });
     }
+
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
       args: [
-        'subscription updated',
+        'subscription was updated',
         {
-          distinct_id: _subscription._user,
+          distinct_id: subscription._user,
         },
       ],
     });

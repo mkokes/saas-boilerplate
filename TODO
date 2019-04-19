@@ -1,3 +1,7 @@
+Paddle webhook url
+  prod: https://api.dokku.amgaventures.com/paddle/webhook
+  local: https://local-api.localtunnel.me/paddle/webhook
+
 ☐ Misc:
   ✔ Add `app` and `web` staging domains under `amgaventures.com` @done(19-04-11 20:02)
     ✔ Cloudflare @done(19-04-11 20:02)
@@ -31,7 +35,7 @@
     ✔ Pricing page @done(19-04-11 02:43)
     ✔ Billing page @done(19-04-11 02:43)
   ☐ Billing page @high
-    ☐ Add default view to `plans billing interval type` when there's an `active subscription`
+    ☐ Add default view to `plans billing interval type` when there's an `active subscription` @started(19-04-19 18:44)
     ☐ Show error alert when user tries to downgrade from `yearly` plan to `monthly` plan
   ✔ If user is not trialing and no subscribed then show alert on dashboard page @done(19-03-27 23:28)
   ✔ Login page @done(19-03-22 23:48)

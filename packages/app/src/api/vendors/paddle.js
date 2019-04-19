@@ -22,7 +22,7 @@ export const PaddleApi = {
         email: user.email,
         passthrough: JSON.stringify({
           host: window.location.host,
-          _id: user._id,
+          user_id: user._id,
         }),
         disableLogout: true,
         successCallback: () => {

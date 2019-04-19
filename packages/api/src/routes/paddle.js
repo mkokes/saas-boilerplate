@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const Serialize = require('php-serialize');
 const crypto = require('crypto');
 
-const { HANDLE_PADDLE_WEBHOOK } = require('../constants/events');
+const { PADDLE } = require('../constants/events');
 
 const PADDLE_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyI5uVjrlEEIeyFcUkTMo
@@ -82,7 +82,7 @@ module.exports = async ({ db, log: parentLog }) => {
   };
 
   router.post('/webhook', paddleMiddleware, async ctx =>
-    db.emit(HANDLE_PADDLE_WEBHOOK, { body: ctx.request.body }),
+    db.emit(PADDLE, { body: ctx.request.body }),
   );
 
   return router;

@@ -6,7 +6,7 @@ const {
   HANDLE_USERS_SUBSCRIPTION,
   MANAGE_MAILCHIMP_LIST,
   MIXPANEL_EVENT,
-  HANDLE_PADDLE_WEBHOOK,
+  PADDLE,
 } = require('../constants/events');
 
 const config = require('../config');
@@ -33,10 +33,7 @@ const {
   getMixpanelEventSetupArgs,
   getMixpanelEventArgs,
 } = require('./tasks/sendMixpanelEvent');
-const {
-  getHandlePaddleWebhookSetupArgs,
-  getHandlePaddleWebhookArgs,
-} = require('./tasks/handlePaddleWebhook');
+const { getPaddleSetupArgs, getPaddleArgs } = require('./tasks/paddle');
 
 jest.mock('./tasks/sendNotificationEmail', () => {
   let setupArgs;
@@ -123,7 +120,7 @@ jest.mock('./tasks/sendMixpanelEvent', () => {
   return fn;
 });
 
-jest.mock('./tasks/handlePaddleWebhook', () => {
+jest.mock('./tasks/paddle', () => {
   let setupArgs;
   let callArgs;
 
@@ -134,8 +131,8 @@ jest.mock('./tasks/handlePaddleWebhook', () => {
     };
   };
 
-  fn.getHandlePaddleWebhookSetupArgs = () => setupArgs;
-  fn.getHandlePaddleWebhookArgs = () => callArgs;
+  fn.getPaddleSetupArgs = () => setupArgs;
+  fn.getPaddleArgs = () => callArgs;
 
   return fn;
 });
@@ -255,12 +252,12 @@ describe('processor', () => {
       Sentry,
     });
 
-    const setupArgs = getHandlePaddleWebhookSetupArgs();
+    const setupArgs = getPaddleSetupArgs();
     expect(setupArgs.db).toEqual(db);
     expect(setupArgs.eventQueue).toEqual(eventQueue);
     expect(setupArgs.Sentry).toEqual(Sentry);
 
-    db.emit(HANDLE_PADDLE_WEBHOOK, 123);
-    expect(getHandlePaddleWebhookArgs()).toEqual(123);
+    db.emit(PADDLE, 123);
+    expect(getPaddleArgs()).toEqual(123);
   });
 });

@@ -2,10 +2,11 @@ const delay = require('delay');
 const safeGet = require('lodash.get');
 
 module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
-  const log = parentLog.create('handlePaddleWebhook');
+  const log = parentLog.create('paddle');
 
   return async ({
     body: {
+      alert_id: eventId,
       alert_name: eventName,
       status,
       subscription_id: paddleSubscriptionId,
@@ -21,7 +22,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       update_url: updateURL,
       cancel_url: cancelURL,
       order_id: orderId,
-      user_id: userId,
+      user_id: paddleUserId,
       sale_gross: saleGross,
       fee: feeAmount,
       payment_tax: taxAmount,
@@ -36,12 +37,16 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       fee_refund: feeRefund,
       tax_refund: taxRefund,
       refund_type: refundType,
+      old_status: oldSubscriptionStatus,
+      old_subscription_plan_id: oldSubscriptionPlanId,
     },
   }) => {
     eventQueue.add(
       async () => {
         try {
-          const user = JSON.parse(passthrough);
+          const { user_id: userId } = JSON.parse(passthrough);
+
+          log.debug(`processing ${eventName.toUpperCase()}`);
 
           switch (eventName.toUpperCase()) {
             case 'SUBSCRIPTION_CREATED': {
@@ -54,9 +59,9 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 );
               }
 
-              await db.createSubscription(user._id, {
+              await db.createSubscription(userId, {
                 _plan: plan._id,
-                _user: user._id,
+                _user: userId,
                 _paddleSubscriptionId: paddleSubscriptionId,
                 _paddlePlanId: paddleSubscriptionPlanId,
                 _paddleCheckoutId: checkoutId,
@@ -106,6 +111,8 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                     unitPrice: newUnitPrice,
                     nextBillDateAt,
                     servicePeriodEnd: nextBillDateAt,
+                    oldSubscriptionStatus,
+                    oldSubscriptionPlanId,
                   });
 
                   break;
@@ -126,27 +133,26 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 paddleSubscriptionPlanId,
               );
 
-              delay(3000); // wait 3s for user subscription creation (race condition)
-              const userSubscription = await db.getUserSubscription(user._id);
+              delay(2500); // wait 2500ms for user subscription creation (race condition)
+              const userSubscription = await db.getUserSubscription(userId);
 
-              // race condition failed
+              // race condition
               if (!userSubscription) {
-                log.error(
-                  `received SUBSCRIPTION_PAYMENT_SUCCEEDED event before SUBSCRIPTION_CREATED event (race condition error). User #${
-                    user._id
-                  } payment needs to be linked manually.`,
-                );
+                const _errMsg = `race condition for webhook alert id #${eventId}`;
+
+                log.error(_errMsg);
+                throw new Error(_errMsg);
               }
 
               await db.subscriptionPaymentReceived({
                 _subscription: safeGet(userSubscription, '_id') || undefined,
-                _user: user._id,
+                _user: userId,
                 _plan: plan._id,
                 _paddleSubscriptionId: paddleSubscriptionId,
                 _paddlePlanId: paddleSubscriptionPlanId,
                 _paddleOrderId: orderId,
                 _paddleCheckoutId: checkoutId,
-                _paddleUserId: userId,
+                _paddleUserId: paddleUserId,
                 quantity,
                 unitPrice,
                 saleGross,
@@ -180,13 +186,13 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
           log.error(e.message);
 
           Sentry.configureScope(scope => {
+            scope.setExtra('eventId', eventId);
             scope.setExtra('eventName', eventName);
-            scope.setExtra('passthrough', passthrough);
           });
           Sentry.captureException(e);
         }
       },
-      { name: 'handlePaddleWebhook' },
+      { name: 'paddle' },
     );
   };
 };
