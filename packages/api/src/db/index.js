@@ -210,8 +210,7 @@ class Db extends EventEmitter {
       // eslint-disable-next-line no-return-assign, no-param-reassign
       .reduce((response, word) => (response += word.slice(0, 1)), '');
 
-    let nickname = fullNameInitials.length > 1 ? fullNameInitials : firstName;
-
+    let nickname = fullNameInitials;
     if (nickname.length > 16) {
       nickname = `${nickname.substr(0, 13)}…`;
     }
