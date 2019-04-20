@@ -203,7 +203,7 @@ export default class PricingPage extends React.PureComponent {
                     <p>
                       Also you can pay with Bitcoin,{' '}
                       <Link to="/contact-support">open a support ticket</Link>{' '}
-                      let us know!
+                      and let us know!
                     </p>
                   </FaqQuestion>
                   <FaqQuestion>
