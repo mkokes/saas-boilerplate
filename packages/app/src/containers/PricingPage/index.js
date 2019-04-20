@@ -79,117 +79,129 @@ export default class PricingPage extends React.PureComponent {
                     </Fragment>
                   )}
                 </h2>
-                <div className="mb-4 text-right" style={{ fontSize: '1.4em' }}>
-                  <Button
-                    color="link"
-                    className={
-                      !billingIntervalToggler
-                        ? 'font-weight-bold text-dark'
-                        : 'text-muted'
-                    }
-                    style={{
-                      cursor: billingIntervalToggler && 'pointer',
-                      textDecoration: 'none',
-                      padding: '0',
-                      fontSize: '1.15em',
-                    }}
-                    onClick={() =>
-                      this.setState({ billingIntervalToggler: false })
-                    }
-                  >
-                    Monthly
-                  </Button>
-                  <Switch
-                    onChange={this.handleChangeBillingIntervalToggler}
-                    checked={billingIntervalToggler}
-                    uncheckedIcon={false}
-                    checkedIcon={false}
-                    onColor="#888888"
-                    className="align-middle mt-1 mr-2 ml-2"
-                  />
-                  <Button
-                    color="link"
-                    className={
-                      billingIntervalToggler
-                        ? 'font-weight-bold text-dark'
-                        : 'text-muted'
-                    }
-                    style={{
-                      cursor: !billingIntervalToggler && 'pointer',
-                      textDecoration: 'none',
-                      padding: '0',
-                      fontSize: '1.15em',
-                    }}
-                    onClick={() =>
-                      this.setState({ billingIntervalToggler: true })
-                    }
-                  >
-                    Yearly (10% OFF)
-                  </Button>
-                </div>
-                <div className="card-deck mb-3 text-center justify-content-center">
-                  <SafeQuery
-                    query={PLANS_QUERY}
-                    keepExistingResultDuringRefetch
-                    fetchPolicy="cache-and-network"
-                    showLoading
-                    showError
-                  >
-                    {({ data: { plans } }) =>
-                      plans.map(plan => (
-                        <Card
-                          className="mb-4 shadow-sm"
-                          key={plan._id}
-                          hidden={
-                            plan.billingInterval ===
-                            (billingIntervalToggler ? 'monthly' : 'yearly')
+
+                <SafeQuery
+                  query={PLANS_QUERY}
+                  keepExistingResultDuringRefetch
+                  fetchPolicy="cache-and-network"
+                  showLoading
+                  showError
+                >
+                  {({ data: { plans } }) => (
+                    <Fragment>
+                      <div
+                        className="mb-4 text-right"
+                        style={{ fontSize: '1.4em' }}
+                      >
+                        <Button
+                          color="link"
+                          className={
+                            !billingIntervalToggler
+                              ? 'font-weight-bold text-dark'
+                              : 'text-muted'
+                          }
+                          style={{
+                            cursor: billingIntervalToggler && 'pointer',
+                            textDecoration: 'none',
+                            padding: '0',
+                            fontSize: '1.15em',
+                          }}
+                          onClick={() =>
+                            this.setState({ billingIntervalToggler: false })
                           }
                         >
-                          <CardHeader>
-                            <h4 className="my-0 font-weight-normal">
-                              {plan.name}
-                            </h4>
-                          </CardHeader>
-                          <CardBody>
-                            <h1 className="card-title pricing-card-title">
-                              ${plan.price}{' '}
-                              <small className="text-muted">
-                                / {displayBillingInterval(plan.billingInterval)}
-                              </small>
-                            </h1>
-                            <p className="lead mb-3">{plan.description}</p>
-                            <ul
-                              className="list-unstyled mt-3 mb-4"
-                              style={{ minHeight: '50px' }}
-                            >
-                              {plan.features.map(feature => (
-                                <li
-                                  key={`features-${plan._id}-${feature.trim()}`}
-                                >
-                                  <span className="color-primary-theme">
-                                    <FontAwesomeIcon icon={faCheck} />
-                                  </span>{' '}
-                                  {feature}
-                                </li>
-                              ))}
-                            </ul>
-                          </CardBody>
-                          <CardFooter>
-                            <Link
-                              to={`/dashboard/settings/billing?interval=${
-                                !billingIntervalToggler ? 'monthly' : 'yearly'
-                              }`}
-                            >
-                              <Button size="lg" block className="btn-theme">
-                                {userProfile ? 'SUBSCRIBE' : 'START FREE TRIAL'}
-                              </Button>
-                            </Link>
-                          </CardFooter>
-                        </Card>
-                      ))
-                    }
-                  </SafeQuery>
-                </div>
+                          Monthly
+                        </Button>
+                        <Switch
+                          onChange={this.handleChangeBillingIntervalToggler}
+                          checked={billingIntervalToggler}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          onColor="#888888"
+                          className="align-middle mt-1 mr-2 ml-2"
+                        />
+                        <Button
+                          color="link"
+                          className={
+                            billingIntervalToggler
+                              ? 'font-weight-bold text-dark'
+                              : 'text-muted'
+                          }
+                          style={{
+                            cursor: !billingIntervalToggler && 'pointer',
+                            textDecoration: 'none',
+                            padding: '0',
+                            fontSize: '1.15em',
+                          }}
+                          onClick={() =>
+                            this.setState({ billingIntervalToggler: true })
+                          }
+                        >
+                          Yearly (10% OFF)
+                        </Button>
+                      </div>
+                      <div className="card-deck mb-3 text-center justify-content-center">
+                        {plans.map(plan => (
+                          <Card
+                            className="mb-4 shadow-sm"
+                            key={plan._id}
+                            hidden={
+                              plan.billingInterval ===
+                              (billingIntervalToggler ? 'monthly' : 'yearly')
+                            }
+                          >
+                            <CardHeader>
+                              <h4 className="my-0 font-weight-normal">
+                                {plan.name}
+                              </h4>
+                            </CardHeader>
+                            <CardBody>
+                              <h1 className="card-title pricing-card-title">
+                                ${plan.price}{' '}
+                                <small className="text-muted">
+                                  /{' '}
+                                  {displayBillingInterval(plan.billingInterval)}
+                                </small>
+                              </h1>
+                              <p className="lead mb-3">{plan.description}</p>
+                              <ul
+                                className="list-unstyled mt-3 mb-4"
+                                style={{ minHeight: '50px' }}
+                              >
+                                {plan.features.map(feature => (
+                                  <li
+                                    key={`features-${
+                                      plan._id
+                                    }-${feature.trim()}`}
+                                  >
+                                    <span className="color-primary-theme">
+                                      <FontAwesomeIcon icon={faCheck} />
+                                    </span>{' '}
+                                    {feature}
+                                  </li>
+                                ))}
+                              </ul>
+                            </CardBody>
+                            <CardFooter>
+                              <Link
+                                to={`/dashboard/settings/billing?interval=${
+                                  !billingIntervalToggler ? 'monthly' : 'yearly'
+                                }`}
+                              >
+                                <Button size="lg" block className="btn-theme">
+                                  {userProfile
+                                    ? 'SUBSCRIBE'
+                                    : 'START FREE TRIAL'}
+                                </Button>
+                              </Link>
+                            </CardFooter>
+                          </Card>
+                        ))}
+                      </div>
+                    </Fragment>
+                  )}
+                </SafeQuery>
+
                 <Faq>
                   <h3 className="mb-4">Frequently Asked Questions:</h3>
                   <FaqQuestion>
