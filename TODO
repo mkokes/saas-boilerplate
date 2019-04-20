@@ -8,11 +8,10 @@ Paddle webhook url
     ✔ Netlify @done(19-04-11 20:02)
     ✔ Drone @done(19-04-11 20:02)
   ☐ POC access to app specific features if user is `trialing` or `subscribed` @critical
-  ☐ Postmark templates @low @started(19-04-20 13:18)
-    ☐ Add aliases
-    ☐ Re-write them
-      ☐ Avoid product_name in subject
-      ☐ Avoid duplicated text in notification preview
+  ✔ Postmark templates @low @started(19-04-20 13:18) @done(19-04-20 13:31) @lasted(13m16s)
+    ✔ Add aliases @done(19-04-20 13:31)
+    ✔ Re-write them @done(19-04-20 13:31)
+      ✔ Avoid product_name in subject @done(19-04-20 13:31)
   ✔ Add unique prettier config for each package @done(19-03-30 20:59)
   ✔ Mailchimp @done(19-03-21 23:56)
     https://github.com/thorning/node-mailchimp
