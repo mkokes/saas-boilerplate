@@ -32,7 +32,7 @@ const {
 const {
   getMixpanelEventSetupArgs,
   getMixpanelEventArgs,
-} = require('./tasks/sendMixpanelEvent');
+} = require('./tasks/mixpanel');
 const { getPaddleSetupArgs, getPaddleArgs } = require('./tasks/paddle');
 
 jest.mock('./tasks/sendNotificationEmail', () => {
@@ -103,7 +103,7 @@ jest.mock('./tasks/mailchimp', () => {
   return fn;
 });
 
-jest.mock('./tasks/sendMixpanelEvent', () => {
+jest.mock('./tasks/mixpanel', () => {
   let setupArgs;
   let callArgs;
 

@@ -6,7 +6,7 @@ module.exports = ({
   eventQueue,
   Sentry,
 }) => {
-  const log = parentLog.create('sendMixpanelEvent');
+  const log = parentLog.create('mixpanel');
 
   return async ({ eventType, args }) => {
     eventQueue.add(
@@ -41,7 +41,7 @@ module.exports = ({
           Sentry.captureException(e);
         }
       },
-      { name: 'sendMixpanelEvent' },
+      { name: 'mixpanel' },
     );
   };
 };

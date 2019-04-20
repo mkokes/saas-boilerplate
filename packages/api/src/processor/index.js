@@ -12,7 +12,7 @@ const SendNotificationEmail = require('./tasks/sendNotificationEmail');
 const HandleUsersTrial = require('./tasks/handleUsersTrial');
 const HandleUsersSubscription = require('./tasks/handleUsersSubscription');
 const Mailchimp = require('./tasks/mailchimp');
-const SendMixpanelEvent = require('./tasks/sendMixpanelEvent');
+const Mixpanel = require('./tasks/mixpanel');
 const Paddle = require('./tasks/paddle');
 const Chartmogul = require('./tasks/chartmogul');
 
@@ -46,7 +46,7 @@ module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
     eventQueue,
     Sentry,
   });
-  const sendMixpanelEvent = SendMixpanelEvent({
+  const mixpanel = Mixpanel({
     config,
     log,
     eventQueue,
@@ -71,7 +71,7 @@ module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
   db.on(HANDLE_USERS_TRIAL, handleUsersTrial);
   db.on(HANDLE_USERS_SUBSCRIPTION, handleUsersSubscription);
   db.on(MAILCHIMP, mailchimp);
-  db.on(MIXPANEL_EVENT, sendMixpanelEvent);
+  db.on(MIXPANEL_EVENT, mixpanel);
   db.on(PADDLE, paddle);
   db.on(CHARTMOGUL, chartmogul);
 };
