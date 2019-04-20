@@ -203,9 +203,11 @@ class Db extends EventEmitter {
     signupCity,
     signupCountry,
   ) {
-    const fullNameInitials = `${firstName} ${lastName}`
+    const fullNameInitials = `${firstName
+      .charAt(0)
+      .toUpperCase()} ${lastName.charAt(0).toUpperCase()}`
       .split(/\s/)
-      /* eslint-disable-next-line */
+      // eslint-disable-next-line no-return-assign, no-param-reassign
       .reduce((response, word) => (response += word.slice(0, 1)), '');
 
     let nickname = fullNameInitials.length > 1 ? fullNameInitials : firstName;
