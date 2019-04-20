@@ -11,12 +11,6 @@ const Plans = new mongoose.Schema(
       unique: true,
       index: true,
     },
-    _chartmogulPlanUUID: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true,
-    },
     status: {
       type: String,
       default: 'active',

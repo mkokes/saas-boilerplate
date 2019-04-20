@@ -7,7 +7,6 @@ const {
   NOTIFICATION,
   MAILCHIMP,
   MIXPANEL_EVENT,
-  CHARTMOGUL,
 } = require('../constants/events');
 const { MARKETING_INFO } = require('../constants/legal');
 const {
@@ -255,10 +254,6 @@ class Db extends EventEmitter {
       }`,
     });
 
-    this.emit(CHARTMOGUL, {
-      eventType: 'CREATE_CUSTOMER',
-      user,
-    });
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET_ONCE',
       args: [
@@ -752,11 +747,6 @@ class Db extends EventEmitter {
 
     this._log.info(`subscription created for user ${user._id}`);
 
-    this.emit(CHARTMOGUL, {
-      eventType: 'CREATE_INVOICE',
-      user,
-      subscription,
-    });
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
       args: [
@@ -819,7 +809,6 @@ class Db extends EventEmitter {
       quantity,
       unitPrice,
       nextBillDateAt,
-      servicePeriodEnd,
       oldSubscriptionPlanId,
     } = data;
 
@@ -833,7 +822,7 @@ class Db extends EventEmitter {
       quantity,
       unitPrice,
       nextBillDateAt,
-      servicePeriodEnd,
+      servicePeriodEnd: nextBillDateAt,
     }).exec();
 
     this._log.info(`subscription ${subscription._id} updated`);
@@ -893,10 +882,6 @@ class Db extends EventEmitter {
       },
     ).exec();
 
-    this.emit(CHARTMOGUL, {
-      eventType: 'CANCE_SUBSCRIPTION',
-      subscription,
-    });
     this.emit(MAILCHIMP, {
       user: _user,
       actionType: 'UPDATE_TAGS',

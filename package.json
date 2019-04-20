@@ -31,7 +31,8 @@
     "build:web": "(cd packages/web && yarn build:live)",
     "build:app:stage": "(cd packages/app && yarn build:stage)",
     "build:app": "(cd packages/app && yarn build:live)",
-    "db:fixtures:api": "(cd packages/api && yarn db:fixtures)"
+    "db:fixtures:api": "(cd packages/api && yarn db:fixtures)",
+    "expose:api": "lt --port 3001 --subdomain local-api"
   },
   "lint-staged": {
     "*.js": [
@@ -49,9 +50,10 @@
     }
   },
   "devDependencies": {
-    "lerna": "^3.5.1",
     "husky": "^1.1.2",
+    "lerna": "^3.5.1",
     "lint-staged": "^8.0.3",
+    "localtunnel": "^1.9.1",
     "prettier": "1.17.0"
   },
   "repository": {

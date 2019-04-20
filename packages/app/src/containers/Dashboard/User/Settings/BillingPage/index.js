@@ -441,7 +441,9 @@ class BillingPage extends React.PureComponent {
                                 {subscription.paymentStatus !== 'deleted' && (
                                   <p className="mb-0">
                                     Required payment amount:{' '}
-                                    <strong>${subscription.unitPrice}</strong>
+                                    <strong>
+                                      ${subscription.unitPrice.toFixed(2)}
+                                    </strong>
                                   </p>
                                 )}
                                 {subscription.paymentStatus === 'deleted' && (

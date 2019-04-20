@@ -29,10 +29,6 @@ const UsersSchema = new mongoose.Schema(
       default: null,
       index: true,
     },
-    _chartmogulCustomerUUID: {
-      type: String,
-      default: null,
-    },
     email: {
       type: String,
       trim: true,

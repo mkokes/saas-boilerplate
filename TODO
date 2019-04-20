@@ -97,7 +97,6 @@ Paddle webhook url
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
   ✔ Price to cents @done(19-04-20 11:30)
-  ☐ https://chartmogul.com integration @high
   ✔ Annual billing @done(19-04-11 22:56)
     - Subscribers cannot be moved to a plan where billing interval is lower than their current plan.
       ✔ Avoid downgrade from `yearly` plan to `monthly` plan @done(19-04-09 03:35)

@@ -107,7 +107,6 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                     quantity: newQuantity,
                     unitPrice: newUnitPrice,
                     nextBillDateAt,
-                    servicePeriodEnd: nextBillDateAt,
                     oldSubscriptionStatus,
                     oldSubscriptionPlanId,
                   });
