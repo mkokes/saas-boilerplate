@@ -121,7 +121,6 @@ export default function App() {
                       component={EmailConfirmationPage}
                       layout={TransactionalLayout}
                       headerTitle="Email address confirmation"
-                      marginTop="-12em"
                     />
                     <Route
                       exact
@@ -129,14 +128,12 @@ export default function App() {
                       component={LoginPage}
                       layout={TransactionalLayout}
                       headerTitle="Authentication"
-                      marginTop="-3em"
                     />
                     <Route
                       exact
                       path="/auth/forgot-password"
                       component={ForgotPasswordPage}
                       layout={TransactionalLayout}
-                      marginTop="-15em"
                     />
                     <Route
                       exact
@@ -144,7 +141,6 @@ export default function App() {
                       component={ResetPasswordPage}
                       layout={TransactionalLayout}
                       headerTitle="Reset Password"
-                      marginTop="-5em"
                     />
                     <Route
                       protected

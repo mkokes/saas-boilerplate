@@ -15,12 +15,11 @@ const BaseLayoutContainer = styled.div`
 
 const DefaultLayout = ({ children }) => <BaseLayout>{children}</BaseLayout>;
 
-const TransactionalLayout = ({ headerTitle, marginTop, children }) => (
+const TransactionalLayout = ({ headerTitle, children }) => (
   <BaseLayout>
     <div
       className="pb-4 text-center"
       style={{
-        marginTop: marginTop || '',
         marginBottom: !headerTitle ? '1em' : '',
       }}
     >
@@ -93,7 +92,6 @@ DefaultLayout.propTypes = {
 TransactionalLayout.propTypes = {
   children: PropTypes.node,
   headerTitle: PropTypes.string,
-  marginTop: PropTypes.string,
 };
 
 BaseLayout.propTypes = {
