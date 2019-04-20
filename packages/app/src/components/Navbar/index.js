@@ -199,8 +199,6 @@ export class NavbarComponent extends React.PureComponent {
                             <img
                               src="/images/logo/34px.png"
                               alt="logo"
-                              height="34"
-                              weight="34"
                               className="mr-2"
                             />
                             <span
