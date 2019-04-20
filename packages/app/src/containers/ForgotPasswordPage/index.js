@@ -52,7 +52,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
           <title>Forgot password</title>
           <meta
             name="description"
-            content="Description of ForgotPasswordPage"
+            content="Forgot your account password? request a password reset"
           />
         </Helmet>
         <Container tag="main">
@@ -60,7 +60,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
             <Col md={{ size: 6, offset: 3 }}>
               <Card>
                 <CardHeader>
-                  <h3 className="mb-0">Password Reset</h3>
+                  <h3 className="mb-0">Reset Request</h3>
                 </CardHeader>
                 <CardBody>
                   <Row>
@@ -150,9 +150,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
                                         icon={faChevronLeft}
                                         size="lg"
                                       />
-                                      <span className="ml-2">
-                                        Return to the login page
-                                      </span>
+                                      <span className="ml-2">Login page</span>
                                     </Link>
                                   </Col>
                                   <Col md="6">

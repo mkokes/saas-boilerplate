@@ -134,6 +134,7 @@ export default function App() {
                       path="/auth/forgot-password"
                       component={ForgotPasswordPage}
                       layout={TransactionalLayout}
+                      headerTitle="Forgot your password?"
                     />
                     <Route
                       exact
