@@ -189,21 +189,26 @@ export class NavbarComponent extends React.PureComponent {
                         <NavLink
                           to={brandNameLink}
                           tag={RRNavLink}
-                          className="mr-auto navbar-brand navbar-brandname pl-2"
+                          className="mr-auto navbar-brand navbar-brandname pl-2 pr-0"
                           onClick={() =>
                             this.setState({ isNavbarCollapseOpen: false })
                           }
                           style={{ maxHeight: 50 }}
                         >
                           <NavbarBrand tag="span">
-                            <img src="/images/logo/34px.png" alt="logo" />
+                            <img
+                              src="/images/logo.png"
+                              width="34"
+                              height="34"
+                              alt="logo"
+                            />
                             <span
                               style={{
                                 fontSize: '20px',
                                 fontWeight: '600',
                                 verticalAlign: 'middle',
                               }}
-                              className="ml-2"
+                              className="d-none d-sm-inline"
                             >
                               PRODUCT_NAME
                             </span>

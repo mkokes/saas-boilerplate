@@ -44,9 +44,9 @@ export default class MaintenancePage extends React.PureComponent {
                 <a href={WEBSITE_URL}>
                   <img
                     src="/images/logo.png"
-                    alt="brand logo"
                     width="112"
                     height="112"
+                    alt="brand logo"
                   />
                 </a>
                 <h1

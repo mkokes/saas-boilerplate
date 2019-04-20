@@ -25,7 +25,7 @@ const TransactionalLayout = ({ headerTitle, marginTop, children }) => (
       }}
     >
       <a href={WEBSITE_URL}>
-        <img src="/images/logo.png" alt="brand logo" width="112" height="112" />
+        <img src="/images/logo.png" width="112" height="112" alt="brand logo" />
       </a>
       {headerTitle && <h1>{headerTitle}</h1>}
     </div>

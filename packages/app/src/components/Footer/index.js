@@ -37,9 +37,9 @@ export class FooterComponent extends React.PureComponent {
               <FooterLogo
                 className="mb-1"
                 src="/images/logo.png"
-                alt="app logo"
                 width="26"
                 height="26"
+                alt="app logo"
               />
             </Link>
             <span className="float-right">
