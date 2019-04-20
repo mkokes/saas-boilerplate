@@ -19,7 +19,7 @@ const {
   ENABLED_2FA,
   DISABLED_2FA,
   SUPPORT_REQUEST,
-  SUPPORT_REQUEST_CONFIRMATION,
+  SUPPORT_REQUEST_USER_CONFIRMATION,
   TRIAL_EXPIRING,
   TRIAL_EXPIRED,
   SUBSCRIPTION_ENDED,
@@ -1086,7 +1086,7 @@ class Db extends EventEmitter {
       ticket_type: ticketType,
       ticket_description: description,
     });
-    this.notifyUser(targetUserId, SUPPORT_REQUEST_CONFIRMATION, {
+    this.notifyUser(targetUserId, SUPPORT_REQUEST_USER_CONFIRMATION, {
       ticket_id: supportTicket._ticketId,
       requester_email: requesterEmail,
       ticket_subject: subject,

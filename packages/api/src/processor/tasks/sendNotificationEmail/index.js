@@ -14,7 +14,7 @@ const {
   ENABLED_2FA,
   DISABLED_2FA,
   SUPPORT_REQUEST,
-  SUPPORT_REQUEST_CONFIRMATION,
+  SUPPORT_REQUEST_USER_CONFIRMATION,
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_PAYMENT_METHOD_DELETED,
 } = require('../../../constants/notifications');
@@ -36,21 +36,21 @@ module.exports = ({
 }) => {
   const log = parentLog.create('sendNotificationEmail');
 
-  const POSTMARK_TEMPLATES_ID = {
-    VERIFY_EMAIL: 10142453,
-    WELCOME: 10142454,
-    FORGOT_PASSWORD: 10144783,
-    PASSWORD_RESETED: 10142452,
-    PASSWORD_CHANGED: 10142452,
-    EMAIL_CHANGED: 10144785,
-    TRIAL_EXPIRING: 10142455,
-    TRIAL_EXPIRED: 10141867,
-    ENABLED_2FA: 10148059,
-    DISABLED_2FA: 10148227,
-    SUPPORT_REQUEST: 10737319,
-    SUPPORT_REQUEST_CONFIRMATION: 10737781,
-    SUBSCRIPTION_ENDED: 11044969,
-    SUBSCRIPTION_PAYMENT_METHOD_DELETED: 11043751,
+  const POSTMARK_TEMPLATE_ALIASES = {
+    VERIFY_EMAIL: 'email-verification',
+    WELCOME: 'welcome',
+    FORGOT_PASSWORD: 'forgot-password',
+    PASSWORD_RESETED: 'password-changed',
+    PASSWORD_CHANGED: 'password-changed',
+    EMAIL_CHANGED: 'email-changed',
+    TRIAL_EXPIRING: 'trial-expiring',
+    TRIAL_EXPIRED: 'trial-expired',
+    ENABLED_2FA: 'enabled-2fa',
+    DISABLED_2FA: 'disabled-2fa',
+    SUPPORT_REQUEST: 'support-request',
+    SUPPORT_REQUEST_USER_CONFIRMATION: 'support-request-user-confirmation',
+    SUBSCRIPTION_ENDED: 'subscription-ended',
+    SUBSCRIPTION_PAYMENT_METHOD_DELETED: 'subscription-payment-method-deleted',
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
@@ -141,7 +141,7 @@ module.exports = ({
               targetEmail = SUPPORT_EMAIL;
               targetReplyTo = templateModel.requester_email;
               break;
-            case SUPPORT_REQUEST_CONFIRMATION:
+            case SUPPORT_REQUEST_USER_CONFIRMATION:
               if (!targetEmail) {
                 targetEmail = templateModel.requester_email;
               }
@@ -159,7 +159,7 @@ module.exports = ({
           await notification.save();
 
           await postmarkClient.sendEmailWithTemplate({
-            TemplateId: POSTMARK_TEMPLATES_ID[notification.type],
+            TemplateId: POSTMARK_TEMPLATE_ALIASES[notification.type],
             From: POSTMARK_SENDER_EMAIL,
             To: targetEmail,
             ReplyTo: targetReplyTo,

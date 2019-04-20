@@ -8,7 +8,7 @@ Paddle webhook url
     ✔ Netlify @done(19-04-11 20:02)
     ✔ Drone @done(19-04-11 20:02)
   ☐ POC access to app specific features if user is `trialing` or `subscribed` @critical
-  ☐ Postmark templates @low
+  ☐ Postmark templates @low @started(19-04-20 13:18)
     ☐ Add aliases
     ☐ Re-write them
       ☐ Avoid product_name in subject
