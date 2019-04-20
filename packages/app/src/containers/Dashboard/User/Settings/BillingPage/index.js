@@ -13,13 +13,14 @@ import {
   faQuestionCircle,
   faCreditCard,
 } from '@fortawesome/free-solid-svg-icons';
+import { faBitcoin } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTable from 'react-table';
 import Moment from 'react-moment';
 import { withApollo, ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import Switch from 'react-switch';
 
@@ -535,7 +536,7 @@ class BillingPage extends React.PureComponent {
                 </Row>
                 <legend className="mt-3 mb-3">
                   Plans{' '}
-                  <NavLink to="/pricing" className="float-right">
+                  <Link to="/pricing" className="float-right">
                     <small>
                       Pricing page{' '}
                       <FontAwesomeIcon
@@ -544,7 +545,7 @@ class BillingPage extends React.PureComponent {
                         className="align-middle"
                       />
                     </small>
-                  </NavLink>{' '}
+                  </Link>{' '}
                 </legend>
                 <Row>
                   <Col hidden={subscriptionPlansLoading}>
@@ -619,6 +620,14 @@ class BillingPage extends React.PureComponent {
                             currentSubscription,
                             plans,
                           )}
+                          <div className="mt-3">
+                            <Link className="text-muted" to="/contact-support">
+                              <small>
+                                <FontAwesomeIcon icon={faBitcoin} /> Pay with
+                                crypto
+                              </small>
+                            </Link>
+                          </div>
                         </Container>
                       )}
                     </SafeQuery>

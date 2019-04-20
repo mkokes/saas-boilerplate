@@ -37,7 +37,7 @@ const FaqQuestion = styled.section`
 `;
 const FaqQuestionTitle = styled.h5`
   font-size: '1em';
-  font-weight: '700';
+  font-weight: '400';
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -181,7 +181,7 @@ export default class PricingPage extends React.PureComponent {
                               }`}
                             >
                               <Button size="lg" block className="btn-theme">
-                                {userProfile ? 'SUBSCRIBE' : 'START TRIAL'}
+                                {userProfile ? 'SUBSCRIBE' : 'START FREE TRIAL'}
                               </Button>
                             </Link>
                           </CardFooter>
@@ -196,14 +196,9 @@ export default class PricingPage extends React.PureComponent {
                     <FaqQuestionTitle>
                       What types of payment do you accept?
                     </FaqQuestionTitle>
-                    <p className="mb-0">
-                      We accept PayPal, Apple Pay and all major credit cards for
-                      every plan.
-                    </p>
                     <p>
-                      Also you can pay with Bitcoin,{' '}
-                      <Link to="/contact-support">open a support ticket</Link>{' '}
-                      and let us know!
+                      We accept PayPal, Apple Pay, all major credit cards and
+                      cryptocurrency for every plan.
                     </p>
                   </FaqQuestion>
                   <FaqQuestion>
