@@ -54,7 +54,7 @@ export default class EmailVerificationPage extends React.PureComponent {
                         return (
                           <Fragment>
                             <img
-                              src="/email-verification.png"
+                              src="/images/email-verification.png"
                               alt="foo"
                               height="224"
                             />

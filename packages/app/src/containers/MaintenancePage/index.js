@@ -43,7 +43,7 @@ export default class MaintenancePage extends React.PureComponent {
               <CardBody className="text-center">
                 <a href={WEBSITE_URL}>
                   <img
-                    src="/logo.png"
+                    src="/images/logo.png"
                     alt="brand logo"
                     width="112"
                     height="112"
