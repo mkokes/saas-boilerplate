@@ -50,12 +50,16 @@ export default class SupportPage extends React.PureComponent {
         value: 'QUESTION',
       },
       {
-        label: 'Incident',
-        value: 'INCIDENT',
-      },
-      {
         label: 'Problem',
         value: 'PROBLEM',
+      },
+      {
+        label: 'Billing',
+        value: 'BILLING',
+      },
+      {
+        label: 'Lost 2FA',
+        value: 'LOST_2FA',
       },
       {
         label: 'Feature Request',
@@ -64,10 +68,6 @@ export default class SupportPage extends React.PureComponent {
       {
         label: 'Bug Report',
         value: 'BUG_REPORT',
-      },
-      {
-        label: 'Lost 2FA',
-        value: 'LOST_2FA',
       },
     ];
 

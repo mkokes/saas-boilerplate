@@ -56,8 +56,8 @@ const typeDefs = `
 
   enum ContactSupportTicketType {
     QUESTION
-    INCIDENT
     PROBLEM
+    BILLING
     FEATURE_REQUEST
     BUG_REPORT
     LOST_2FA

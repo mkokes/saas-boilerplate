@@ -118,7 +118,7 @@ module.exports = ({
       if (
         !validator.isIn(ticketType, [
           'QUESTION',
-          'INCIDENT',
+          'BILLING',
           'PROBLEM',
           'FEATURE_REQUEST',
           'BUG_REPORT',
