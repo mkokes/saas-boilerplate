@@ -17,8 +17,9 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import Switch from 'react-switch';
+import styled from 'styled-components';
 
 import { GlobalConsumer } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
@@ -27,6 +28,17 @@ import { displayBillingInterval } from 'utils/core';
 import config from 'config';
 
 const { WEBSITE_URL } = config;
+
+const Faq = styled.section``;
+const FaqQuestion = styled.section`
+  text-align: left;
+  margin: 0 auto;
+  max-width: 800px;
+`;
+const FaqQuestionTitle = styled.h5`
+  font-size: '1em';
+  font-weight: '700';
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class PricingPage extends React.PureComponent {
@@ -178,13 +190,56 @@ export default class PricingPage extends React.PureComponent {
                     }
                   </SafeQuery>
                 </div>
+                <Faq>
+                  <h3 className="mb-4">Frequently Asked Questions:</h3>
+                  <FaqQuestion>
+                    <FaqQuestionTitle>
+                      What types of payment do you accept?
+                    </FaqQuestionTitle>
+                    <p className="mb-0">
+                      We accept PayPal, Apple Pay and all major credit cards for
+                      every plan.
+                    </p>
+                    <p>
+                      Also you can pay with Bitcoin,{' '}
+                      <Link to="/contact-support">open a support ticket</Link>{' '}
+                      let us know!
+                    </p>
+                  </FaqQuestion>
+                  <FaqQuestion>
+                    <FaqQuestionTitle>
+                      What happens after my free trial?
+                    </FaqQuestionTitle>
+                    <p className="mb-0">
+                      After the trial period your subscription will
+                      automatically be cancelled.
+                    </p>
+                    <p>
+                      If you chosen to continue you will need to subscribe to
+                      any plan from your billing page.
+                    </p>
+                  </FaqQuestion>
+                  <FaqQuestion>
+                    <FaqQuestionTitle>More questions?</FaqQuestionTitle>
+                    <p>
+                      Get in touch at{' '}
+                      <a href="mailto:sales@domain.io" className="link">
+                        sales@domain.io
+                      </a>
+                    </p>
+                  </FaqQuestion>
+                </Faq>
                 <div className="mt-5 mb-5 text-center text-muted">
                   {userProfile ? (
                     <Link to="/dashboard/settings/billing">
-                      Return to the billing page
+                      <FontAwesomeIcon icon={faChevronLeft} size="lg" /> Return
+                      to the billing page
                     </Link>
                   ) : (
-                    <a href={WEBSITE_URL}>Return to the homepage</a>
+                    <a href={WEBSITE_URL}>
+                      <FontAwesomeIcon icon={faChevronLeft} size="lg" /> Return
+                      to the homepage
+                    </a>
                   )}
                 </div>
               </Container>
