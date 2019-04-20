@@ -196,17 +196,14 @@ export class NavbarComponent extends React.PureComponent {
                           style={{ maxHeight: 50 }}
                         >
                           <NavbarBrand tag="span">
-                            <img
-                              src="/images/logo/34px.png"
-                              alt="logo"
-                              className="mr-2"
-                            />
+                            <img src="/images/logo/34px.png" alt="logo" />
                             <span
                               style={{
                                 fontSize: '20px',
                                 fontWeight: '600',
                                 verticalAlign: 'middle',
                               }}
+                              className="ml-2"
                             >
                               PRODUCT_NAME
                             </span>
