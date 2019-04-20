@@ -58,7 +58,7 @@ module.exports = gql`
 
   enum ContactSupportTicketType {
     QUESTION
-    INCIDENT
+    BILLING
     PROBLEM
     FEATURE_REQUEST
     BUG_REPORT

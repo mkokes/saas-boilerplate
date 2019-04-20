@@ -668,15 +668,21 @@ class BillingPage extends React.PureComponent {
                             {
                               Header: 'View receipt',
                               accessor: 'receiptURL',
-                              Cell: row => (
-                                <a
-                                  href={row.value}
-                                  target="_new"
-                                  style={{ color: '#808080' }}
-                                >
-                                  <FontAwesomeIcon icon={faFileAlt} size="2x" />
-                                </a>
-                              ),
+                              Cell: row =>
+                                row.value ? (
+                                  <a
+                                    href={row.value}
+                                    target="_new"
+                                    style={{ color: '#808080' }}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faFileAlt}
+                                      size="2x"
+                                    />
+                                  </a>
+                                ) : (
+                                  <span>–</span>
+                                ),
                             },
                           ]}
                           getTrProps={() => ({
