@@ -208,7 +208,7 @@ export class NavbarComponent extends React.PureComponent {
                                 fontWeight: '600',
                                 verticalAlign: 'middle',
                               }}
-                              className="d-none d-sm-inline"
+                              className="ml-2 d-none d-sm-inline"
                             >
                               PRODUCT_NAME
                             </span>
