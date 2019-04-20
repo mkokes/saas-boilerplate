@@ -42,6 +42,8 @@ const Subscriptions = new mongoose.Schema(
     unitPrice: {
       type: Number,
       required: true,
+      get: num => (num / 100).toFixed(2),
+      set: num => num * 100,
     },
     status: {
       type: String,
@@ -89,6 +91,8 @@ const Subscriptions = new mongoose.Schema(
     },
   },
   {
+    toObject: { getters: true },
+    toJSON: { getters: true },
     timestamps: {
       updatedAt: 'updatedAt',
     },

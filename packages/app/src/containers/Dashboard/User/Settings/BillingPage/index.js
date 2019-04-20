@@ -441,9 +441,7 @@ class BillingPage extends React.PureComponent {
                                 {subscription.paymentStatus !== 'deleted' && (
                                   <p className="mb-0">
                                     Required payment amount:{' '}
-                                    <strong>
-                                      ${subscription.unitPrice.toFixed(2)}
-                                    </strong>
+                                    <strong>${subscription.unitPrice}</strong>
                                   </p>
                                 )}
                                 {subscription.paymentStatus === 'deleted' && (
@@ -654,11 +652,7 @@ class BillingPage extends React.PureComponent {
                             {
                               Header: 'Amount',
                               accessor: 'saleGross',
-                              Cell: row => (
-                                <span>
-                                  ${parseInt(row.value, 10).toFixed(2)}
-                                </span>
-                              ),
+                              Cell: row => <span>{row.value}</span>,
                             },
                             {
                               Header: 'View receipt',
