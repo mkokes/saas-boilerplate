@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ShortId = require('mongoose-shortid-nodeps');
 
 const { Schema } = mongoose;
 
@@ -7,6 +8,16 @@ const { Schema } = mongoose;
  */
 const Payments = new mongoose.Schema(
   {
+    _shortId: {
+      type: ShortId,
+      len: 5,
+      base: 64,
+      alphabet: 'VBYRFTPLKMNWZSQXHJG0123456789',
+      retries: 10,
+      unique: true,
+      uppercase: true,
+      index: true,
+    },
     _user: {
       type: Schema.Types.ObjectId,
       ref: 'Users',
