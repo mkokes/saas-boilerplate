@@ -180,7 +180,7 @@ export default class ProfilePage extends React.PureComponent {
                                 });
 
                                 toast.success(
-                                  'Your account password has been successfully changed',
+                                  'Your account password has been successfully changed.',
                                   {
                                     position: toast.POSITION.TOP_CENTER,
                                   },
@@ -317,7 +317,7 @@ export default class ProfilePage extends React.PureComponent {
                               setUserProfile(profile);
 
                               formikBag.resetForm();
-                              toast.success(`Profile updated!`, {
+                              toast.success(`Profile updated successfully.`, {
                                 position: toast.POSITION.TOP_CENTER,
                                 autoClose: 3000,
                               });
@@ -401,9 +401,12 @@ export default class ProfilePage extends React.PureComponent {
                               values.email.toLowerCase().replace(/\s/g, '') ===
                               userProfile.email
                             ) {
-                              toast.success('Email address updated!', {
-                                position: toast.POSITION.TOP_CENTER,
-                              });
+                              toast.success(
+                                'Email address updated successfully.',
+                                {
+                                  position: toast.POSITION.TOP_CENTER,
+                                },
+                              );
 
                               return formikBag.setSubmitting(false);
                             }
@@ -422,7 +425,7 @@ export default class ProfilePage extends React.PureComponent {
                                 } to confirm your email address. Click on the link in that email to make the change effective.`,
                                 {
                                   position: toast.POSITION.TOP_CENTER,
-                                  autoClose: 8000,
+                                  autoClose: 10000,
                                 },
                               );
                             } catch (e) {
@@ -520,10 +523,13 @@ export default class ProfilePage extends React.PureComponent {
                               setUserProfile(profile);
 
                               formikBag.resetForm();
-                              toast.success(`Personal details updated!`, {
-                                position: toast.POSITION.TOP_CENTER,
-                                autoClose: 3000,
-                              });
+                              toast.success(
+                                `Personal details updated successfully.`,
+                                {
+                                  position: toast.POSITION.TOP_CENTER,
+                                  autoClose: 3000,
+                                },
+                              );
                             } catch (e) {
                               const err = transformApolloErr(e);
 

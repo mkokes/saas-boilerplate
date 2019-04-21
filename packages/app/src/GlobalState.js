@@ -194,7 +194,7 @@ class Provider extends Component {
     });
 
     if (isForced) {
-      toast.error(`An error ocurred, please log in again.`, {
+      toast.error(`An error ocurred. Please log in again.`, {
         position: toast.POSITION.TOP_LEFT,
         draggable: false,
       });

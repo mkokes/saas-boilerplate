@@ -76,10 +76,13 @@ export default class PreferencesPage extends React.PureComponent {
                               setUserProfile(profile);
 
                               formikBag.setSubmitting(false);
-                              toast.success(`Preferences updated!`, {
-                                position: toast.POSITION.TOP_CENTER,
-                                autoClose: 3000,
-                              });
+                              toast.success(
+                                `Preferences updated successfully.`,
+                                {
+                                  position: toast.POSITION.TOP_CENTER,
+                                  autoClose: 3000,
+                                },
+                              );
                             } catch (e) {
                               const err = transformApolloErr(e);
 
@@ -173,7 +176,7 @@ export default class PreferencesPage extends React.PureComponent {
 
                               formikBag.resetForm();
                               toast.success(
-                                `Notifications preferences updated!`,
+                                `Notifications preferences updated successfully.`,
                                 {
                                   position: toast.POSITION.TOP_CENTER,
                                   autoClose: 3000,

@@ -150,7 +150,7 @@ export default class SecurityPage extends React.PureComponent {
                                       disable2FAModal: false,
                                     });
 
-                                    toast.success('2FA is now disabled!', {
+                                    toast.success('2FA is now disabled.', {
                                       position: toast.POSITION.TOP_CENTER,
                                     });
                                   } catch (e) {
@@ -314,7 +314,7 @@ export default class SecurityPage extends React.PureComponent {
                                             setUserProfile(_userProfile);
 
                                             toast.success(
-                                              'Your account is now protected by 2FA!',
+                                              'Your account is now protected by 2FA.',
                                               {
                                                 position:
                                                   toast.POSITION.TOP_CENTER,
