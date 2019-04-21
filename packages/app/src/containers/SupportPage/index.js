@@ -19,7 +19,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { ReactstrapInput, ReactstrapSelect } from 'utils/formiik';
@@ -320,9 +320,15 @@ export default class SupportPage extends React.PureComponent {
                     </Card>
                     <div className="mt-5 mb-5 text-center">
                       {userProfile ? (
-                        <Link to="/dashboard">Return to the dashboard</Link>
+                        <Link to="/dashboard">
+                          <FontAwesomeIcon icon={faChevronLeft} size="lg" />{' '}
+                          Return to the dashboard
+                        </Link>
                       ) : (
-                        <a href={WEBSITE_URL}>Return to the homepage</a>
+                        <a href={WEBSITE_URL}>
+                          <FontAwesomeIcon icon={faChevronLeft} size="lg" />{' '}
+                          Return to the homepage
+                        </a>
                       )}
                     </div>
                   </Fragment>
