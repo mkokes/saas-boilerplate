@@ -461,7 +461,9 @@ class BillingPage extends React.PureComponent {
                                   {subscription.paymentStatus !== 'deleted' && (
                                     <Button
                                       onClick={() =>
-                                        PaddleApi.open(subscription.updateURL)
+                                        PaddleApi.open(
+                                          subscription._paddleUpdateURL,
+                                        )
                                       }
                                       className="mr-2"
                                     >

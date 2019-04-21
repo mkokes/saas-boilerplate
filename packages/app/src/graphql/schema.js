@@ -41,8 +41,8 @@ const typeDefs = `
     servicePeriodEnd: String
     paymentStatus: String
     unitPrice: Float
-    updateURL: String
-    cancelURL: String
+    _paddleUpdateURL: String
+    _paddleCancelURL: String
     nextBillDateAt: String
   }
   type LegalAgreement {

@@ -77,8 +77,8 @@ export const BILLING_CURRENT_SUBSCRIPTION = gql`
       servicePeriodEnd
       paymentStatus
       unitPrice
-      updateURL
-      cancelURL
+      _paddleUpdateURL
+      _paddleCancelURL
       nextBillDateAt
     }
   }

@@ -21,19 +21,27 @@ const Subscriptions = new mongoose.Schema(
     },
     _paddleSubscriptionId: {
       type: Number,
-      required: true,
+      default: null,
       unique: true,
       index: true,
     },
     _paddlePlanId: {
       type: Number,
-      required: true,
+      default: null,
       index: true,
     },
     _paddleCheckoutId: {
       type: String,
-      required: true,
+      default: null,
       index: true,
+    },
+    _paddleUpdateURL: {
+      type: String,
+      default: null,
+    },
+    _paddleCancelURL: {
+      type: String,
+      default: null,
     },
     quantity: {
       type: Number,
@@ -65,21 +73,13 @@ const Subscriptions = new mongoose.Schema(
       type: String,
       required: true,
     },
-    updateURL: {
-      type: String,
-      required: true,
-    },
-    cancelURL: {
-      type: String,
-      required: true,
-    },
     servicePeriodEnd: {
       type: Date,
       required: true,
     },
     nextBillDateAt: {
       type: Date,
-      required: true,
+      default: null,
     },
     subscriptionStartedAt: {
       type: Date,
