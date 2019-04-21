@@ -15,8 +15,8 @@ const FooterContainer = styled.footer`
   width: 100%;
   line-height: 34px;
   background-color: #20232a;
-  padding-top: 7px;
-  padding-bottom: 7px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 `;
 
 const FooterLogo = styled.img`
