@@ -13,7 +13,7 @@ export default class SignOutPage extends React.PureComponent {
   async componentDidMount() {
     const globalProvider = await getGlobalProvider();
 
-    globalProvider.logOut();
+    globalProvider.logOut(false);
   }
 
   render() {

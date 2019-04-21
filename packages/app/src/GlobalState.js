@@ -180,7 +180,7 @@ class Provider extends Component {
     }
   };
 
-  logOut = async () => {
+  logOut = async isForced => {
     LocalStorageApi.removeItem('access_token');
     LocalStorageApi.removeItem('refresh_token');
 
@@ -193,13 +193,20 @@ class Provider extends Component {
       },
     });
 
-    toast.info(`Logged out successfully.`, {
-      position: toast.POSITION.TOP_LEFT,
-      hideProgressBar: true,
-      pauseOnHover: false,
-      autoClose: 3000,
-      draggable: false,
-    });
+    if (isForced) {
+      toast.error(`An error ocurred, please log in again.`, {
+        position: toast.POSITION.TOP_LEFT,
+        draggable: false,
+      });
+    } else {
+      toast.info(`Logged out successfully.`, {
+        position: toast.POSITION.TOP_LEFT,
+        hideProgressBar: true,
+        pauseOnHover: false,
+        autoClose: 3000,
+        draggable: false,
+      });
+    }
   };
 
   async componentDidMount() {
