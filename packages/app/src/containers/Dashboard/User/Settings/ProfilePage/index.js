@@ -84,7 +84,7 @@ export default class ProfilePage extends React.PureComponent {
                           className="mb-2"
                         />
                       </Col>
-                      <Col xs="auto">
+                      <Col xs="auto" className="mr-0">
                         <p
                           style={{
                             fontWeight: 600,
@@ -98,7 +98,7 @@ export default class ProfilePage extends React.PureComponent {
                           Max file size is 20Mb.
                         </p>
                       </Col>
-                      <Col xs="4">
+                      <Col xs="5">
                         <Button disabled>Upload</Button>
                       </Col>
                     </Row>

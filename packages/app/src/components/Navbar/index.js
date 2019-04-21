@@ -189,18 +189,26 @@ export class NavbarComponent extends React.PureComponent {
                         <NavLink
                           to={brandNameLink}
                           tag={RRNavLink}
-                          className="mr-auto navbar-brand navbar-brandname pl-2 pr-0"
+                          className="p-0 m-0"
+                          style={{
+                            display: 'flex',
+                            flex: 'auto',
+                            maxHeight: 50,
+                          }}
                           onClick={() =>
                             this.setState({ isNavbarCollapseOpen: false })
                           }
-                          style={{ maxHeight: 50 }}
                         >
-                          <NavbarBrand tag="span">
+                          <NavbarBrand
+                            tag="span"
+                            className="navbar-brandname float-left"
+                          >
                             <img
                               src="/images/logo.png"
                               width="34"
                               height="34"
                               alt="logo"
+                              className="d-none d-sm-inline"
                             />
                             <span
                               style={{
@@ -208,7 +216,7 @@ export class NavbarComponent extends React.PureComponent {
                                 fontWeight: '600',
                                 verticalAlign: 'middle',
                               }}
-                              className="ml-2 d-none d-sm-inline"
+                              className="ml-2"
                             >
                               PRODUCT_NAME
                             </span>
@@ -234,7 +242,7 @@ export class NavbarComponent extends React.PureComponent {
                                   }`}
                                 />
                                 <span
-                                  className="text-white ml-1 mr-1"
+                                  className="text-white ml-1 mr-1 d-none d-sm-inline"
                                   style={{
                                     fontWeight: '400',
                                   }}
