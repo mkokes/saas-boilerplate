@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import { withApollo } from 'react-apollo';
 import jwtDecode from 'jwt-decode';
 import MomentTimezone from 'moment-timezone';
+import { toast } from 'react-toastify';
 
 import { LocalStorageApi, AnalyticsApi } from 'api/vendors';
 import { LOGIN_USER_NO_AUTH, REFRESH_ACCESS_TOKEN } from 'graphql/mutations';
@@ -190,6 +191,14 @@ class Provider extends Component {
         profile: null,
         loggedIn: false,
       },
+    });
+
+    toast.info(`Logged out successfully.`, {
+      position: toast.POSITION.TOP_LEFT,
+      hideProgressBar: true,
+      pauseOnHover: false,
+      autoClose: 3000,
+      draggable: false,
     });
   };
 
