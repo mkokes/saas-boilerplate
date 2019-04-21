@@ -37,6 +37,7 @@
     "bcryptjs": "^2.4.3",
     "bunyan": "^1.8.12",
     "bunyan-syslog": "^0.3.2",
+    "coinbase-commerce-node": "^1.0.0",
     "delay": "^4.1.0",
     "envalid": "^5.0.0",
     "graphql": "^14.0.2",

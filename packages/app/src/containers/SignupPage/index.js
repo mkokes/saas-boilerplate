@@ -43,7 +43,7 @@ export default class SignupPage extends React.PureComponent {
 
     const { location } = props;
     const urlParams = queryString.parse(location.search);
-    const { src } = urlParams;
+    const { src, email } = urlParams;
 
     this.state = {
       recaptchaResponse: '',
@@ -51,6 +51,7 @@ export default class SignupPage extends React.PureComponent {
       signUpErrorMessage: '',
       alreadyTakenEmails: [],
       signupSource: src,
+      email: email || '',
       signupIP: '',
       signupCity: '',
       signupCountry: '',
@@ -91,6 +92,7 @@ export default class SignupPage extends React.PureComponent {
       signUpErrorMessage,
       alreadyTakenEmails,
       signupSource,
+      email,
       signupIP,
       signupCity,
       signupCountry,
@@ -128,7 +130,7 @@ export default class SignupPage extends React.PureComponent {
                             {client => (
                               <Formik
                                 initialValues={{
-                                  email: '',
+                                  email,
                                   firstName: '',
                                   lastName: '',
                                   password: '',
