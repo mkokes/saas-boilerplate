@@ -30,22 +30,20 @@ const FooterLogo = styled.img`
 export class FooterComponent extends React.PureComponent {
   render() {
     return (
-      <FooterContainer className="text-light">
+      <FooterContainer className="text-light pt-1 pb-1">
         <Container>
-          <div className="mt-1 mb-1">
-            <Link to="/" className="float-left">
-              <FooterLogo
-                className="mb-1"
-                src="/images/logo.png"
-                width="26"
-                height="26"
-                alt="app logo"
-              />
-            </Link>
-            <span className="float-right">
-              ® {new Date().getFullYear()} LEGAL_COMPANY_NAME.
-            </span>
-          </div>
+          <Link to="/" className="float-left">
+            <FooterLogo
+              className="mb-1"
+              src="/images/logo.png"
+              width="26"
+              height="26"
+              alt="app logo"
+            />
+          </Link>
+          <span className="float-right">
+            ® {new Date().getFullYear()} LEGAL_COMPANY_NAME.
+          </span>
         </Container>
       </FooterContainer>
     );
