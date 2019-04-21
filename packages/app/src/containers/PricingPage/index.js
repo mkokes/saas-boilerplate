@@ -90,7 +90,7 @@ export default class PricingPage extends React.PureComponent {
                   {({ data: { plans } }) => (
                     <Fragment>
                       <div
-                        className="mb-4 text-right"
+                        className="mb-4 text-sm-right"
                         style={{ fontSize: '1.4em' }}
                       >
                         <Button
