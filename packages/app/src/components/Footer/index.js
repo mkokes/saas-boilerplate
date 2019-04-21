@@ -15,6 +15,8 @@ const FooterContainer = styled.footer`
   width: 100%;
   line-height: 34px;
   background-color: #20232a;
+  padding-top: 7px;
+  padding-bottom: 7px;
 `;
 
 const FooterLogo = styled.img`
@@ -30,7 +32,7 @@ const FooterLogo = styled.img`
 export class FooterComponent extends React.PureComponent {
   render() {
     return (
-      <FooterContainer className="text-light pt-1 pb-1">
+      <FooterContainer className="text-light">
         <Container>
           <Link to="/" className="float-left">
             <FooterLogo
