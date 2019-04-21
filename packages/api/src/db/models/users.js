@@ -126,7 +126,12 @@ const UsersSchema = new mongoose.Schema(
         { type: 'MARKETING_INFO', accepted: Date.now().toString() },
       ],
     },
-    apiKey: {
+    accountToken: {
+      type: String,
+      unique: true,
+      default: uuidv4(),
+    },
+    secretApiKey: {
       type: String,
       unique: true,
       default: uuidv4(),

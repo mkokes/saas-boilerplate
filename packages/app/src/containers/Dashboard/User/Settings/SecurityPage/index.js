@@ -150,7 +150,7 @@ export default class SecurityPage extends React.PureComponent {
                                       disable2FAModal: false,
                                     });
 
-                                    toast.success('2FA disabled!', {
+                                    toast.success('2FA is now disabled!', {
                                       position: toast.POSITION.TOP_CENTER,
                                     });
                                   } catch (e) {
@@ -188,7 +188,7 @@ export default class SecurityPage extends React.PureComponent {
                                       </ModalBody>
                                       <ModalFooter>
                                         <Button
-                                          color="secondary"
+                                          color="danger"
                                           size="lg"
                                           onClick={this.toggleDisable2FAModal}
                                         >
@@ -197,7 +197,7 @@ export default class SecurityPage extends React.PureComponent {
                                         <Button
                                           type="submit"
                                           size="lg"
-                                          color="primary"
+                                          color="secondary"
                                           disabled={isSubmitting}
                                         >
                                           <FontAwesomeIcon
@@ -259,15 +259,15 @@ export default class SecurityPage extends React.PureComponent {
 
                             {secret2FA && (
                               <Fragment>
-                                <Alert color="secondary" className="mt-3">
+                                <Alert color="warning" className="mt-3">
                                   <Row>
                                     <Col xs="12">
                                       <span>Your secret code is: </span>
                                       <h4>{secret2FA}</h4>
                                       <p style={{ fontSize: 14 }}>
-                                        Be sure to backup it! If you lose it,
-                                        the process to unlock your account
-                                        requires considerable time and
+                                        Please, be sure to backup it. If you
+                                        lose it, the process to unlock your
+                                        account requires considerable time and
                                         verification.
                                       </p>
                                     </Col>

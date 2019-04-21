@@ -24,6 +24,7 @@ import * as Yup from 'yup';
 import { ReactstrapInput } from 'utils/formiik';
 import styled from 'styled-components';
 import { ApolloConsumer } from 'react-apollo';
+import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
 import { LOGIN_USER } from 'graphql/mutations';
@@ -116,6 +117,13 @@ export default class LoginPage extends React.PureComponent {
                                     });
 
                                     await logIn();
+                                    toast.info(`Logged in successfully.`, {
+                                      position: toast.POSITION.BOTTOM_LEFT,
+                                      hideProgressBar: true,
+                                      pauseOnHover: false,
+                                      autoClose: 3000,
+                                      draggable: false,
+                                    });
                                   } catch (e) {
                                     const err = transformApolloErr(e);
 
