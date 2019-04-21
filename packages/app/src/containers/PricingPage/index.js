@@ -104,7 +104,7 @@ export default class PricingPage extends React.PureComponent {
                             cursor: billingIntervalToggler && 'pointer',
                             textDecoration: 'none',
                             padding: '0',
-                            fontSize: '1.15em',
+                            fontSize: '1.05em',
                           }}
                           onClick={() =>
                             this.setState({ billingIntervalToggler: false })
@@ -131,7 +131,7 @@ export default class PricingPage extends React.PureComponent {
                             cursor: !billingIntervalToggler && 'pointer',
                             textDecoration: 'none',
                             padding: '0',
-                            fontSize: '1.15em',
+                            fontSize: '1.05em',
                           }}
                           onClick={() =>
                             this.setState({ billingIntervalToggler: true })
