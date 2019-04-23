@@ -30,6 +30,8 @@ Paddle webhook url
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
   ☐ Pay with crypto feature
+    This payment method is only allowed when an user is subscribed and his payment method is `manually ¿?` or if the user is not a subscriber yet.
+    We only allow annual plans to be paid using this payment method.
   ✔ Price to cents @done(19-04-20 11:30)
   ✔ Get country code and city name when signup @done(19-04-13 00:42)
   ✔ Plans monthly/annual toggler @done(19-04-11 02:43)

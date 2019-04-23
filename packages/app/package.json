@@ -9,7 +9,7 @@
     "build:stage": "REACT_APP_MODE=stage react-scripts build",
     "build:live": "REACT_APP_MODE=live react-scripts build",
     "build:clean": "rimraf ./build",
-    "test": "REACT_APP_MODE=test react-scripts test",
+    "test": "REACT_APP_MODE=test react-scripts test --no-watch",
     "test:watch": "REACT_APP_MODE=test react-scripts test --watchAll",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "npm run lint:eslint -- .",
@@ -83,7 +83,7 @@
     "yup": "^0.27.0"
   },
   "devDependencies": {
-    "babel-eslint": "9",
+    "babel-eslint": "10.0.1",
     "babel-plugin-styled-components": "^1.8.0",
     "env-cmd": "^8.0.2",
     "eslint": "5.12.0",
