@@ -713,8 +713,8 @@ class Db extends EventEmitter {
       _paddleUpdateURL,
       _paddleCancelURL,
       nextBillDateAt,
-
       servicePeriodEnd,
+      paymentMethod,
     } = data;
 
     // cancel previous user subscription if there's any
@@ -739,6 +739,7 @@ class Db extends EventEmitter {
       _paddleCancelURL,
       nextBillDateAt,
       servicePeriodEnd,
+      paymentMethod,
     }).save();
 
     const user = await Users.findByIdAndUpdate(userId, {
@@ -967,7 +968,7 @@ class Db extends EventEmitter {
       customerName,
       customerCountry,
       currency,
-      receiptURL,
+      _paddleReceiptURL,
       nextBillDateAt,
     } = data;
 
@@ -990,7 +991,7 @@ class Db extends EventEmitter {
       customerName,
       customerCountry,
       currency,
-      receiptURL,
+      _paddleReceiptURL,
       nextBillDateAt,
     }).save();
 

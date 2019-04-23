@@ -667,7 +667,7 @@ class BillingPage extends React.PureComponent {
                             },
                             {
                               Header: 'View receipt',
-                              accessor: 'receiptURL',
+                              accessor: '_paddleReceiptURL',
                               Cell: row =>
                                 row.value ? (
                                   <a

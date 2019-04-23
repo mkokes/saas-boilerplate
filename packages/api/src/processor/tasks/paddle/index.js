@@ -26,7 +26,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       earnings,
       payment_method: paymentMethod,
       coupon,
-      receipt_url: receiptURL,
+      receipt_url: _paddleReceiptURL,
       customer_name: customerName,
       country: customerCountry,
       gross_refund: saleGrossRefund,
@@ -69,6 +69,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 _paddleCancelURL,
                 nextBillDateAt,
                 servicePeriodEnd: nextBillDateAt,
+                paymentMethod: 'paddle',
               });
               break;
             }
@@ -148,7 +149,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 customerName,
                 customerCountry,
                 currency,
-                receiptURL,
+                _paddleReceiptURL,
                 nextBillDateAt,
               });
               break;

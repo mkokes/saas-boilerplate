@@ -57,6 +57,10 @@ const Subscriptions = new mongoose.Schema(
       type: String,
       default: 'active',
     },
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
     paymentStatus: {
       type: String,
       default: 'active',

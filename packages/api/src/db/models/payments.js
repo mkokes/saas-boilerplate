@@ -55,6 +55,10 @@ const Payments = new mongoose.Schema(
       default: null,
       index: true,
     },
+    _paddleReceiptURL: {
+      type: String,
+      default: null,
+    },
     status: {
       type: String,
       default: 'ok',
@@ -138,10 +142,6 @@ const Payments = new mongoose.Schema(
       default: null,
     },
     coupon: {
-      type: String,
-      default: null,
-    },
-    receiptURL: {
       type: String,
       default: null,
     },

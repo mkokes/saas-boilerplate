@@ -16,7 +16,7 @@ export const USER_PAYMENTS_RECEIPT_QUERY = gql`
   query getUserPaymentsReceipt {
     payments: userPaymentsReceipt @requireAuth {
       saleGross
-      receiptURL
+      _paddleReceiptURL
       receivedAt
     }
   }
@@ -75,6 +75,7 @@ export const BILLING_CURRENT_SUBSCRIPTION = gql`
     subscription: userSubscription @requireAuth {
       status
       servicePeriodEnd
+      paymentMethod
       paymentStatus
       unitPrice
       _paddleUpdateURL
