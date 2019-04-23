@@ -136,7 +136,7 @@ const UsersSchema = new mongoose.Schema(
       unique: true,
       default: uuidv4(),
     },
-    apiKeyStatus: {
+    apiAccessStatus: {
       type: String,
       default: 'active',
     },

@@ -248,18 +248,18 @@ export default class SupportPage extends React.PureComponent {
                                         required
                                       />
                                       <Field
+                                        component={ReactstrapSelect}
+                                        name="ticketType"
+                                        label="Topic"
+                                        options={this.TICKET_TYPE_OPTIONS}
+                                        value={values.ticketType}
+                                        required
+                                      />
+                                      <Field
                                         component={ReactstrapInput}
                                         name="subject"
                                         type="text"
                                         label="Subject"
-                                        required
-                                      />
-                                      <Field
-                                        component={ReactstrapSelect}
-                                        name="ticketType"
-                                        label="Ticket type"
-                                        options={this.TICKET_TYPE_OPTIONS}
-                                        value={values.ticketType}
                                         required
                                       />
                                       <Field

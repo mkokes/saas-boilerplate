@@ -29,7 +29,8 @@ Paddle webhook url
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
-  ☐ Pay with crypto feature
+  ☐ Settings – API Section @today
+  ☐ Pay with crypto feature @today
     This payment method is only allowed when an user is subscribed and his payment method is `manually ¿?` or if the user is not a subscriber yet.
     We only allow annual plans to be paid using this payment method.
   ✔ Price to cents @done(19-04-20 11:30)
@@ -98,7 +99,8 @@ Paddle webhook url
   ✔ S3 Backup @done(19-03-27 19:58)
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
-  ☐ Pay with crypto feature
+  ☐ Settings – API Section @today
+  ☐ Pay with crypto feature @today
   ✔ Price to cents @done(19-04-20 11:30)
   ✔ Annual billing @done(19-04-11 22:56)
     - Subscribers cannot be moved to a plan where billing interval is lower than their current plan.

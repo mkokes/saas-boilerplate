@@ -648,7 +648,7 @@ class BillingPage extends React.PureComponent {
                           <div className="mt-3">
                             <Link className="text-muted" to="/contact-support">
                               <FontAwesomeIcon icon={faBitcoin} /> Pay with
-                              crypto
+                              cryptocurrency
                             </Link>
                           </div>
                         </Container>
