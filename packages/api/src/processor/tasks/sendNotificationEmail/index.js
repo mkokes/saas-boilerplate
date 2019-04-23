@@ -159,7 +159,7 @@ module.exports = ({
           await notification.save();
 
           await postmarkClient.sendEmailWithTemplate({
-            TemplateId: POSTMARK_TEMPLATE_ALIASES[notification.type],
+            TemplateAlias: POSTMARK_TEMPLATE_ALIASES[notification.type],
             From: POSTMARK_SENDER_EMAIL,
             To: targetEmail,
             ReplyTo: targetReplyTo,

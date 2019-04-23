@@ -56,6 +56,7 @@ export const BILLING_SHOW_PLANS_QUERY = gql`
   query getActivePlans {
     currentSubscription: userSubscription @requireAuth {
       paymentStatus
+      paymentMethod
     }
     currentPlan: userSubscriptionPlan @requireAuth {
       ...PlanFields

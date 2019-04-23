@@ -394,16 +394,22 @@ class BillingPage extends React.PureComponent {
 
                         return (
                           <Fragment>
-                            {subscription.paymentStatus === 'past_due' && (
-                              <Alert color="danger">
-                                <strong>
-                                  IMPORTANT: Unfortunately, we could not bill
-                                  you. Please, update your payment method before
-                                  it is too late and we cancel your current
-                                  subscription.
-                                </strong>
-                              </Alert>
-                            )}
+                            <Alert
+                              color="danger"
+                              hidden={
+                                !(
+                                  subscription.paymentMethod === 'paddle' &&
+                                  subscription.paymentStatus === 'past_due'
+                                )
+                              }
+                            >
+                              <strong>
+                                IMPORTANT: Unfortunately, we could not bill you.
+                                Please, update your payment method before it is
+                                too late and we cancel your current
+                                subscription.
+                              </strong>
+                            </Alert>
 
                             <Row>
                               <Col sm="12" md="6">
@@ -413,7 +419,7 @@ class BillingPage extends React.PureComponent {
                                 <p
                                   className="mb-0"
                                   hidden={
-                                    subscription.paymentStatus === 'active'
+                                    !(subscription.paymentStatus !== 'active')
                                   }
                                 >
                                   Access until:{' '}
@@ -426,37 +432,50 @@ class BillingPage extends React.PureComponent {
                                     />
                                   </strong>
                                 </p>
-                                {subscription.paymentStatus === 'active' && (
-                                  <p className="mb-0">
-                                    Next payment date at:{' '}
-                                    <strong>
-                                      <Moment
-                                        format="LL"
-                                        date={Number(
-                                          subscription.nextBillDateAt,
-                                        )}
-                                      />
-                                    </strong>
-                                  </p>
-                                )}
-                                {subscription.paymentStatus !== 'deleted' && (
-                                  <p className="mb-0">
-                                    Required payment amount:{' '}
-                                    <strong>
-                                      ${subscription.unitPrice.toFixed(2)}
-                                    </strong>
-                                  </p>
-                                )}
-                                {subscription.paymentStatus === 'deleted' && (
-                                  <p className="mb-0">
-                                    Payment method status:{' '}
-                                    <strong className="text-danger">
-                                      Cancelled
-                                    </strong>
-                                  </p>
-                                )}
+                                <p
+                                  className="mb-0"
+                                  hidden={
+                                    !(
+                                      subscription.paymentMethod === 'paddle' &&
+                                      subscription.paymentStatus === 'active'
+                                    )
+                                  }
+                                >
+                                  Next payment date at:{' '}
+                                  <strong>
+                                    <Moment
+                                      format="LL"
+                                      date={Number(subscription.nextBillDateAt)}
+                                    />
+                                  </strong>
+                                </p>
+                                <p
+                                  className="mb-0"
+                                  hidden={
+                                    !(subscription.paymentStatus !== 'deleted')
+                                  }
+                                >
+                                  Required payment amount:{' '}
+                                  <strong>
+                                    ${subscription.unitPrice.toFixed(2)}
+                                  </strong>
+                                </p>
+                                <p
+                                  className="mb-0"
+                                  hidden={
+                                    !(
+                                      subscription.paymentMethod === 'paddle' &&
+                                      subscription.paymentStatus === 'deleted'
+                                    )
+                                  }
+                                >
+                                  Payment method status:{' '}
+                                  <strong className="text-danger">
+                                    Renewal cancelled
+                                  </strong>
+                                </p>
                               </Col>
-                              <Col sm="12" md="6" className="mt-sm-3 mt-md-1">
+                              <Col sm="12" md="6" className="mt-3 mt-md-1">
                                 <span>
                                   {subscription.paymentStatus !== 'deleted' && (
                                     <Button
@@ -473,7 +492,11 @@ class BillingPage extends React.PureComponent {
                                     </Button>
                                   )}
                                 </span>
-                                {subscription.paymentStatus === 'active' && (
+                                <span
+                                  hidden={
+                                    !(subscription.paymentStatus === 'active')
+                                  }
+                                >
                                   <ApolloConsumer>
                                     {client => (
                                       <Button
@@ -527,7 +550,7 @@ class BillingPage extends React.PureComponent {
                                       </Button>
                                     )}
                                   </ApolloConsumer>
-                                )}
+                                </span>
                               </Col>
                             </Row>
                           </Fragment>

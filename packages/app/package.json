@@ -16,6 +16,7 @@
     "lint:css": "stylelint './src/**/*.js'",
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix",
+    "pretty": "prettier --config .prettierrc --write \"src/**/*.js\"",
     "generate": "plop --plopfile internals/generators/index.js",
     "eject": "react-scripts eject"
   },
