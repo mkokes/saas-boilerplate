@@ -22,7 +22,6 @@ const Subscriptions = new mongoose.Schema(
     _paddleSubscriptionId: {
       type: Number,
       default: null,
-      unique: true,
       index: true,
     },
     _paddlePlanId: {
@@ -43,13 +42,9 @@ const Subscriptions = new mongoose.Schema(
       type: String,
       default: null,
     },
-    quantity: {
-      type: Number,
-      required: true,
-    },
     unitPrice: {
       type: Number,
-      required: true,
+      default: 0,
       get: num => (num / 100).toFixed(2),
       set: num => num * 100,
     },
@@ -59,11 +54,11 @@ const Subscriptions = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      required: true,
+      default: null,
     },
     paymentStatus: {
       type: String,
-      default: 'active',
+      default: null,
     },
     paymentPastDueAt: {
       type: Date,
@@ -75,7 +70,7 @@ const Subscriptions = new mongoose.Schema(
     },
     currency: {
       type: String,
-      required: true,
+      default: null,
     },
     servicePeriodEnd: {
       type: Date,
@@ -85,7 +80,7 @@ const Subscriptions = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    subscriptionStartedAt: {
+    startedAt: {
       type: Date,
       default: Date.now,
     },

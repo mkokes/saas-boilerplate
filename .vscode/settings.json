@@ -2,6 +2,5 @@
   "editor.formatOnSave": true,
   "prettier.eslintIntegration": true,
   "eslint.run": "onSave",
-  "todo.embedded.exclude": ["**/node_modules/**"],
   "search.usePCRE2": true
 }

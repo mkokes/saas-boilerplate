@@ -16,8 +16,6 @@ module.exports = gql`
     avatar: String
     isSignUpEmailConfirmed: Boolean
     isTwoFactorAuthenticationEnabled: Boolean
-    isInTrialPeriod: Boolean
-    trialPeriodEndsAt: String
     timezone: String
     legal: [LegalAgreement]
   }
@@ -30,7 +28,8 @@ module.exports = gql`
     _id: String
     _paddleProductId: Int
     name: String
-    description: String
+    displayName: String
+    displayedDescription: String
     features: [String]
     price: Float
     tier: Int

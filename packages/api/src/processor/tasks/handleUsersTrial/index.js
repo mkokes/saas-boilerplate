@@ -7,29 +7,27 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
     eventQueue.add(
       async () => {
         try {
-          const usersInTrialPeriod = await db.getUsersInTrialPeriod();
+          const trialSubscriptions = await db.getUsersInTrialPeriod();
 
-          usersInTrialPeriod.forEach(async user => {
-            const { trialPeriodEndsAt, trialExpiringNotified } = user;
+          trialSubscriptions.forEach(async trialSubscription => {
+            const { _user, servicePeriodEnd } = trialSubscription;
 
             const isTrialExpired = moment().isSameOrAfter(
-              moment(trialPeriodEndsAt).startOf('day'),
+              moment(servicePeriodEnd).startOf('day'),
             );
-            const daysLeftUntilTrialExpiration = moment(trialPeriodEndsAt).diff(
+            const daysLeftUntilTrialExpiration = moment(servicePeriodEnd).diff(
               moment(),
               'days',
             );
 
             if (isTrialExpired === true) {
-              await db.userTrialExpired(user._id);
-              log.info(`trial expired for user id ${user._id}`);
-            } else if (
-              !trialExpiringNotified &&
-              daysLeftUntilTrialExpiration === 2
-            ) {
-              // send trial expiring notification when 3 days left until expiration
-              await db.userTrialExpiringWarning(user._id);
-              log.info(`trial warning sent for user id ${user._id}`);
+              await db.userTrialExpired(_user);
+              log.info(`trial expired for user id ${_user}`);
+            } else if (daysLeftUntilTrialExpiration === 2) {
+              if (!db.isUserTrialExpiringWarningSent(_user)) {
+                await db.sendUserTrialExpiringWarning(_user);
+                log.info(`trial warning sent for user id ${_user}`);
+              }
             }
           });
         } catch (e) {

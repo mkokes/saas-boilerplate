@@ -24,7 +24,7 @@ import { Link } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import Switch from 'react-switch';
 
-import { getProvider as getGlobalProvider, GlobalConsumer } from 'GlobalState';
+import { getProvider as getGlobalProvider } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
 import Loader from 'components/Loader';
 import {
@@ -110,7 +110,8 @@ class BillingPage extends React.PureComponent {
         });
 
         this.setState({
-          billingIntervalToggler: plan.billingInterval !== 'monthly',
+          billingIntervalToggler:
+            plan.billingInterval !== 'monthly' && plan.billingInterval !== null,
         });
 
         // eslint-disable-next-line no-empty
@@ -123,7 +124,7 @@ class BillingPage extends React.PureComponent {
     const { billingIntervalToggler } = this.state;
 
     const _renderPlanActionButton = (plan, isCurrentPlan) => {
-      if (!currentSubscription) {
+      if (!currentSubscription || currentPlan.name === 'TRIAL') {
         return (
           <Button
             color="primary"
@@ -288,7 +289,7 @@ class BillingPage extends React.PureComponent {
       const isCurrentPlan =
         currentSubscription &&
         currentSubscription.paymentStatus !== 'deleted' &&
-        currentPlan._paddleProductId === plan._paddleProductId;
+        currentPlan._id === plan._id;
 
       return (
         <Card
@@ -310,7 +311,7 @@ class BillingPage extends React.PureComponent {
             className="mt-2 mb-2 text-center text-md-left align-items-center"
           >
             <Col xs="12" md="3" style={{ fontSize: '20px' }}>
-              <strong>{plan.name}</strong>
+              <strong>{plan.displayName}</strong>
             </Col>
             <Col xs="12" md="5" style={{ fontSize: '19px' }}>
               ${plan.price.toFixed(2)}{' '}
@@ -340,391 +341,375 @@ class BillingPage extends React.PureComponent {
         <Helmet>
           <title>BillingPage</title>
         </Helmet>
-        <GlobalConsumer>
-          {({ userProfile }) => (
-            <Fragment>
-              <h1 className="mb-3">Billing</h1>
-              <Card body>
-                <legend>Your current subscription</legend>
-                <Row>
-                  <Col>
-                    <SafeQuery
-                      query={BILLING_CURRENT_SUBSCRIPTION}
-                      keepExistingResultDuringRefetch
-                      fetchPolicy="network-only"
-                      showLoading
-                      showError
-                    >
-                      {({ data: { plan, subscription } }) => {
-                        if (!subscription) {
-                          return (
-                            <Alert
-                              color={
-                                userProfile.isInTrialPeriod
-                                  ? 'success'
-                                  : 'warning'
-                              }
-                              className="text-center"
-                              fade={false}
-                            >
-                              <strong>
-                                {userProfile.isInTrialPeriod ? (
-                                  <Fragment>
-                                    You are currently in trial period (ends on{' '}
-                                    <strong>
-                                      <Moment
-                                        format="LL"
-                                        date={Number(
-                                          userProfile.trialPeriodEndsAt,
-                                        )}
-                                      />
-                                    </strong>
-                                    )
-                                  </Fragment>
-                                ) : (
-                                  <Fragment>
-                                    You don&#39;t have an active subscription at
-                                    this time
-                                  </Fragment>
-                                )}
-                              </strong>
-                            </Alert>
-                          );
-                        }
+        <Fragment>
+          <h1 className="mb-3">Billing</h1>
+          <Card body>
+            <legend>Your current subscription</legend>
+            <Row>
+              <Col>
+                <SafeQuery
+                  query={BILLING_CURRENT_SUBSCRIPTION}
+                  keepExistingResultDuringRefetch
+                  fetchPolicy="network-only"
+                  showLoading
+                  showError
+                >
+                  {({ data: { plan, subscription } }) => {
+                    if (!subscription) {
+                      return (
+                        <Alert
+                          color="warning"
+                          className="text-center"
+                          fade={false}
+                        >
+                          <strong>
+                            <Fragment>
+                              You don&#39;t have an active subscription at this
+                              time
+                            </Fragment>
+                          </strong>
+                        </Alert>
+                      );
+                    }
 
-                        return (
-                          <Fragment>
-                            <Alert
-                              color="danger"
+                    return (
+                      <Fragment>
+                        <Alert
+                          color="danger"
+                          hidden={
+                            !(
+                              subscription.paymentMethod === 'paddle' &&
+                              subscription.paymentStatus === 'past_due'
+                            )
+                          }
+                        >
+                          <strong>
+                            IMPORTANT: Unfortunately, we could not bill you.
+                            Please, update your payment method before it is too
+                            late and we cancel your current subscription.
+                          </strong>
+                        </Alert>
+
+                        <Row>
+                          <Col sm="12" md="6">
+                            <p className="mb-0">
+                              Plan name: <strong>{plan.displayName}</strong>
+                            </p>
+                            <p
+                              className="mb-0"
+                              hidden={
+                                !(subscription.paymentStatus !== 'active')
+                              }
+                            >
+                              Access until:{' '}
+                              <strong>
+                                <Moment
+                                  format="LL"
+                                  date={Number(subscription.servicePeriodEnd)}
+                                />
+                                <span hidden={!(plan.name === 'TRIAL')}>
+                                  {' '}
+                                  (
+                                  <Moment diff={new Date()} unit="days">
+                                    {Number(subscription.servicePeriodEnd)}
+                                  </Moment>{' '}
+                                  days left)
+                                </span>
+                              </strong>
+                            </p>
+                            <p
+                              className="mb-0"
                               hidden={
                                 !(
                                   subscription.paymentMethod === 'paddle' &&
-                                  subscription.paymentStatus === 'past_due'
+                                  subscription.paymentStatus === 'active'
                                 )
                               }
                             >
+                              Next payment date at:{' '}
                               <strong>
-                                IMPORTANT: Unfortunately, we could not bill you.
-                                Please, update your payment method before it is
-                                too late and we cancel your current
-                                subscription.
+                                <Moment
+                                  format="LL"
+                                  date={Number(subscription.nextBillDateAt)}
+                                />
                               </strong>
-                            </Alert>
-
-                            <Row>
-                              <Col sm="12" md="6">
-                                <p className="mb-0">
-                                  Plan name: <strong>{plan.name}</strong>
-                                </p>
-                                <p
-                                  className="mb-0"
-                                  hidden={
-                                    !(subscription.paymentStatus !== 'active')
-                                  }
-                                >
-                                  Access until:{' '}
-                                  <strong>
-                                    <Moment
-                                      format="LL"
-                                      date={Number(
-                                        subscription.servicePeriodEnd,
-                                      )}
-                                    />
-                                  </strong>
-                                </p>
-                                <p
-                                  className="mb-0"
-                                  hidden={
-                                    !(
-                                      subscription.paymentMethod === 'paddle' &&
-                                      subscription.paymentStatus === 'active'
-                                    )
-                                  }
-                                >
-                                  Next payment date at:{' '}
-                                  <strong>
-                                    <Moment
-                                      format="LL"
-                                      date={Number(subscription.nextBillDateAt)}
-                                    />
-                                  </strong>
-                                </p>
-                                <p
-                                  className="mb-0"
-                                  hidden={
-                                    !(subscription.paymentStatus !== 'deleted')
-                                  }
-                                >
-                                  Required payment amount:{' '}
-                                  <strong>
-                                    ${subscription.unitPrice.toFixed(2)}
-                                  </strong>
-                                </p>
-                                <p
-                                  className="mb-0"
-                                  hidden={
-                                    !(
-                                      subscription.paymentMethod === 'paddle' &&
-                                      subscription.paymentStatus === 'deleted'
-                                    )
-                                  }
-                                >
-                                  Payment method status:{' '}
-                                  <strong className="text-danger">
-                                    Renewal cancelled
-                                  </strong>
-                                </p>
-                              </Col>
-                              <Col sm="12" md="6" className="mt-3 mt-md-1">
-                                <span>
-                                  {subscription.paymentStatus !== 'deleted' && (
-                                    <Button
-                                      onClick={() =>
-                                        PaddleApi.open(
-                                          subscription._paddleUpdateURL,
-                                        )
-                                      }
-                                      className="mr-2"
-                                    >
-                                      <FontAwesomeIcon icon={faCreditCard} />
-                                      {'  '}
-                                      Update Payment Method
-                                    </Button>
-                                  )}
-                                </span>
-                                <span
-                                  hidden={
-                                    !(subscription.paymentStatus === 'active')
-                                  }
-                                >
-                                  <ApolloConsumer>
-                                    {client => (
-                                      <Button
-                                        onClick={() =>
-                                          confirmAlert({
-                                            title:
-                                              'Confirm renewal cancellation',
-                                            message:
-                                              'If you confirm and end your subscription renewal now, you can still access to it until it expires.',
-                                            buttons: [
-                                              {
-                                                label: 'Confirm',
-                                                onClick: async () => {
-                                                  try {
-                                                    await client.mutate({
-                                                      mutation: CANCEL_SUBSCRIPTION_RENEWAL,
-                                                    });
-
-                                                    history.replace(
-                                                      `/processing`,
-                                                    );
-                                                    setTimeout(() => {
-                                                      history.replace(
-                                                        '/dashboard/settings/billing?success=subscription_renewal_cancelled',
-                                                      );
-                                                    }, 3000);
-                                                  } catch (e) {
-                                                    const err = transformApolloErr(
-                                                      e,
-                                                    );
-
-                                                    toast.error(err.message, {
-                                                      position:
-                                                        toast.POSITION
-                                                          .TOP_CENTER,
-                                                    });
-                                                  }
-                                                },
-                                              },
-                                              {
-                                                label: 'Cancel',
-                                              },
-                                            ],
-                                          })
-                                        }
-                                        color="link"
-                                        size="sm"
-                                        className="d-block text-muted"
-                                      >
-                                        Cancel subscription renewal
-                                      </Button>
-                                    )}
-                                  </ApolloConsumer>
-                                </span>
-                              </Col>
-                            </Row>
-                          </Fragment>
-                        );
-                      }}
-                    </SafeQuery>
-                  </Col>
-                </Row>
-                <legend className="mt-3 mb-3">
-                  Plans{' '}
-                  <Link to="/pricing" className="float-right">
-                    <small>
-                      Pricing page{' '}
-                      <FontAwesomeIcon
-                        icon={faQuestionCircle}
-                        size="xs"
-                        className="align-middle"
-                      />
-                    </small>
-                  </Link>{' '}
-                </legend>
-                <Row>
-                  <Col hidden={subscriptionPlansLoading}>
-                    <SafeQuery
-                      query={BILLING_SHOW_PLANS_QUERY}
-                      fetchPolicy="network-only"
-                      keepExistingResultDuringRefetch
-                      showLoading
-                      showError
-                    >
-                      {({
-                        data: { currentPlan, currentSubscription, plans = [] },
-                      }) => (
-                        <Container>
-                          <div
-                            className="mb-3 text-right"
-                            style={{ fontSize: '0.9em' }}
-                          >
-                            <Button
-                              color="link"
-                              className={
-                                !billingIntervalToggler
-                                  ? 'font-weight-bold text-dark'
-                                  : 'text-muted'
-                              }
-                              style={{
-                                cursor: billingIntervalToggler && 'pointer',
-                                textDecoration: 'none',
-                                padding: '0',
-                              }}
-                              onClick={() =>
-                                this.setState({ billingIntervalToggler: false })
+                            </p>
+                            <p
+                              className="mb-0"
+                              hidden={
+                                !(
+                                  subscription.paymentMethod === 'paddle' &&
+                                  subscription.paymentStatus !== 'deleted'
+                                )
                               }
                             >
-                              Monthly
-                            </Button>
-                            <Switch
-                              onChange={this.handleChangeBillingIntervalToggler}
-                              checked={
-                                billingIntervalToggler !== undefined
-                                  ? billingIntervalToggler
-                                  : false
-                              }
-                              uncheckedIcon={false}
-                              checkedIcon={false}
-                              onColor="#888888"
-                              height={18}
-                              width={36}
-                              className="align-middle mr-2 ml-2"
-                            />
-                            <Button
-                              color="link"
-                              className={
-                                billingIntervalToggler
-                                  ? 'font-weight-bold text-dark'
-                                  : 'text-muted'
-                              }
-                              style={{
-                                cursor: !billingIntervalToggler && 'pointer',
-                                textDecoration: 'none',
-                                padding: '0',
-                              }}
-                              onClick={() =>
-                                this.setState({ billingIntervalToggler: true })
+                              Required payment amount:{' '}
+                              <strong>
+                                ${subscription.unitPrice.toFixed(2)}
+                              </strong>
+                            </p>
+                            <p
+                              className="mb-0"
+                              hidden={
+                                !(
+                                  subscription.paymentMethod === 'paddle' &&
+                                  subscription.paymentStatus === 'deleted'
+                                )
                               }
                             >
-                              Yearly (10% OFF)
-                            </Button>
-                          </div>
-                          {this.renderSubscriptionPlans(
-                            currentPlan,
-                            currentSubscription,
-                            plans,
-                          )}
-                          <div className="mt-3">
-                            <Link className="text-muted" to="/contact-support">
-                              <FontAwesomeIcon icon={faBitcoin} /> Pay with
-                              cryptocurrency
-                            </Link>
-                          </div>
-                        </Container>
-                      )}
-                    </SafeQuery>
-                  </Col>
-                  <Col hidden={!subscriptionPlansLoading}>
-                    <Loader />
-                  </Col>
-                </Row>
-                <legend className="mt-3">Receipts</legend>
-                <Row>
-                  <Col>
-                    <SafeQuery
-                      query={USER_PAYMENTS_RECEIPT_QUERY}
-                      fetchPolicy="network-only"
-                      keepExistingResultDuringRefetch
-                      showLoading
-                      showError
-                    >
-                      {({ data: { payments = [] } }) => (
-                        <ReactTable
-                          data={payments}
-                          columns={[
-                            {
-                              Header: 'Date',
-                              accessor: 'receivedAt',
-                              getTdProps: () => ({
-                                className: 'text-center',
-                              }),
-                              Cell: row => (
-                                <Moment format="L" date={Number(row.value)} />
-                              ),
-                            },
-                            {
-                              Header: 'Amount',
-                              accessor: 'saleGross',
-                              Cell: row => <span>{row.value}</span>,
-                            },
-                            {
-                              Header: 'View receipt',
-                              accessor: '_paddleReceiptURL',
-                              Cell: row =>
-                                row.value ? (
-                                  <a
-                                    href={row.value}
-                                    target="_new"
-                                    style={{ color: '#808080' }}
+                              Payment method status:{' '}
+                              <strong className="text-danger">
+                                Renewal cancelled
+                              </strong>
+                            </p>
+                          </Col>
+                          <Col sm="12" md="6" className="mt-3 mt-md-1">
+                            <span
+                              hidden={
+                                !(
+                                  subscription.paymentMethod === 'paddle' &&
+                                  subscription.paymentStatus !== 'deleted'
+                                )
+                              }
+                            >
+                              <Button
+                                onClick={() =>
+                                  PaddleApi.open(subscription._paddleUpdateURL)
+                                }
+                                className="mr-2"
+                              >
+                                <FontAwesomeIcon icon={faCreditCard} />
+                                {'  '}
+                                Update Payment Method
+                              </Button>
+                            </span>
+                            <span
+                              hidden={
+                                !(
+                                  subscription.paymentMethod === 'paddle' &&
+                                  subscription.paymentStatus === 'active'
+                                )
+                              }
+                            >
+                              <ApolloConsumer>
+                                {client => (
+                                  <Button
+                                    onClick={() =>
+                                      confirmAlert({
+                                        title: 'Confirm renewal cancellation',
+                                        message:
+                                          'If you confirm and end your subscription renewal now, you can still access to it until it expires.',
+                                        buttons: [
+                                          {
+                                            label: 'Confirm',
+                                            onClick: async () => {
+                                              try {
+                                                await client.mutate({
+                                                  mutation: CANCEL_SUBSCRIPTION_RENEWAL,
+                                                });
+
+                                                history.replace(`/processing`);
+                                                setTimeout(() => {
+                                                  history.replace(
+                                                    '/dashboard/settings/billing?success=subscription_renewal_cancelled',
+                                                  );
+                                                }, 3000);
+                                              } catch (e) {
+                                                const err = transformApolloErr(
+                                                  e,
+                                                );
+
+                                                toast.error(err.message, {
+                                                  position:
+                                                    toast.POSITION.TOP_CENTER,
+                                                });
+                                              }
+                                            },
+                                          },
+                                          {
+                                            label: 'Cancel',
+                                          },
+                                        ],
+                                      })
+                                    }
+                                    color="link"
+                                    size="sm"
+                                    className="d-block text-muted"
                                   >
-                                    <FontAwesomeIcon
-                                      icon={faFileAlt}
-                                      size="2x"
-                                    />
-                                  </a>
-                                ) : (
-                                  <span>–</span>
-                                ),
-                            },
-                          ]}
-                          getTrProps={() => ({
-                            className: 'align-items-center text-center',
-                          })}
-                          minRows={payments.length > 0 ? 1 : 3}
-                          defaultPageSize={3}
-                          showPageJump={false}
-                          noDataText="No receipts found"
-                          className="-striped -highlight"
+                                    Cancel subscription renewal
+                                  </Button>
+                                )}
+                              </ApolloConsumer>
+                            </span>
+                          </Col>
+                        </Row>
+                      </Fragment>
+                    );
+                  }}
+                </SafeQuery>
+              </Col>
+            </Row>
+            <legend className="mt-3 mb-3">
+              Plans{' '}
+              <Link to="/pricing" className="float-right">
+                <small>
+                  Pricing page{' '}
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="xs"
+                    className="align-middle"
+                  />
+                </small>
+              </Link>{' '}
+            </legend>
+            <Row>
+              <Col hidden={subscriptionPlansLoading}>
+                <SafeQuery
+                  query={BILLING_SHOW_PLANS_QUERY}
+                  fetchPolicy="network-only"
+                  keepExistingResultDuringRefetch
+                  showLoading
+                  showError
+                >
+                  {({
+                    data: { currentPlan, currentSubscription, plans = [] },
+                  }) => (
+                    <Container>
+                      <div
+                        className="mb-3 text-right"
+                        style={{ fontSize: '0.9em' }}
+                      >
+                        <Button
+                          color="link"
+                          className={
+                            !billingIntervalToggler
+                              ? 'font-weight-bold text-dark'
+                              : 'text-muted'
+                          }
+                          style={{
+                            cursor: billingIntervalToggler && 'pointer',
+                            textDecoration: 'none',
+                            padding: '0',
+                          }}
+                          onClick={() =>
+                            this.setState({ billingIntervalToggler: false })
+                          }
+                        >
+                          Monthly
+                        </Button>
+                        <Switch
+                          onChange={this.handleChangeBillingIntervalToggler}
+                          checked={
+                            billingIntervalToggler !== undefined
+                              ? billingIntervalToggler
+                              : false
+                          }
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          onColor="#888888"
+                          height={18}
+                          width={36}
+                          className="align-middle mr-2 ml-2"
                         />
+                        <Button
+                          color="link"
+                          className={
+                            billingIntervalToggler
+                              ? 'font-weight-bold text-dark'
+                              : 'text-muted'
+                          }
+                          style={{
+                            cursor: !billingIntervalToggler && 'pointer',
+                            textDecoration: 'none',
+                            padding: '0',
+                          }}
+                          onClick={() =>
+                            this.setState({ billingIntervalToggler: true })
+                          }
+                        >
+                          Yearly (10% OFF)
+                        </Button>
+                      </div>
+                      {this.renderSubscriptionPlans(
+                        currentPlan,
+                        currentSubscription,
+                        plans,
                       )}
-                    </SafeQuery>
-                  </Col>
-                </Row>
-              </Card>
-            </Fragment>
-          )}
-        </GlobalConsumer>
+                      <div className="mt-3">
+                        <Link className="text-muted" to="/contact-support">
+                          <FontAwesomeIcon icon={faBitcoin} /> Pay with
+                          cryptocurrency
+                        </Link>
+                      </div>
+                    </Container>
+                  )}
+                </SafeQuery>
+              </Col>
+              <Col hidden={!subscriptionPlansLoading}>
+                <Loader />
+              </Col>
+            </Row>
+            <legend className="mt-3">Receipts</legend>
+            <Row>
+              <Col>
+                <SafeQuery
+                  query={USER_PAYMENTS_RECEIPT_QUERY}
+                  fetchPolicy="network-only"
+                  keepExistingResultDuringRefetch
+                  showLoading
+                  showError
+                >
+                  {({ data: { payments = [] } }) => (
+                    <ReactTable
+                      data={payments}
+                      columns={[
+                        {
+                          Header: 'Date',
+                          accessor: 'receivedAt',
+                          getTdProps: () => ({
+                            className: 'text-center',
+                          }),
+                          Cell: row => (
+                            <Moment format="L" date={Number(row.value)} />
+                          ),
+                        },
+                        {
+                          Header: 'Amount',
+                          accessor: 'saleGross',
+                          Cell: row => <span>{row.value}</span>,
+                        },
+                        {
+                          Header: 'View receipt',
+                          accessor: '_paddleReceiptURL',
+                          Cell: row =>
+                            row.value ? (
+                              <a
+                                href={row.value}
+                                target="_new"
+                                style={{ color: '#808080' }}
+                              >
+                                <FontAwesomeIcon icon={faFileAlt} size="2x" />
+                              </a>
+                            ) : (
+                              <span>–</span>
+                            ),
+                        },
+                      ]}
+                      getTrProps={() => ({
+                        className: 'align-items-center text-center',
+                      })}
+                      minRows={payments.length > 0 ? 1 : 3}
+                      defaultPageSize={3}
+                      showPageJump={false}
+                      noDataText="No receipts found"
+                      className="-striped -highlight"
+                    />
+                  )}
+                </SafeQuery>
+              </Col>
+            </Row>
+          </Card>
+        </Fragment>
       </Fragment>
     );
   }

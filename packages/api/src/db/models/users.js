@@ -90,26 +90,6 @@ const UsersSchema = new mongoose.Schema(
       type: String,
       default: 'active',
     },
-    isInTrialPeriod: {
-      type: Boolean,
-      default: true,
-    },
-    trialPeriodStartedAt: {
-      type: Date,
-      default: Date.now,
-    },
-    trialPeriodEndsAt: {
-      type: Date,
-      required: true,
-    },
-    trialDaysLength: {
-      type: Number,
-      required: true,
-    },
-    trialExpiringNotified: {
-      type: Boolean,
-      default: false,
-    },
     timezone: {
       type: String,
       default: 'America/Los_Angeles',
@@ -136,7 +116,7 @@ const UsersSchema = new mongoose.Schema(
       unique: true,
       default: uuidv4(),
     },
-    apiAccessStatus: {
+    apiAccess: {
       type: String,
       default: 'active',
     },

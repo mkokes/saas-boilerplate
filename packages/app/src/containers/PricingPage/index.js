@@ -75,7 +75,7 @@ export default class PricingPage extends React.PureComponent {
                     <Fragment>Pick a plan that&apos;s right for you</Fragment>
                   ) : (
                     <Fragment>
-                      Start with <strong>7-day free trial</strong>.
+                      Start the <strong>7-day free trial</strong>
                     </Fragment>
                   )}
                 </h2>
@@ -152,7 +152,7 @@ export default class PricingPage extends React.PureComponent {
                           >
                             <CardHeader>
                               <h4 className="my-0 font-weight-normal">
-                                {plan.name}
+                                {plan.displayName}
                               </h4>
                             </CardHeader>
                             <CardBody>
@@ -163,7 +163,9 @@ export default class PricingPage extends React.PureComponent {
                                   {displayBillingInterval(plan.billingInterval)}
                                 </small>
                               </h1>
-                              <p className="lead mb-3">{plan.description}</p>
+                              <p className="lead mb-3">
+                                {plan.displayedDescription}
+                              </p>
                               <ul
                                 className="list-unstyled mt-3 mb-4"
                                 style={{ minHeight: '50px' }}
@@ -209,8 +211,8 @@ export default class PricingPage extends React.PureComponent {
                       What types of payment do you accept?
                     </FaqQuestionTitle>
                     <p>
-                      We accept PayPal, Apple Pay, all major credit cards and
-                      cryptocurrency for every plan.
+                      We accept PayPal, all major credit cards and
+                      cryptocurrencies for every plan.
                     </p>
                   </FaqQuestion>
                   <FaqQuestion>

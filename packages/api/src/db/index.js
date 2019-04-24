@@ -2,6 +2,7 @@ const EventEmitter = require('eventemitter3');
 const jwt = require('jsonwebtoken');
 const otplib = require('otplib');
 const authenticator = require('otplib/authenticator');
+const moment = require('moment');
 
 const {
   NOTIFICATION,
@@ -23,7 +24,7 @@ const {
   TRIAL_EXPIRING,
   TRIAL_EXPIRED,
   SUBSCRIPTION_ENDED,
-  SUBSCRIPTION_PAYMENT_METHOD_DELETED,
+  SUBSCRIPTION_RENEWAL_CANCELLED,
 } = require('../constants/notifications');
 
 const setupDb = require('./setup');
@@ -62,9 +63,11 @@ class Db extends EventEmitter {
   }
 
   async getUsersInTrialPeriod() {
-    return Users.find({
-      accountStatus: 'active',
-      isInTrialPeriod: true,
+    const trialPlan = await Plans.findOne({ name: 'TRIAL' }).exec();
+
+    return Subscriptions.find({
+      _plan: trialPlan._id,
+      status: 'active',
     }).exec();
   }
 
@@ -97,8 +100,6 @@ class Db extends EventEmitter {
       avatar,
       isSignUpEmailConfirmed,
       isTwoFactorAuthenticationEnabled,
-      isInTrialPeriod,
-      trialPeriodEndsAt,
       timezone,
       legal,
     } = user;
@@ -119,8 +120,6 @@ class Db extends EventEmitter {
             signupAt,
             isSignUpEmailConfirmed,
             isTwoFactorAuthenticationEnabled,
-            isInTrialPeriod,
-            trialPeriodEndsAt,
             timezone,
             legal,
           }
@@ -166,9 +165,11 @@ class Db extends EventEmitter {
   }
 
   async getActivePlans() {
-    const _plans = await Plans.find({ status: 'active' }).sort({
-      tier: 0,
-    });
+    const _plans = await Plans.find({ internal: false, status: 'active' }).sort(
+      {
+        tier: 0,
+      },
+    );
 
     const plans = _plans.map(obj => {
       const plan = obj.toObject();
@@ -221,12 +222,9 @@ class Db extends EventEmitter {
         trialDaysLength = 30;
         break; */
       default:
-        trialDaysLength = this._config.PRODUCT_TRIAL_DAYS_LENGTH;
+        trialDaysLength = this._config.TRIAL_PERIOD_DAYS;
         break;
     }
-
-    const trialPeriodEndsAt = new Date();
-    trialPeriodEndsAt.setDate(trialPeriodEndsAt.getDate() + trialDaysLength);
 
     const user = await new Users({
       email,
@@ -241,13 +239,22 @@ class Db extends EventEmitter {
         },
         this._config.JWT_SECRET,
       ),
-      trialPeriodEndsAt,
-      trialDaysLength,
       signupSource,
       signupIP: signupIP || null,
       signupCity: signupCity || null,
       signupCountry: signupCountry || null,
     }).save();
+
+    const trialPlan = await Plans.findOne({ name: 'TRIAL' }).select('_id');
+    const trialPeriodEndsAt = moment().add(trialDaysLength, 'days');
+    const subscription = await new Subscriptions({
+      _user: user._id,
+      _plan: trialPlan._id,
+      servicePeriodEnd: trialPeriodEndsAt,
+    }).save();
+
+    user._subscription = subscription._id;
+    await user.save();
 
     this.notifyUser(user._id, VERIFY_EMAIL, {
       action_url: `${this._config.PRODUCT_APP_URL}/confirm-email?token=${
@@ -707,7 +714,6 @@ class Db extends EventEmitter {
       _paddleSubscriptionId,
       _paddlePlanId,
       _paddleCheckoutId,
-      quantity,
       unitPrice,
       currency,
       _paddleUpdateURL,
@@ -715,6 +721,7 @@ class Db extends EventEmitter {
       nextBillDateAt,
       servicePeriodEnd,
       paymentMethod,
+      paymentStatus,
     } = data;
 
     // cancel previous user subscription if there's any
@@ -732,7 +739,6 @@ class Db extends EventEmitter {
       _paddleSubscriptionId,
       _paddlePlanId,
       _paddleCheckoutId,
-      quantity,
       unitPrice,
       currency,
       _paddleUpdateURL,
@@ -740,11 +746,11 @@ class Db extends EventEmitter {
       nextBillDateAt,
       servicePeriodEnd,
       paymentMethod,
+      paymentStatus,
     }).save();
 
     const user = await Users.findByIdAndUpdate(userId, {
       _subscription: subscription._id,
-      isInTrialPeriod: false, // suspend trial period if user decided to upgrade while trialing
     }).exec();
 
     this._log.info(`subscription created for user ${user._id}`);
@@ -808,7 +814,6 @@ class Db extends EventEmitter {
       _paddleCheckoutId,
       _paddleUpdateURL,
       _paddleCancelURL,
-      quantity,
       unitPrice,
       nextBillDateAt,
       oldSubscriptionPlanId,
@@ -821,7 +826,6 @@ class Db extends EventEmitter {
       _paddleCheckoutId,
       _paddleUpdateURL,
       _paddleCancelURL,
-      quantity,
       unitPrice,
       nextBillDateAt,
       servicePeriodEnd: nextBillDateAt,
@@ -934,7 +938,7 @@ class Db extends EventEmitter {
       .exec();
     const { _user } = subscription;
 
-    this.notifyUser(_user._id, SUBSCRIPTION_PAYMENT_METHOD_DELETED);
+    this.notifyUser(_user._id, SUBSCRIPTION_RENEWAL_CANCELLED);
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
@@ -957,7 +961,6 @@ class Db extends EventEmitter {
       _paddleOrderId,
       _paddleCheckoutId,
       _paddleUserId,
-      quantity,
       unitPrice,
       saleGross,
       feeAmount,
@@ -980,7 +983,6 @@ class Db extends EventEmitter {
       _paddleOrderId,
       _paddleCheckoutId,
       _paddleUserId,
-      quantity,
       unitPrice,
       saleGross,
       feeAmount,
@@ -1096,13 +1098,13 @@ class Db extends EventEmitter {
     });
   }
 
-  async userTrialExpiringWarning(userId) {
-    const user = await this.getUserById(userId);
+  async isUserTrialExpiringWarningSent(userId) {
+    return Boolean(
+      Notifications.count({ _user: userId, type: TRIAL_EXPIRING }).exec(),
+    );
+  }
 
-    user.trialExpiringNotified = true;
-
-    await user.save();
-
+  async sendUserTrialExpiringWarning(userId) {
     this.notifyUser(userId, TRIAL_EXPIRING);
   }
 

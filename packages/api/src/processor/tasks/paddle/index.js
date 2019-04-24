@@ -10,8 +10,6 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
       passthrough,
       subscription_plan_id: paddleSubscriptionPlanId,
       checkout_id: checkoutId,
-      quantity,
-      new_quantity: newQuantity,
       new_unit_price: newUnitPrice,
       next_bill_date: nextBillDateAt,
       unit_price: unitPrice,
@@ -62,7 +60,6 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 _paddleSubscriptionId: paddleSubscriptionId,
                 _paddlePlanId: paddleSubscriptionPlanId,
                 _paddleCheckoutId: checkoutId,
-                quantity,
                 unitPrice,
                 currency,
                 _paddleUpdateURL,
@@ -70,6 +67,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 nextBillDateAt,
                 servicePeriodEnd: nextBillDateAt,
                 paymentMethod: 'paddle',
+                paymentStatus: 'active',
               });
               break;
             }
@@ -105,7 +103,6 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                     _paddleCheckoutId: checkoutId,
                     _paddleUpdateURL,
                     _paddleCancelURL,
-                    quantity: newQuantity,
                     unitPrice: newUnitPrice,
                     nextBillDateAt,
                     oldSubscriptionStatus,
@@ -138,7 +135,6 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 _paddleOrderId: orderId,
                 _paddleCheckoutId: checkoutId,
                 _paddleUserId: paddleUserId,
-                quantity,
                 unitPrice,
                 saleGross,
                 feeAmount,

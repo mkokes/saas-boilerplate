@@ -16,7 +16,7 @@ const {
   SUPPORT_REQUEST,
   SUPPORT_REQUEST_USER_CONFIRMATION,
   SUBSCRIPTION_ENDED,
-  SUBSCRIPTION_PAYMENT_METHOD_DELETED,
+  SUBSCRIPTION_RENEWAL_CANCELLED,
 } = require('../../../constants/notifications');
 
 module.exports = ({
@@ -24,7 +24,6 @@ module.exports = ({
     PRODUCT_NAME,
     PRODUCT_FOUNDER_NAME,
     PRODUCT_APP_URL,
-    PRODUCT_TRIAL_DAYS_LENGTH,
     COMPANY_NAME,
     POSTMARK_API_TOKEN,
     POSTMARK_SENDER_EMAIL,
@@ -32,6 +31,7 @@ module.exports = ({
   },
   log: parentLog,
   eventQueue,
+  db,
   Sentry,
 }) => {
   const log = parentLog.create('sendNotificationEmail');
@@ -50,7 +50,7 @@ module.exports = ({
     SUPPORT_REQUEST: 'support-request',
     SUPPORT_REQUEST_USER_CONFIRMATION: 'support-request-user-confirmation',
     SUBSCRIPTION_ENDED: 'subscription-ended',
-    SUBSCRIPTION_PAYMENT_METHOD_DELETED: 'subscription-payment-method-deleted',
+    SUBSCRIPTION_RENEWAL_CANCELLED: 'subscription-renewal-cancelled',
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
@@ -93,27 +93,27 @@ module.exports = ({
                 safeGet(notification.variables, 'candidateEmail') ||
                 targetEmail;
               break;
-            case WELCOME:
+            case WELCOME: {
               templateModel.action_url = `${PRODUCT_APP_URL}/dashboard`;
               templateModel.login_url = `${PRODUCT_APP_URL}/auth/login`;
               templateModel.name = _user.firstName;
               templateModel.email = _user.email;
-              templateModel.trial_length = _user.trialDaysLength;
+
+              const subscription = await db.getUserSubscription(_user._id);
+              const { startedAt, servicePeriodEnd } = subscription;
+
+              templateModel.trial_length =
+                moment(servicePeriodEnd).diff(startedAt, 'days') + 1;
               templateModel.trial_start_date = moment(
-                _user.signupAt,
+                startedAt,
                 _user.timezone,
               ).format('LL');
-
-              /* eslint-disable no-case-declarations */
-              const trialEndDate = new Date(_user.signupAt);
-              trialEndDate.setDate(
-                trialEndDate.getDate() + PRODUCT_TRIAL_DAYS_LENGTH,
-              );
               templateModel.trial_end_date = moment(
-                trialEndDate,
+                servicePeriodEnd,
                 _user.timezone,
               ).format('LL');
               break;
+            }
             case FORGOT_PASSWORD:
               templateModel.action_url = notification.variables.action_url;
               templateModel.name = _user.firstName;
@@ -150,7 +150,7 @@ module.exports = ({
               break;
             case SUBSCRIPTION_ENDED:
               break;
-            case SUBSCRIPTION_PAYMENT_METHOD_DELETED:
+            case SUBSCRIPTION_RENEWAL_CANCELLED:
               break;
           }
 

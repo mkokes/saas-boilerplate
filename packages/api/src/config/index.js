@@ -23,7 +23,7 @@ const env = envalid.cleanEnv(
     PRODUCT_NAME: str({ default: 'DCABot' }),
     PRODUCT_FOUNDER_NAME: str({ default: 'Alfon' }),
     PRODUCT_APP_URL: str({ default: '' }),
-    PRODUCT_TRIAL_DAYS_LENGTH: num({ default: 7 }),
+    TRIAL_PERIOD_DAYS: num({ default: 7 }),
     COMPANY_NAME: str({ default: 'AMGA Ventures Inc.' }),
     PAPERTRAILAPP_HOST: str({ default: '' }),
     PAPERTRAILAPP_PORT: num({ default: null }),

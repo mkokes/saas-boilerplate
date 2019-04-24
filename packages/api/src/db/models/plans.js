@@ -7,9 +7,12 @@ const Plans = new mongoose.Schema(
   {
     _paddleProductId: {
       type: Number,
-      required: true,
-      unique: true,
+      default: null,
       index: true,
+    },
+    internal: {
+      type: Boolean,
+      default: false,
     },
     status: {
       type: String,
@@ -19,13 +22,17 @@ const Plans = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: {
+    displayName: {
       type: String,
       required: true,
     },
+    displayedDescription: {
+      type: String,
+      default: null,
+    },
     features: {
       type: [String],
-      required: true,
+      default: null,
     },
     price: {
       type: Number,
@@ -35,11 +42,11 @@ const Plans = new mongoose.Schema(
     },
     tier: {
       type: Number,
-      required: true,
+      default: 0,
     },
     billingInterval: {
       type: String,
-      required: true,
+      default: null,
     },
     createdAt: {
       type: Date,

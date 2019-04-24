@@ -28,10 +28,7 @@ export default class MainPage extends React.PureComponent {
                 color="warning"
                 fade={false}
                 className="text-center"
-                hidden={
-                  userProfile.isInTrialPeriod ||
-                  userProfile._subscription !== null
-                }
+                hidden={userProfile._subscription}
               >
                 <FontAwesomeIcon
                   icon={faCreditCard}

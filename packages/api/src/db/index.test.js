@@ -6,6 +6,7 @@ const { NOTIFICATION, MIXPANEL_EVENT } = require('../constants/events');
 const config = require('../config');
 const log = require('../log')(config);
 const createDb = require('./index');
+const Plan = require('../db/models/plans');
 
 describe('db', () => {
   let db;
@@ -40,6 +41,15 @@ describe('db', () => {
 
       db.on(NOTIFICATION, notificationSpy);
       db.on(MIXPANEL_EVENT, mixpanelEventSpy);
+
+      await new Plan({
+        internal: true,
+        status: 'active',
+        name: 'TRIAL',
+        displayName: 'Free trial period',
+        price: 0,
+        createdAt: new Date(),
+      }).save();
 
       const user = await db.signUpUser(
         'user@domain.com',

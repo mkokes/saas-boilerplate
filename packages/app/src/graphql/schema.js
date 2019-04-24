@@ -14,8 +14,6 @@ const typeDefs = `
     avatar: String
     isSignUpEmailConfirmed: Boolean
     isTwoFactorAuthenticationEnabled: Boolean
-    isInTrialPeriod: Boolean
-    trialPeriodEndsAt: String
     timezone: String
     legal: [LegalAgreement]
   }
@@ -28,8 +26,9 @@ const typeDefs = `
     _id: String
     _paddleProductId: Int
     name: String
+    displayName: String
+    displayedDescription: String
     tier: Int
-    description: String
     features: [String]
     price: Float
     billingInterval: String

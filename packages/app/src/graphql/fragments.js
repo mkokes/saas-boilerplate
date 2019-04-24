@@ -12,8 +12,6 @@ export const ProfileFields = gql`
     avatar
     isSignUpEmailConfirmed
     isTwoFactorAuthenticationEnabled
-    isInTrialPeriod
-    trialPeriodEndsAt
     timezone
     legal {
       type
@@ -27,9 +25,10 @@ export const PlanFields = gql`
     _id
     _paddleProductId
     name
+    displayName
+    displayedDescription
     tier
     price
-    description
     features
     billingInterval
   }
