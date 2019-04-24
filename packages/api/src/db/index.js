@@ -1112,11 +1112,14 @@ class Db extends EventEmitter {
   }
 
   async userTrialExpired(userId) {
-    const user = await this.getUserById(userId);
-
-    user.isInTrialPeriod = false;
-
-    await user.save();
+    await Subscriptions.updateOne(
+      { _user: userId, status: 'active' },
+      {
+        status: 'cancelled',
+        cancelledAt: Date.now(),
+      },
+    ).exec();
+    await Users.updateOne({ _id: userId }, { _subscription: null }).exec();
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
