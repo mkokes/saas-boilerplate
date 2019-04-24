@@ -410,7 +410,10 @@ class BillingPage extends React.PureComponent {
                                 <span hidden={!(plan.name === 'TRIAL')}>
                                   {' '}
                                   (
-                                  <Moment diff={new Date()} unit="days">
+                                  <Moment
+                                    diff={Number(subscription.startedAt)}
+                                    unit="days"
+                                  >
                                     {Number(subscription.servicePeriodEnd)}
                                   </Moment>{' '}
                                   days left)

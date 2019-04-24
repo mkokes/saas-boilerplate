@@ -1100,7 +1100,10 @@ class Db extends EventEmitter {
 
   async isUserTrialExpiringWarningSent(userId) {
     return Boolean(
-      Notifications.count({ _user: userId, type: TRIAL_EXPIRING }).exec(),
+      await Notifications.countDocuments({
+        _user: userId,
+        type: TRIAL_EXPIRING,
+      }).exec(),
     );
   }
 

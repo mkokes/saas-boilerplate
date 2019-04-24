@@ -37,6 +37,7 @@ const typeDefs = `
     _id: String
     _plan: Plan
     status: String
+    startedAt: String
     servicePeriodEnd: String
     paymentMethod: String
     paymentStatus: String
