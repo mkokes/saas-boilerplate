@@ -32,11 +32,6 @@
   margin-right: 0;
   display: inline-block;
   border: none;
-  font-family: Graphik Web, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  /* -webkit-box-shadow: 0 8px 18px rgba(0,0,0,.08),0 4px 4px rgba(6,103,208,.1); */
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08), 0 4px 4px rgba(6, 103, 208, 0.1);
-  border-radius: 2px 0 0 2px;
 }
 .get-started-input:focus {
   outline: 0;
@@ -51,7 +46,7 @@
   font-size: 18px;
   font-weight: 700;
   line-height: 34px;
-  padding: 15px 20px;
+  padding: 17px 20px;
   text-transform: none;
   border: none;
   border-radius: 0;
@@ -66,7 +61,7 @@
 }
 .button.hero,
 .button.hero:visited {
-  background-color: $primaryColor;
+  background-color: $thirdColor;
   color: #fff;
 }
 .button.hero:hover {
@@ -164,6 +159,10 @@
   text-decoration: underline;
 }
 
+.nav-footer h5 {
+  font-size: 16px;
+}
+
 @media only screen and (min-width: 1024px) {
   .navigationSlider .slidingNav ul a[href*="signup"] {
     background-color: white !important;
@@ -188,7 +187,6 @@
 
   .get-started-input {
     width: 100%;
-    border: 1px solid black;
   }
   .button.hero {
     margin-top: 20px;

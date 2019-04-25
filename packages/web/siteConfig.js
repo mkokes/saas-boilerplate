@@ -22,6 +22,7 @@ const siteConfig = {
   colors: {
     primaryColor: "#764ABC",
     secondaryColor: "#40216F",
+    thirdColor: "#6f2dd9",
     accentColor: "#717171"
   },
   copyright: `Copyright © ${new Date().getFullYear()} Brand name.`,

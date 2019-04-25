@@ -15,7 +15,10 @@ class HomeSplash extends React.Component {
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
 
     const SplashContainer = props => (
-      <div className="homeContainer">
+      <div
+        className="homeContainer"
+        style={{ backgroundColor: siteConfig.colors.primaryColor }}
+      >
         <div className="homeSplashFade">
           <div className="wrapper homeWrapper">{props.children}</div>
         </div>
@@ -23,7 +26,7 @@ class HomeSplash extends React.Component {
     );
 
     const ProjectTitle = () => (
-      <h1 className="projectTitle">
+      <h1 className="projectTitle" style={{ color: "#ffffff" }}>
         <img
           alt="Docusaurus with Keytar"
           className="index-hero-logo"
@@ -49,7 +52,7 @@ class HomeSplash extends React.Component {
           <ProjectTitle />
           <PromoSection>
             <div className="get-started">
-              <form action={`${appUrl}/signup`}>
+              <form action={`${appUrl}/signup`} style={{ display: "flex" }}>
                 <input
                   className="get-started-input"
                   type="email"
@@ -87,56 +90,6 @@ class Index extends React.Component {
           layout={props.layout}
         />
       </Container>
-    );
-
-    const FeatureCallout = () => (
-      <div
-        className="productShowcaseSection paddingBottom"
-        style={{ textAlign: "center" }}
-      >
-        <h2>Feature Callout</h2>
-        <MarkdownBlock>These are features of this project</MarkdownBlock>
-      </div>
-    );
-
-    const TryOut = () => (
-      <Block id="try">
-        {[
-          {
-            content: "Talk about trying this out",
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: "left",
-            title: "Try it Out"
-          }
-        ]}
-      </Block>
-    );
-
-    const Description = () => (
-      <Block background="dark">
-        {[
-          {
-            content:
-              "This is another description of how this project is useful",
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: "right",
-            title: "Description"
-          }
-        ]}
-      </Block>
-    );
-
-    const LearnHow = () => (
-      <Block>
-        {[
-          {
-            content: "Talk about learning how to use this",
-            image: `${baseUrl}img/docusaurus.svg`,
-            imageAlign: "right",
-            title: "Learn How"
-          }
-        ]}
-      </Block>
     );
 
     const Features = () => (
@@ -196,7 +149,7 @@ class Index extends React.Component {
     return (
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
-        <div className="mainContainer">
+        <div className="mainContainer" style={{ padding: 0 }}>
           <Container background="light">
             <Features />
           </Container>
