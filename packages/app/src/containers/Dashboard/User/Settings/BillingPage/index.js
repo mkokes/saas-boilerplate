@@ -679,7 +679,7 @@ class BillingPage extends React.PureComponent {
                         {
                           Header: 'Amount',
                           accessor: 'saleGross',
-                          Cell: row => <span>{row.value}</span>,
+                          Cell: row => <span>${row.value}</span>,
                         },
                         {
                           Header: 'View receipt',

@@ -127,7 +127,7 @@ class Index extends React.Component {
     );
 
     const LearnHow = () => (
-      <Block background="light">
+      <Block>
         {[
           {
             content: "Talk about learning how to use this",
@@ -140,7 +140,7 @@ class Index extends React.Component {
     );
 
     const Features = () => (
-      <Block layout="fourColumn" background="light">
+      <Block layout="fourColumn">
         {[
           {
             content: "Integrate services using serverless functions and APIs",
@@ -194,10 +194,10 @@ class Index extends React.Component {
     };
 
     return (
-      <div>
+      <div style={{ backgroundColor: "#f7f8fa" }}>
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
-          <Container background="light">
+          <Container>
             <Features />
           </Container>
           <Container>
@@ -217,7 +217,7 @@ class Index extends React.Component {
               layout="twoColumn"
             />
           </Container>
-          <Container padding={["bottom", "top"]} background="light">
+          <Container padding={["bottom", "top"]}>
             <GridBlock
               contents={[
                 {
