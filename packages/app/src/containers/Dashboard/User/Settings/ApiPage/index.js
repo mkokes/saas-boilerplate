@@ -20,6 +20,9 @@ import { REGENERATE_USER_API_SECRET_KEY } from 'graphql/mutations';
 import { ReactstrapInput } from 'utils/formiik';
 import SafeQuery from 'components/graphql/SafeQuery';
 import { USER_API_SECRET_KEY_QUERY } from 'graphql/queries';
+import config from 'config';
+
+const { WEBSITE_URL } = config;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class ApiPage extends React.PureComponent {
@@ -36,7 +39,10 @@ export default class ApiPage extends React.PureComponent {
               <Card body>
                 <legend>
                   Credentials{' '}
-                  <Link to="/pricing" className="float-right">
+                  <Link
+                    to={`${WEBSITE_URL}/api/information`}
+                    className="float-right"
+                  >
                     <small>
                       API information{' '}
                       <FontAwesomeIcon
