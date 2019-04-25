@@ -302,7 +302,7 @@ export default class SignupPage extends React.PureComponent {
                                       size="invisible"
                                       explicit
                                     />
-                                    <p className="mt-1 pr-5 pl-5 text-center text-muted small">
+                                    <p className="mt-1 pr-lg-5 pl-lg-5 text-center text-muted small">
                                       By signing up, you agree to our{' '}
                                       <a
                                         href={`${WEBSITE_URL}/legal/terms-service`}

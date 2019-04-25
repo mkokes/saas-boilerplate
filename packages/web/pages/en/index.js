@@ -43,20 +43,26 @@ class HomeSplash extends React.Component {
       </div>
     );
 
-    const Button = props => (
-      <div className="pluginWrapper buttonWrapper">
-        <a className="button hero" href={props.href} target={props.target}>
-          {props.children}
-        </a>
-      </div>
-    );
-
     return (
       <SplashContainer>
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
-            <Button href={`${appUrl}/signup`}>GET STARTED</Button>
+            <div className="get-started">
+              <form action={`${appUrl}/signup`}>
+                <input
+                  className="get-started-input"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="Your Email"
+                  name="email"
+                  required
+                />
+                <button type="submit" className="button hero">
+                  Get Started
+                </button>
+              </form>
+            </div>
           </PromoSection>
         </div>
       </SplashContainer>
