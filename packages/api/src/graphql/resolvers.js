@@ -52,6 +52,15 @@ module.exports = ({
         ...profile,
       };
     },
+    userApiSecretKey: async (_, __, { user }) => {
+      await assertUser(user);
+
+      const profile = await db.getUserProfile(user._id, true);
+
+      return {
+        ...profile,
+      };
+    },
     userSubscription: async (_, __, { user }) => {
       await assertUser(user);
 
@@ -833,6 +842,13 @@ module.exports = ({
       }
 
       return true;
+    },
+    regenerateUserApiSecretKey: async (_, __, { user }) => {
+      await assertUser(user);
+
+      const newToken = await db.regenerateUserApiSecretKey(user._id);
+
+      return newToken;
     },
   },
 });

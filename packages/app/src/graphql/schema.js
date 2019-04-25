@@ -15,6 +15,7 @@ const typeDefs = `
     isSignUpEmailConfirmed: Boolean
     isTwoFactorAuthenticationEnabled: Boolean
     timezone: String
+    apiSecretKey: String,
     legal: [LegalAgreement]
   }
   type USER_PAYMENTS_RECEIPT_QUERY {

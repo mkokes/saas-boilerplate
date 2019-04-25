@@ -186,3 +186,11 @@ export const DISABLE_2FA = gql`
     disable2FA(token: $token) @requireAuth
   }
 `;
+
+export const REGENERATE_USER_API_SECRET_KEY = gql`
+  mutation regenerateUserApiSecretKey {
+    profile: regenerateUserApiSecretKey @requireAuth {
+      apiSecretKey
+    }
+  }
+`;

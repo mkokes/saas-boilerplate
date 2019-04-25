@@ -17,6 +17,7 @@ module.exports = gql`
     isSignUpEmailConfirmed: Boolean
     isTwoFactorAuthenticationEnabled: Boolean
     timezone: String
+    apiSecretKey: String
     legal: [LegalAgreement]
   }
   type userPaymentsReceipt {
@@ -91,6 +92,7 @@ module.exports = gql`
 
   type Query {
     userProfile: UserProfile
+    userApiSecretKey: UserProfile
     userSubscription: Subscription
     userSubscriptionPlan: Plan
     userPaymentsReceipt: [userPaymentsReceipt]
@@ -136,5 +138,6 @@ module.exports = gql`
     requestEnable2FA: TwoFactorAuthentication
     confirmEnable2FA(password: String!, token: String!): Boolean
     disable2FA(token: String!): Boolean
+    regenerateUserApiSecretKey: UserProfile
   }
 `;
