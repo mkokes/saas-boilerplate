@@ -52,7 +52,7 @@ class HomeSplash extends React.Component {
           <ProjectTitle />
           <PromoSection>
             <div className="get-started">
-              <form action={`${appUrl}/signup`} style={{ display: "flex" }}>
+              <form action={`${appUrl}/signup`} className="get-started-form">
                 <input
                   className="get-started-input"
                   type="email"
