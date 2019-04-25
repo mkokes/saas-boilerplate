@@ -194,10 +194,10 @@ class Index extends React.Component {
     };
 
     return (
-      <div style={{ backgroundColor: "#f7f8fa" }}>
+      <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
-          <Container>
+          <Container background="light">
             <Features />
           </Container>
           <Container>
@@ -217,7 +217,7 @@ class Index extends React.Component {
               layout="twoColumn"
             />
           </Container>
-          <Container padding={["bottom", "top"]}>
+          <Container padding={["bottom", "top"]} background="light">
             <GridBlock
               contents={[
                 {
