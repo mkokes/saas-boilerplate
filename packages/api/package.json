@@ -60,7 +60,7 @@
     "node-mongodb-fixtures": "^3.0.1",
     "otplib": "^11.0.0",
     "p-queue": "^5.0.0",
-    "php-serialize": "^2.0.1",
+    "php-serialize": "^3.0.0",
     "postmark": "^2.2.4",
     "validator": "^10.9.0",
     "yarn": "^1.13.0"

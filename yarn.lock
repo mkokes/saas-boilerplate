@@ -13065,10 +13065,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-php-serialize@^2.0.1:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/php-serialize/-/php-serialize-2.1.0.tgz#94d91a61bec8651669de8f1cabe87c5d311e1cda"
-  integrity sha512-AiLKyaYRrwC3wsZImmaYmJotjlVMpG8UHjDXDeHOaQua0q36pCdOmuFu2H5i6jqmtBC8JBBpo8VSLwyt8F+vWg==
+php-serialize@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/php-serialize/-/php-serialize-3.0.0.tgz#b13f1be8f1dab69038a1ddc6ac512336904b50e5"
+  integrity sha512-ny6N+/e7yLV2DDUGWmK25QZ9iPNle7qGKfA0swHOEQ++2/uSTthZF4NaxAywGe6mFUwmN+J94zUsyPAAMFGVrA==
 
 picomatch@^2.0.5:
   version "2.0.5"
