@@ -13,7 +13,6 @@ import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 import { faQuestionCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
 
 import { transformApolloErr } from 'utils/apollo';
 import { REGENERATE_USER_API_SECRET_KEY } from 'graphql/mutations';
@@ -39,9 +38,10 @@ export default class ApiPage extends React.PureComponent {
               <Card body>
                 <legend>
                   Credentials{' '}
-                  <Link
-                    to={`${WEBSITE_URL}/api/information`}
+                  <a
+                    href={`${WEBSITE_URL}/api/information`}
                     className="float-right"
+                    target="_new"
                   >
                     <small>
                       API information{' '}
@@ -51,7 +51,7 @@ export default class ApiPage extends React.PureComponent {
                         className="align-middle"
                       />
                     </small>
-                  </Link>
+                  </a>
                 </legend>
                 <Row>
                   <Col xs="12" sm="4">
