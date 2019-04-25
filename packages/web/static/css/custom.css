@@ -188,6 +188,7 @@
 
   .get-started-input {
     width: 100%;
+    border: 1px solid black;
   }
   .button.hero {
     margin-top: 20px;

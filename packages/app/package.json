@@ -9,7 +9,7 @@
     "build:stage": "REACT_APP_MODE=stage react-scripts build",
     "build:live": "REACT_APP_MODE=live react-scripts build",
     "build:clean": "rimraf ./build",
-    "test": "REACT_APP_MODE=test react-scripts test --no-watch",
+    "test": "REACT_APP_MODE=test react-scripts test --watchAll=false",
     "test:watch": "REACT_APP_MODE=test react-scripts test --watchAll",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "npm run lint:eslint -- .",
@@ -102,10 +102,16 @@
     "stylelint-config-styled-components": "0.1.1",
     "stylelint-processor-styled-components": "1.6.0"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
