@@ -130,7 +130,7 @@ export default class ApiPage extends React.PureComponent {
                                   style={{ display: 'inline-block' }}
                                 />
 
-                                <Button type="submit" disabled={isSubmitting}>
+                                <Button type="submit" disabled={isSubmitting} className="float-right">
                                   <FontAwesomeIcon
                                     pulse
                                     icon={faSpinner}
