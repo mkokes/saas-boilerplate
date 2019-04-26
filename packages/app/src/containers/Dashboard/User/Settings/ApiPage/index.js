@@ -69,7 +69,7 @@ export default class ApiPage extends React.PureComponent {
                       your account
                     </p>
                   </Col>
-                  <Col>
+                  <Col sm="7">
                     <SafeQuery
                       query={USER_API_SECRET_KEY_QUERY}
                       keepExistingResultDuringRefetch
