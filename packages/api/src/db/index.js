@@ -1142,6 +1142,8 @@ class Db extends EventEmitter {
     user.apiRegeneratedAt = Date.now();
     await user.save();
 
+    this._log.info(`user ${user._id} regenerated api secret key`);
+
     return { apiSecretKey: user.apiSecretKey };
   }
 
