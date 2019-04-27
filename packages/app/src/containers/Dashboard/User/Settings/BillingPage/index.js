@@ -344,7 +344,7 @@ class BillingPage extends React.PureComponent {
         <Fragment>
           <h1 className="mb-3">Billing</h1>
           <Card body>
-            <legend>Your current subscription</legend>
+            <legend>Current Subscription</legend>
             <Row>
               <Col>
                 <SafeQuery
@@ -563,7 +563,7 @@ class BillingPage extends React.PureComponent {
                     className="align-middle"
                   />
                 </small>
-              </Link>{' '}
+              </Link>
             </legend>
             <Row>
               <Col hidden={subscriptionPlansLoading}>

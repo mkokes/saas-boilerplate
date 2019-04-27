@@ -80,6 +80,11 @@ class DashboardSettingsNavbar extends React.PureComponent {
                     Account Security
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink to="/dashboard/settings/api" exact tag={RRNavLink}>
+                    API
+                  </NavLink>
+                </NavItem>
               </Nav>
             </SideNav>
           </Col>

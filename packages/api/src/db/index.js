@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const otplib = require('otplib');
 const authenticator = require('otplib/authenticator');
 const moment = require('moment');
+const uuidv4 = require('uuid/v4');
 
 const {
   NOTIFICATION,
@@ -90,7 +91,6 @@ class Db extends EventEmitter {
     const {
       _id,
       _subscription,
-      accountStatus,
       lastLoginAt,
       signupAt,
       email,
@@ -100,28 +100,29 @@ class Db extends EventEmitter {
       avatar,
       isSignUpEmailConfirmed,
       isTwoFactorAuthenticationEnabled,
+      apiSecretKey,
       timezone,
       legal,
     } = user;
 
     /* eslint-disable */
     return {
+      _id: _id.toString(),
       nickname,
       avatar,
+      firstName,
+      lastName,
+      _subscription: _subscription ? _subscription.toString() : null,
+      email,
+      lastLoginAt,
+      signupAt,
+      isSignUpEmailConfirmed,
+      isTwoFactorAuthenticationEnabled,
+      timezone,
+      legal,
       ...(canViewPrivateFields
         ? {
-            _id: _id.toString(),
-            _subscription: _subscription ? _subscription.toString() : null,
-            accountStatus,
-            firstName,
-            lastName,
-            email,
-            lastLoginAt,
-            signupAt,
-            isSignUpEmailConfirmed,
-            isTwoFactorAuthenticationEnabled,
-            timezone,
-            legal,
+            apiSecretKey,
           }
         : {}),
     };
@@ -307,7 +308,7 @@ class Db extends EventEmitter {
     user.lastLoginAt = Date.now();
     user.save();
 
-    return this.getUserProfile(userId, true);
+    return this.getUserProfile(userId, false);
   }
 
   async authChallenge(userId, JWTiat) {
@@ -513,7 +514,7 @@ class Db extends EventEmitter {
     user.nickname = nickname || existingNickname;
     await user.save();
 
-    return this.getUserProfile(userId, true);
+    return this.getUserProfile(userId, false);
   }
 
   async updateUserPersonalDetails(userId, profile) {
@@ -544,7 +545,7 @@ class Db extends EventEmitter {
       ],
     });
 
-    return this.getUserProfile(userId, true);
+    return this.getUserProfile(userId, false);
   }
 
   async updateUserNotificationsPreferences(userId, notifications) {
@@ -581,7 +582,7 @@ class Db extends EventEmitter {
       });
     }
 
-    return this.getUserProfile(userId, true);
+    return this.getUserProfile(userId, false);
   }
 
   async updateUserPreferences(userId, preferences) {
@@ -593,7 +594,7 @@ class Db extends EventEmitter {
 
     await user.save();
 
-    return this.getUserProfile(userId, true);
+    return this.getUserProfile(userId, false);
   }
 
   async generate2FAUser(userId) {
@@ -1132,6 +1133,18 @@ class Db extends EventEmitter {
     });
 
     this.notifyUser(userId, TRIAL_EXPIRED);
+  }
+
+  async regenerateUserApiSecretKey(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    user.apiSecretKey = uuidv4();
+    user.apiRegeneratedAt = Date.now();
+    await user.save();
+
+    this._log.info(`user ${user._id} regenerated api secret key`);
+
+    return { apiSecretKey: user.apiSecretKey };
   }
 
   async notifyUser(userId, type, variables) {

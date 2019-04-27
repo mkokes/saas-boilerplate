@@ -106,12 +106,12 @@ const UsersSchema = new mongoose.Schema(
         { type: 'MARKETING_INFO', accepted: Date.now().toString() },
       ],
     },
-    accountToken: {
+    apiAccountToken: {
       type: String,
       unique: true,
       default: uuidv4(),
     },
-    secretApiKey: {
+    apiSecretKey: {
       type: String,
       unique: true,
       default: uuidv4(),
@@ -119,6 +119,10 @@ const UsersSchema = new mongoose.Schema(
     apiAccess: {
       type: String,
       default: 'active',
+    },
+    apiRegeneratedAt: {
+      type: Date,
+      default: null,
     },
     lastLoginAt: {
       type: Date,

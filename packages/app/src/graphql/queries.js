@@ -94,3 +94,11 @@ export const IS_USER_EMAIL_CONFIRMED_QUERY = gql`
     }
   }
 `;
+
+export const USER_API_SECRET_KEY_QUERY = gql`
+  query getUserApiSecretKey {
+    profile: userApiSecretKey @requireAuth {
+      apiSecretKey
+    }
+  }
+`;
