@@ -5,6 +5,7 @@ module.exports = [
   'MAILCHIMP',
   'MIXPANEL_EVENT',
   'PADDLE',
+  'COINBASE_COMMERCE',
 ].reduce((m, a) => {
   const k = m;
 

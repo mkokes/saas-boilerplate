@@ -188,13 +188,6 @@ export default class SecurityPage extends React.PureComponent {
                                       </ModalBody>
                                       <ModalFooter>
                                         <Button
-                                          color="danger"
-                                          size="lg"
-                                          onClick={this.toggleDisable2FAModal}
-                                        >
-                                          Cancel
-                                        </Button>{' '}
-                                        <Button
                                           type="submit"
                                           size="lg"
                                           color="secondary"

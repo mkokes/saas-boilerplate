@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { ApolloError, UserInputError } = require('apollo-server-koa');
 const axios = require('axios');
 const momentTimezone = require('moment-timezone');
+const Coinbase = require('coinbase-commerce-node');
 
 const { MARKETING_INFO } = require('../constants/legal');
 
@@ -38,7 +39,12 @@ const assertUser = async user => {
 };
 
 module.exports = ({
-  config: { JWT_SECRET, PADDLE_VENDOR_ID, PADDLE_VENDOR_AUTH_CODE },
+  config: {
+    JWT_SECRET,
+    PADDLE_VENDOR_ID,
+    PADDLE_VENDOR_AUTH_CODE,
+    COINBASE_COMMERCE_API_SECRET,
+  },
   db,
   log,
 }) => ({
@@ -849,6 +855,35 @@ module.exports = ({
       const newToken = await db.regenerateUserApiSecretKey(user._id);
 
       return newToken;
+    },
+    createCoinbaseCommerceCharge: async (_, { plan: planId }, { user }) => {
+      await assertUser(user);
+
+      const plan = await db.getPlanById(planId);
+      if (!plan || plan.billingInterval !== 'yearly') {
+        throw new UserInputError('Plan does not exists or is not valid', {
+          validationErrors: {
+            plan: 'Invalid plan',
+          },
+        });
+      }
+
+      const { Client } = Coinbase;
+      const { Charge } = Coinbase.resources;
+
+      Client.init(COINBASE_COMMERCE_API_SECRET);
+
+      const { id } = await Charge.create({
+        name: `PRODUCT_NAME`,
+        description: `PLAN_NAME - 1 YEAR`,
+        local_price: {
+          amount: plan.price,
+          currency: 'USD',
+        },
+        pricing_type: 'fixed_price',
+      });
+
+      return id;
     },
   },
 });

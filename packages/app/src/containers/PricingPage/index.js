@@ -222,8 +222,8 @@ export default class PricingPage extends React.PureComponent {
                       automatically be cancelled.
                     </p>
                     <p>
-                      If you chosen to continue you will need to subscribe to
-                      any plan from your billing page.
+                      If you chosen to continue you will need to subscribe to a
+                      plan from your billing page.
                     </p>
                   </FaqQuestion>
                   <FaqQuestion>

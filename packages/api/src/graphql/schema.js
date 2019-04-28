@@ -139,5 +139,6 @@ module.exports = gql`
     confirmEnable2FA(password: String!, token: String!): Boolean
     disable2FA(token: String!): Boolean
     regenerateUserApiSecretKey: UserProfile
+    createCoinbaseCommerceCharge(plan: String!): String
   }
 `;

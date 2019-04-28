@@ -249,16 +249,9 @@ export default class ProfilePage extends React.PureComponent {
                                   </ModalBody>
                                   <ModalFooter>
                                     <Button
-                                      color="danger"
-                                      size="lg"
-                                      onClick={this.toggleChangePasswordModal}
-                                    >
-                                      Cancel
-                                    </Button>{' '}
-                                    <Button
                                       type="submit"
                                       size="lg"
-                                      className="btn-secondary"
+                                      color="secondary"
                                       disabled={isSubmitting}
                                     >
                                       <FontAwesomeIcon

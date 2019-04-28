@@ -194,3 +194,9 @@ export const REGENERATE_USER_API_SECRET_KEY = gql`
     }
   }
 `;
+
+export const CREATE_COINBASE_COMMERCE_CHARGE = gql`
+  mutation createCoinbaseCommerceCharge($plan: String!) {
+    chargeId: createCoinbaseCommerceCharge(plan: $plan) @requireAuth
+  }
+`;

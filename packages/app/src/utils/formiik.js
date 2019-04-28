@@ -80,7 +80,7 @@ ReactstrapSelect.propTypes = {
   field: PropTypes.object,
   form: PropTypes.object,
   label: PropTypes.string,
-  value: PropTypes.object,
+  value: PropTypes.any,
   disabled: PropTypes.bool,
 };
 
