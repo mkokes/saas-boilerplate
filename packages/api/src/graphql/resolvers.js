@@ -873,7 +873,7 @@ module.exports = ({
 
       Client.init(COINBASE_COMMERCE_API_SECRET);
 
-      const { id } = await Charge.create({
+      const { code } = await Charge.create({
         name: `PRODUCT_NAME`,
         description: `PLAN_NAME - 1 YEAR`,
         local_price: {
@@ -883,7 +883,7 @@ module.exports = ({
         pricing_type: 'fixed_price',
       });
 
-      return id;
+      return code;
     },
   },
 });
