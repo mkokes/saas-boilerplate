@@ -17,6 +17,7 @@ const {
   SUPPORT_REQUEST_USER_CONFIRMATION,
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_RENEWAL_CANCELLED,
+  PAYMENT_RECEIVED,
 } = require('../../../constants/notifications');
 
 module.exports = ({
@@ -51,6 +52,7 @@ module.exports = ({
     SUPPORT_REQUEST_USER_CONFIRMATION: 'support-request-user-confirmation',
     SUBSCRIPTION_ENDED: 'subscription-ended',
     SUBSCRIPTION_RENEWAL_CANCELLED: 'subscription-renewal-cancelled',
+    PAYMENT_RECEIVED: 'payment-received',
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
@@ -151,6 +153,13 @@ module.exports = ({
             case SUBSCRIPTION_ENDED:
               break;
             case SUBSCRIPTION_RENEWAL_CANCELLED:
+              break;
+            case PAYMENT_RECEIVED:
+              templateModel._shortId = notification.variables._shortId;
+              templateModel.saleGross = notification.variables.saleGross;
+              templateModel.paymentMethod =
+                notification.variables.paymentMethod;
+              templateModel.description = notification.variables.description;
               break;
           }
 

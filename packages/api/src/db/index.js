@@ -1160,8 +1160,10 @@ class Db extends EventEmitter {
     this._log.info(`payment received #${payment._id} +$${earnings}`);
 
     this.notifyUser(_user, PAYMENT_RECEIVED, {
-      description,
+      _shortId: payment._shortId,
       saleGross,
+      paymentMethod: 'Cryptocurrency',
+      description,
     });
 
     this.emit(MIXPANEL_EVENT, {
