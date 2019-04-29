@@ -67,6 +67,10 @@ const Payments = new mongoose.Schema(
       type: String,
       default: 'ok',
     },
+    description: {
+      type: String,
+      default: null,
+    },
     refundType: {
       type: String,
       default: null,

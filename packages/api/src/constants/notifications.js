@@ -13,6 +13,7 @@ module.exports = [
   'SUPPORT_REQUEST_USER_CONFIRMATION',
   'SUBSCRIPTION_ENDED',
   'SUBSCRIPTION_RENEWAL_CANCELLED',
+  'PAYMENT_RECEIVED',
 ].reduce((m, a) => {
   const k = m;
 

@@ -75,7 +75,8 @@ export default class PricingPage extends React.PureComponent {
                     <Fragment>Pick a plan that&apos;s right for you</Fragment>
                   ) : (
                     <Fragment>
-                      Start the <strong>7-day free trial</strong>
+                      Start the <strong>7-day free trial</strong>, no credit
+                      card required.
                     </Fragment>
                   )}
                 </h2>

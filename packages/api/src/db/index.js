@@ -26,6 +26,7 @@ const {
   TRIAL_EXPIRED,
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_RENEWAL_CANCELLED,
+  PAYMENT_RECEIVED,
 } = require('../constants/notifications');
 
 const setupDb = require('./setup');
@@ -993,7 +994,6 @@ class Db extends EventEmitter {
       customerCountry,
       currency,
       _paddleReceiptURL,
-      nextBillDateAt,
     }).save();
 
     this._log.info(`payment received #${payment._id} +$${earnings}`);
@@ -1146,17 +1146,23 @@ class Db extends EventEmitter {
   }
 
   async cryptoPaymentReceived(data) {
-    const { _user, _plan, saleGross, earnings } = data;
+    const { _user, _plan, description, saleGross, earnings } = data;
 
     const payment = await new Payments({
       _user,
       _plan,
+      description,
       saleGross,
       earnings: saleGross,
       paymentMethod: 'cryptocurrency',
     }).save();
 
     this._log.info(`payment received #${payment._id} +$${earnings}`);
+
+    this.notifyUser(_user, PAYMENT_RECEIVED, {
+      description,
+      saleGross,
+    });
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_TRACK_CHARGE',

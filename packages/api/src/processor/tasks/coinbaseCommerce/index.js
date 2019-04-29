@@ -7,7 +7,7 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
       event: {
         id: eventId,
         type,
-        data: { code, metadata, pricing },
+        data: { code, description, metadata, pricing },
       },
     },
   }) => {
@@ -21,6 +21,7 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
               await db.cryptoPaymentReceived({
                 _user: userId,
                 _plan: planId,
+                description,
                 _coinbaseCommerceChargeCode: code,
                 saleGross: pricing.local.amount,
               });
