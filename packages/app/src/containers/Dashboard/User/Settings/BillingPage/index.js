@@ -40,7 +40,7 @@ import CoinbaseCommerceButton from 'react-coinbase-commerce';
 import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
 
 import { ReactstrapSelect } from 'utils/formiik';
-import { GlobalConsumer, getProvider as getGlobalProvider } from 'GlobalState';
+import { getProvider as getGlobalProvider } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
 import Loader from 'components/Loader';
 import {
@@ -375,8 +375,6 @@ class BillingPage extends React.PureComponent {
         </Helmet>
         <Fragment>
           <h1 className="mb-3">Billing</h1>
-          <GlobalConsumer>
-            {({ userProfile }) => (
               <ApolloConsumer>
                 {client => (
                   <Card body>
@@ -921,8 +919,7 @@ class BillingPage extends React.PureComponent {
                   </Card>
                 )}
               </ApolloConsumer>
-            )}
-          </GlobalConsumer>
+
         </Fragment>
       </Fragment>
     );
