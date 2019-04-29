@@ -25,6 +25,13 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
                 _coinbaseCommerceChargeCode: code,
                 saleGross: pricing.local.amount,
               });
+              await db.createSubscription(userId, {
+                _user: userId,
+                _plan: planId,
+                paymentMethod: 'manually',
+                paymentStatus: 'cancelled',
+                servicePeriodEnd: '2020-01-01',
+              });
               break;
             }
             default:
