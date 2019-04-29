@@ -1,14 +1,29 @@
-module.exports = ({ log: parentLog, eventQueue, Sentry }) => {
+module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
   const log = parentLog.create('coinbaseCommerce');
 
-  return async ({ event }) => {
-    const { id, type } = event;
-
+  return async ({
+    data: {
+      id,
+      event: {
+        id: eventId,
+        type,
+        metadata,
+        data: { pricing },
+      },
+    },
+  }) => {
     eventQueue.add(
       async () => {
         try {
           switch (type) {
             case 'charge:confirmed': {
+              const { user_id: userId, plan_id: planId } = JSON.parse(metadata);
+
+              await db.cryptoPaymentReceived({
+                _user: userId,
+                _plan: planId,
+                saleGross: pricing.local.amount,
+              });
               break;
             }
             default:
@@ -18,7 +33,8 @@ module.exports = ({ log: parentLog, eventQueue, Sentry }) => {
           log.error(e.message);
 
           Sentry.configureScope(scope => {
-            scope.setExtra('id', id);
+            scope.setExtra('webhook_id', id);
+            scope.setExtra('event_id', eventId);
             scope.setExtra('type', type);
           });
           Sentry.captureException(e);

@@ -54,14 +54,14 @@ module.exports = async ({ config, log: parentLog, db, eventQueue, Sentry }) => {
   });
   const paddle = Paddle({
     log,
-    eventQueue,
     db,
+    eventQueue,
     Sentry,
   });
   const coinbaseCommerce = CoinbaseCommerce({
     log,
-    eventQueue,
     db,
+    eventQueue,
     Sentry,
   });
 

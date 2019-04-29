@@ -501,7 +501,7 @@ class BillingPage extends React.PureComponent {
                                     >
                                       Required payment amount:{' '}
                                       <strong>
-                                        ${subscription.unitPrice.toFixed(2)}
+                                        ${subscription.price.toFixed(2)}
                                       </strong>
                                     </p>
                                     <p
@@ -770,7 +770,7 @@ class BillingPage extends React.PureComponent {
                                           <Fragment>
                                             <Form>
                                               <ModalBody>
-                                                <div className="text-center mb-3">
+                                                <div className="text-center mt-3 mb-3">
                                                   <img
                                                     src="/images/bitcoin_logo.png"
                                                     alt="bitcoin logo"
@@ -822,13 +822,6 @@ class BillingPage extends React.PureComponent {
                                                 <CoinbaseCommerceButton
                                                   styled
                                                   chargeId={coinbaseChargeId}
-                                                  customMetadata={JSON.stringify(
-                                                    {
-                                                      host:
-                                                        window.location.host,
-                                                      user_id: userProfile._id,
-                                                    },
-                                                  )}
                                                   style={{
                                                     fontSize: '17px',
                                                   }}

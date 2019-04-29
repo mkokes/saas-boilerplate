@@ -40,7 +40,7 @@ const env = envalid.cleanEnv(
     POSTMARK_API_TOKEN: str({ default: '' }),
     POSTMARK_SENDER_EMAIL: str({ default: 'support@amgaventures.com' }),
     COINBASE_COMMERCE_API_SECRET: str({ default: '' }),
-    COINBASE_COMMERCE_WEBHOOK_SECRET: str({ default: '' }),
+    COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET: str({ default: '' }),
     SUPPORT_EMAIL: str({ default: 'support@amgaventures.com' }),
   },
   {

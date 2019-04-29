@@ -79,7 +79,7 @@ export const BILLING_CURRENT_SUBSCRIPTION = gql`
       servicePeriodEnd
       paymentMethod
       paymentStatus
-      unitPrice
+      price
       _paddleUpdateURL
       _paddleCancelURL
       nextBillDateAt

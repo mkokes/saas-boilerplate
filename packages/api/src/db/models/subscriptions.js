@@ -42,7 +42,7 @@ const Subscriptions = new mongoose.Schema(
       type: String,
       default: null,
     },
-    unitPrice: {
+    price: {
       type: Number,
       default: 0,
       get: num => (num / 100).toFixed(2),

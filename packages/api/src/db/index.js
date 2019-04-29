@@ -715,7 +715,7 @@ class Db extends EventEmitter {
       _paddleSubscriptionId,
       _paddlePlanId,
       _paddleCheckoutId,
-      unitPrice,
+      price,
       currency,
       _paddleUpdateURL,
       _paddleCancelURL,
@@ -740,7 +740,7 @@ class Db extends EventEmitter {
       _paddleSubscriptionId,
       _paddlePlanId,
       _paddleCheckoutId,
-      unitPrice,
+      price,
       currency,
       _paddleUpdateURL,
       _paddleCancelURL,
@@ -815,7 +815,7 @@ class Db extends EventEmitter {
       _paddleCheckoutId,
       _paddleUpdateURL,
       _paddleCancelURL,
-      unitPrice,
+      price,
       nextBillDateAt,
       oldSubscriptionPlanId,
     } = data;
@@ -827,7 +827,7 @@ class Db extends EventEmitter {
       _paddleCheckoutId,
       _paddleUpdateURL,
       _paddleCancelURL,
-      unitPrice,
+      price,
       nextBillDateAt,
       servicePeriodEnd: nextBillDateAt,
     }).exec();
@@ -962,7 +962,6 @@ class Db extends EventEmitter {
       _paddleOrderId,
       _paddleCheckoutId,
       _paddleUserId,
-      unitPrice,
       saleGross,
       feeAmount,
       earnings,
@@ -984,7 +983,6 @@ class Db extends EventEmitter {
       _paddleOrderId,
       _paddleCheckoutId,
       _paddleUserId,
-      unitPrice,
       saleGross,
       feeAmount,
       earnings,
@@ -1145,6 +1143,25 @@ class Db extends EventEmitter {
     this._log.info(`user ${user._id} regenerated api secret key`);
 
     return { apiSecretKey: user.apiSecretKey };
+  }
+
+  async cryptoPaymentReceived(data) {
+    const { _user, _plan, saleGross, earnings } = data;
+
+    const payment = await new Payments({
+      _user,
+      _plan,
+      saleGross,
+      earnings: saleGross,
+      paymentMethod: 'crypto',
+    }).save();
+
+    this._log.info(`payment received #${payment._id} +$${earnings}`);
+
+    this.emit(MIXPANEL_EVENT, {
+      eventType: 'PEOPLE_TRACK_CHARGE',
+      args: [data._user, data.saleGross],
+    });
   }
 
   async notifyUser(userId, type, variables) {

@@ -44,7 +44,7 @@ module.exports = gql`
     servicePeriodEnd: String
     paymentMethod: String
     paymentStatus: String
-    unitPrice: Float
+    price: Float
     _paddleUpdateURL: String
     _paddleCancelURL: String
     nextBillDateAt: String

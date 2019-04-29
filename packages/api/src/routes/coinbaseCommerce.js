@@ -5,7 +5,7 @@ const { COINBASE_COMMERCE } = require('../constants/events');
 
 module.exports = async ({
   db,
-  config: { COINBASE_COMMERCE_WEBHOOK_SECRET },
+  config: { COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET },
   log: parentLog,
 }) => {
   const log = parentLog.create('routes/coinbaseCommerce');
@@ -16,9 +16,9 @@ module.exports = async ({
   const coinbaseCommerceMiddleware = (ctx, next) => {
     try {
       CoinbaseWebhook.verifySigHeader(
-        ctx.request.body,
-        ctx.request.headers['X-CC-Webhook-Signature'],
-        COINBASE_COMMERCE_WEBHOOK_SECRET,
+        JSON.stringify(ctx.request.body),
+        ctx.request.headers['x-cc-webhook-signature'],
+        COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET,
       );
     } catch (e) {
       log.error(e.message);
@@ -29,7 +29,7 @@ module.exports = async ({
   };
 
   router.post('/webhook', coinbaseCommerceMiddleware, async ctx =>
-    db.emit(COINBASE_COMMERCE, { event: ctx.request.body }),
+    db.emit(COINBASE_COMMERCE, { data: ctx.request.body }),
   );
 
   return router;

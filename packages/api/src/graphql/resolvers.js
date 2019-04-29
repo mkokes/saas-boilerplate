@@ -40,6 +40,7 @@ const assertUser = async user => {
 
 module.exports = ({
   config: {
+    PRODUCT_NAME,
     JWT_SECRET,
     PADDLE_VENDOR_ID,
     PADDLE_VENDOR_AUTH_CODE,
@@ -874,13 +875,17 @@ module.exports = ({
       Client.init(COINBASE_COMMERCE_API_SECRET);
 
       const { code } = await Charge.create({
-        name: `PRODUCT_NAME`,
-        description: `PLAN_NAME - 1 YEAR`,
+        name: PRODUCT_NAME,
+        description: `Plan: ${plan.displayName} - 1 YEAR`,
         local_price: {
           amount: plan.price,
           currency: 'USD',
         },
         pricing_type: 'fixed_price',
+        metadata: {
+          user_id: user._id,
+          plan_id: plan._id,
+        },
       });
 
       return code;

@@ -67,12 +67,6 @@ const Payments = new mongoose.Schema(
       type: String,
       default: null,
     },
-    unitPrice: {
-      type: Number,
-      default: 0,
-      get: num => (num / 100).toFixed(2),
-      set: num => num * 100,
-    },
     saleGross: {
       type: Number,
       default: 0,
