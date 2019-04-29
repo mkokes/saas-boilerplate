@@ -727,7 +727,7 @@ class BillingPage extends React.PureComponent {
                                   <ModalHeader
                                     toggle={this.togglePayWithCryptoModal}
                                   >
-                                    Pay with crypto
+                                    Pay with cryptocurrency
                                   </ModalHeader>
 
                                   <SafeQuery
@@ -742,11 +742,6 @@ class BillingPage extends React.PureComponent {
                                         initialValues={{
                                           plan: '',
                                         }}
-                                        validationSchema={Yup.object().shape({
-                                          plan: Yup.object().required(
-                                            'Required',
-                                          ),
-                                        })}
                                         onSubmit={async (values, formikBag) => {
                                           try {
                                             const {
@@ -757,26 +752,32 @@ class BillingPage extends React.PureComponent {
                                                 plan: values.plan.value,
                                               },
                                             });
+
                                             this.setState({
                                               coinbaseChargeId: chargeId,
                                             });
-
-                                            formikBag.resetForm();
                                           } catch (e) {
                                             const err = transformApolloErr(e);
 
                                             if (err.type === 'BAD_USER_INPUT') {
                                               formikBag.setErrors(err.data);
                                             }
-
-                                            formikBag.setSubmitting(false);
                                           }
+
+                                          formikBag.setSubmitting(false);
                                         }}
                                       >
                                         {({ values, isSubmitting }) => (
                                           <Fragment>
                                             <Form>
                                               <ModalBody>
+                                                <div className="text-center mb-3">
+                                                  <img
+                                                    src="/images/bitcoin_logo.png"
+                                                    alt="bitcoin logo"
+                                                  />
+                                                </div>
+
                                                 <Field
                                                   component={ReactstrapSelect}
                                                   name="plan"
@@ -788,15 +789,37 @@ class BillingPage extends React.PureComponent {
                                                         'yearly',
                                                     )
                                                     .map(plan => ({
-                                                      label: plan.displayName,
+                                                      label: `${
+                                                        plan.displayName
+                                                      } - $${plan.price.toFixed(
+                                                        2,
+                                                      )}/year`,
                                                       value: plan._id,
                                                       displayName:
                                                         plan.displayName,
                                                       price: plan.price,
                                                     }))}
                                                   value={values.plan}
+                                                  submitOnChange
                                                   required
                                                 />
+                                                <div className="text-center">
+                                                  <FontAwesomeIcon
+                                                    pulse
+                                                    icon={faSpinner}
+                                                    className={
+                                                      isSubmitting
+                                                        ? 'mr-2'
+                                                        : 'd-none'
+                                                    }
+                                                  />
+                                                </div>
+                                              </ModalBody>
+                                              <ModalFooter
+                                                hidden={
+                                                  !values.plan || isSubmitting
+                                                }
+                                              >
                                                 <CoinbaseCommerceButton
                                                   styled
                                                   chargeId={coinbaseChargeId}
@@ -807,34 +830,20 @@ class BillingPage extends React.PureComponent {
                                                       user_id: userProfile._id,
                                                     },
                                                   )}
-                                                />
-                                              </ModalBody>
-                                              <ModalFooter>
-                                                <Button
-                                                  type="submit"
-                                                  size="lg"
-                                                  color="secondary"
-                                                  disabled={isSubmitting}
-                                                >
-                                                  <FontAwesomeIcon
-                                                    pulse
-                                                    icon={faSpinner}
-                                                    className={
-                                                      isSubmitting
-                                                        ? 'mr-2'
-                                                        : 'd-none'
-                                                    }
-                                                  />
-                                                  Checkout{' '}
-                                                  <span hidden={!values.plan}>
-                                                    (
-                                                    <strong>
-                                                      {values.plan.displayName}{' '}
-                                                      ${values.plan.price}/year
-                                                    </strong>
+                                                  style={{
+                                                    fontSize: '17px',
+                                                  }}
+                                                  onChargeSuccess={() =>
+                                                    // eslint-disable-next-line no-alert
+                                                    alert(
+                                                      `Thanks, we received your payment. Your subscription will be enabled soon.`,
                                                     )
-                                                  </span>
-                                                </Button>
+                                                  }
+                                                >
+                                                  <strong>
+                                                    Pay with Crypto
+                                                  </strong>
+                                                </CoinbaseCommerceButton>
                                               </ModalFooter>
                                             </Form>
                                           </Fragment>

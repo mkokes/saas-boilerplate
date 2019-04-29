@@ -34,7 +34,14 @@ ReactstrapInput.propTypes = {
 
 export const ReactstrapSelect = ({
   field: { ...fields },
-  form: { setFieldTouched, setFieldValue, touched, errors, isSubmitting },
+  form: {
+    setFieldTouched,
+    setFieldValue,
+    touched,
+    errors,
+    isSubmitting,
+    submitForm,
+  },
   ...props
 }) => {
   const error = errors[fields.name];
@@ -55,7 +62,10 @@ export const ReactstrapSelect = ({
           }),
         }}
         value={typeof props.value === 'object' ? props.value : null}
-        onChange={value => setFieldValue(fields.name, value)}
+        onChange={value => {
+          setFieldValue(fields.name, value, false);
+          if (props.submitOnChange) submitForm();
+        }}
         onBlur={() => {
           setFieldTouched(fields.name, true);
         }}
@@ -82,6 +92,7 @@ ReactstrapSelect.propTypes = {
   label: PropTypes.string,
   value: PropTypes.any,
   disabled: PropTypes.bool,
+  submitOnChange: PropTypes.bool,
 };
 
 export const ReactstrapCheckbox = ({
