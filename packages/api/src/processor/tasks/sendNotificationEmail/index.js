@@ -15,6 +15,7 @@ const {
   DISABLED_2FA,
   SUPPORT_REQUEST,
   SUPPORT_REQUEST_USER_CONFIRMATION,
+  SUBSCRIPTION_STARTED,
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_RENEWAL_CANCELLED,
   PAYMENT_RECEIVED,
@@ -50,6 +51,7 @@ module.exports = ({
     DISABLED_2FA: 'disabled-2fa',
     SUPPORT_REQUEST: 'support-request',
     SUPPORT_REQUEST_USER_CONFIRMATION: 'support-request-user-confirmation',
+    SUBSCRIPTION_STARTED: 'subscription-started',
     SUBSCRIPTION_ENDED: 'subscription-ended',
     SUBSCRIPTION_RENEWAL_CANCELLED: 'subscription-renewal-cancelled',
     PAYMENT_RECEIVED: 'payment-received',
@@ -151,6 +153,8 @@ module.exports = ({
 
               break;
             case SUBSCRIPTION_ENDED:
+              break;
+            case SUBSCRIPTION_STARTED:
               break;
             case SUBSCRIPTION_RENEWAL_CANCELLED:
               break;

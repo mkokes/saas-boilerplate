@@ -24,6 +24,7 @@ const {
   SUPPORT_REQUEST_USER_CONFIRMATION,
   TRIAL_EXPIRING,
   TRIAL_EXPIRED,
+  SUBSCRIPTION_STARTED,
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_RENEWAL_CANCELLED,
   PAYMENT_RECEIVED,
@@ -756,6 +757,8 @@ class Db extends EventEmitter {
     }).exec();
 
     this._log.info(`subscription created for user ${user._id}`);
+
+    this.notifyUser(user._id, SUBSCRIPTION_STARTED);
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
