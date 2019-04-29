@@ -772,7 +772,7 @@ class BillingPage extends React.PureComponent {
                                               <ModalBody>
                                                 <div className="text-center mt-3 mb-3">
                                                   <img
-                                                    src="/images/bitcoin_logo.png"
+                                                    src="/images/bitcoin_logo.svg"
                                                     alt="bitcoin logo"
                                                   />
                                                 </div>
