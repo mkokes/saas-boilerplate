@@ -36,7 +36,6 @@ import { Link } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import Switch from 'react-switch';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
 import CoinbaseCommerceButton from 'react-coinbase-commerce';
 import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
 
