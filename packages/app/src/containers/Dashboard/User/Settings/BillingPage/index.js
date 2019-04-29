@@ -39,6 +39,7 @@ import { Formik, Form, Field } from 'formik';
 import CoinbaseCommerceButton from 'react-coinbase-commerce';
 import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
 
+import { capitalizeFirstLetter } from 'utils/string';
 import { ReactstrapSelect } from 'utils/formiik';
 import { getProvider as getGlobalProvider } from 'GlobalState';
 import SafeQuery from 'components/graphql/SafeQuery';
@@ -839,6 +840,13 @@ class BillingPage extends React.PureComponent {
                               }),
                               Cell: row => (
                                 <Moment format="L" date={Number(row.value)} />
+                              ),
+                            },
+                            {
+                              Header: 'Payment method',
+                              accessor: 'paymentMethod',
+                              Cell: row => (
+                                <span>{capitalizeFirstLetter(row.value)}</span>
                               ),
                             },
                             {

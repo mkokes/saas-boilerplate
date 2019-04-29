@@ -28,7 +28,7 @@ module.exports = async ({
     return next();
   };
 
-  router.post('/webhook', coinbaseCommerceMiddleware, async ctx =>
+  router.post('/webhook', async ctx =>
     db.emit(COINBASE_COMMERCE, { data: ctx.request.body }),
   );
 

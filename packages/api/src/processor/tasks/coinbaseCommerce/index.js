@@ -7,8 +7,7 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
       event: {
         id: eventId,
         type,
-        metadata,
-        data: { pricing },
+        data: { code, metadata, pricing },
       },
     },
   }) => {
@@ -17,11 +16,12 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
         try {
           switch (type) {
             case 'charge:confirmed': {
-              const { user_id: userId, plan_id: planId } = JSON.parse(metadata);
+              const { user_id: userId, plan_id: planId } = metadata;
 
               await db.cryptoPaymentReceived({
                 _user: userId,
                 _plan: planId,
+                _coinbaseCommerceChargeCode: code,
                 saleGross: pricing.local.amount,
               });
               break;

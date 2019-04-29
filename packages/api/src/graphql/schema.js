@@ -23,6 +23,7 @@ module.exports = gql`
   type userPaymentsReceipt {
     saleGross: String
     _paddleReceiptURL: String
+    paymentMethod: String
     receivedAt: String
   }
   type Plan {

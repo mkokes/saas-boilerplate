@@ -21,6 +21,7 @@ const typeDefs = `
   type USER_PAYMENTS_RECEIPT_QUERY {
     saleGross: String
     _paddleReceiptURL: String
+    paymentMethod: String
     receivedAt: String
   }
   type Plan {

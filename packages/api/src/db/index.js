@@ -1153,7 +1153,7 @@ class Db extends EventEmitter {
       _plan,
       saleGross,
       earnings: saleGross,
-      paymentMethod: 'crypto',
+      paymentMethod: 'cryptocurrency',
     }).save();
 
     this._log.info(`payment received #${payment._id} +$${earnings}`);

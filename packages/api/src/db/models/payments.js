@@ -59,6 +59,10 @@ const Payments = new mongoose.Schema(
       type: String,
       default: null,
     },
+    _coinbaseCommerceChargeCode: {
+      type: String,
+      default: null,
+    },
     status: {
       type: String,
       default: 'ok',

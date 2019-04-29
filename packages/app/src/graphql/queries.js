@@ -18,6 +18,7 @@ export const USER_PAYMENTS_RECEIPT_QUERY = gql`
       saleGross
       _paddleReceiptURL
       receivedAt
+      paymentMethod
     }
   }
 `;
