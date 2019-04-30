@@ -352,7 +352,7 @@ class BillingPage extends React.PureComponent {
                 / {displayBillingInterval(plan.billingInterval)}
               </span>
             </Col>
-            <Col xs="12" md="4">
+            <Col xs="12" md="4" className="mt-sm-2 mt-md-0">
               {_renderPlanActionButton(plan, isCurrentPlan)}
             </Col>
           </Row>
