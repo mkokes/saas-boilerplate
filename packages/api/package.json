@@ -46,6 +46,7 @@
     "koa": "^2.6.1",
     "koa-better-body": "^3.0.4",
     "koa-body": "^4.0.6",
+    "koa-joi-router": "^6.0.0",
     "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
     "lodash.get": "^4.4.2",

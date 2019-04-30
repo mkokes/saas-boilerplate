@@ -359,6 +359,7 @@ export default class SecurityPage extends React.PureComponent {
                                                 type="submit"
                                                 disabled={isSubmitting}
                                                 className="float-right mt-2"
+                                                color="primary"
                                               >
                                                 <FontAwesomeIcon
                                                   pulse
