@@ -711,6 +711,8 @@ class BillingPage extends React.PureComponent {
                                       plan: '',
                                     }}
                                     onSubmit={async (values, formikBag) => {
+                                      console.log('123');
+
                                       try {
                                         const {
                                           data: { chargeId },

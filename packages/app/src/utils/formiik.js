@@ -64,7 +64,7 @@ export const ReactstrapSelect = ({
         value={typeof props.value === 'object' ? props.value : null}
         onChange={value => {
           setFieldValue(fields.name, value, false);
-          if (props.submitOnChange) submitForm();
+          if (props.submitOnChange) setTimeout(() => submitForm(), 0);
         }}
         onBlur={() => {
           setFieldTouched(fields.name, true);
