@@ -976,7 +976,6 @@ class Db extends EventEmitter {
       customerCountry,
       currency,
       _paddleReceiptURL,
-      nextBillDateAt,
     } = data;
 
     const payment = await new Payments({
