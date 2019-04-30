@@ -29,7 +29,7 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
                 _user: userId,
                 _plan: planId,
                 paymentMethod: 'manually',
-                paymentStatus: 'cancelled',
+                paymentStatus: 'deleted',
                 servicePeriodEnd: '2020-01-01',
               });
               break;

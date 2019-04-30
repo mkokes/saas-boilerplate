@@ -178,7 +178,7 @@ class BillingPage extends React.PureComponent {
         );
       }
 
-      if (isCurrentPlan) {
+      if (isCurrentPlan && currentSubscription.paymentMethod !== 'manually') {
         return (
           <Button color="primary" disabled block>
             Current Plan
@@ -320,7 +320,8 @@ class BillingPage extends React.PureComponent {
     return plans.map(plan => {
       const isCurrentPlan =
         currentSubscription &&
-        currentSubscription.paymentStatus !== 'deleted' &&
+        (currentSubscription.paymentStatus !== 'deleted' ||
+          currentSubscription.paymentMethod === 'manually') &&
         currentPlan._id === plan._id;
 
       return (
