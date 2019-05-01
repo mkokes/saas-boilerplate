@@ -29,6 +29,7 @@ Paddle webhook url
   ✔ 404 Page @started(19-01-04 20:16) @done(19-01-04 20:38) @lasted(22m50s)
   ✔ Blog @done(19-01-04 06:29)
 ☐ App
+  ☐ Forgot password add recaptcha
   ✔ Settings – API Section @today @done(19-04-26 01:58)
   ✔ Pay with crypto feature @today @done(19-05-01 02:33)
     This payment method is only allowed when an user is subscribed and his payment method is `manually ¿?` or if the user is not a subscriber yet.
@@ -99,6 +100,7 @@ Paddle webhook url
   ✔ S3 Backup @done(19-03-27 19:58)
   ✔ Test recovery disaster @done(19-03-28 00:00)
 ☐ API
+  ☐ Forgot password add recaptcha
   ✔ Settings – API Section @today @done(19-04-26 01:58)
   ✔ Pay with crypto feature @today @done(19-05-01 02:33)
   ✔ Price to cents @done(19-04-20 11:30)
