@@ -390,13 +390,23 @@ module.exports = ({
 
       return { accessToken };
     },
-    forgotPassword: async (_, { email }) => {
+    forgotPassword: async (_, { email, recaptchaResponse }) => {
       if (!validator.isEmail(email)) {
         throw new UserInputError(
           'Failed to process forgot password request due to validation errors',
           {
             validationErrors: { email: 'Invalid email' },
           },
+        );
+      }
+
+      const isRecaptchaValid = await validateRecaptchaResponse(
+        recaptchaResponse,
+      );
+      if (!isRecaptchaValid) {
+        throw new ApolloError(
+          'Our security system could not determine if the request was made by a human. Try it again.',
+          'INVALID_CAPTCHA',
         );
       }
 
@@ -883,6 +893,7 @@ module.exports = ({
         },
         pricing_type: 'fixed_price',
         metadata: {
+          product_name: PRODUCT_NAME,
           user_id: user._id,
           plan_id: plan._id,
         },

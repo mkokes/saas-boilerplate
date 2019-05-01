@@ -24,14 +24,18 @@ import * as Yup from 'yup';
 import styled from 'styled-components';
 import { ReactstrapInput } from 'utils/formiik';
 import { ApolloConsumer } from 'react-apollo';
+import Reaptcha from 'reaptcha';
 
 import { FORGOT_PASSWORD_REQUEST } from 'graphql/mutations';
 import { transformApolloErr } from 'utils/apollo';
+import config from 'config';
 
 const PasswordResetText = styled('div')`
   margin-top: -15px;
   margin-bottom: 20px;
 `;
+
+const { RECAPTCHA_SITE_KEY } = config;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class ForgotPasswordPage extends React.PureComponent {
@@ -40,11 +44,24 @@ export default class ForgotPasswordPage extends React.PureComponent {
 
     this.state = {
       formMsg: null,
+      recaptchaResponse: '',
+      recaptchaRendered: false,
     };
+
+    this.captcha = null;
+  }
+
+  resetCaptcha() {
+    this.setState({ recaptchaResponse: '' });
+
+    try {
+      this.captcha.reset();
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
   }
 
   render() {
-    const { formMsg } = this.state;
+    const { formMsg, recaptchaResponse, recaptchaRendered } = this.state;
 
     return (
       <Fragment>
@@ -88,15 +105,27 @@ export default class ForgotPasswordPage extends React.PureComponent {
                             onSubmit={async (values, formikBag) => {
                               this.setState({ formMsg: null });
 
+                              if (!recaptchaRendered)
+                                await this.captcha.renderExplicitly();
+
+                              if (!recaptchaResponse) {
+                                await this.captcha.execute();
+                                setTimeout(
+                                  () => formikBag.setSubmitting(false),
+                                  2000,
+                                );
+                                return;
+                              }
+
                               try {
                                 await client.mutate({
                                   mutation: FORGOT_PASSWORD_REQUEST,
                                   variables: {
                                     ...values,
+                                    recaptchaResponse,
                                   },
                                 });
 
-                                formikBag.setSubmitting(false);
                                 this.setState({
                                   formMsg: {
                                     color: 'success',
@@ -121,9 +150,12 @@ export default class ForgotPasswordPage extends React.PureComponent {
                                   },
                                 });
                               }
+
+                              this.resetCaptcha();
+                              formikBag.setSubmitting(false);
                             }}
                           >
-                            {({ isSubmitting }) => (
+                            {({ isSubmitting, submitForm }) => (
                               <Form>
                                 <Field
                                   component={ReactstrapInput}
@@ -169,6 +201,27 @@ export default class ForgotPasswordPage extends React.PureComponent {
                                       />
                                       Reset
                                     </Button>
+
+                                    <Reaptcha
+                                      // eslint-disable-next-line
+                                      ref={e => (this.captcha = e)}
+                                      sitekey={RECAPTCHA_SITE_KEY}
+                                      onVerify={res => {
+                                        this.setState({
+                                          recaptchaResponse: res,
+                                        });
+                                        submitForm();
+                                      }}
+                                      onExpire={() => this.resetCaptcha}
+                                      onError={() => this.resetCaptcha}
+                                      onRender={() =>
+                                        this.setState({
+                                          recaptchaRendered: true,
+                                        })
+                                      }
+                                      size="invisible"
+                                      explicit
+                                    />
                                   </Col>
                                 </Row>
                               </Form>

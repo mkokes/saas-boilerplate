@@ -81,8 +81,9 @@ export const REFRESH_ACCESS_TOKEN = gql`
 `;
 
 export const FORGOT_PASSWORD_REQUEST = gql`
-  mutation forgotPassword($email: String!) {
-    forgotPassword(email: $email) @disableAuth
+  mutation forgotPassword($email: String!, $recaptchaResponse: String!) {
+    forgotPassword(email: $email, recaptchaResponse: $recaptchaResponse)
+      @disableAuth
   }
 `;
 
