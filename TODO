@@ -1,4 +1,4 @@
-Paddle webhook URL:
+Paddle Webhook URL:
   - prod: https://api.dokku.amgaventures.com/paddle/webhook
   - local: https://local-api.localtunnel.me/paddle/webhook
 
