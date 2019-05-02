@@ -6,7 +6,7 @@ platform:
   arch: amd64
 
 steps:
-  - name: install_deps
+  - name: install_dependencies
     image: node:8.15.0
     volumes:
       - name: cache
@@ -96,7 +96,7 @@ platform:
   arch: amd64
 
 steps:
-  - name: install_deps
+  - name: install_dependencies
     image: node:8.15.0
     volumes:
       - name: cache
@@ -151,6 +151,7 @@ steps:
     when:
       status:
         - success
+
   - name: api_publish
     image: node:8.15.0
     environment:
@@ -170,7 +171,31 @@ steps:
     when:
       status:
         - success
-
+  - name: app_publish
+    image: lucap/drone-netlify
+    settings:
+      token:
+        from_secret: netlify_account_token
+      site_id: 65e749f7-5aa6-462b-b590-09fa795645d6
+      domain: app.saas.amgaventures.com
+      path: packages/app/build
+    when:
+      status:
+        - success
+  - name: web_publish
+    image: lucap/drone-netlify
+    settings:
+      token:
+        from_secret: netlify_account_token
+      site_id: 3ee97675-c7e2-47cc-8a8c-b6b24ca3fbf9
+      domain: www.web.saas.amgaventures.com
+      path: packages/web/build
+    depends_on:
+      - api_publish
+      - app_publish
+    when:
+      status:
+        - success
   - name: scheduler_publish
     image: node:8.15.0
     environment:
@@ -206,28 +231,6 @@ steps:
 
       - git remote add analytics dokku@dokku.amgaventures.com:analytics
       - git push analytics
-    when:
-      status:
-        - success
-  - name: app_publish
-    image: lucap/drone-netlify
-    settings:
-      token:
-        from_secret: netlify_account_token
-      site_id: 65e749f7-5aa6-462b-b590-09fa795645d6
-      domain: app.saas.amgaventures.com
-      path: packages/app/build
-    when:
-      status:
-        - success
-  - name: web_publish
-    image: lucap/drone-netlify
-    settings:
-      token:
-        from_secret: netlify_account_token
-      site_id: 3ee97675-c7e2-47cc-8a8c-b6b24ca3fbf9
-      domain: www.web.saas.amgaventures.com
-      path: packages/web/build
     when:
       status:
         - success
