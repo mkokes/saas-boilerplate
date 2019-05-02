@@ -82,8 +82,6 @@ volumes:
       path: /var/lib/cache
 
 trigger:
-  branch:
-    - master
   event:
     - pull_request
 
