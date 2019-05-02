@@ -1,5 +1,5 @@
 kind: pipeline
-name: CI/CD
+name: pr
 
 platform:
   os: linux
@@ -17,8 +17,6 @@ steps:
       - yarn -v
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
     when:
-      branch:
-        - master
       changeset:
         includes: ["yarn.lock", "package.json", "packages/**"]
 
@@ -27,28 +25,20 @@ steps:
     commands:
       - MONGO_URL=mongodb://mongo:27017/api yarn test:ci:api
     when:
-      branch:
-        - master
       changeset:
         includes: ["yarn.lock", "package.json", "packages/api/**"]
-
   - name: scheduler_test
     image: node:8.15.0
     commands:
       - yarn test:scheduler
     when:
-      branch:
-        - master
       changeset:
         includes: ["yarn.lock", "package.json", "packages/scheduler/**"]
-
   - name: app_test
     image: node:8.15.0
     commands:
       - yarn test:app
     when:
-      branch:
-        - master
       changeset:
         includes: ["yarn.lock", "package.json", "packages/app/**"]
 
@@ -57,8 +47,6 @@ steps:
     commands:
       - yarn lint:api
     when:
-      branch:
-        - master
       changeset:
         includes: ["packages/api/**"]
   - name: scheduler_lint
@@ -66,8 +54,6 @@ steps:
     commands:
       - yarn lint:scheduler
     when:
-      branch:
-        - master
       changeset:
         includes: ["packages/scheduler/**"]
   - name: analytics_lint
@@ -75,8 +61,6 @@ steps:
     commands:
       - yarn lint:analytics
     when:
-      branch:
-        - master
       changeset:
         includes: ["packages/analytics/**"]
   - name: app_lint
@@ -84,39 +68,89 @@ steps:
     commands:
       - yarn lint:app
     when:
-      branch:
-        - master
       changeset:
         includes: ["packages/app/**"]
+services:
+  - name: mongodb
+    image: mongo:3.4.9
+    command: [--smallfiles]
+    ports:
+      - 27017
+volumes:
+  - name: cache
+    host:
+      path: /var/lib/cache
+
+trigger:
+  branch:
+    - master
+  event:
+    - pull_request
+
+---
+kind: pipeline
+name: production
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: install_deps
+    image: node:8.15.0
+    volumes:
+      - name: cache
+        path: /tmp/cache
+    commands:
+      - node -v
+      - npm -v
+      - yarn -v
+      - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
+
+  - name: api_test
+    image: node:8.15.0
+    commands:
+      - MONGO_URL=mongodb://mongo:27017/api yarn test:ci:api
+  - name: scheduler_test
+    image: node:8.15.0
+    commands:
+      - yarn test:scheduler
+  - name: app_test
+    image: node:8.15.0
+    commands:
+      - yarn test:app
+
+  - name: api_lint
+    image: node:8.15.0
+    commands:
+      - yarn lint:api
+  - name: scheduler_lint
+    image: node:8.15.0
+    commands:
+      - yarn lint:scheduler
+  - name: analytics_lint
+    image: node:8.15.0
+    commands:
+      - yarn lint:analytics
+  - name: app_lint
+    image: node:8.15.0
+    commands:
+      - yarn lint:app
 
   - name: app_build
     image: node:8.15.0
     commands:
       - yarn build:app
     when:
-      branch:
-        - master
-      event:
-        - push
       status:
         - success
-      changeset:
-        includes: ["yarn.lock", "package.json", "packages/app/**"]
-
   - name: web_build
     image: node:8.15.0
     commands:
       - yarn build:web
     when:
-      branch:
-        - master
-      event:
-        - push
       status:
         - success
-      changeset:
-        includes: ["yarn.lock", "package.json", "packages/web/**"]
-
   - name: api_publish
     image: node:8.15.0
     environment:
@@ -134,14 +168,8 @@ steps:
       - git remote add api dokku@dokku.amgaventures.com:api
       - git push api
     when:
-      branch:
-        - master
-      event:
-        - push
       status:
         - success
-      changeset:
-        includes: ["yarn.lock", "package.json", "packages/api/**"]
 
   - name: scheduler_publish
     image: node:8.15.0
@@ -160,14 +188,8 @@ steps:
       - git remote add scheduler dokku@dokku.amgaventures.com:scheduler
       - git push scheduler
     when:
-      branch:
-        - master
-      event:
-        - push
       status:
         - success
-      changeset:
-        includes: ["yarn.lock", "package.json", "packages/scheduler/**"]
   - name: analytics_publish
     image: node:8.15.0
     environment:
@@ -185,14 +207,8 @@ steps:
       - git remote add analytics dokku@dokku.amgaventures.com:analytics
       - git push analytics
     when:
-      branch:
-        - master
-      event:
-        - push
       status:
         - success
-      changeset:
-        includes: ["yarn.lock", "package.json", "packages/analytics/**"]
   - name: app_publish
     image: lucap/drone-netlify
     settings:
@@ -202,14 +218,8 @@ steps:
       domain: app.saas.amgaventures.com
       path: packages/app/build
     when:
-      branch:
-        - master
-      event:
-        - push
       status:
         - success
-      changeset:
-        includes: ["yarn.lock", "package.json", "packages/app/**"]
   - name: web_publish
     image: lucap/drone-netlify
     settings:
@@ -219,14 +229,8 @@ steps:
       domain: www.web.saas.amgaventures.com
       path: packages/web/build
     when:
-      branch:
-        - master
-      event:
-        - push
       status:
         - success
-      changeset:
-        includes: ["yarn.lock", "package.json", "packages/web/**"]
 
   - name: notify
     image: plugins/slack
@@ -240,22 +244,17 @@ steps:
       {{else}}
         build {{build.number}} failed ({{build.link}}). Fix me please. <@channel>
       {{/success}}
-    when:
-      branch:
-        - master
-      event:
-        - push
-      status:
-        - success
-        - failure
 services:
   - name: mongodb
     image: mongo:3.4.9
     command: [--smallfiles]
     ports:
       - 27017
-
 volumes:
   - name: cache
-    host:
-      path: /var/lib/cache
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
