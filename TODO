@@ -1,6 +1,6 @@
-Paddle webhook url
-  prod: https://api.dokku.amgaventures.com/paddle/webhook
-  local: https://local-api.localtunnel.me/paddle/webhook
+Paddle Webhook URL:
+  - prod: https://api.dokku.amgaventures.com/paddle/webhook
+  - local: https://local-api.localtunnel.me/paddle/webhook
 
 ☐ Misc:
   ✔ Add `app` and `web` staging domains under `amgaventures.com` @done(19-04-11 20:02)
