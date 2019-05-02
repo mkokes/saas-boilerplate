@@ -190,9 +190,6 @@ steps:
       site_id: 3ee97675-c7e2-47cc-8a8c-b6b24ca3fbf9
       domain: www.web.saas.amgaventures.com
       path: packages/web/build
-    depends_on:
-      - api_publish
-      - app_publish
     when:
       status:
         - success
