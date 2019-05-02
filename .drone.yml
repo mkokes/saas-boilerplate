@@ -76,6 +76,10 @@ services:
     command: [--smallfiles]
     ports:
       - 27017
+volumes:
+  - name: cache
+    host:
+      path: /var/lib/cache
 
 trigger:
   branch:
@@ -246,12 +250,13 @@ services:
     command: [--smallfiles]
     ports:
       - 27017
+volumes:
+  - name: cache
+    host:
+      path: /var/lib/cache
 
 trigger:
   branch:
     - master
   event:
     - push
-
-volumes:
-  - name: cache
