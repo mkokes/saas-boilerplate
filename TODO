@@ -8,6 +8,9 @@ Paddle Webhook URL:
     ✔ Netlify @done(19-04-11 20:02)
     ✔ Drone @done(19-04-11 20:02)
   ☐ POC access to app specific features if user is `trialing` or `subscribed` @critical
+  ☐ Staging server
+  ☐ Release workflow strategy
+    DEV -> STAGE -> PROD
   ✔ Postmark templates @low @started(19-04-20 13:18) @done(19-04-20 13:31) @lasted(13m16s)
     ✔ Add aliases @done(19-04-20 13:31)
     ✔ Re-write them @done(19-04-20 13:31)

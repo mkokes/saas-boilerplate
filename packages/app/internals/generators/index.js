@@ -33,7 +33,7 @@ module.exports = plop => {
       plop.getHelper('properCase')(answers.name),
       '**.js',
     )}`;
-    exec(`npm run prettify -- "${folderPath}"`);
+    exec(`yarn prettify -- "${folderPath}"`);
     return folderPath;
   });
 };

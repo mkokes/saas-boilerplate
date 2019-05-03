@@ -9,6 +9,7 @@
     "packages/*"
   ],
   "scripts": {
+    "test": "yarn test:app;yarn test:api;yarn test:scheduler",
     "test:app": "(cd packages/app && yarn test)",
     "test:api": "(cd packages/api && yarn test)",
     "test:ci:api": "(cd packages/api && yarn test:ci)",
