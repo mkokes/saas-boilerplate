@@ -257,6 +257,6 @@ volumes:
 
 trigger:
   branch:
-    - master
+    - stage
   event:
     - push
