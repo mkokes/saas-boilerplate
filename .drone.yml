@@ -71,7 +71,7 @@ steps:
       changeset:
         includes: ["packages/app/**"]
 
-  - name: finisher
+  - name: finisher # https://github.com/microadam/drone-config-changeset-conditional/issues/7#issuecomment-489288712
     image: node:alpine
     commands:
       - echo .
