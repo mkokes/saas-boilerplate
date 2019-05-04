@@ -174,7 +174,7 @@ steps:
       - ssh-keyscan -t rsa dokku.amgaventures.com > /etc/ssh/ssh_known_hosts 2> /dev/null
 
       - git remote add api dokku@dokku.amgaventures.com:api
-      - git push api --force
+      - git push api HEAD:master
     when:
       status:
         - success
@@ -215,7 +215,7 @@ steps:
       - ssh-keyscan -t rsa dokku.amgaventures.com > /etc/ssh/ssh_known_hosts 2> /dev/null
 
       - git remote add scheduler dokku@dokku.amgaventures.com:scheduler
-      - git push scheduler --force
+      - git push scheduler HEAD:master
     when:
       status:
         - success
@@ -234,7 +234,7 @@ steps:
       - ssh-keyscan -t rsa dokku.amgaventures.com > /etc/ssh/ssh_known_hosts 2> /dev/null
 
       - git remote add analytics dokku@dokku.amgaventures.com:analytics
-      - git push analytics --force
+      - git push analytics HEAD:master
     when:
       status:
         - success
