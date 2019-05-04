@@ -70,6 +70,12 @@ steps:
     when:
       changeset:
         includes: ["packages/app/**"]
+
+  - name: finisher
+    image: node:alpine
+    commands:
+      - echo .
+
 services:
   - name: mongodb
     image: mongo:3.4.9
