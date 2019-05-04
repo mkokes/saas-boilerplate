@@ -6846,13 +6846,12 @@ entities@^1.1.1, entities@~1.1.1:
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
   integrity sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==
 
-env-cmd@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/env-cmd/-/env-cmd-9.0.0.tgz#1f4711ff01bf854cb9bc26ed09c137bb2d29a50f"
-  integrity sha512-0OS4ni5dmg8ZLuSJLPTwr8IVPOw09k1RzjFPRkWtflNfU+mye1DO2ds7yXgymN4mqVgS8SclSPQ5wdMbDcnXvw==
+env-cmd@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/env-cmd/-/env-cmd-8.0.2.tgz#e3bf53b8e4676781bdc3a0b1a2f7612cbcda4da4"
+  integrity sha512-gHX8MnQXw1iS7dc2KeJdBdxca7spIkxkNwIuORLwm8kDg6xHh5wWnv1Yv3pc64nLZR6kufQSCmwTz16sRmd/rg==
   dependencies:
-    commander "^2.20.0"
-    cross-spawn "6.0.5"
+    cross-spawn "^6.0.5"
 
 envalid@^5.0.0:
   version "5.0.0"
