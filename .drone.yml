@@ -70,6 +70,20 @@ steps:
     when:
       changeset:
         includes: ["packages/app/**"]
+
+  - name: notify
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: slack_webhook
+      channel: dev
+    template: >
+      {{#success build.status}}
+        build {{build.number}} succeeded ({{build.link}}). Good job. <@{{build.author}}>
+      {{else}}
+        build {{build.number}} failed ({{build.link}}). Fix me please. <@channel>
+      {{/success}}
+
 services:
   - name: mongodb
     image: mongo:3.4.9
