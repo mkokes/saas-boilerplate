@@ -1,13 +1,14 @@
-Paddle Webhook URLs:
-  - prod: https://api.dokku.amgaventures.com/paddle/webhook
-  - local: https://local-api.localtunnel.me/paddle/webhook
+Misc:
+  ☐ Release workflow strategy @critical
+API:
+Scheduler:
+Analytics:
+App:
+Web:
 
-☐ Misc:
-  ☐ POC access to app specific features if user is `trialing` or `subscribed` @critical
-  ☐ Release workflow strategy
-    DEV -> STAGE -> PROD
-☐ App
-☐ API
+Paddle Webhook URLs
+  PROD: https://api.dokku.amgaventures.com/paddle/webhook
+  LOCAL: https://local-api.localtunnel.me/paddle/webhook
 
 Archive:
   ✔ Add `app` and `web` staging domains under `amgaventures.com` @done(19-04-11 20:02)
