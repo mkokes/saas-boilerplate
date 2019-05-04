@@ -263,5 +263,7 @@ volumes:
       path: /var/lib/cache
 
 trigger:
+  ref:
+    - refs/heads/master
   event:
     - tag
