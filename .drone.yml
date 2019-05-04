@@ -71,7 +71,7 @@ steps:
       changeset:
         includes: ["packages/app/**"]
 
-  - name: done
+  - name: finisher
     image: node:alpine
     commands:
       - echo .
