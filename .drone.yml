@@ -71,6 +71,11 @@ steps:
       changeset:
         includes: ["packages/app/**"]
 
+  - name: done
+    image: node:alpine
+    commands:
+      - echo .
+
 services:
   - name: mongodb
     image: mongo:3.4.9
