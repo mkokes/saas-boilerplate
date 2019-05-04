@@ -263,7 +263,5 @@ volumes:
       path: /var/lib/cache
 
 trigger:
-  branch:
-    - master
   event:
     - tag
