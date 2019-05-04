@@ -3,7 +3,7 @@
   "description": "⚡️ Boilerplate to launch SaaS projects",
   "homepage": "https://github.com/AMGAVentures/saas-boilerplate#readme",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "license": "MIT",
   "workspaces": [
     "packages/*"
