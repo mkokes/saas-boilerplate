@@ -1,5 +1,5 @@
 kind: pipeline
-name: pr
+name: test
 
 platform:
   os: linux
@@ -83,13 +83,14 @@ volumes:
 
 trigger:
   branch:
+    - develop
     - master
   event:
     - pull_request
 
 ---
 kind: pipeline
-name: production
+name: deploy-production
 
 platform:
   os: linux
@@ -257,6 +258,6 @@ volumes:
 
 trigger:
   branch:
-    - stage
+    - master
   event:
-    - push
+    - tag
