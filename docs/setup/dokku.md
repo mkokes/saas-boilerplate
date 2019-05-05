@@ -83,3 +83,9 @@ dokku config:set --no-restart api PAPERTRAIL_APP_PORT=XXX
 ## Adding a new application
 
 Add application name and directory path to file `.dokku-monorepo` and ssh to the `Dokku server` to setup your application (domain, ports, ssl, env config..etc).
+
+## Adding SSH keys
+```
+dokku ssh-keys:add CI /path/to/pub_ci_ssh_key
+```
+
