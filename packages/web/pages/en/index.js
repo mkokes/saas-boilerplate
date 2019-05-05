@@ -33,7 +33,7 @@ class HomeSplash extends React.Component {
           src="/img/hero-logo.svg"
           width="130px"
         />
-        SaaS Boilerplate
+        AMGA Ventures's SaaS Boilerplate
         <small>Launch projects quickly 🔥</small>
       </h1>
     );
