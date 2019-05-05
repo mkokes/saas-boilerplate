@@ -51,9 +51,14 @@ dokku config:set --no-restart api API_SECRET_KEY=XXX
 dokku config:set --no-restart api RECAPTCHA_SECRET_KEY=XXX
 dokku config:set --no-restart api PADDLE_VENDOR_ID=XXX
 dokku config:set --no-restart api PADDLE_VENDOR_AUTH_CODE=XXX
+dokku config:set --no-restart api MIXPANEL_API_KEY=XXX
 dokku config:set --no-restart api POSTMARK_API_TOKEN=XXX
 dokku config:set --no-restart api PAPERTRAIL_APP_HOST=XXX
 dokku config:set --no-restart api PAPERTRAIL_APP_PORT=XXX
+dokku config:set --no-restart api MAILCHIMP_API_KEY=XXX
+dokku config:set --no-restart api MAILCHIMP_API_KEY=XXX
+dokku config:set --no-restart api COINBASE_COMMERCE_API_SECRET=XXX
+dokku config:set --no-restart api COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET=XXX
 ```
 
 ## Analytics
