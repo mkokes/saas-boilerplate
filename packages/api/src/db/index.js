@@ -265,6 +265,8 @@ class Db extends EventEmitter {
       }`,
     });
 
+    this._log.info(`user ${user._id} signed up`);
+
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET_ONCE',
       args: [
@@ -339,6 +341,8 @@ class Db extends EventEmitter {
         resetPasswordToken.token
       }`,
     });
+
+    this._log.info(`user ${userId} requested password reset`);
   }
 
   async resetPasswordRequest(resetToken, newPassword) {
@@ -367,6 +371,9 @@ class Db extends EventEmitter {
     await resetPasswordToken.save();
 
     this.notifyUser(_user._id, PASSWORD_RESETED);
+
+    this._log.info(`user ${_user._id} reseted account password`);
+
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
       args: [
@@ -424,6 +431,8 @@ class Db extends EventEmitter {
 
     switch (decodedToken.type) {
       case 'signup':
+        this._log.info(`user ${user._id} confirmed signup email`);
+
         this.notifyUser(user._id, WELCOME);
 
         this.emit(MAILCHIMP, { user, actionType: 'ADD' });
@@ -442,6 +451,9 @@ class Db extends EventEmitter {
         this.notifyUser(user._id, EMAIL_CHANGED, {
           old_email: oldUserEmail,
         });
+
+        this._log.info(`user ${user._id} confirmed email change`);
+
         this.emit(MAILCHIMP, {
           user,
           actionType: 'EMAIL_CHANGE',
@@ -475,6 +487,8 @@ class Db extends EventEmitter {
     user.password = newPassword;
     await user.save();
 
+    this._log.info(`user ${userId} changed account password`);
+
     this.notifyUser(user._id, PASSWORD_CHANGED);
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
@@ -499,6 +513,8 @@ class Db extends EventEmitter {
     );
     await user.save();
 
+    this._log.info(`user ${userId} requested email change`);
+
     this.notifyUser(user._id, VERIFY_EMAIL, {
       action_url: `${this._config.PRODUCT_APP_URL}/confirm-email?token=${
         user.emailConfirmationToken
@@ -516,6 +532,8 @@ class Db extends EventEmitter {
     user.nickname = nickname || existingNickname;
     await user.save();
 
+    this._log.info(`user ${userId} updated account profile`);
+
     return this.getUserProfile(userId, false);
   }
 
@@ -531,6 +549,8 @@ class Db extends EventEmitter {
     user.firstName = finalFirstName;
     user.lastName = finalLastName;
     await user.save();
+
+    this._log.info(`user ${userId} updated account personal details`);
 
     this.emit(MAILCHIMP, {
       user,
@@ -567,6 +587,8 @@ class Db extends EventEmitter {
 
     await user.save();
 
+    this._log.info(`user ${userId} updated account notifications preferences`);
+
     const wasMarketingInfoAceptedBefore = existingLegal.find(
       e => e.type === MARKETING_INFO,
     );
@@ -596,6 +618,8 @@ class Db extends EventEmitter {
 
     await user.save();
 
+    this._log.info(`user ${userId} updated account preferences`);
+
     return this.getUserProfile(userId, false);
   }
 
@@ -610,6 +634,8 @@ class Db extends EventEmitter {
 
     user.twoFactorAuthenticationSecret = secret;
     await user.save();
+
+    this._log.info(`user ${userId} generated new 2FA secret`);
 
     return {
       secret,
@@ -653,6 +679,8 @@ class Db extends EventEmitter {
     user.isTwoFactorAuthenticationEnabled = true;
     await user.save();
 
+    this._log.info(`user ${userId} enabled 2FA`);
+
     this.notifyUser(user._id, ENABLED_2FA);
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
@@ -683,6 +711,8 @@ class Db extends EventEmitter {
     user.isTwoFactorAuthenticationEnabled = false;
     user.twoFactorAuthenticationSecret = null;
     await user.save();
+
+    this._log.info(`user ${userId} disabled 2FA`);
 
     this.notifyUser(user._id, DISABLED_2FA);
     this.emit(MIXPANEL_EVENT, {
@@ -756,7 +786,9 @@ class Db extends EventEmitter {
       _subscription: subscription._id,
     }).exec();
 
-    this._log.info(`subscription created for user ${user._id}`);
+    this._log.info(
+      `subscription ${subscription._id} created for user ${user._id}`,
+    );
 
     this.notifyUser(user._id, SUBSCRIPTION_STARTED);
 
@@ -792,11 +824,17 @@ class Db extends EventEmitter {
     });
   }
 
-  async subscriptionPaymentPastDue(id) {
-    const subscription = await Subscriptions.findByIdAndUpdate(id, {
+  async subscriptionPaymentPastDue(subscriptionId) {
+    const subscription = await Subscriptions.findByIdAndUpdate(subscriptionId, {
       paymentStatus: 'past_due',
       paymentPastDueAt: Date.now(),
     }).exec();
+
+    this._log.info(
+      `subscription ${subscriptionId} payment past due user ${
+        subscription._user
+      }`,
+    );
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
@@ -836,7 +874,9 @@ class Db extends EventEmitter {
       servicePeriodEnd: nextBillDateAt,
     }).exec();
 
-    this._log.info(`subscription ${subscription._id} updated`);
+    this._log.info(
+      `subscription ${subscription._id} updated user ${subscription._user}`,
+    );
 
     // handle plan upgrade or downgrade
     if (_plan !== oldSubscriptionPlanId) {
@@ -892,6 +932,9 @@ class Db extends EventEmitter {
         _subscription: null,
       },
     ).exec();
+    this._log.info(
+      `subscription ${subscriptionId} cancelled user ${_user._id}`,
+    );
 
     this.emit(MAILCHIMP, {
       user: _user,
@@ -942,6 +985,9 @@ class Db extends EventEmitter {
       .populate('_user', '_id email')
       .exec();
     const { _user } = subscription;
+    this._log.info(
+      `subscription ${subscription._id} renewal cancelled user ${_user._id}`,
+    );
 
     this.notifyUser(_user._id, SUBSCRIPTION_RENEWAL_CANCELLED);
 
@@ -998,7 +1044,9 @@ class Db extends EventEmitter {
       _paddleReceiptURL,
     }).save();
 
-    this._log.info(`payment received #${payment._id} +$${earnings}`);
+    this._log.info(
+      `payment received #${payment._id} +$${earnings} from user ${_user}`,
+    );
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_TRACK_CHARGE',
@@ -1046,15 +1094,19 @@ class Db extends EventEmitter {
       },
     ).exec();
 
-    this._log.info(`payment refunded #${payment._id} -$${saleGrossRefund}`);
+    this._log.info(
+      `payment refunded #${payment._id} -$${saleGrossRefund} for user ${
+        payment._user
+      }`,
+    );
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
       args: [
         'subscription payment refunded',
         {
-          distinct_id: data._user,
-          payment_id: payment._user,
+          distinct_id: payment._user,
+          payment_id: payment._id,
           plan_id: payment._plan,
           amount: payment.saleGrossRefund,
         },
@@ -1097,6 +1149,10 @@ class Db extends EventEmitter {
       ticket_subject: subject,
       ticket_description: description,
     });
+
+    if (targetUserId) {
+      this._log.info(`user ${targetUserId} submitted a support ticket`);
+    }
   }
 
   async isUserTrialExpiringWarningSent(userId) {
@@ -1110,6 +1166,8 @@ class Db extends EventEmitter {
 
   async sendUserTrialExpiringWarning(userId) {
     this.notifyUser(userId, TRIAL_EXPIRING);
+
+    this._log.info(`trial warning sent for user ${userId}`);
   }
 
   async userTrialExpired(userId) {
@@ -1121,6 +1179,8 @@ class Db extends EventEmitter {
       },
     ).exec();
     await Users.updateOne({ _id: userId }, { _subscription: null }).exec();
+
+    this._log.info(`trial expired for user ${userId}`);
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
@@ -1159,7 +1219,9 @@ class Db extends EventEmitter {
       paymentMethod: 'cryptocurrency',
     }).save();
 
-    this._log.info(`payment received #${payment._id} +$${earnings}`);
+    this._log.info(
+      `payment received #${payment._id} +$${earnings} from user ${_user._id}`,
+    );
 
     this.notifyUser(_user, PAYMENT_RECEIVED, {
       _shortId: payment._shortId,
