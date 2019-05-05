@@ -11,6 +11,10 @@ Dokku docs: <http://dokku.viewdocs.io/dokku>.
 - `dokku-mongo`: <https://github.com/dokku/dokku-mongo>.
 - `dokku-hostname`: <https://github.com/michaelshobbs/dokku-hostname>
 
+## Setup DNS on Cloudflare
+
+![1](images/dokku/dns.png)
+
 ## Create API DB
 
 ```bash
