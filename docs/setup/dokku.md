@@ -27,6 +27,8 @@ dokku mongo:backup db BUCKET_NAME
 # CRON_SCHEDULE is a crontab expression, eg. "0 3 * * *" for each day at 3am
 dokku mongo:backup-schedule db CRON_SCHEDULE BUCKET_NAME
 ```
+- AWS IAM: https://console.aws.amazon.com/iam/home?region=us-east-1#/users
+- AWS S3: https://s3.console.aws.amazon.com/s3/home?region=us-east-1
 
 ## API
 
