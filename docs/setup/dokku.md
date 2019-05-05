@@ -15,6 +15,7 @@ Dokku docs: <http://dokku.viewdocs.io/dokku>.
 ## Setup DNS on Cloudflare
 
 ![dokku dns](images/dokku/dns.png)
+^Points to DO server IP address
 
 ## Create API DB
 
