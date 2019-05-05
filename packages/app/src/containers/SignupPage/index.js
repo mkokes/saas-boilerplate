@@ -228,7 +228,7 @@ export default class SignupPage extends React.PureComponent {
                                           component={ReactstrapInput}
                                           name="firstName"
                                           type="text"
-                                          placeholder="John Doe"
+                                          placeholder="First name"
                                           label="First name"
                                           autoComplete="first-name"
                                           required
@@ -239,7 +239,7 @@ export default class SignupPage extends React.PureComponent {
                                           component={ReactstrapInput}
                                           name="lastName"
                                           type="text"
-                                          placeholder="Smith"
+                                          placeholder="Last name"
                                           label="Last name"
                                           autoComplete="last-name"
                                           required
@@ -250,7 +250,7 @@ export default class SignupPage extends React.PureComponent {
                                       component={ReactstrapInput}
                                       name="email"
                                       type="email"
-                                      placeholder="john@acme.com"
+                                      placeholder="Your email address"
                                       label="Email address"
                                       autoComplete="username" // using "username" forces browsers to use email when login
                                       required
@@ -259,7 +259,7 @@ export default class SignupPage extends React.PureComponent {
                                       component={ReactstrapInput}
                                       name="password"
                                       type="password"
-                                      placeholder="Password"
+                                      placeholder="Choose a password"
                                       label="Password"
                                       autoComplete="new-password"
                                       required
