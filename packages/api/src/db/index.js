@@ -972,7 +972,7 @@ class Db extends EventEmitter {
     this.notifyUser(_user._id, SUBSCRIPTION_ENDED);
   }
 
-  async cancelSubscriptionPaymentMethod(paddleSubscriptionId) {
+  async cancelSubscriptionRenewal(paddleSubscriptionId) {
     const subscription = await Subscriptions.findOneAndUpdate(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
