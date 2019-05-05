@@ -537,7 +537,7 @@ module.exports = ({
 
       return { accessToken, refreshToken };
     },
-    changeUserEmail: async (_, { password, email }, { user }) => {
+    requestUserEmailChange: async (_, { password, email }, { user }) => {
       await assertUser(user);
 
       const userInputError = errors =>
@@ -571,7 +571,7 @@ module.exports = ({
         });
       }
 
-      await db.changeUserEmail(user._id, email);
+      await db.requestUserEmailChange(user._id, email);
 
       return true;
     },

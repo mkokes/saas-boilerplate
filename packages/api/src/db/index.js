@@ -501,7 +501,7 @@ class Db extends EventEmitter {
     });
   }
 
-  async changeUserEmail(userId, candidateEmail) {
+  async requestUserEmailChange(userId, candidateEmail) {
     const user = await this._getUser(userId, true);
 
     user.emailConfirmationToken = jwt.sign(

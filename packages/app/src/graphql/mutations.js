@@ -129,8 +129,8 @@ export const UPDATE_PERSONAL_DETAILS = gql`
 `;
 
 export const CHANGE_USER_EMAIL = gql`
-  mutation changeUserEmail($password: String!, $email: String!) {
-    changeUserEmail(password: $password, email: $email) @requireAuth
+  mutation requestUserEmailChange($password: String!, $email: String!) {
+    requestUserEmailChange(password: $password, email: $email) @requireAuth
   }
 `;
 

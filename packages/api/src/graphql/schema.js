@@ -127,7 +127,7 @@ module.exports = gql`
     resetPassword(resetToken: String!, newPassword: String!): Boolean
     confirmUserEmail(confirmationToken: String!): Boolean
     changeUserPassword(oldPassword: String!, newPassword: String!): AuthTokens
-    changeUserEmail(password: String!, email: String!): Boolean
+    requestUserEmailChange(password: String!, email: String!): Boolean
     updateUserProfile(profile: UserProfileInput!): UserProfile
     updateUserPersonalDetails(profile: UserPersonalDetailsInput!): UserProfile
     updateUserNotificationsPreferences(
