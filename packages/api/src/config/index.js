@@ -25,8 +25,6 @@ const env = envalid.cleanEnv(
     PRODUCT_APP_URL: str({ default: '' }),
     TRIAL_PERIOD_DAYS: num({ default: 14 }),
     COMPANY_NAME: str({ default: 'AMGA Ventures Inc.' }),
-    PAPERTRAILAPP_HOST: str({ default: '' }),
-    PAPERTRAILAPP_PORT: num({ default: null }),
     API_SECRET_KEY: str({ default: '' }),
     SENTRY_DSN: str({
       default: '',
@@ -39,6 +37,8 @@ const env = envalid.cleanEnv(
     MAILCHIMP_LIST_ID: str({ default: 'a346d80d6e' }),
     POSTMARK_API_TOKEN: str({ default: '' }),
     POSTMARK_SENDER_EMAIL: str({ default: 'support@amgaventures.com' }),
+    PAPERTRAILAPP_HOST: str({ default: '' }),
+    PAPERTRAILAPP_PORT: num({ default: null }),
     COINBASE_COMMERCE_API_SECRET: str({ default: '' }),
     COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET: str({ default: '' }),
     SUPPORT_EMAIL: str({ default: 'support@amgaventures.com' }),
