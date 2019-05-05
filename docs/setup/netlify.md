@@ -11,18 +11,18 @@ Website: <https://www.netlify.com>.
 
 ### General
 
-![1](img/netlify/1.png)
+![1](images/netlify/1.png)
 
 ### Build & deploy
 
-![2](img/netlify/2.png)
-![3](img/netlify/3.png)
+![2](images/netlify/2.png)
+![3](images/netlify/3.png)
 
 ### Domain management
 
-![3](img/netlify/4.png)
-![5](img/netlify/5.png)
+![3](images/netlify/4.png)
+![5](images/netlify/5.png)
 
 ### Cloudflare DNS
 
-![6](img/netlify/6.png)
+![6](images/netlify/6.png)
