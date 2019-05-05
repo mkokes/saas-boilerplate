@@ -102,7 +102,7 @@ export default class SecurityPage extends React.PureComponent {
                           >
                             Google Authenticator
                           </a>{' '}
-                          mobile application.
+                          mobile application to use this feature.
                         </p>
                       </Col>
                       <Col className="text-center">
