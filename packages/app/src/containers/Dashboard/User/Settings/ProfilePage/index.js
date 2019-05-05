@@ -217,7 +217,7 @@ export default class ProfilePage extends React.PureComponent {
                                     )}
                                     <Field
                                       component={ReactstrapInput}
-                                      label="Old password"
+                                      label="Current password"
                                       name="oldPassword"
                                       type="password"
                                       autoComplete="current-password"
