@@ -62,7 +62,7 @@ export default class SecurityPage extends React.PureComponent {
     return (
       <Fragment>
         <Helmet>
-          <title>SecurityPage</title>
+          <title>Account security</title>
         </Helmet>
         <ApolloConsumer>
           {client => (

@@ -63,7 +63,7 @@ export default class ProfilePage extends React.PureComponent {
     return (
       <Fragment>
         <Helmet>
-          <title>ProfilePage</title>
+          <title>Account profile</title>
         </Helmet>
         <ApolloConsumer>
           {client => (

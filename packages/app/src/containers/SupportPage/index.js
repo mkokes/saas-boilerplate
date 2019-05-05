@@ -104,7 +104,6 @@ export default class SupportPage extends React.PureComponent {
       <Fragment>
         <Helmet>
           <title>Contact Support</title>
-          <meta name="description" content="Contact support page" />
         </Helmet>
 
         <Container tag="main">

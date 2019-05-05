@@ -36,7 +36,7 @@ export default class PreferencesPage extends React.PureComponent {
     return (
       <Fragment>
         <Helmet>
-          <title>PreferencesPage</title>
+          <title>Account preferences</title>
         </Helmet>
         <ApolloConsumer>
           {client => (

@@ -373,7 +373,7 @@ class BillingPage extends React.PureComponent {
     return (
       <Fragment>
         <Helmet>
-          <title>BillingPage</title>
+          <title>Account billing</title>
         </Helmet>
         <Fragment>
           <h1 className="mb-3">Billing</h1>

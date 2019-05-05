@@ -104,7 +104,6 @@ export default class SignupPage extends React.PureComponent {
           <Fragment>
             <Helmet>
               <title>Sign up</title>
-              <meta name="description" content="Registration form" />
             </Helmet>
 
             <Container tag="main">
