@@ -96,7 +96,7 @@ trigger:
 
 ---
 kind: pipeline
-name: deploy-production
+name: deploy
 
 platform:
   os: linux
