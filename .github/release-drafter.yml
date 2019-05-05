@@ -5,11 +5,9 @@ categories:
     label: "feature"
   - title: "🐛 Bug Fixes"
     label: "bug"
-  - title: "🧯 Hotfix"
+  - title: "🧯 Hotfixes"
     label: "hotfix"
-  - title: "🧰 Maintenance"
-    label: "chore"
-  - title: "⚙️ Dependencies"
+  - title: "⚙️ Dependencies maintenance"
     label: "dependencies"
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 template: |
