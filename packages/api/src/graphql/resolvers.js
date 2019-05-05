@@ -11,10 +11,11 @@ const { MARKETING_INFO } = require('../constants/legal');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
+const _genJwtIat = () => parseInt((Date.now() / 1000).toFixed(0), 10); // Setting our IAT we avoid clock skew issue (https://en.wikipedia.org/wiki/Clock_skew)
 const createAccessToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {
-      iat: parseInt((Date.now() / 1000).toFixed(0), 10), // Setting our IAT we avoid clock skew issue (https://en.wikipedia.org/wiki/Clock_skew)
+      iat: _genJwtIat(),
       ...data,
       type: 'access',
     },
@@ -24,7 +25,7 @@ const createAccessToken = ({ JWT_SECRET, data }) =>
 const createRefreshToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {
-      iat: parseInt((Date.now() / 1000).toFixed(0), 10), // Setting our IAT we avoid clock skew issue (https://en.wikipedia.org/wiki/Clock_skew)
+      iat: _genJwtIat(),
       ...data,
       type: 'refresh',
     },
