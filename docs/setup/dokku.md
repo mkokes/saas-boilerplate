@@ -3,7 +3,8 @@
 Dokku docs: <http://dokku.viewdocs.io/dokku>.
 
 ## DO server info
-``2 GB Memory / 25 GB Disk / NYC1 - Ubuntu Dokku 0.12.13 on 18.04``
+
+`2 GB Memory / 25 GB Disk / NYC1 - Ubuntu Dokku 0.12.13 on 18.04`
 
 ## Required plugins
 
@@ -13,7 +14,7 @@ Dokku docs: <http://dokku.viewdocs.io/dokku>.
 
 ## Setup DNS on Cloudflare
 
-![1](images/dokku/dns.png)
+![dokku dns](images/dokku/dns.png)
 
 ## Create API DB
 
@@ -31,6 +32,7 @@ dokku mongo:backup db BUCKET_NAME
 # CRON_SCHEDULE is a crontab expression, eg. "0 3 * * *" for each day at 3am
 dokku mongo:backup-schedule db CRON_SCHEDULE BUCKET_NAME
 ```
+
 - AWS IAM: https://console.aws.amazon.com/iam/home?region=us-east-1#/users
 - AWS S3: https://s3.console.aws.amazon.com/s3/home?region=us-east-1
 
@@ -99,7 +101,7 @@ dokku config:set --no-restart api COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET=XXX
 Add application name and directory path to file `.dokku-monorepo` and ssh to the `Dokku server` to setup your application (domain, ports, ssl, env config..etc).
 
 ## Adding SSH keys
+
 ```
 dokku ssh-keys:add CI /path/to/pub_ci_ssh_key
 ```
-
