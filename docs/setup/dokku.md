@@ -2,6 +2,9 @@
 
 Dokku docs: <http://dokku.viewdocs.io/dokku>.
 
+## DO server info
+``2 GB Memory / 25 GB Disk / NYC1 - Ubuntu Dokku 0.12.13 on 18.04``
+
 ## Required plugins
 
 - `dokku-monorepo`: <https://github.com/notpushkin/dokku-monorepo>.
