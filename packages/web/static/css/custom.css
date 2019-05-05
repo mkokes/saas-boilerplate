@@ -162,22 +162,6 @@
   text-decoration: underline;
 }
 
-@media only screen and (min-width: 1024px) {
-  .navigationSlider .slidingNav ul a[href*="signup"] {
-    background-color: white !important;
-    color: $primaryColor !important;
-    text-decoration: none !important;
-    line-height: 1.5;
-    user-select: none;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
-    border-bottom-left-radius: 0.25rem;
-  }
-}
-
 @media only screen and (max-width: 768px) {
   .projectTitle {
     font-size: 50px;
@@ -193,5 +177,91 @@
   .button.hero {
     margin-top: 20px;
     width: 100%;
+  }
+}
+
+/******************** navigationSlider ********************/
+/* Don't let it slide down until width < 500px            */
+/**********************************************************/
+@media only screen and (min-width: 500px) {
+  .navSearchWrapper {
+    padding-left: 10px;
+    position: relative;
+    right: auto;
+    top: auto;
+  }
+
+  .navSearchWrapper .algolia-autocomplete {
+    display: block;
+  }
+
+  .navigationSlider {
+    height: 34px;
+    margin-left: auto;
+    position: relative;
+  }
+
+  .navigationSlider .navSlideout {
+    display: none;
+  }
+
+  .navigationSlider nav.slidingNav {
+    background: none;
+    height: auto;
+    position: relative;
+    right: auto;
+    top: auto;
+    width: auto;
+  }
+
+  .navigationSlider .slidingNav ul {
+    background: none;
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 0;
+    padding: 0;
+    width: auto;
+  }
+
+  .navigationSlider .slidingNav ul li a {
+    border: 0;
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    font-size: 16px;
+    font-size: 1em;
+    font-weight: 300;
+    height: 32px;
+    line-height: 1.2em;
+    margin: 0;
+    padding: 0;
+    padding: 6px 10px;
+  }
+
+  .navigationSlider .slidingNav ul li a:hover,
+  .navigationSlider .slidingNav ul li.siteNavItemActive a,
+  .navigationSlider .slidingNav ul li.siteNavGroupActive a {
+    color: #fff;
+  }
+
+  .navPusher {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: calc(100vh - 50px);
+    padding-top: 50px;
+  }
+
+  .navigationSlider .slidingNav ul a[href*="signup"] {
+    background-color: white !important;
+    color: $primaryColor !important;
+    text-decoration: none !important;
+    line-height: 1.5;
+    user-select: none;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
   }
 }
