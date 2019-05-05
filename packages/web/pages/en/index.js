@@ -33,8 +33,8 @@ class HomeSplash extends React.Component {
           src="/img/hero-logo.svg"
           width="130px"
         />
-        Fast and Open Source
-        <small>Data storage for React Native</small>
+        SaaS Boilerplate
+        <small>Launch projects quickly 🔥</small>
       </h1>
     );
 
