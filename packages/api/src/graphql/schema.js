@@ -20,7 +20,7 @@ module.exports = gql`
     apiSecretKey: String
     legal: [LegalAgreement]
   }
-  type userPaymentsReceipt {
+  type Payment {
     _shortId: String
     saleGross: String
     _paddleReceiptURL: String
@@ -97,7 +97,7 @@ module.exports = gql`
     userApiSecretKey: UserProfile
     userSubscription: Subscription
     userSubscriptionPlan: Plan
-    userPaymentsReceipt: [userPaymentsReceipt]
+    userPaymentsReceipt: [Payment]
     plans: [Plan]
   }
   type Mutation {

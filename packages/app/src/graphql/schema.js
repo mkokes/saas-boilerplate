@@ -18,7 +18,7 @@ const typeDefs = `
     apiSecretKey: String,
     legal: [LegalAgreement]
   }
-  type USER_PAYMENTS_RECEIPT_QUERY {
+  type Payment {
     _shortId: String
     saleGross: String
     _paddleReceiptURL: String
