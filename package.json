@@ -33,7 +33,9 @@
     "build:app:stage": "(cd packages/app && yarn build:stage)",
     "build:app": "(cd packages/app && yarn build:live)",
     "db:fixtures:api": "(cd packages/api && yarn db:fixtures)",
-    "expose:api": "lt --port 3001 --subdomain local-api"
+    "expose:api": "lt --port 3001 --subdomain local-api",
+    "lerna:bootstrap": "lerna bootstrap",
+    "lerna:clean": "lerna clean"
   },
   "lint-staged": {
     "*.js": [
