@@ -111,7 +111,7 @@ class BillingPage extends React.PureComponent {
         });
         break;
       case 'subscription_renewal_cancelled':
-        toast.success('Subscription renewal was cancelled successfully.', {
+        toast.success('Subscription renewal was cancelled.', {
           position: toast.POSITION.TOP_CENTER,
         });
         break;
