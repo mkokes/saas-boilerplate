@@ -1,4 +1,4 @@
-const Router = require('koa-router');
+const Router = require('koa-joi-router');
 const Serialize = require('php-serialize');
 const crypto = require('crypto');
 
@@ -22,68 +22,73 @@ agZvxrChIKHYmj+iPIbWJYMCAwEAAQ==
 module.exports = async ({ db, log: parentLog }) => {
   const log = parentLog.create('routes/paddle');
 
-  const router = new Router();
-  router.prefix('/paddle');
+  const paddleRouter = Router();
+  paddleRouter.prefix('/paddle');
 
-  const paddleMiddleware = (ctx, next) => {
-    try {
-      const { p_signature: paddleSignature } = ctx.request.body;
+  paddleRouter.route({
+    method: 'post',
+    path: '/webhook',
+    validate: {
+      type: 'form',
+      failure: 400,
+    },
+    pre: (ctx, next) => {
+      try {
+        const { p_signature: paddleSignature } = ctx.request.body;
 
-      /* eslint-disable */
-      function ksort(obj) {
-        const keys = Object.keys(obj).sort();
-        const sortedObj = {};
+        /* eslint-disable */
+        function ksort(obj) {
+          const keys = Object.keys(obj).sort();
+          const sortedObj = {};
 
-        for (const i in keys) {
-          sortedObj[keys[i]] = obj[keys[i]];
+          for (const i in keys) {
+            sortedObj[keys[i]] = obj[keys[i]];
+          }
+
+          return sortedObj;
         }
 
-        return sortedObj;
-      }
+        let params = ctx.request.body;
+        delete params.p_signature;
 
-      let params = ctx.request.body;
-      delete params.p_signature;
-
-      const mySig = Buffer.from(paddleSignature, 'base64');
-      // Need to serialize array and assign to data object
-      params = ksort(params);
-      for (const property in params) {
-        if (
-          params.hasOwnProperty(property) &&
-          typeof params[property] !== 'string'
-        ) {
-          if (Array.isArray(params[property])) {
-            // is it an array
-            params[property] = params[property].toString();
-          } else {
-            // if its not an array and not a string, then it is a JSON obj
-            params[property] = JSON.stringify(params[property]);
+        const mySig = Buffer.from(paddleSignature, 'base64');
+        // Need to serialize array and assign to data object
+        params = ksort(params);
+        for (const property in params) {
+          if (
+            params.hasOwnProperty(property) &&
+            typeof params[property] !== 'string'
+          ) {
+            if (Array.isArray(params[property])) {
+              // is it an array
+              params[property] = params[property].toString();
+            } else {
+              // if its not an array and not a string, then it is a JSON obj
+              params[property] = JSON.stringify(params[property]);
+            }
           }
         }
+        const serialized = Serialize.serialize(params);
+        // End serialize data object
+        const verifier = crypto.createVerify('sha1');
+        verifier.update(serialized);
+        verifier.end();
+
+        const verification = verifier.verify(PADDLE_PUBLIC_KEY, mySig);
+        if (!verification) {
+          log.error('invalid paddle webhook signature received');
+          throw new Error('INVALID_SIGNATURE');
+        }
+
+        /* eslint-enable */
+      } catch (e) {
+        ctx.throw(403);
       }
-      const serialized = Serialize.serialize(params);
-      // End serialize data object
-      const verifier = crypto.createVerify('sha1');
-      verifier.update(serialized);
-      verifier.end();
 
-      const verification = verifier.verify(PADDLE_PUBLIC_KEY, mySig);
-      if (!verification) {
-        log.error('invalid paddle webhook signature received');
-        throw new Error('INVALID_SIGNATURE');
-      }
+      return next();
+    },
+    handler: ctx => db.emit(PADDLE, { body: ctx.request.body }),
+  });
 
-      /* eslint-enable */
-    } catch (e) {
-      ctx.throw(403);
-    }
-
-    return next();
-  };
-
-  router.post('/webhook', paddleMiddleware, async ctx =>
-    db.emit(PADDLE, { body: ctx.request.body }),
-  );
-
-  return router;
+  return paddleRouter;
 };
