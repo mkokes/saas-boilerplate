@@ -2,7 +2,7 @@ module.exports = [
   {
     _subscription: null,
     passwordUpdatedAt: new Date(),
-    isTwoFactorAuthenticationEnabled: false,
+    hasTwoFactorAuthenticationEnabled: false,
     twoFactorAuthenticationSecret: null,
     isSignUpEmailConfirmed: true,
     emailConfirmedAt: new Date(),

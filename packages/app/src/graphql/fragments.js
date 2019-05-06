@@ -11,7 +11,7 @@ export const ProfileFields = gql`
     email
     avatar
     isSignUpEmailConfirmed
-    isTwoFactorAuthenticationEnabled
+    hasTwoFactorAuthenticationEnabled
     timezone
     legal {
       type

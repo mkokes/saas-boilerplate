@@ -75,12 +75,12 @@ export default class SecurityPage extends React.PureComponent {
                       2FA Login (Status:{' '}
                       <span
                         className={
-                          userProfile.isTwoFactorAuthenticationEnabled
+                          userProfile.hasTwoFactorAuthenticationEnabled
                             ? 'text-success'
                             : 'text-muted'
                         }
                       >
-                        {userProfile.isTwoFactorAuthenticationEnabled
+                        {userProfile.hasTwoFactorAuthenticationEnabled
                           ? 'Activated'
                           : 'Not in use'}
                       </span>
@@ -106,7 +106,7 @@ export default class SecurityPage extends React.PureComponent {
                         </p>
                       </Col>
                       <Col className="text-center">
-                        {userProfile.isTwoFactorAuthenticationEnabled ? (
+                        {userProfile.hasTwoFactorAuthenticationEnabled ? (
                           <Fragment>
                             <Button
                               color="danger"
@@ -142,7 +142,7 @@ export default class SecurityPage extends React.PureComponent {
                                     });
 
                                     const _userProfile = userProfile;
-                                    _userProfile.isTwoFactorAuthenticationEnabled = false;
+                                    _userProfile.hasTwoFactorAuthenticationEnabled = false;
                                     setUserProfile(_userProfile);
 
                                     formikBag.resetForm();
@@ -305,7 +305,7 @@ export default class SecurityPage extends React.PureComponent {
                                             });
 
                                             const _userProfile = userProfile;
-                                            _userProfile.isTwoFactorAuthenticationEnabled = true;
+                                            _userProfile.hasTwoFactorAuthenticationEnabled = true;
                                             setUserProfile(_userProfile);
 
                                             toast.success(

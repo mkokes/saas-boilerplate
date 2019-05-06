@@ -13,7 +13,7 @@ const typeDefs = `
     email: String
     avatar: String
     isSignUpEmailConfirmed: Boolean
-    isTwoFactorAuthenticationEnabled: Boolean
+    hasTwoFactorAuthenticationEnabled: Boolean
     timezone: String
     apiSecretKey: String,
     legal: [LegalAgreement]

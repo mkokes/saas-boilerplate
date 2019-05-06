@@ -101,7 +101,7 @@ class Db extends EventEmitter {
       nickname,
       avatar,
       isSignUpEmailConfirmed,
-      isTwoFactorAuthenticationEnabled,
+      hasTwoFactorAuthenticationEnabled,
       apiSecretKey,
       timezone,
       legal,
@@ -119,7 +119,7 @@ class Db extends EventEmitter {
       lastLoginAt,
       signupAt,
       isSignUpEmailConfirmed,
-      isTwoFactorAuthenticationEnabled,
+      hasTwoFactorAuthenticationEnabled,
       timezone,
       legal,
       ...(canViewPrivateFields
@@ -626,7 +626,7 @@ class Db extends EventEmitter {
   async generate2FAUser(userId) {
     const user = await this._getUser(userId, { mustExist: true });
 
-    if (user.isTwoFactorAuthenticationEnabled) {
+    if (user.hasTwoFactorAuthenticationEnabled) {
       throw new Error('2FA_ALREADY_ENABLED');
     }
 
@@ -664,7 +664,7 @@ class Db extends EventEmitter {
   async confirmEnable2FAUser(userId, token) {
     const user = await this._getUser(userId, { mustExist: true });
 
-    if (user.isTwoFactorAuthenticationEnabled) {
+    if (user.hasTwoFactorAuthenticationEnabled) {
       throw new Error('2FA_ALREADY_ENABLED');
     }
 
@@ -676,7 +676,7 @@ class Db extends EventEmitter {
       throw new Error('INVALID_TOKEN');
     }
 
-    user.isTwoFactorAuthenticationEnabled = true;
+    user.hasTwoFactorAuthenticationEnabled = true;
     await user.save();
 
     this._log.info(`user ${userId} enabled 2FA`);
@@ -696,7 +696,7 @@ class Db extends EventEmitter {
   async disable2FA(userId, token) {
     const user = await this._getUser(userId, { mustExist: true });
 
-    if (!user.isTwoFactorAuthenticationEnabled) {
+    if (!user.hasTwoFactorAuthenticationEnabled) {
       throw new Error('2FA_ALREADY_DISABLED');
     }
 
@@ -708,7 +708,7 @@ class Db extends EventEmitter {
       throw new Error('INVALID_TOKEN');
     }
 
-    user.isTwoFactorAuthenticationEnabled = false;
+    user.hasTwoFactorAuthenticationEnabled = false;
     user.twoFactorAuthenticationSecret = null;
     await user.save();
 

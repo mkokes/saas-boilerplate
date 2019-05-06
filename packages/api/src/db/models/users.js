@@ -49,7 +49,7 @@ const UsersSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    isTwoFactorAuthenticationEnabled: {
+    hasTwoFactorAuthenticationEnabled: {
       type: Boolean,
       default: false,
     },

@@ -323,7 +323,7 @@ module.exports = ({
         );
       }
 
-      if (user.isTwoFactorAuthenticationEnabled) {
+      if (user.hasTwoFactorAuthenticationEnabled) {
         const is2FAValid = await db.check2FAUser(user._id, token);
         if (!is2FAValid) {
           throw new UserInputError('Failed to log in', {
