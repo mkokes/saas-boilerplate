@@ -41,7 +41,7 @@ const typeDefs = `
     status: String
     startedAt: String
     servicePeriodEnd: String
-    paymentMethod: String
+    type: String
     paymentStatus: String
     price: Float
     _paddleUpdateURL: String

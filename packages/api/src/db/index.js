@@ -753,7 +753,7 @@ class Db extends EventEmitter {
       _paddleCancelURL,
       nextBillDateAt,
       servicePeriodEnd,
-      paymentMethod,
+      type,
       paymentStatus,
     } = data;
 
@@ -778,7 +778,7 @@ class Db extends EventEmitter {
       _paddleCancelURL,
       nextBillDateAt,
       servicePeriodEnd,
-      paymentMethod,
+      type,
       paymentStatus,
     }).save();
 

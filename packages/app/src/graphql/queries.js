@@ -57,7 +57,7 @@ export const BILLING_SHOW_PLANS_QUERY = gql`
   query getActivePlans {
     currentSubscription: userSubscription @requireAuth {
       paymentStatus
-      paymentMethod
+      type
     }
     currentPlan: userSubscriptionPlan @requireAuth {
       ...PlanFields
@@ -78,7 +78,7 @@ export const BILLING_CURRENT_SUBSCRIPTION = gql`
       status
       startedAt
       servicePeriodEnd
-      paymentMethod
+      type
       paymentStatus
       price
       _paddleUpdateURL

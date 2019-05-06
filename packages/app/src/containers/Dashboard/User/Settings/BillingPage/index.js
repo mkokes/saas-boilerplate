@@ -178,7 +178,7 @@ class BillingPage extends React.PureComponent {
         );
       }
 
-      if (isCurrentPlan && currentSubscription.paymentMethod !== 'manually') {
+      if (isCurrentPlan && currentSubscription.type !== 'manually') {
         return (
           <Button color="primary" disabled block>
             Current Plan
@@ -321,7 +321,7 @@ class BillingPage extends React.PureComponent {
       const isCurrentPlan =
         currentSubscription &&
         (currentSubscription.paymentStatus !== 'deleted' ||
-          currentSubscription.paymentMethod === 'manually') &&
+          currentSubscription.type === 'manually') &&
         currentPlan._id === plan._id;
 
       return (
@@ -414,7 +414,7 @@ class BillingPage extends React.PureComponent {
                               color="danger"
                               hidden={
                                 !(
-                                  subscription.paymentMethod === 'paddle' &&
+                                  subscription.type === 'paddle' &&
                                   subscription.paymentStatus === 'past_due'
                                 )
                               }
@@ -463,7 +463,7 @@ class BillingPage extends React.PureComponent {
                                   className="mb-0"
                                   hidden={
                                     !(
-                                      subscription.paymentMethod === 'paddle' &&
+                                      subscription.type === 'paddle' &&
                                       subscription.paymentStatus === 'active'
                                     )
                                   }
@@ -480,7 +480,7 @@ class BillingPage extends React.PureComponent {
                                   className="mb-0"
                                   hidden={
                                     !(
-                                      subscription.paymentMethod === 'paddle' &&
+                                      subscription.type === 'paddle' &&
                                       subscription.paymentStatus !== 'deleted'
                                     )
                                   }
@@ -494,7 +494,7 @@ class BillingPage extends React.PureComponent {
                                   className="mb-0"
                                   hidden={
                                     !(
-                                      subscription.paymentMethod === 'paddle' &&
+                                      subscription.type === 'paddle' &&
                                       subscription.paymentStatus === 'deleted'
                                     )
                                   }
@@ -509,7 +509,7 @@ class BillingPage extends React.PureComponent {
                                 <span
                                   hidden={
                                     !(
-                                      subscription.paymentMethod === 'paddle' &&
+                                      subscription.type === 'paddle' &&
                                       subscription.paymentStatus !== 'deleted'
                                     )
                                   }
@@ -530,7 +530,7 @@ class BillingPage extends React.PureComponent {
                                 <span
                                   hidden={
                                     !(
-                                      subscription.paymentMethod === 'paddle' &&
+                                      subscription.type === 'paddle' &&
                                       subscription.paymentStatus === 'active'
                                     )
                                   }

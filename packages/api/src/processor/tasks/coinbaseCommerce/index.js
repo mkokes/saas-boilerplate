@@ -28,7 +28,7 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
               await db.createSubscription(userId, {
                 _user: userId,
                 _plan: planId,
-                paymentMethod: 'manually',
+                type: 'manually',
                 paymentStatus: 'deleted',
                 servicePeriodEnd: '2020-01-01',
               });
