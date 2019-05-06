@@ -15,6 +15,7 @@ export const USER_PROFILE_QUERY = gql`
 export const USER_PAYMENTS_RECEIPT_QUERY = gql`
   query getUserPaymentsReceipt {
     payments: userPaymentsReceipt @requireAuth {
+      _shortId
       saleGross
       _paddleReceiptURL
       receivedAt

@@ -19,6 +19,7 @@ const typeDefs = `
     legal: [LegalAgreement]
   }
   type USER_PAYMENTS_RECEIPT_QUERY {
+    _shortId: String
     saleGross: String
     _paddleReceiptURL: String
     paymentMethod: String

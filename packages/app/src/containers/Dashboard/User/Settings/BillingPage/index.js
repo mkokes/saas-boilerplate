@@ -834,11 +834,15 @@ class BillingPage extends React.PureComponent {
                           data={payments}
                           columns={[
                             {
+                              Header: '# Id.',
+                              accessor: '_shortId',
+                              Cell: row => (
+                                <span>{capitalizeFirstLetter(row.value)}</span>
+                              ),
+                            },
+                            {
                               Header: 'Date',
                               accessor: 'receivedAt',
-                              getTdProps: () => ({
-                                className: 'text-center',
-                              }),
                               Cell: row => (
                                 <Moment format="L" date={Number(row.value)} />
                               ),

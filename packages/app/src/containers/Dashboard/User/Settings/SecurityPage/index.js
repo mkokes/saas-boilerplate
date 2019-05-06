@@ -271,8 +271,10 @@ export default class SecurityPage extends React.PureComponent {
                                         size={196}
                                       />
                                       <p>
-                                        Scan the QR code with the authenticator
-                                        app
+                                        <strong>
+                                          Scan this QR code with the
+                                          authenticator app
+                                        </strong>
                                       </p>
                                     </Col>
                                     <Col sm={{ size: 8, offset: 2 }}>

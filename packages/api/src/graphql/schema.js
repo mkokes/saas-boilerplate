@@ -21,6 +21,7 @@ module.exports = gql`
     legal: [LegalAgreement]
   }
   type userPaymentsReceipt {
+    _shortId: String
     saleGross: String
     _paddleReceiptURL: String
     paymentMethod: String
