@@ -57,7 +57,7 @@ class HomeSplash extends React.Component {
                   className="get-started-input"
                   type="email"
                   autoComplete="email"
-                  placeholder="Your Email"
+                  placeholder="Your email address"
                   name="email"
                   required
                 />
