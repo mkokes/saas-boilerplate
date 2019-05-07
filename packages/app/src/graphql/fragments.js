@@ -25,11 +25,11 @@ export const PlanFields = gql`
     _id
     _paddleProductId
     name
-    displayName
+    displayedName
     displayedDescription
     tier
     price
-    displayFeatures
+    displayedFeatures
     billingInterval
   }
 `;

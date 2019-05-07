@@ -152,7 +152,7 @@ export default class PricingPage extends React.PureComponent {
                           >
                             <CardHeader>
                               <h4 className="my-0 font-weight-normal">
-                                {plan.displayName}
+                                {plan.displayedName}
                               </h4>
                             </CardHeader>
                             <CardBody>
@@ -170,9 +170,9 @@ export default class PricingPage extends React.PureComponent {
                                 className="list-unstyled mt-3 mb-4"
                                 style={{ minHeight: '50px' }}
                               >
-                                {plan.displayFeatures.map(feature => (
+                                {plan.displayedFeatures.map(feature => (
                                   <li
-                                    key={`displayFeatures-${
+                                    key={`displayedFeatures-${
                                       plan._id
                                     }-${feature.trim()}`}
                                   >

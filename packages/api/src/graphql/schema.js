@@ -31,9 +31,9 @@ module.exports = gql`
     _id: String
     _paddleProductId: Int
     name: String
-    displayName: String
+    displayedName: String
     displayedDescription: String
-    displayFeatures: [String]
+    displayedFeatures: [String]
     price: Float
     tier: Int
     billingInterval: String
