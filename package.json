@@ -16,6 +16,7 @@
     "test:watch:api": "(cd packages/api && yarn test:watch)",
     "test:watch:scheduler": "(cd packages/api && yarn test:watch)",
     "test:scheduler": "(cd packages/scheduler && yarn test)",
+    "lint": "yarn lint:app;yarn lint:api;yarn lint:scheduler; yarn lint:analytics",
     "lint:app": "(cd packages/app && yarn lint)",
     "lint:analytics": "(cd packages/analytics && yarn lint)",
     "lint:api": "(cd packages/api && yarn lint)",
