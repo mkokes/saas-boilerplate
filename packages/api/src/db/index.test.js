@@ -46,7 +46,7 @@ describe('db', () => {
         internal: true,
         status: 'active',
         name: 'TRIAL',
-        displayName: 'Free trial period',
+        displayedName: 'Free trial period',
         price: 0,
         createdAt: new Date(),
       }).save();

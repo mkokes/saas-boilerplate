@@ -344,7 +344,7 @@ class BillingPage extends React.PureComponent {
             className="mt-2 mb-2 text-center text-md-left align-items-center"
           >
             <Col xs="12" md="3" style={{ fontSize: '20px' }}>
-              <strong>{plan.displayName}</strong>
+              <strong>{plan.displayedName}</strong>
             </Col>
             <Col xs="12" md="5" style={{ fontSize: '19px' }}>
               ${plan.price.toFixed(2)}{' '}
@@ -430,7 +430,8 @@ class BillingPage extends React.PureComponent {
                             <Row>
                               <Col sm="12" md="6">
                                 <p className="mb-0">
-                                  Plan name: <strong>{plan.displayName}</strong>
+                                  Plan name:{' '}
+                                  <strong>{plan.displayedName}</strong>
                                 </p>
                                 <p
                                   className="mb-0"
@@ -758,12 +759,13 @@ class BillingPage extends React.PureComponent {
                                                 )
                                                 .map(plan => ({
                                                   label: `${
-                                                    plan.displayName
+                                                    plan.displayedName
                                                   } - $${plan.price.toFixed(
                                                     2,
                                                   )}/year`,
                                                   value: plan._id,
-                                                  displayName: plan.displayName,
+                                                  displayedName:
+                                                    plan.displayedName,
                                                   price: plan.price,
                                                 }))}
                                               value={values.plan}

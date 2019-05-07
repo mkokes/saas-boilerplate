@@ -887,7 +887,7 @@ module.exports = ({
 
       const { code } = await Charge.create({
         name: PRODUCT_NAME,
-        description: `Plan: ${plan.displayName} - 1 YEAR`,
+        description: `Plan: ${plan.displayedName} - 1 YEAR`,
         local_price: {
           amount: plan.price,
           currency: 'USD',
