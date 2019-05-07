@@ -108,14 +108,10 @@ module.exports = ({
 
               templateModel.trial_length =
                 moment(servicePeriodEnd).diff(startedAt, 'days') + 1;
-              templateModel.trial_start_date = moment(
-                startedAt,
-                _user.timezone,
-              ).format('LL');
-              templateModel.trial_end_date = moment(
-                servicePeriodEnd,
-                _user.timezone,
-              ).format('LL');
+              templateModel.trial_start_date = moment(startedAt).format('LL');
+              templateModel.trial_end_date = moment(servicePeriodEnd).format(
+                'LL',
+              );
               break;
             }
             case FORGOT_PASSWORD:
