@@ -847,7 +847,10 @@ class BillingPage extends React.PureComponent {
                               Header: 'Date',
                               accessor: 'receivedAt',
                               Cell: row => (
-                                <Moment format="L" date={Number(row.value)} />
+                                <Moment
+                                  format="YYYY-MM-DD"
+                                  date={Number(row.value)}
+                                />
                               ),
                             },
                             {
