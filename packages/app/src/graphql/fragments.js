@@ -8,6 +8,7 @@ export const ProfileFields = gql`
       servicePeriodEnd
       _plan {
         _id
+        name
       }
     }
     accountStatus
