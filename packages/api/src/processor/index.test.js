@@ -290,7 +290,7 @@ describe('processor', () => {
       Sentry,
     });
 
-    const setupArgs = getPaddleSetupArgs();
+    const setupArgs = getCoinbaseCommerceSetupArgs();
     expect(setupArgs.db).toEqual(db);
     expect(setupArgs.eventQueue).toEqual(eventQueue);
     expect(setupArgs.Sentry).toEqual(Sentry);
