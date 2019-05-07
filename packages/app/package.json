@@ -57,6 +57,7 @@
     "jwt-decode": "^2.2.0",
     "loadable-components": "^2.2.3",
     "lodash": "^4.17.10",
+    "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
     "qrcode.react": "^0.9.1",
     "query-string": "^6.2.0",
