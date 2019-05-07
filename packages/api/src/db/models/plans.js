@@ -30,7 +30,7 @@ const Plans = new mongoose.Schema(
       type: String,
       default: null,
     },
-    features: {
+    displayFeatures: {
       type: [String],
       default: null,
     },

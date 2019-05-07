@@ -170,9 +170,9 @@ export default class PricingPage extends React.PureComponent {
                                 className="list-unstyled mt-3 mb-4"
                                 style={{ minHeight: '50px' }}
                               >
-                                {plan.features.map(feature => (
+                                {plan.displayFeatures.map(feature => (
                                   <li
-                                    key={`features-${
+                                    key={`displayFeatures-${
                                       plan._id
                                     }-${feature.trim()}`}
                                   >

@@ -33,7 +33,7 @@ module.exports = gql`
     name: String
     displayName: String
     displayedDescription: String
-    features: [String]
+    displayFeatures: [String]
     price: Float
     tier: Int
     billingInterval: String

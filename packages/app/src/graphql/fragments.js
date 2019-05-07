@@ -29,7 +29,7 @@ export const PlanFields = gql`
     displayedDescription
     tier
     price
-    features
+    displayFeatures
     billingInterval
   }
 `;

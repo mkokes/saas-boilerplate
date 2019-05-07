@@ -10,7 +10,7 @@ module.exports = [
   {
     internal: false,
     status: 'active',
-    features: ['Wow', 'Amazing'],
+    displayFeatures: ['Wow', 'Amazing'],
     _paddleProductId: 548124,
     name: 'BASIC',
     displayName: 'Basic',
@@ -23,7 +23,7 @@ module.exports = [
   {
     internal: false,
     status: 'active',
-    features: ['Wow', 'Amazing', 'Much better than basic'],
+    displayFeatures: ['Wow', 'Amazing', 'Much better than basic'],
     _paddleProductId: 550286,
     name: 'PRO',
     displayName: '⭐ Pro',
@@ -36,7 +36,7 @@ module.exports = [
   {
     internal: false,
     status: 'active',
-    features: ['Wow', 'Amazing'],
+    displayFeatures: ['Wow', 'Amazing'],
     _paddleProductId: 548125,
     name: 'BASIC',
     displayName: 'Basic',
@@ -49,7 +49,7 @@ module.exports = [
   {
     internal: false,
     status: 'active',
-    features: ['Wow', 'Amazing', 'Much better than basic'],
+    displayFeatures: ['Wow', 'Amazing', 'Much better than basic'],
     _paddleProductId: 556422,
     name: 'PRO',
     displayName: '⭐ Pro',

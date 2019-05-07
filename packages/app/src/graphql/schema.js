@@ -32,7 +32,7 @@ const typeDefs = `
     displayName: String
     displayedDescription: String
     tier: Int
-    features: [String]
+    displayFeatures: [String]
     price: Float
     billingInterval: String
   }
