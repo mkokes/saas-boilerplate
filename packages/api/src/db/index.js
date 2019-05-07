@@ -90,6 +90,14 @@ class Db extends EventEmitter {
       return {};
     }
 
+    await user
+      .populate({
+        path: '_subscription',
+        select: '_id servicePeriodEnd',
+        populate: { path: '_plan', select: '_id name' },
+      })
+      .execPopulate();
+
     const {
       _id,
       _subscription,
@@ -114,7 +122,7 @@ class Db extends EventEmitter {
       avatar,
       firstName,
       lastName,
-      _subscription: _subscription ? _subscription.toString() : null,
+      _subscription,
       email,
       lastLoginAt,
       signupAt,

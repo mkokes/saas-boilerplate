@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard } from '@fortawesome/free-regular-svg-icons';
+import _ from 'lodash';
 
 import { GlobalConsumer } from 'GlobalState';
 
@@ -28,7 +29,7 @@ export default class MainPage extends React.PureComponent {
                 color="warning"
                 fade={false}
                 className="text-center"
-                hidden={userProfile._subscription}
+                hidden={!_.isEmpty(userProfile._subscription)}
               >
                 <FontAwesomeIcon
                   icon={faCreditCard}

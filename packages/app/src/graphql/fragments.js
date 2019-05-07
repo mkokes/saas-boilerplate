@@ -3,7 +3,12 @@ import gql from 'graphql-tag';
 export const ProfileFields = gql`
   fragment ProfileFields on UserProfile {
     _id
-    _subscription
+    _subscription {
+      _id
+      _plan {
+        _id
+      }
+    }
     accountStatus
     firstName
     lastName

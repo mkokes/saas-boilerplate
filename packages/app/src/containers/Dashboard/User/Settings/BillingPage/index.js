@@ -38,6 +38,7 @@ import Switch from 'react-switch';
 import { Formik, Form, Field } from 'formik';
 import CoinbaseCommerceButton from 'react-coinbase-commerce';
 import 'react-coinbase-commerce/dist/coinbase-commerce-button.css';
+import _ from 'lodash';
 
 import { capitalizeFirstLetter } from 'utils/string';
 import { ReactstrapSelect } from 'utils/formiik';
@@ -122,7 +123,7 @@ class BillingPage extends React.PureComponent {
     const globalProvider = await getGlobalProvider();
     const user = await globalProvider.state.auth.profile;
 
-    if (user._subscription) {
+    if (!_.isEmpty(user._subscription)) {
       try {
         const {
           data: { plan },
@@ -137,7 +138,7 @@ class BillingPage extends React.PureComponent {
         });
 
         // eslint-disable-next-line no-empty
-      } catch (_) {}
+      } catch (__) {}
     }
   }
 

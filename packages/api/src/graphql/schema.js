@@ -7,7 +7,7 @@ module.exports = gql`
   }
   type UserProfile {
     _id: String
-    _subscription: String
+    _subscription: Subscription
     accountStatus: String
     firstName: String
     lastName: String
