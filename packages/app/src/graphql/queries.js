@@ -12,6 +12,15 @@ export const USER_PROFILE_QUERY = gql`
   }
 `;
 
+export const USER_NOTIFICATIONS_PREFERENCES = gql`
+  query getUserNotificationsPreferences {
+    notificationsPreferences: userNotificationsPreferences @requireAuth {
+      type
+      accepted
+    }
+  }
+`;
+
 export const USER_PAYMENTS_RECEIPT_QUERY = gql`
   query getUserPaymentsReceipt {
     payments: userPaymentsReceipt @requireAuth {

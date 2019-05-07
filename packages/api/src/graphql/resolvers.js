@@ -60,6 +60,15 @@ module.exports = ({
         ...profile,
       };
     },
+    userNotificationsPreferences: async (_, __, { user }) => {
+      await assertUser(user);
+
+      const notificationsPreferences = await db.getUserNotificationsPreferences(
+        user._id,
+      );
+
+      return notificationsPreferences;
+    },
     userApiSecretKey: async (_, __, { user }) => {
       await assertUser(user);
 

@@ -20,10 +20,6 @@ export const ProfileFields = gql`
     isSignUpEmailConfirmed
     hasTwoFactorAuthenticationEnabled
     timezone
-    legal {
-      type
-      accepted
-    }
   }
 `;
 

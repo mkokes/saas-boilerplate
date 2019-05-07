@@ -15,8 +15,7 @@ const typeDefs = `
     isSignUpEmailConfirmed: Boolean
     hasTwoFactorAuthenticationEnabled: Boolean
     timezone: String
-    apiSecretKey: String,
-    legal: [LegalAgreement]
+    apiSecretKey: String
   }
   type Payment {
     _shortId: String

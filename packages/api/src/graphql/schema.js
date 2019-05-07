@@ -18,7 +18,6 @@ module.exports = gql`
     hasTwoFactorAuthenticationEnabled: Boolean
     timezone: String
     apiSecretKey: String
-    legal: [LegalAgreement]
   }
   type Payment {
     _shortId: String
@@ -94,6 +93,7 @@ module.exports = gql`
 
   type Query {
     userProfile: UserProfile
+    userNotificationsPreferences: [LegalAgreement]
     userApiSecretKey: UserProfile
     userSubscription: Subscription
     userSubscriptionPlan: Plan

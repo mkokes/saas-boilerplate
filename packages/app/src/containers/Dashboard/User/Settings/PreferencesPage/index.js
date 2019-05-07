@@ -16,11 +16,13 @@ import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
+import SafeQuery from 'components/graphql/SafeQuery';
 import { ReactstrapSelect, ReactstrapCheckbox } from 'utils/formiik';
 import {
   UPDATE_USER_NOTIFICATIONS_PREFERENCES,
   UPDATE_USER_PREFERENCES,
 } from 'graphql/mutations';
+import { USER_NOTIFICATIONS_PREFERENCES } from 'graphql/queries';
 import { transformApolloErr } from 'utils/apollo';
 import { getTimezones } from 'utils/moment';
 
@@ -140,86 +142,97 @@ export default class PreferencesPage extends React.PureComponent {
                         >
                           Email me when:
                         </p>
-                        <Formik
-                          initialValues={{
-                            MARKETING_INFO: !!userProfile.legal.find(
-                              ({ type, accepted }) =>
-                                type === 'MARKETING_INFO' && accepted,
-                            ),
-                          }}
-                          validationSchema={Yup.object().shape({})}
-                          /* eslint-disable-next-line consistent-return */
-                          onSubmit={async (values, formikBag) => {
-                            const notifications = [];
-
-                            Object.keys(values).forEach(key => {
-                              if (values[key])
-                                notifications.push({
-                                  type: key,
-                                  accepted: `${Date.now()}`,
-                                });
-                            });
-
-                            try {
-                              const {
-                                data: { profile },
-                              } = await client.mutate({
-                                mutation: UPDATE_USER_NOTIFICATIONS_PREFERENCES,
-                                variables: {
-                                  notifications: {
-                                    notifications,
-                                  },
-                                },
-                              });
-
-                              setUserProfile(profile);
-
-                              formikBag.resetForm();
-                              toast.success(
-                                `Notifications preferences updated successfully.`,
-                                {
-                                  position: toast.POSITION.TOP_CENTER,
-                                  autoClose: 3000,
-                                },
-                              );
-                            } catch (e) {
-                              const err = transformApolloErr(e);
-
-                              toast.error(err.message, {
-                                position: toast.POSITION.TOP_CENTER,
-                              });
-
-                              formikBag.setSubmitting(false);
-                            }
-                          }}
+                        <SafeQuery
+                          query={USER_NOTIFICATIONS_PREFERENCES}
+                          keepExistingResultDuringRefetch
+                          fetchPolicy="network-only"
+                          showLoading
+                          showError
                         >
-                          {({ isSubmitting, values }) => (
-                            <Fragment>
-                              <Form>
-                                <Field
-                                  component={ReactstrapCheckbox}
-                                  name="MARKETING_INFO"
-                                  value={values.MARKETING_INFO}
-                                  label="News and announcements"
-                                  type="checkbox"
-                                />
+                          {({ data: { notificationsPreferences } }) => (
+                            <Formik
+                              initialValues={{
+                                MARKETING_INFO: !!notificationsPreferences.find(
+                                  ({ type, accepted }) =>
+                                    type === 'MARKETING_INFO' && accepted,
+                                ),
+                              }}
+                              validationSchema={Yup.object().shape({})}
+                              /* eslint-disable-next-line consistent-return */
+                              onSubmit={async (values, formikBag) => {
+                                const notifications = [];
 
-                                <Button
-                                  type="submit"
-                                  disabled={isSubmitting}
-                                  className="float-left mt-2"
-                                >
-                                  <FontAwesomeIcon
-                                    pulse
-                                    icon={faSpinner}
-                                    className={isSubmitting ? 'mr-2' : 'd-none'}
-                                  />
-                                  Save
-                                </Button>
-                              </Form>
-                            </Fragment>
+                                Object.keys(values).forEach(key => {
+                                  if (values[key])
+                                    notifications.push({
+                                      type: key,
+                                      accepted: `${Date.now()}`,
+                                    });
+                                });
+
+                                try {
+                                  const {
+                                    data: { profile },
+                                  } = await client.mutate({
+                                    mutation: UPDATE_USER_NOTIFICATIONS_PREFERENCES,
+                                    variables: {
+                                      notifications: {
+                                        notifications,
+                                      },
+                                    },
+                                  });
+
+                                  setUserProfile(profile);
+
+                                  toast.success(
+                                    `Notifications preferences updated successfully.`,
+                                    {
+                                      position: toast.POSITION.TOP_CENTER,
+                                      autoClose: 3000,
+                                    },
+                                  );
+                                } catch (e) {
+                                  const err = transformApolloErr(e);
+
+                                  toast.error(err.message, {
+                                    position: toast.POSITION.TOP_CENTER,
+                                  });
+                                }
+
+                                formikBag.setSubmitting(false);
+                              }}
+                            >
+                              {({ isSubmitting, values }) => (
+                                <Fragment>
+                                  <Form>
+                                    <Field
+                                      component={ReactstrapCheckbox}
+                                      name="MARKETING_INFO"
+                                      value={values.MARKETING_INFO}
+                                      label="News and announcements"
+                                      type="checkbox"
+                                    />
+
+                                    <Button
+                                      type="submit"
+                                      disabled={isSubmitting}
+                                      className="float-left mt-2"
+                                    >
+                                      <FontAwesomeIcon
+                                        pulse
+                                        icon={faSpinner}
+                                        className={
+                                          isSubmitting ? 'mr-2' : 'd-none'
+                                        }
+                                      />
+                                      Save
+                                    </Button>
+                                  </Form>
+                                </Fragment>
+                              )}
+                            </Formik>
                           )}
-                        </Formik>
+                        </SafeQuery>
                       </Col>
                     </Row>
                   </Card>

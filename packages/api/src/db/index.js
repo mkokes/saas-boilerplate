@@ -112,7 +112,6 @@ class Db extends EventEmitter {
       hasTwoFactorAuthenticationEnabled,
       apiSecretKey,
       timezone,
-      legal,
     } = user;
 
     /* eslint-disable */
@@ -129,7 +128,6 @@ class Db extends EventEmitter {
       isSignUpEmailConfirmed,
       hasTwoFactorAuthenticationEnabled,
       timezone,
-      legal,
       ...(canViewPrivateFields
         ? {
             apiSecretKey,
@@ -596,6 +594,19 @@ class Db extends EventEmitter {
     return this.getUserProfile(userId, false);
   }
 
+  async getUserNotificationsPreferences(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    const NOTIFICATIONS_KEYS = [MARKETING_INFO];
+
+    const notificationPreferences = user.legal.filter(value => {
+      if (value.type.includes(NOTIFICATIONS_KEYS)) return true;
+      return false;
+    });
+
+    return notificationPreferences;
+  }
+
   async updateUserNotificationsPreferences(userId, notifications) {
     const NOTIFICATIONS_KEYS = [MARKETING_INFO];
 
@@ -604,7 +615,6 @@ class Db extends EventEmitter {
 
     const existingLegalFiltered = existingLegal.filter(value => {
       if (value.type.includes(NOTIFICATIONS_KEYS)) return false;
-
       return true;
     });
 
