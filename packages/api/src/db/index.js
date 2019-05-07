@@ -139,13 +139,25 @@ class Db extends EventEmitter {
     /* eslint-enable */
   }
 
-  async getUserAuthChallenge(userId) {
+  async getUserForAuthChallenge(userId) {
     const user = await Users.findOne({ _id: userId })
-      .select('accountStatus passwordUpdatedAt')
+      .select('_id accountStatus passwordUpdatedAt')
       .exec();
 
     if (!user) {
       throw new Error(`user not found: ${userId}`);
+    }
+
+    return user;
+  }
+
+  async getUserForLogin(userEmail) {
+    const user = await Users.findOne({ email: userEmail })
+      .select('_id password accountStatus hasTwoFactorAuthenticationEnabled')
+      .exec();
+
+    if (!user) {
+      throw new Error(`user not found: ${userEmail}`);
     }
 
     return user;
@@ -336,7 +348,7 @@ class Db extends EventEmitter {
   }
 
   async authChallenge(userId, JWTiat) {
-    const user = await this.getUserAuthChallenge(userId);
+    const user = await this.getUserForAuthChallenge(userId);
     const { accountStatus, passwordUpdatedAt } = user;
 
     if (accountStatus !== 'active') {

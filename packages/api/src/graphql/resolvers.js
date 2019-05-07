@@ -305,7 +305,7 @@ module.exports = ({
         });
       }
 
-      const user = await db.getUserByEmail(email);
+      const user = await db.getUserForLogin(email);
 
       try {
         if (!user) throw logInErr;
