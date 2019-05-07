@@ -473,7 +473,7 @@ class BillingPage extends React.PureComponent {
                                   Next payment date at:{' '}
                                   <strong>
                                     <Moment
-                                      format="LL"
+                                      format="DD MMM YYYY"
                                       date={Number(subscription.nextBillDateAt)}
                                     />
                                   </strong>
