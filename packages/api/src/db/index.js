@@ -131,6 +131,18 @@ class Db extends EventEmitter {
     /* eslint-enable */
   }
 
+  async getUserAuthChallenge(userId) {
+    const user = await Users.findOne({ _id: userId })
+      .select('accountStatus passwordUpdatedAt')
+      .exec();
+
+    if (!user) {
+      throw new Error(`user not found: ${userId}`);
+    }
+
+    return user;
+  }
+
   async getUserSubscription(userId) {
     const user = await this.getUserById(userId);
 
@@ -316,10 +328,10 @@ class Db extends EventEmitter {
   }
 
   async authChallenge(userId, JWTiat) {
-    const user = await this._getUser(userId, { mustExist: true });
-    const { passwordUpdatedAt } = user;
+    const user = await this.getUserAuthChallenge(userId);
+    const { accountStatus, passwordUpdatedAt } = user;
 
-    if (user.accountStatus !== 'active') {
+    if (accountStatus !== 'active') {
       throw new Error('user account status is not active');
     }
     if (JWTiat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
