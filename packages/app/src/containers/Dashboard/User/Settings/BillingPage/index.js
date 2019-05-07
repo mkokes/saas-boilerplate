@@ -452,11 +452,12 @@ class BillingPage extends React.PureComponent {
                                       {' '}
                                       (
                                       <Moment
+                                        date={Number(
+                                          subscription.servicePeriodEnd,
+                                        )}
                                         diff={Number(subscription.startedAt)}
                                         unit="days"
-                                      >
-                                        {Number(subscription.servicePeriodEnd)}
-                                      </Moment>{' '}
+                                      />{' '}
                                       days left)
                                     </span>
                                   </strong>
