@@ -152,15 +152,9 @@ class Db extends EventEmitter {
   }
 
   async getUserForLogin(userEmail) {
-    const user = await Users.findOne({ email: userEmail })
+    return Users.findOne({ email: userEmail })
       .select('_id password accountStatus hasTwoFactorAuthenticationEnabled')
       .exec();
-
-    if (!user) {
-      throw new Error(`user not found: ${userEmail}`);
-    }
-
-    return user;
   }
 
   async getUserSubscription(userId) {
