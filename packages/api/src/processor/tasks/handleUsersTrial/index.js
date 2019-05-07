@@ -15,8 +15,10 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
             const isTrialExpired = moment().isSameOrAfter(
               moment(servicePeriodEnd).startOf('day'),
             );
-            const daysLeftUntilTrialExpiration =
-              moment(servicePeriodEnd).diff(startedAt, 'days') + 1; // add +1 day to count current day
+            const daysLeftUntilTrialExpiration = moment(servicePeriodEnd).diff(
+              startedAt,
+              'days',
+            );
 
             if (isTrialExpired === true) {
               await db.userTrialExpired(_user);
