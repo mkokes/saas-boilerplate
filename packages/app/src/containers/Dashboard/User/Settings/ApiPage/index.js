@@ -29,7 +29,7 @@ export default class ApiPage extends React.PureComponent {
     return (
       <Fragment>
         <Helmet>
-          <title>API account information</title>
+          <title>Account API</title>
         </Helmet>
         <ApolloConsumer>
           {client => (
