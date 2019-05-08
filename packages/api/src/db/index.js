@@ -29,7 +29,6 @@ const {
   SUBSCRIPTION_RENEWAL_CANCELLED,
   PAYMENT_RECEIVED,
 } = require('../constants/notifications');
-const { USER } = require('../constants/roles');
 
 const setupDb = require('./setup');
 const Users = require('./models/users');
@@ -271,7 +270,7 @@ class Db extends EventEmitter {
       signupIP: signupIP || null,
       signupCity: signupCity || null,
       signupCountry: signupCountry || null,
-      roles: [USER],
+      roles: [],
     }).save();
 
     const trialPlan = await Plans.findOne({ name: 'TRIAL' }).select('_id');
