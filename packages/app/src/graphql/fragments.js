@@ -9,6 +9,7 @@ export const ProfileFields = gql`
       _plan {
         _id
         name
+        features
       }
     }
     accountStatus
