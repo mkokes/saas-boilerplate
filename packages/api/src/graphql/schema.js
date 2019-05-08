@@ -30,6 +30,7 @@ module.exports = gql`
     _id: String
     _paddleProductId: Int
     name: String
+    features: [String]
     displayedName: String
     displayedDescription: String
     displayedFeatures: [String]
@@ -101,6 +102,7 @@ module.exports = gql`
     plans: [Plan]
   }
   type Mutation {
+    poc: Boolean
     contactSupport(
       recaptchaResponse: String!
       requesterName: String!
