@@ -201,3 +201,9 @@ export const CREATE_COINBASE_COMMERCE_CHARGE = gql`
     chargeId: createCoinbaseCommerceCharge(plan: $plan) @requireAuth
   }
 `;
+
+export const POC = gql`
+  mutation poc {
+    poc @requireAuth
+  }
+`;
