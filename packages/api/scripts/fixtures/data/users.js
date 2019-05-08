@@ -1,3 +1,5 @@
+const { USER } = require('../../../src/constants/roles');
+
 module.exports = [
   {
     _subscription: null,
@@ -8,7 +10,7 @@ module.exports = [
     emailConfirmedAt: new Date(),
     accountStatus: 'active',
     timezone: 'Europe/Madrid',
-    roles: [],
+    roles: [USER],
     legal: [
       {
         type: 'TERMS_AND_CONDITIONS',
