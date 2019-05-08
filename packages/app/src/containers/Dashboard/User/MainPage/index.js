@@ -47,7 +47,10 @@ export default class MainPage extends React.PureComponent {
                 <strong>
                   You have only{' '}
                   <Moment
-                    date={Number(userProfile._subscription.servicePeriodEnd)}
+                    date={
+                      userProfile._subscription &&
+                      Number(userProfile._subscription.servicePeriodEnd)
+                    }
                     diff={new Date()}
                     unit="days"
                   />{' '}
