@@ -94,7 +94,7 @@ class Db extends EventEmitter {
       .populate({
         path: '_subscription',
         select: '_id servicePeriodEnd',
-        populate: { path: '_plan', select: '_id name' },
+        populate: { path: '_plan', select: '_id name features' },
       })
       .execPopulate();
 
