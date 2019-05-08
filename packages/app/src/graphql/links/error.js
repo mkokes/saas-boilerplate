@@ -31,61 +31,66 @@ const errorLink = () =>
             }`,
           );
 
-          if (extensions.code === 'UNAUTHENTICATED') {
-            try {
-              const retryRequest = () => {
-                operation.setContext({
-                  headers: {
-                    ...headers,
-                    Authorization: buildAuthHeader(
-                      globalProvider.authAccessToken(),
-                    ).Authorization,
-                  },
-                });
+          try {
+            // eslint-disable-next-line default-case
+            switch (extensions.code) {
+              case 'UNAUTHENTICATED': {
+                const retryRequest = () => {
+                  operation.setContext({
+                    headers: {
+                      ...headers,
+                      Authorization: buildAuthHeader(
+                        globalProvider.authAccessToken(),
+                      ).Authorization,
+                    },
+                  });
 
-                const subscriber = {
-                  next: observer.next.bind(observer),
-                  error: observer.error.bind(observer),
-                  complete: observer.complete.bind(observer),
+                  const subscriber = {
+                    next: observer.next.bind(observer),
+                    error: observer.error.bind(observer),
+                    complete: observer.complete.bind(observer),
+                  };
+
+                  return forward(operation).subscribe(subscriber);
                 };
 
-                return forward(operation).subscribe(subscriber);
-              };
+                const { headers } = operation.getContext();
+                const globalProvider = await getGlobalProvider();
 
-              const { headers } = operation.getContext();
-              const globalProvider = await getGlobalProvider();
+                if (!isFetchingToken) {
+                  isFetchingToken = true;
 
-              if (!isFetchingToken) {
-                isFetchingToken = true;
+                  try {
+                    await globalProvider.refreshAccessTokenReq();
 
-                try {
-                  await globalProvider.refreshAccessTokenReq();
+                    isFetchingToken = false;
+                    onTokenRefreshed(null);
+                    tokenSubscribers = [];
 
-                  isFetchingToken = false;
-                  onTokenRefreshed(null);
-                  tokenSubscribers = [];
+                    return retryRequest();
+                  } catch (e) {
+                    onTokenRefreshed(
+                      new Error('Unable to refresh access token'),
+                    );
 
-                  return retryRequest();
-                } catch (e) {
-                  onTokenRefreshed(new Error('Unable to refresh access token'));
+                    tokenSubscribers = [];
+                    isFetchingToken = false;
 
-                  tokenSubscribers = [];
-                  isFetchingToken = false;
-
-                  return globalProvider.logOut(true);
+                    return globalProvider.logOut(true);
+                  }
                 }
-              }
 
-              const tokenSubscriber = new Promise(resolve => {
-                subscribeTokenRefresh(errRefreshing => {
-                  if (!errRefreshing) return resolve(retryRequest());
+                const tokenSubscriber = new Promise(resolve => {
+                  subscribeTokenRefresh(errRefreshing => {
+                    if (!errRefreshing) return resolve(retryRequest());
+                  });
                 });
-              });
 
-              return tokenSubscriber;
-            } catch (e) {
-              observer.error(e);
+                return tokenSubscriber;
+              }
             }
+          } catch (e) {
+            observer.error(e);
           }
         }
       }),
