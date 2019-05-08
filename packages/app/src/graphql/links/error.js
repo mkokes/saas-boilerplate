@@ -32,7 +32,6 @@ const errorLink = () =>
           );
 
           try {
-            // eslint-disable-next-line default-case
             switch (extensions.code) {
               case 'UNAUTHENTICATED': {
                 const retryRequest = () => {
@@ -88,6 +87,10 @@ const errorLink = () =>
 
                 return tokenSubscriber;
               }
+
+              default:
+                observer.error(graphQLErrors);
+                break;
             }
           } catch (e) {
             observer.error(e);
