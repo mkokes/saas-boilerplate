@@ -7,7 +7,6 @@ const momentTimezone = require('moment-timezone');
 const Coinbase = require('coinbase-commerce-node');
 
 const { MARKETING_INFO } = require('../constants/legal');
-
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
@@ -36,6 +35,30 @@ const createRefreshToken = ({ JWT_SECRET, data }) =>
 const assertUser = async user => {
   if (!safeGet(user, '_id')) {
     throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+  }
+};
+const hasRoles = async (db, userId, roles) => {
+  if (!(await db.userHasRoles(userId, roles))) {
+    throw new ApolloError(
+      'Your account does not have sufficient privileges to perform this action',
+      'INSUFFICIENT_PRIVILEGES',
+    );
+  }
+};
+const hasSubscription = async (db, userId) => {
+  if (!(await db.userHasSubscription(userId))) {
+    throw new ApolloError(
+      `Upgrade your account to a paying plan to perform this action`,
+      'USER_SUBSCRIPTION_NOT_FOUND',
+    );
+  }
+};
+const hasSubscriptionPlanFeature = async (db, userId, feature) => {
+  if (!(await db.userhasSubscriptionPlanFeature(userId, feature))) {
+    throw new ApolloError(
+      'Your current plan does not allow access to this feature',
+      'PLAN_FEATURE_NOT_ALLOWED',
+    );
   }
 };
 
@@ -106,6 +129,14 @@ module.exports = ({
     },
   },
   Mutation: {
+    poc: async (_, __, { user }) => {
+      await assertUser(user);
+      await hasRoles(db, user._id, ['USER']);
+      await hasSubscription(db, user._id);
+      await hasSubscriptionPlanFeature(db, user._id, 'SMS_SENDER');
+
+      return true;
+    },
     contactSupport: async (
       _,
       {
@@ -376,29 +407,20 @@ module.exports = ({
       try {
         decodedJWT = jwt.verify(refreshToken, JWT_SECRET);
         assertRefreshTokenPayload(decodedJWT);
+
+        await db.authChallenge(decodedJWT._id, decodedJWT.iat);
+
+        const accessToken = createAccessToken({
+          JWT_SECRET,
+          data: {
+            _id: decodedJWT._id,
+          },
+        });
+
+        return { accessToken };
       } catch (e) {
         throw new ApolloError('Invalid refresh token', 'INVALID_REFRESH_TOKEN');
       }
-
-      const challengeStatus = await db.authChallenge(
-        decodedJWT._id,
-        decodedJWT.iat,
-      );
-      if (!challengeStatus) {
-        throw new ApolloError(
-          'User did not pass auth challenge',
-          'INVALID_REFRESH_TOKEN',
-        );
-      }
-
-      const accessToken = createAccessToken({
-        JWT_SECRET,
-        data: {
-          _id: decodedJWT._id,
-        },
-      });
-
-      return { accessToken };
     },
     forgotPassword: async (_, { email, recaptchaResponse }) => {
       if (!validator.isEmail(email)) {
@@ -421,7 +443,8 @@ module.exports = ({
       }
 
       const user = await db.getUserByEmail(email);
-      if (!user) throw new ApolloError('User does not exists', '');
+      if (!user)
+        throw new ApolloError('User does not exists', 'USER_NOT_EXISTS');
 
       db.forgotPasswordRequest(user._id);
 
