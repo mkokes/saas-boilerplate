@@ -209,9 +209,7 @@ class Db extends EventEmitter {
   }
 
   async existsUserWithEmail(email) {
-    const count = await Users.countDocuments({ email }).exec();
-
-    return !!count;
+    return !!(await Users.countDocuments({ email }).exec());
   }
 
   async compareUserPassword(userId, password) {
@@ -1271,6 +1269,37 @@ class Db extends EventEmitter {
       eventType: 'PEOPLE_TRACK_CHARGE',
       args: [data._user, data.saleGross],
     });
+  }
+
+  async userHasRoles(userId, roles) {
+    return !!(await Users.countDocuments({
+      _id: userId,
+      roles: { $in: roles },
+    }).exec());
+  }
+
+  async userHasSubscription(userId) {
+    return !!(await Users.countDocuments({
+      _id: userId,
+      _subscription: { $ne: null },
+    }).exec());
+  }
+
+  async userhasSubscriptionPlanFeature(userId, feature) {
+    try {
+      const user = await Users.findById(userId)
+        .select('_subscription')
+        .populate({
+          path: '_subscription',
+          select: '_plan',
+          populate: { path: '_plan', select: 'features' },
+        })
+        .exec();
+
+      return !!user._subscription._plan.features.includes(feature);
+    } catch (_) {
+      return false;
+    }
   }
 
   async notifyUser(userId, type, variables) {
