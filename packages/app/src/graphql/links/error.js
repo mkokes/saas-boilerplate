@@ -87,13 +87,12 @@ const errorLink = () =>
 
                 return tokenSubscriber;
               }
-
               default:
                 observer.error(graphQLErrors);
                 break;
             }
           } catch (e) {
-            observer.error(e);
+            observer.error(graphQLErrors);
           }
         }
       }),
