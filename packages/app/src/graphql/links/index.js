@@ -2,8 +2,8 @@ import { ApolloLink } from 'apollo-link';
 
 import client from './client';
 import auth from './auth';
+import refreshToken from './refreshToken';
 import error from './error';
-import retry from './retry';
 import http from './http';
 
 export default args =>
@@ -11,6 +11,6 @@ export default args =>
     auth(args),
     client(args),
     error(args),
-    retry(args),
+    refreshToken(args),
     http(args),
   ]);

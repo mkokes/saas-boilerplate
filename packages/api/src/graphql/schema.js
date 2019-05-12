@@ -102,7 +102,6 @@ module.exports = gql`
     plans: [Plan]
   }
   type Mutation {
-    poc: Boolean
     contactSupport(
       recaptchaResponse: String!
       requesterName: String!

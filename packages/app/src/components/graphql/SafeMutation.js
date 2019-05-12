@@ -7,13 +7,11 @@ import Loader from 'components/Loader';
 import { transformApolloErr } from 'utils/apollo';
 
 export const DEFAULT_IS_LOADING = ({ loading }) => loading;
-export const DEFAULT_RENDER_ERROR = ({ error }) => {
-  /* eslint-disable no-console */
-  console.error(error);
-  const transformedError = transformApolloErr(error);
-
-  return <ErrorBox>{transformedError.message}</ErrorBox>;
-};
+export const DEFAULT_RENDER_ERROR = ({ error }) => (
+  <ErrorBox className="text-center">
+    {transformApolloErr(error).message}
+  </ErrorBox>
+);
 export const DEFAULT_RENDER_LOADING = () => <Loader />;
 
 DEFAULT_RENDER_ERROR.propTypes = {
@@ -44,13 +42,23 @@ export default class SafeMutation extends Component {
 
     return (
       <Mutation {...props}>
-        {(mutator, result) => (
-          <>
-            {result.error && showError ? renderError(result) : null}
-            {isLoading(result) && showLoading ? renderLoading(result) : null}
-            {children(mutator, result.data || {})}
-          </>
-        )}
+        {(_mutator, result) => {
+          const mutator = async opts => {
+            try {
+              return await _mutator(opts);
+            } catch (e) {
+              throw transformApolloErr(e);
+            }
+          };
+
+          return (
+            <>
+              {result.error && showError ? renderError(result) : null}
+              {isLoading(result) && showLoading ? renderLoading(result) : null}
+              {children(mutator, result || {})}
+            </>
+          );
+        }}
       </Mutation>
     );
   }

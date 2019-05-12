@@ -1,7 +1,11 @@
 const safeGet = require('lodash.get');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
-const { ApolloError, UserInputError } = require('apollo-server-koa');
+const {
+  ApolloError,
+  AuthenticationError,
+  UserInputError,
+} = require('apollo-server-koa');
 const axios = require('axios');
 const momentTimezone = require('moment-timezone');
 const Coinbase = require('coinbase-commerce-node');
@@ -34,7 +38,7 @@ const createRefreshToken = ({ JWT_SECRET, data }) =>
 
 const assertUser = async user => {
   if (!safeGet(user, '_id')) {
-    throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+    throw new AuthenticationError('Authentication required');
   }
 };
 const hasRoles = async (db, userId, roles) => {
@@ -129,14 +133,6 @@ module.exports = ({
     },
   },
   Mutation: {
-    poc: async (_, __, { user }) => {
-      await assertUser(user);
-      await hasRoles(db, user._id, ['USER']);
-      await hasSubscription(db, user._id);
-      await hasSubscriptionPlanFeature(db, user._id, 'SMS_SENDER');
-
-      return true;
-    },
     contactSupport: async (
       _,
       {

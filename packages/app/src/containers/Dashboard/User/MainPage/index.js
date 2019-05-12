@@ -5,7 +5,7 @@
  */
 
 import React, { Fragment } from 'react';
-import { Container, Alert, Card, Button } from 'reactstrap';
+import { Container, Alert, Card } from 'reactstrap';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,8 +15,6 @@ import Moment from 'react-moment';
 import moment from 'moment';
 
 import { GlobalConsumer } from 'GlobalState';
-import SafeMutation from 'components/graphql/SafeMutation';
-import { POC } from 'graphql/mutations';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class MainPage extends React.PureComponent {
@@ -82,15 +80,7 @@ export default class MainPage extends React.PureComponent {
                 </strong>
               </Alert>
               <h1>Main</h1>
-              <Card body>
-                <SafeMutation mutation={POC}>
-                  {actionCall => (
-                    <Button color="primary" onClick={() => actionCall()}>
-                      SOME_FEATURE_ACTION_BUTTON
-                    </Button>
-                  )}
-                </SafeMutation>
-              </Card>
+              <Card body />
             </Container>
           )}
         </GlobalConsumer>

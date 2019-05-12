@@ -10,7 +10,7 @@ const Error = styled(Alert)`
 `;
 
 const ErrorBox = props => (
-  <Error color="danger" fade={false}>
+  <Error color="danger" fade={false} {...props}>
     <strong>{props.children}</strong>
   </Error>
 );
