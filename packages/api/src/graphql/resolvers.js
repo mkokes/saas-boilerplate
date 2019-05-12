@@ -41,6 +41,8 @@ const assertUser = async user => {
     throw new AuthenticationError('Authentication required');
   }
 };
+
+/* eslint-disable no-unused-vars */
 const hasRoles = async (db, userId, roles) => {
   if (!(await db.userHasRoles(userId, roles))) {
     throw new ApolloError(
@@ -65,6 +67,7 @@ const hasSubscriptionPlanFeature = async (db, userId, feature) => {
     );
   }
 };
+/* eslint-enable no-unused-vars */
 
 module.exports = ({
   config: {
