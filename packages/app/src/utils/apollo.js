@@ -1,13 +1,12 @@
 export const transformApolloErr = e => {
   const { networkError } = e;
-  const transformedErr = {
-    message: null,
-    type: undefined,
-    data: {},
-  };
 
-  transformedErr.type = networkError.code;
+  const transformedErr = new Error();
+  transformedErr.name = 'apollo_link_error';
+  transformedErr.data = {};
+
   transformedErr.message = networkError.message;
+  transformedErr.type = networkError.code;
 
   // eslint-disable-next-line default-case
   switch (networkError.code) {

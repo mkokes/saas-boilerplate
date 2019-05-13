@@ -3,7 +3,6 @@ import { Observable } from 'apollo-link';
 
 const finalErr = new Error();
 finalErr.name = 'apollo_link_error';
-finalErr.stack = null;
 
 /* eslint-disable consistent-return, no-console */
 const errorLink = () =>
