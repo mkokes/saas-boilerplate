@@ -57,11 +57,11 @@ export default class LoginPage extends React.PureComponent {
                       <GlobalConsumer>
                         {({ setAuthTokens, logIn }) => (
                           <SafeMutation mutation={LOGIN_USER} showError>
-                            {logInUserRequest => (
+                            {logInRequest => (
                               <LoginForm
                                 setAuthTokens={setAuthTokens}
                                 logIn={logIn}
-                                logInUserRequest={logInUserRequest}
+                                logInRequest={logInRequest}
                               />
                             )}
                           </SafeMutation>
@@ -83,7 +83,7 @@ export default class LoginPage extends React.PureComponent {
 }
 
 const LoginForm = props => {
-  const { setAuthTokens, logIn, logInUserRequest } = props;
+  const { setAuthTokens, logIn, logInRequest } = props;
 
   const [show2FALostMsg, setShow2FALostMsg] = useState(false);
 
@@ -101,7 +101,7 @@ const LoginForm = props => {
         setShow2FALostMsg(false);
 
         try {
-          const { data } = await logInUserRequest({
+          const { data } = await logInRequest({
             variables: {
               ...values,
             },
@@ -195,5 +195,5 @@ const LoginForm = props => {
 LoginForm.propTypes = {
   setAuthTokens: PropTypes.func,
   logIn: PropTypes.func,
-  logInUserRequest: PropTypes.func,
+  logInRequest: PropTypes.func,
 };
