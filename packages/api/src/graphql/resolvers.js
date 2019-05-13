@@ -442,8 +442,7 @@ module.exports = ({
       }
 
       const user = await db.getUserByEmail(email);
-      if (!user)
-        throw new ApolloError('User does not exists', 'USER_NOT_EXISTS');
+      if (!user) return true; // avoid hints if user does not exists
 
       db.forgotPasswordRequest(user._id);
 
