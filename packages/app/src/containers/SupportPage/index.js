@@ -4,7 +4,7 @@
  *
  */
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import {
@@ -23,15 +23,14 @@ import { faSpinner, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { ReactstrapInput, ReactstrapSelect } from 'utils/formiik';
-import { ApolloConsumer } from 'react-apollo';
 import Reaptcha from 'reaptcha';
 import _ from 'lodash';
 import queryString from 'query-string';
 
 import { GlobalConsumer } from 'GlobalState';
 import { CONTACT_SUPPORT } from 'graphql/mutations';
-import { transformApolloErr } from 'utils/apollo';
 import config from 'config';
+import SafeMutation from 'components/graphql/SafeMutation';
 
 const { RECAPTCHA_SITE_KEY, WEBSITE_URL } = config;
 
@@ -62,43 +61,25 @@ export default class SupportPage extends React.PureComponent {
         value: 'LOST_2FA',
       },
       {
-        label: 'Feature Request',
-        value: 'FEATURE_REQUEST',
-      },
-      {
         label: 'Bug Report',
         value: 'BUG_REPORT',
+      },
+      {
+        label: 'Feature Request',
+        value: 'FEATURE_REQUEST',
       },
     ];
 
     this.state = {
-      recaptchaResponse: '',
-      recaptchaRendered: false,
-      formMsg: null,
-      initialSubject: subject || '',
-      initialTicketType:
+      subject: subject || '',
+      ticketType:
         this.TICKET_TYPE_OPTIONS.find(e => e.value === ticketType) || null,
+      ticketOptions: this.TICKET_TYPE_OPTIONS,
     };
-
-    this.captcha = null;
-  }
-
-  resetCaptcha() {
-    this.setState({ recaptchaResponse: '' });
-    try {
-      this.captcha.reset();
-      // eslint-disable-next-line no-empty
-    } catch (__) {}
   }
 
   render() {
-    const {
-      recaptchaResponse,
-      recaptchaRendered,
-      formMsg,
-      initialSubject,
-      initialTicketType,
-    } = this.state;
+    const { subject, ticketType, ticketOptions } = this.state;
 
     return (
       <Fragment>
@@ -118,201 +99,22 @@ export default class SupportPage extends React.PureComponent {
                       </CardHeader>
                       <CardBody>
                         <Row>
-                          <Col className="text-center">
-                            {formMsg && (
-                              <Alert
-                                color={formMsg.color}
-                                role="alert"
-                                fade={false}
-                              >
-                                <strong>{formMsg.text}</strong>
-                              </Alert>
-                            )}
-                          </Col>
-                        </Row>
-                        <Row>
                           <Col>
-                            <ApolloConsumer>
-                              {client => (
-                                <Formik
-                                  initialValues={{
-                                    requesterName: userProfile
-                                      ? userProfile.firstName
-                                      : '',
-                                    requesterEmail: userProfile
-                                      ? userProfile.email
-                                      : '',
-                                    subject: initialSubject,
-                                    description: '',
-                                    ticketType: initialTicketType,
+                            <SafeMutation mutation={CONTACT_SUPPORT} showError>
+                              {contactSupportRequest => (
+                                <ContactForm
+                                  userProfile={userProfile}
+                                  contactSupportRequest={contactSupportRequest}
+                                  ticketOptions={ticketOptions}
+                                  data={{
+                                    initialValues: {
+                                      subject,
+                                      ticketType,
+                                    },
                                   }}
-                                  validationSchema={Yup.object().shape({
-                                    requesterName: Yup.string().required(
-                                      'Required',
-                                    ),
-                                    requesterEmail: Yup.string()
-                                      .email('Invalid email')
-                                      .required('Required'),
-                                    subject: Yup.string()
-                                      .max(33)
-                                      .required('Required'),
-                                    ticketType: Yup.object()
-                                      .nullable()
-                                      .shape({
-                                        label: Yup.string().required(),
-                                        value: Yup.string().required(),
-                                      })
-                                      .required('Select an option'),
-                                    description: Yup.string()
-                                      .min(40)
-                                      .required('Required'),
-                                  })}
-                                  onSubmit={async (values, formikBag) => {
-                                    this.setState({
-                                      formMsg: null,
-                                    });
-
-                                    if (!recaptchaRendered)
-                                      await this.captcha.renderExplicitly();
-
-                                    if (!recaptchaResponse) {
-                                      await this.captcha.execute();
-                                      setTimeout(
-                                        () => formikBag.setSubmitting(false),
-                                        2000,
-                                      );
-                                      return;
-                                    }
-
-                                    try {
-                                      await client.mutate({
-                                        mutation: CONTACT_SUPPORT,
-                                        variables: {
-                                          recaptchaResponse,
-                                          ..._.omit(values, ['ticketType']),
-                                          ticketType: values.ticketType.value,
-                                        },
-                                      });
-
-                                      this.setState({
-                                        formMsg: {
-                                          color: 'success',
-                                          text: `Thanks for contacting us.`,
-                                        },
-                                      });
-
-                                      formikBag.setSubmitting(false);
-                                      formikBag.resetForm();
-                                    } catch (e) {
-                                      const err = transformApolloErr(e);
-
-                                      if (err.type === 'BAD_USER_INPUT') {
-                                        formikBag.setErrors(err.data);
-                                      } else {
-                                        this.setState({
-                                          formMsg: {
-                                            color: 'danger',
-                                            text: err.message,
-                                          },
-                                        });
-                                      }
-
-                                      this.resetCaptcha();
-                                      formikBag.setSubmitting(false);
-                                    }
-                                  }}
-                                >
-                                  {({ submitForm, values, isSubmitting }) => (
-                                    <Form
-                                      hidden={
-                                        formMsg && formMsg.color === 'success'
-                                      }
-                                    >
-                                      <Field
-                                        component={ReactstrapInput}
-                                        name="requesterName"
-                                        type="text"
-                                        label="Name"
-                                        autoComplete="first-name"
-                                        disabled={!!userProfile}
-                                        required
-                                      />
-                                      <Field
-                                        component={ReactstrapInput}
-                                        name="requesterEmail"
-                                        type="email"
-                                        label="Email address"
-                                        autoComplete="email"
-                                        disabled={!!userProfile}
-                                        required
-                                      />
-                                      <Field
-                                        component={ReactstrapSelect}
-                                        name="ticketType"
-                                        label="Topic"
-                                        options={this.TICKET_TYPE_OPTIONS}
-                                        value={values.ticketType}
-                                        required
-                                      />
-                                      <Field
-                                        component={ReactstrapInput}
-                                        name="subject"
-                                        type="text"
-                                        label="Subject"
-                                        required
-                                      />
-                                      <Field
-                                        component={ReactstrapInput}
-                                        name="description"
-                                        type="textarea"
-                                        label="Description"
-                                        style={{ height: 150 }}
-                                        required
-                                      />
-                                      <div>
-                                        <Button
-                                          type="submit"
-                                          block
-                                          size="lg"
-                                          className="btn-theme"
-                                          disabled={isSubmitting}
-                                        >
-                                          <FontAwesomeIcon
-                                            pulse
-                                            icon={faSpinner}
-                                            className={
-                                              isSubmitting ? 'mr-2' : 'd-none'
-                                            }
-                                          />
-                                          Submit
-                                        </Button>
-
-                                        <Reaptcha
-                                          // eslint-disable-next-line
-                                          ref={e => (this.captcha = e)}
-                                          sitekey={RECAPTCHA_SITE_KEY}
-                                          onVerify={res => {
-                                            this.setState({
-                                              recaptchaResponse: res,
-                                            });
-                                            submitForm();
-                                          }}
-                                          onExpire={() => this.resetCaptcha}
-                                          onError={() => this.resetCaptcha}
-                                          onRender={() =>
-                                            this.setState({
-                                              recaptchaRendered: true,
-                                            })
-                                          }
-                                          size="invisible"
-                                          explicit
-                                        />
-                                      </div>
-                                    </Form>
-                                  )}
-                                </Formik>
+                                />
                               )}
-                            </ApolloConsumer>
+                            </SafeMutation>
                           </Col>
                         </Row>
                       </CardBody>
@@ -340,7 +142,175 @@ export default class SupportPage extends React.PureComponent {
     );
   }
 }
-
 SupportPage.propTypes = {
   location: PropTypes.object,
+};
+
+const ContactForm = props => {
+  const { userProfile, contactSupportRequest, ticketOptions, data } = props;
+
+  const [captchaRendered, setCaptchaRendered] = useState(false);
+  const [captchaResponse, setCaptchaResponse] = useState('');
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const resetCaptcha = async () => {
+    setCaptchaResponse('');
+    await captcha.current.reset();
+  };
+
+  const captcha = useRef(null);
+
+  return (
+    <Formik
+      initialValues={{
+        ...data.initialValues,
+        requesterName: userProfile ? userProfile.firstName : '',
+        requesterEmail: userProfile ? userProfile.email : '',
+        description: '',
+      }}
+      validationSchema={Yup.object().shape({
+        requesterName: Yup.string().required('Required'),
+        requesterEmail: Yup.string()
+          .email('Invalid email')
+          .required('Required'),
+        subject: Yup.string()
+          .max(33)
+          .required('Required'),
+        ticketType: Yup.object()
+          .nullable()
+          .shape({
+            label: Yup.string().required(),
+            value: Yup.string().required(),
+          })
+          .required('Select an option'),
+        description: Yup.string()
+          .min(40)
+          .required('Required'),
+      })}
+      onSubmit={async (values, formikBag) => {
+        if (!captchaRendered) await captcha.current.renderExplicitly();
+        if (!captchaResponse) {
+          await captcha.current.execute();
+          return setTimeout(() => formikBag.setSubmitting(false), 4000);
+        }
+
+        try {
+          await contactSupportRequest({
+            mutation: CONTACT_SUPPORT,
+            variables: {
+              ..._.omit(values, ['ticketType']),
+              ticketType: values.ticketType.value,
+              recaptchaResponse: captchaResponse,
+            },
+          });
+
+          return setShowSuccessMessage(true);
+        } catch (e) {
+          if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
+            formikBag.setErrors(e.data);
+          }
+
+          await resetCaptcha();
+          return formikBag.setSubmitting(false);
+        }
+      }}
+    >
+      {({ submitForm, values, isSubmitting }) => (
+        <div>
+          <Alert
+            color="success"
+            role="alert"
+            fade={false}
+            className="text-center"
+            hidden={!showSuccessMessage}
+          >
+            <strong>Thanks for contacting us.</strong>
+          </Alert>
+          <Form hidden={showSuccessMessage}>
+            <Field
+              component={ReactstrapInput}
+              name="requesterName"
+              type="text"
+              label="Name"
+              autoComplete="first-name"
+              disabled={!!userProfile}
+              required
+            />
+            <Field
+              component={ReactstrapInput}
+              name="requesterEmail"
+              type="email"
+              label="Email address"
+              autoComplete="email"
+              disabled={!!userProfile}
+              required
+            />
+            <Field
+              component={ReactstrapSelect}
+              name="ticketType"
+              label="Topic"
+              options={ticketOptions}
+              value={values.ticketType}
+              required
+            />
+            <Field
+              component={ReactstrapInput}
+              name="subject"
+              type="text"
+              label="Subject"
+              required
+            />
+            <Field
+              component={ReactstrapInput}
+              name="description"
+              type="textarea"
+              label="Description"
+              style={{ height: 150 }}
+              required
+            />
+            <div>
+              <Button
+                type="submit"
+                block
+                size="lg"
+                className="btn-theme"
+                disabled={isSubmitting}
+              >
+                <FontAwesomeIcon
+                  pulse
+                  icon={faSpinner}
+                  className={isSubmitting ? 'mr-2' : 'd-none'}
+                />
+                Submit
+              </Button>
+              <Reaptcha
+                // eslint-disable-next-line no-return-assign
+                ref={captcha}
+                sitekey={RECAPTCHA_SITE_KEY}
+                size="invisible"
+                explicit
+                onRender={() => setCaptchaRendered(true)}
+                onVerify={res => {
+                  setCaptchaResponse(res);
+                  submitForm();
+                }}
+                onExpire={async () => {
+                  await resetCaptcha();
+                }}
+                onError={async () => {
+                  await resetCaptcha();
+                }}
+              />
+            </div>
+          </Form>
+        </div>
+      )}
+    </Formik>
+  );
+};
+ContactForm.propTypes = {
+  userProfile: PropTypes.object,
+  contactSupportRequest: PropTypes.func,
+  ticketOptions: PropTypes.array,
+  data: PropTypes.object,
 };

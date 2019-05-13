@@ -183,7 +183,7 @@ module.exports = ({
       ) {
         paramsValidationErrors.ticketType = 'Selected option is not valid';
       }
-      if (!validator.isLength(description, { min: 50, max: undefined })) {
+      if (!validator.isLength(description, { min: 40, max: undefined })) {
         paramsValidationErrors.description = 'Too short!';
       }
 
