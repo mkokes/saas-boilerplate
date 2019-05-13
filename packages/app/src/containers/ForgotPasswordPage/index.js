@@ -163,6 +163,7 @@ export default class ForgotPasswordPage extends React.PureComponent {
                                   type="email"
                                   label="Email address"
                                   autoComplete="email"
+                                  autoFocus
                                   required
                                 />
                                 <PasswordResetText>

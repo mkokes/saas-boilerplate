@@ -243,6 +243,7 @@ const SignupForm = props => {
                 placeholder="First name"
                 label="First name"
                 autoComplete="first-name"
+                autoFocus
                 required
               />
             </Col>
