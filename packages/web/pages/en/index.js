@@ -59,7 +59,6 @@ class HomeSplash extends React.Component {
                   autoComplete="email"
                   placeholder="Your email address"
                   name="email"
-                  autoFocus
                   required
                 />
                 <button type="submit" className="button hero">
