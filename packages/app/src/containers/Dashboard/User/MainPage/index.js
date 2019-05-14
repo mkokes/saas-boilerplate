@@ -76,7 +76,7 @@ export default class MainPage extends React.PureComponent {
                   <Link to="/dashboard/settings/billing">
                     upgrade your account
                   </Link>{' '}
-                  to continue using PRODUCT_NAME.
+                  to continue using PRODUCT_NAME
                 </strong>
               </Alert>
               <h1>Main</h1>
