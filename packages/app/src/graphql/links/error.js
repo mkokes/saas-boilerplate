@@ -9,9 +9,6 @@ const errorLink = () =>
   onError(
     ({ graphQLErrors, networkError }) =>
       new Observable(async observer => {
-        console.debug(JSON.stringify(graphQLErrors, null, 2));
-        console.debug(JSON.stringify(networkError, null, 2));
-
         if (graphQLErrors) {
           graphQLErrors.map(async ({ message, path, extensions }) => {
             console.error(
