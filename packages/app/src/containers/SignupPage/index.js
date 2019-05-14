@@ -95,7 +95,7 @@ export default class SignupPage extends React.PureComponent {
                     <Col>
                       <GlobalConsumer>
                         {({ setAuthTokens, signUp }) => (
-                          <SafeMutation mutation={SIGNUP_USER}>
+                          <SafeMutation mutation={SIGNUP_USER} showError>
                             {signUpRequest => (
                               <SignupForm
                                 setAuthTokens={setAuthTokens}
