@@ -47,13 +47,13 @@ export default class EmailConfirmationPage extends React.PureComponent {
                 showError
               >
                 {(_, res) => (
-                  <div>
+                  <div hidden={res.error}>
                     <Alert color="success" fade={false}>
                       <strong>
                         Thank you, your email address is now verified.
                       </strong>
                     </Alert>
-                    <a href="/dashboard" hidden={res.error}>
+                    <a href="/dashboard">
                       <Button className="mt-2 btn-theme" size="lg">
                         Go to Dashboard
                       </Button>
