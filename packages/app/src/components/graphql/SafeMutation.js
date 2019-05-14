@@ -18,7 +18,22 @@ DEFAULT_RENDER_ERROR.propTypes = {
   error: PropTypes.string,
 };
 
-/* eslint-disable react/prefer-stateless-function */
+class DoMutation extends React.Component {
+  static propTypes = {
+    mutate: PropTypes.func,
+  };
+
+  componentDidMount() {
+    const { mutate } = this.props;
+    mutate();
+  }
+
+  render() {
+    return null;
+  }
+}
+
+// eslint-disable-next-line react/prefer-stateless-function, react/no-multi-comp
 export default class SafeMutation extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
@@ -27,6 +42,7 @@ export default class SafeMutation extends Component {
     renderLoading: PropTypes.func,
     showError: PropTypes.bool,
     showLoading: PropTypes.bool,
+    executeOnMount: PropTypes.bool,
   };
 
   render() {
@@ -37,6 +53,7 @@ export default class SafeMutation extends Component {
       renderLoading = DEFAULT_RENDER_LOADING,
       showError = false,
       showLoading = false,
+      executeOnMount = false,
       ...props
     } = this.props;
 
@@ -47,15 +64,18 @@ export default class SafeMutation extends Component {
             try {
               return await _mutator(opts);
             } catch (e) {
+              if (executeOnMount) return null;
+
               throw transformApolloErr(e);
             }
           };
 
           return (
             <>
+              {executeOnMount ? <DoMutation mutate={mutator} /> : null}
               {result.error && showError ? renderError(result) : null}
               {isLoading(result) && showLoading ? renderLoading(result) : null}
-              {children(mutator, result || {})}
+              {children(executeOnMount ? null : mutator, result || {})}
             </>
           );
         }}
