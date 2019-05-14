@@ -80,7 +80,6 @@
     "reaptcha": "^1.4.0",
     "sanitize.css": "^8.0.0",
     "styled-components": "^4.0.3",
-    "use-async-effect": "^2.0.0",
     "yup": "^0.27.0"
   },
   "devDependencies": {
