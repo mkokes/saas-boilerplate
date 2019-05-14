@@ -165,7 +165,10 @@ const SignupForm = props => {
 
   const resetCaptcha = async () => {
     setCaptchaResponse('');
-    await captcha.current.reset();
+    try {
+      await captcha.current.reset();
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
   };
 
   const captcha = useRef(null);
@@ -200,7 +203,9 @@ const SignupForm = props => {
         }
 
         try {
-          const { response } = await signUpRequest({
+          const {
+            data: { signUpUser },
+          } = await signUpRequest({
             mutation: SIGNUP_USER,
             variables: {
               ...data.mutationVariables,
@@ -210,7 +215,7 @@ const SignupForm = props => {
             },
           });
 
-          const { accessToken, refreshToken } = response.signUpUser;
+          const { accessToken, refreshToken } = signUpUser;
 
           await setAuthTokens({
             accessToken,

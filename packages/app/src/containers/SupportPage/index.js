@@ -155,7 +155,10 @@ const ContactForm = props => {
 
   const resetCaptcha = async () => {
     setCaptchaResponse('');
-    await captcha.current.reset();
+    try {
+      await captcha.current.reset();
+      // eslint-disable-next-line no-empty
+    } catch (__) {}
   };
 
   const captcha = useRef(null);
