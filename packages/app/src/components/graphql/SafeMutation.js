@@ -7,11 +7,14 @@ import Loader from 'components/Loader';
 import { transformApolloErr } from 'utils/apollo';
 
 export const DEFAULT_IS_LOADING = ({ loading }) => loading;
-export const DEFAULT_RENDER_ERROR = ({ error }) => (
-  <ErrorBox className="text-center">
-    {transformApolloErr(error).message}
-  </ErrorBox>
-);
+export const DEFAULT_RENDER_ERROR = ({ error }) => {
+  const _error = transformApolloErr(error);
+
+  const blacklistRenderErrorTypes = ['BAD_USER_INPUT'];
+  if (blacklistRenderErrorTypes.indexOf(_error.type) > -1) return null;
+
+  return <ErrorBox className="text-center">{_error.message}</ErrorBox>;
+};
 export const DEFAULT_RENDER_LOADING = () => <Loader />;
 
 DEFAULT_RENDER_ERROR.propTypes = {
