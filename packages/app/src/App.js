@@ -194,12 +194,7 @@ export default function App() {
                       layout={DashboardLayoutWithoutSubNavbar}
                     />
 
-                    <Route
-                      protected
-                      exact
-                      path="/signout"
-                      component={SignOutPage}
-                    />
+                    <Route exact path="/signout" component={SignOutPage} />
 
                     <Route component={NotFoundPage} />
                   </Switch>

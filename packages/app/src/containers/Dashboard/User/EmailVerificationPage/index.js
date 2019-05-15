@@ -6,7 +6,7 @@
 
 import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
-import { Container, Row, Col, Alert } from 'reactstrap';
+import { Container, Row, Col, Button, Alert } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -17,23 +17,33 @@ import { IS_USER_EMAIL_CONFIRMED_QUERY } from 'graphql/queries';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class EmailVerificationPage extends React.PureComponent {
+  constructor() {
+    super();
+
+    this.state = {
+      redirectToSignUpPage: false,
+    };
+  }
+
   render() {
+    const { redirectToSignUpPage } = this.state;
+
     return (
       <GlobalConsumer>
-        {({ setUserProfile, userProfile }) => (
+        {({ userProfile, setUserProfile }) => (
           <Fragment>
             <Helmet>
               <title>Email Verification</title>
               <meta name="robots" content="noindex, follow" />
             </Helmet>
 
+            {redirectToSignUpPage && (
+              <Redirect to="/signout?redirect=/signup" />
+            )}
             {userProfile.isSignUpEmailConfirmed ? (
               <Redirect to="/dashboard" />
             ) : (
-              <Container
-                tag="main"
-                className="flex flex-column justify-content-center"
-              >
+              <Container tag="main" className="flex flex-column ">
                 <Row className="justify-content-center">
                   <Col md="12" className="text-center">
                     <SafeQuery
@@ -67,9 +77,8 @@ export default class EmailVerificationPage extends React.PureComponent {
                               </h4>
                               <p>
                                 We have sent an email with a confirmation link
-                                to your email address (
-                                <strong>{userProfile.email}</strong>
-                                ).
+                                to your email address:{' '}
+                                <strong>{userProfile.email}</strong>.
                               </p>
                               <hr />
                               <FontAwesomeIcon
@@ -81,6 +90,18 @@ export default class EmailVerificationPage extends React.PureComponent {
                                 <strong>Waiting for verification ...</strong>
                               </p>
                             </Alert>
+                            <span className="text-muted">
+                              Wrong email address used?{' '}
+                              <Button
+                                color="link"
+                                className="p-0 pb-1"
+                                onClick={async () =>
+                                  this.setState({ redirectToSignUpPage: true })
+                                }
+                              >
+                                create a new account
+                              </Button>
+                            </span>
                           </Fragment>
                         );
                       }}

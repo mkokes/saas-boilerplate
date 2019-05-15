@@ -73,9 +73,7 @@ const DashboardLayoutWithoutSubNavbar = ({ children }) => (
     navbarExpand="md"
     brandNameLink="/dashboard"
   >
-    <div style={{ paddingTop: '25px', paddingBottom: '25px' }} className="flex">
-      {children}
-    </div>
+    <div className="flex">{children}</div>
   </DashboardBaseLayout>
 );
 
