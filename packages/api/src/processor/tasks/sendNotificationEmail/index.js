@@ -61,7 +61,7 @@ module.exports = ({
     product_founder_name: PRODUCT_FOUNDER_NAME,
     product_name: PRODUCT_NAME,
     product_url: PRODUCT_APP_URL,
-    support_url: `${PRODUCT_APP_URL}/contact-support`,
+    support_url: `${PRODUCT_APP_URL}/support`,
     company_name: COMPANY_NAME,
     company_address: null,
   };
