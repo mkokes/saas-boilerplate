@@ -6,13 +6,11 @@
 
 import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
-
 import { Row, Col, Card, Button } from 'reactstrap';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
@@ -23,8 +21,8 @@ import {
   UPDATE_USER_PREFERENCES,
 } from 'graphql/mutations';
 import { USER_NOTIFICATIONS_PREFERENCES } from 'graphql/queries';
-import { transformApolloErr } from 'utils/apollo';
 import { getTimezones } from 'utils/moment';
+import SafeMutation from 'components/graphql/SafeMutation';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class PreferencesPage extends React.PureComponent {
@@ -40,16 +38,16 @@ export default class PreferencesPage extends React.PureComponent {
         <Helmet>
           <title>Account preferences</title>
         </Helmet>
-        <ApolloConsumer>
-          {client => (
-            <GlobalConsumer>
-              {({ userProfile, setUserProfile }) => (
-                <Fragment>
-                  <h1 className="mb-3">Preferences</h1>
-                  <Card body>
-                    <legend>Account Preferences</legend>
-                    <Row>
-                      <Col xs="10" sm="8" lg="6">
+        <GlobalConsumer>
+          {({ userProfile, setUserProfile }) => (
+            <Fragment>
+              <h1 className="mb-3">Preferences</h1>
+              <Card body>
+                <legend>Account Preferences</legend>
+                <Row>
+                  <Col xs="10" sm="8" lg="6">
+                    <SafeMutation mutation={UPDATE_USER_PREFERENCES}>
+                      {updateUserPreferences => (
                         <Formik
                           initialValues={{
                             timezone: this.timezones.find(
@@ -66,8 +64,7 @@ export default class PreferencesPage extends React.PureComponent {
                             try {
                               const {
                                 data: { profile },
-                              } = await client.mutate({
-                                mutation: UPDATE_USER_PREFERENCES,
+                              } = await updateUserPreferences({
                                 variables: {
                                   preferences: {
                                     timezone,
@@ -77,7 +74,6 @@ export default class PreferencesPage extends React.PureComponent {
 
                               setUserProfile(profile);
 
-                              formikBag.setSubmitting(false);
                               toast.success(
                                 `Preferences updated successfully.`,
                                 {
@@ -86,18 +82,19 @@ export default class PreferencesPage extends React.PureComponent {
                                 },
                               );
                             } catch (e) {
-                              const err = transformApolloErr(e);
-
-                              if (err.type === 'BAD_USER_INPUT') {
-                                formikBag.setErrors(err.data);
+                              if (
+                                e.name === 'apollo_link_error' &&
+                                e.type === 'BAD_USER_INPUT'
+                              ) {
+                                formikBag.setErrors(e.data);
                               } else {
-                                toast.error(err.message, {
+                                toast.error(e.message, {
                                   position: toast.POSITION.TOP_CENTER,
                                 });
                               }
-
-                              formikBag.setSubmitting(false);
                             }
+
+                            formikBag.setSubmitting(false);
                           }}
                         >
                           {({ values, isSubmitting }) => (
@@ -128,28 +125,34 @@ export default class PreferencesPage extends React.PureComponent {
                             </Fragment>
                           )}
                         </Formik>
-                      </Col>
-                    </Row>
-                    <legend>Notifications</legend>
-                    <Row>
-                      <Col xs="10" sm="8" lg="6">
-                        <p
-                          style={{
-                            fontWeight: 600,
-                            fontSize: 14,
-                          }}
-                          className="mb-1"
+                      )}
+                    </SafeMutation>
+                  </Col>
+                </Row>
+                <legend>Notifications</legend>
+                <Row>
+                  <Col xs="10" sm="8" lg="6">
+                    <p
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 14,
+                      }}
+                      className="mb-1"
+                    >
+                      Email me when:
+                    </p>
+                    <SafeQuery
+                      query={USER_NOTIFICATIONS_PREFERENCES}
+                      keepExistingResultDuringRefetch
+                      fetchPolicy="network-only"
+                      showLoading
+                      showError
+                    >
+                      {({ data: { notificationsPreferences } }) => (
+                        <SafeMutation
+                          mutation={UPDATE_USER_NOTIFICATIONS_PREFERENCES}
                         >
-                          Email me when:
-                        </p>
-                        <SafeQuery
-                          query={USER_NOTIFICATIONS_PREFERENCES}
-                          keepExistingResultDuringRefetch
-                          fetchPolicy="network-only"
-                          showLoading
-                          showError
-                        >
-                          {({ data: { notificationsPreferences } }) => (
+                          {updateUserNotificationsPreferences => (
                             <Formik
                               initialValues={{
                                 MARKETING_INFO: !!notificationsPreferences.find(
@@ -173,8 +176,7 @@ export default class PreferencesPage extends React.PureComponent {
                                 try {
                                   const {
                                     data: { profile },
-                                  } = await client.mutate({
-                                    mutation: UPDATE_USER_NOTIFICATIONS_PREFERENCES,
+                                  } = await updateUserNotificationsPreferences({
                                     variables: {
                                       notifications: {
                                         notifications,
@@ -192,9 +194,7 @@ export default class PreferencesPage extends React.PureComponent {
                                     },
                                   );
                                 } catch (e) {
-                                  const err = transformApolloErr(e);
-
-                                  toast.error(err.message, {
+                                  toast.error(e.message, {
                                     position: toast.POSITION.TOP_CENTER,
                                   });
                                 }
@@ -232,15 +232,15 @@ export default class PreferencesPage extends React.PureComponent {
                               )}
                             </Formik>
                           )}
-                        </SafeQuery>
-                      </Col>
-                    </Row>
-                  </Card>
-                </Fragment>
-              )}
-            </GlobalConsumer>
+                        </SafeMutation>
+                      )}
+                    </SafeQuery>
+                  </Col>
+                </Row>
+              </Card>
+            </Fragment>
           )}
-        </ApolloConsumer>
+        </GlobalConsumer>
       </Fragment>
     );
   }
