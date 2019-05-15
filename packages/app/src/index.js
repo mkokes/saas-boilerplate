@@ -16,7 +16,7 @@ import { AnalyticsApi, PaddleApi } from 'api/vendors';
 import { GlobalProvider } from 'GlobalState';
 import GlobalStyle from 'GlobalStyle';
 import App from 'App';
-import MaintenancePage from 'containers/MaintenancePage/Loadable';
+import MaintenancePage from 'pages/MaintenancePage/Loadable';
 import config from 'config';
 import { clientInstance } from './graphql';
 

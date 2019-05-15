@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Navbar from 'components/Navbar';
-import Footer from 'components/Footer';
+import Navbar from 'components/Navbar/Loadable';
+import Footer from 'components/Footer/Loadable';
 import DashboardSettingsNavbar from 'components/DashboardSettingsNavbar/Loadable';
 
 import config from 'config';

@@ -1,25 +1,21 @@
 /**
- * Component Generator
+ * Page Generator
  */
-
-/* eslint strict: ["off"] */
-
-'use strict';
 
 const componentExists = require('../utils/exists');
 
 module.exports = {
-  description: 'Add an unconnected component',
+  description: 'Add a page component',
   prompts: [
     {
       type: 'input',
       name: 'name',
       message: 'What should it be called?',
-      default: 'Button',
+      default: 'Form',
       validate: value => {
         if (/.+/.test(value)) {
           return componentExists(value)
-            ? 'A component or container with this name already exists'
+            ? 'A component or page with this name already exists'
             : true;
         }
 
@@ -28,40 +24,45 @@ module.exports = {
     },
     {
       type: 'confirm',
-      name: 'wantLoadable',
+      name: 'wantHeaders',
       default: false,
-      message: 'Do you want to load the component asynchronously?',
+      message: 'Do you want headers?',
+    },
+    {
+      type: 'confirm',
+      name: 'wantLoadable',
+      default: true,
+      message: 'Do you want to load resources asynchronously?',
     },
   ],
   actions: data => {
     const actions = [
       {
         type: 'add',
-        path: '../../src/components/{{properCase name}}/index.js',
-        templateFile: './component/class.js.hbs',
+        path: '../../src/pages/{{properCase name}}/index.js',
+        templateFile: './page/class.js.hbs',
         abortOnFail: true,
       },
       {
         type: 'add',
-        path: '../../src/components/{{properCase name}}/tests/index.test.js',
-        templateFile: './component/test.js.hbs',
+        path: '../../src/pages/{{properCase name}}/tests/index.test.js',
+        templateFile: './page/test.js.hbs',
         abortOnFail: true,
       },
     ];
 
-    // If want Loadable.js to load the component asynchronously
     if (data.wantLoadable) {
       actions.push({
         type: 'add',
-        path: '../../src/components/{{properCase name}}/Loadable.js',
-        templateFile: './component/loadable.js.hbs',
+        path: '../../src/pages/{{properCase name}}/Loadable.js',
+        templateFile: './page/loadable.js.hbs',
         abortOnFail: true,
       });
     }
 
     actions.push({
       type: 'prettify',
-      path: '/components/',
+      path: '/pages/',
     });
 
     return actions;

@@ -63,8 +63,7 @@ class Provider extends Component {
         if (isExpired) return 'EXPIRED';
 
         return 'OK';
-      } catch (e) {
-        console.error(e);
+      } catch (_) {
         return 'INVALID_TOKEN';
       }
     }
@@ -127,7 +126,7 @@ class Provider extends Component {
   };
 
   setUserProfile = profile => {
-    console.debug('Current user', profile);
+    // console.debug('Current user', profile);
 
     this.setState(state => ({
       auth: {
