@@ -43,7 +43,7 @@ import _ from 'lodash';
 import { capitalizeFirstLetter } from 'utils/string';
 import { ReactstrapSelect } from 'utils/formiik';
 import { getProvider as getGlobalProvider } from 'GlobalState';
-import SafeQuery from 'components/graphql/SafeQuery';
+import SafeQuery from 'components/SafeQuery';
 import Loader from 'components/Loader';
 import {
   BILLING_CURRENT_SUBSCRIPTION,
@@ -59,7 +59,7 @@ import {
   CREATE_COINBASE_COMMERCE_CHARGE,
 } from 'graphql/mutations';
 import { displayBillingInterval } from 'utils/core';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 /* eslint-disable react/prefer-stateless-function */
 class BillingPage extends React.PureComponent {

@@ -30,7 +30,7 @@ import axios from 'axios';
 import { SIGNUP_USER } from 'graphql/mutations';
 import { GlobalConsumer } from 'GlobalState';
 import config from 'config';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 const { RECAPTCHA_SITE_KEY, WEBSITE_URL } = config;
 

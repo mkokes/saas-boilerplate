@@ -14,7 +14,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
-import SafeQuery from 'components/graphql/SafeQuery';
+import SafeQuery from 'components/SafeQuery';
 import { ReactstrapSelect, ReactstrapCheckbox } from 'utils/formiik';
 import {
   UPDATE_USER_NOTIFICATIONS_PREFERENCES,
@@ -22,7 +22,7 @@ import {
 } from 'graphql/mutations';
 import { USER_NOTIFICATIONS_PREFERENCES } from 'graphql/queries';
 import { getTimezones } from 'utils/moment';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class PreferencesPage extends React.PureComponent {

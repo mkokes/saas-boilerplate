@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { GlobalConsumer } from 'GlobalState';
-import SafeQuery from 'components/graphql/SafeQuery';
+import SafeQuery from 'components/SafeQuery';
 import { IS_USER_EMAIL_CONFIRMED_QUERY } from 'graphql/queries';
 
 /* eslint-disable react/prefer-stateless-function */

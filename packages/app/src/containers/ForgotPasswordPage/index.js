@@ -28,7 +28,7 @@ import Reaptcha from 'reaptcha';
 
 import { FORGOT_PASSWORD_REQUEST } from 'graphql/mutations';
 import config from 'config';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 const PasswordResetText = styled('div')`
   margin-top: -15px;

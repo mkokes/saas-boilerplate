@@ -4,14 +4,14 @@
  *
  */
 
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Container, Row, Col, Alert, Button } from 'reactstrap';
 import queryString from 'query-string';
 
 import { CONFIRM_USER_EMAIL } from 'graphql/mutations';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class EmailConfirmationPage extends React.PureComponent {

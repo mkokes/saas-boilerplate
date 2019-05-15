@@ -34,7 +34,7 @@ import {
 } from 'graphql/mutations';
 import Avatar from 'components/Avatar';
 import { equalTo } from 'utils/yup';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 Yup.addMethod(Yup.string, 'equalTo', equalTo);
 

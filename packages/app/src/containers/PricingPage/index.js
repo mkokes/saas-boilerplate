@@ -22,7 +22,7 @@ import Switch from 'react-switch';
 import styled from 'styled-components';
 
 import { GlobalConsumer } from 'GlobalState';
-import SafeQuery from 'components/graphql/SafeQuery';
+import SafeQuery from 'components/SafeQuery';
 import { PLANS_QUERY } from 'graphql/queries';
 import { displayBillingInterval } from 'utils/core';
 import config from 'config';

@@ -32,7 +32,7 @@ import {
   CONFIRM_ENABLE_2FA,
   DISABLE_2FA,
 } from 'graphql/mutations';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SecurityPage extends React.PureComponent {

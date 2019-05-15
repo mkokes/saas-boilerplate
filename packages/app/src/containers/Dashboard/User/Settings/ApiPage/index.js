@@ -16,10 +16,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { REGENERATE_USER_API_SECRET_KEY } from 'graphql/mutations';
 import { ReactstrapInput } from 'utils/formiik';
-import SafeQuery from 'components/graphql/SafeQuery';
+import SafeQuery from 'components/SafeQuery';
 import { USER_API_SECRET_KEY_QUERY } from 'graphql/queries';
 import config from 'config';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 const { WEBSITE_URL } = config;
 

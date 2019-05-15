@@ -24,7 +24,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { ReactstrapInput } from 'utils/formiik';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 import { RESET_USER_PASSWORD } from 'graphql/mutations';
 import { equalTo } from 'utils/yup';

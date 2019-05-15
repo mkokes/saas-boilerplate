@@ -28,7 +28,7 @@ import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
 import { LOGIN_USER } from 'graphql/mutations';
-import SafeMutation from 'components/graphql/SafeMutation';
+import SafeMutation from 'components/SafeMutation';
 
 const ForgotPasswordContainer = styled.div`
   margin-top: -10px;
