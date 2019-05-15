@@ -22,7 +22,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { ApolloConsumer } from 'react-apollo';
 import { toast } from 'react-toastify';
 
 import { ReactstrapInput } from 'utils/formiik';
@@ -33,9 +32,9 @@ import {
   UPDATE_PERSONAL_DETAILS,
   CHANGE_USER_EMAIL,
 } from 'graphql/mutations';
-import { transformApolloErr } from 'utils/apollo';
 import Avatar from 'components/Avatar';
 import { equalTo } from 'utils/yup';
+import SafeMutation from 'components/graphql/SafeMutation';
 
 Yup.addMethod(Yup.string, 'equalTo', equalTo);
 
@@ -65,75 +64,73 @@ export default class ProfilePage extends React.PureComponent {
         <Helmet>
           <title>Account profile</title>
         </Helmet>
-        <ApolloConsumer>
-          {client => (
-            <GlobalConsumer>
-              {({ setAuthTokens, setUserProfile, userProfile }) => (
-                <Fragment>
-                  <h1 className="mb-3">My Profile</h1>
-                  <Card body>
-                    <legend>User Profile</legend>
-                    <Row className="align-items-center">
-                      <Col xs="auto">
-                        <Avatar
-                          width="64"
-                          height="64"
-                          src={`data:image/svg+xml;base64,${
-                            userProfile.avatar
-                          }`}
-                          className="mb-2"
-                        />
-                      </Col>
-                      <Col xs="auto" className="mr-0">
-                        <p
-                          style={{
-                            fontWeight: 600,
-                            fontSize: 14,
-                          }}
-                          className="mb-0"
-                        >
-                          Change Picture
-                        </p>
-                        <p style={{ fontWeight: 200, fontSize: 14 }}>
-                          Max file size is 20Mb.
-                        </p>
-                      </Col>
-                      <Col xs="5">
-                        <Button disabled>Upload</Button>
-                      </Col>
-                    </Row>
-                    <hr />
-                    <Row className="align-items-center">
-                      <Col xs="12" sm="4">
-                        <p
-                          style={{
-                            fontWeight: 600,
-                            fontSize: 14,
-                          }}
-                          className="mb-0"
-                        >
-                          Change Password
-                        </p>
-                        <p style={{ fontWeight: 200, fontSize: 14 }}>
-                          Enable 2-factor authentication on{' '}
-                          <NavLink to="/dashboard/settings/security">
-                            the security page
-                          </NavLink>
-                          .
-                        </p>
-                      </Col>
-                      <Col sm="5">
-                        <Button onClick={this.toggleChangePasswordModal}>
-                          Change Password
-                        </Button>
-                        <Modal
-                          isOpen={this.state.changePasswordModal}
-                          toggle={this.toggleChangePasswordModal}
-                        >
-                          <ModalHeader toggle={this.toggleChangePasswordModal}>
-                            Change Password
-                          </ModalHeader>
+        <GlobalConsumer>
+          {({ setAuthTokens, setUserProfile, userProfile }) => (
+            <Fragment>
+              <h1 className="mb-3">My Profile</h1>
+              <Card body>
+                <legend>User Profile</legend>
+                <Row className="align-items-center">
+                  <Col xs="auto">
+                    <Avatar
+                      width="64"
+                      height="64"
+                      src={`data:image/svg+xml;base64,${userProfile.avatar}`}
+                      className="mb-2"
+                    />
+                  </Col>
+                  <Col xs="auto" className="mr-0">
+                    <p
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 14,
+                      }}
+                      className="mb-0"
+                    >
+                      Change Picture
+                    </p>
+                    <p style={{ fontWeight: 200, fontSize: 14 }}>
+                      Max file size is 20Mb.
+                    </p>
+                  </Col>
+                  <Col xs="5">
+                    <Button disabled>Upload</Button>
+                  </Col>
+                </Row>
+                <hr />
+                <Row className="align-items-center">
+                  <Col xs="12" sm="4">
+                    <p
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 14,
+                      }}
+                      className="mb-0"
+                    >
+                      Change Password
+                    </p>
+                    <p style={{ fontWeight: 200, fontSize: 14 }}>
+                      Enable 2-factor authentication on{' '}
+                      <NavLink to="/dashboard/settings/security">
+                        the security page
+                      </NavLink>
+                      .
+                    </p>
+                  </Col>
+                  <Col sm="5">
+                    <Button onClick={this.toggleChangePasswordModal}>
+                      Change Password
+                    </Button>
+                    <Modal
+                      isOpen={this.state.changePasswordModal}
+                      toggle={this.toggleChangePasswordModal}
+                    >
+                      <ModalHeader toggle={this.toggleChangePasswordModal}>
+                        Change Password
+                      </ModalHeader>
 
+                      <SafeMutation mutation={CHANGE_USER_PASSWORD}>
+                        {changeUserPassword => (
                           <Formik
                             initialValues={{
                               oldPassword: '',
@@ -163,8 +160,7 @@ export default class ProfilePage extends React.PureComponent {
                                       refreshToken,
                                     },
                                   },
-                                } = await client.mutate({
-                                  mutation: CHANGE_USER_PASSWORD,
+                                } = await changeUserPassword({
                                   variables: values,
                                 });
 
@@ -186,13 +182,14 @@ export default class ProfilePage extends React.PureComponent {
                                   },
                                 );
                               } catch (e) {
-                                const err = transformApolloErr(e);
-
-                                if (err.type === 'BAD_USER_INPUT') {
-                                  formikBag.setErrors(err.data);
+                                if (
+                                  e.name === 'apollo_link_error' &&
+                                  e.type === 'BAD_USER_INPUT'
+                                ) {
+                                  formikBag.setErrors(e.data);
                                 } else {
                                   this.setState({
-                                    changePasswordErrMsg: err.message,
+                                    changePasswordErrMsg: e.message,
                                   });
                                 }
 
@@ -257,9 +254,8 @@ export default class ProfilePage extends React.PureComponent {
                                       <FontAwesomeIcon
                                         pulse
                                         icon={faSpinner}
-                                        className={
-                                          isSubmitting ? 'mr-2' : 'd-none'
-                                        }
+                                        className="mr-2"
+                                        hidden={!isSubmitting}
                                       />
                                       Change Password
                                     </Button>
@@ -268,26 +264,30 @@ export default class ProfilePage extends React.PureComponent {
                               </Fragment>
                             )}
                           </Formik>
-                        </Modal>
-                      </Col>
-                    </Row>
-                    <hr />
-                    <Row>
-                      <Col xs="12" sm="4">
-                        <p
-                          style={{
-                            fontWeight: 600,
-                            fontSize: 14,
-                          }}
-                          className="mb-0"
-                        >
-                          Nick Name
-                        </p>
-                        <p style={{ fontWeight: 200, fontSize: 14 }}>
-                          This name will be part of your public profile.
-                        </p>
-                      </Col>
-                      <Col xs="10" sm="8" lg="6">
+                        )}
+                      </SafeMutation>
+                    </Modal>
+                  </Col>
+                </Row>
+                <hr />
+                <Row>
+                  <Col xs="12" sm="4">
+                    <p
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 14,
+                      }}
+                      className="mb-0"
+                    >
+                      Nick Name
+                    </p>
+                    <p style={{ fontWeight: 200, fontSize: 14 }}>
+                      This name will be part of your public profile.
+                    </p>
+                  </Col>
+                  <Col xs="10" sm="8" lg="6">
+                    <SafeMutation mutation={UPDATE_USER_PROFILE}>
+                      {updateUserProfile => (
                         <Formik
                           initialValues={{
                             nickname: userProfile.nickname,
@@ -300,8 +300,7 @@ export default class ProfilePage extends React.PureComponent {
                             try {
                               const {
                                 data: { profile },
-                              } = await client.mutate({
-                                mutation: UPDATE_USER_PROFILE,
+                              } = await updateUserProfile({
                                 variables: {
                                   profile: values,
                                 },
@@ -315,12 +314,13 @@ export default class ProfilePage extends React.PureComponent {
                                 autoClose: 3000,
                               });
                             } catch (e) {
-                              const err = transformApolloErr(e);
-
-                              if (err.type === 'BAD_USER_INPUT') {
-                                formikBag.setErrors(err.data);
+                              if (
+                                e.name === 'apollo_link_error' &&
+                                e.type === 'BAD_USER_INPUT'
+                              ) {
+                                formikBag.setErrors(e.data);
                               } else {
-                                toast.error(err.message, {
+                                toast.error(e.message, {
                                   position: toast.POSITION.TOP_CENTER,
                                 });
                               }
@@ -349,7 +349,8 @@ export default class ProfilePage extends React.PureComponent {
                                   <FontAwesomeIcon
                                     pulse
                                     icon={faSpinner}
-                                    className={isSubmitting ? 'mr-2' : 'd-none'}
+                                    className="mr-2"
+                                    hidden={!isSubmitting}
                                   />
                                   Save
                                 </Button>
@@ -357,26 +358,30 @@ export default class ProfilePage extends React.PureComponent {
                             </Fragment>
                           )}
                         </Formik>
-                      </Col>
-                    </Row>
-                    <hr />
-                    <Row>
-                      <Col xs="12" sm="4">
-                        <p
-                          style={{
-                            fontWeight: 600,
-                            fontSize: 14,
-                          }}
-                          className="mb-0"
-                        >
-                          Change Email Address
-                        </p>
-                        <p style={{ fontWeight: 200, fontSize: 14 }}>
-                          An email will be sent to the new email address to
-                          confirm the address change.
-                        </p>
-                      </Col>
-                      <Col xs="10" sm="8" lg="6">
+                      )}
+                    </SafeMutation>
+                  </Col>
+                </Row>
+                <hr />
+                <Row>
+                  <Col xs="12" sm="4">
+                    <p
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 14,
+                      }}
+                      className="mb-0"
+                    >
+                      Change Email Address
+                    </p>
+                    <p style={{ fontWeight: 200, fontSize: 14 }}>
+                      An email will be sent to the new email address to confirm
+                      the address change.
+                    </p>
+                  </Col>
+                  <Col xs="10" sm="8" lg="6">
+                    <SafeMutation mutation={CHANGE_USER_EMAIL}>
+                      {changeUserEmail => (
                         <Formik
                           initialValues={{
                             email: userProfile.email,
@@ -401,11 +406,11 @@ export default class ProfilePage extends React.PureComponent {
                                 },
                               );
 
-                              return formikBag.setSubmitting(false);
+                              return formikBag.resetForm();
                             }
 
                             try {
-                              await client.mutate({
+                              await changeUserEmail({
                                 mutation: CHANGE_USER_EMAIL,
                                 variables: values,
                               });
@@ -422,12 +427,13 @@ export default class ProfilePage extends React.PureComponent {
                                 },
                               );
                             } catch (e) {
-                              const err = transformApolloErr(e);
-
-                              if (err.type === 'BAD_USER_INPUT') {
-                                formikBag.setErrors(err.data);
+                              if (
+                                e.name === 'apollo_link_error' &&
+                                e.type === 'BAD_USER_INPUT'
+                              ) {
+                                formikBag.setErrors(e.data);
                               } else {
-                                toast.error(err.message, {
+                                toast.error(e.message, {
                                   position: toast.POSITION.TOP_CENTER,
                                 });
                               }
@@ -464,7 +470,8 @@ export default class ProfilePage extends React.PureComponent {
                                   <FontAwesomeIcon
                                     pulse
                                     icon={faSpinner}
-                                    className={isSubmitting ? 'mr-2' : 'd-none'}
+                                    className="mr-2"
+                                    hidden={!isSubmitting}
                                   />
                                   Save
                                 </Button>
@@ -472,26 +479,29 @@ export default class ProfilePage extends React.PureComponent {
                             </Fragment>
                           )}
                         </Formik>
-                      </Col>
-                    </Row>
-                    <legend>Personal Details</legend>
-                    <Row>
-                      <Col xs="12" sm="4">
-                        <p
-                          style={{
-                            fontWeight: 600,
-                            fontSize: 14,
-                          }}
-                          className="mb-0"
-                        >
-                          Personal details
-                        </p>
-                        <p style={{ fontWeight: 200, fontSize: 14 }}>
-                          Your personal information is never shown to other
-                          users.
-                        </p>
-                      </Col>
-                      <Col xs="10" sm="8" lg="6">
+                      )}
+                    </SafeMutation>
+                  </Col>
+                </Row>
+                <legend>Personal Details</legend>
+                <Row>
+                  <Col xs="12" sm="4">
+                    <p
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 14,
+                      }}
+                      className="mb-0"
+                    >
+                      Personal details
+                    </p>
+                    <p style={{ fontWeight: 200, fontSize: 14 }}>
+                      Your personal information is never shown to other users.
+                    </p>
+                  </Col>
+                  <Col xs="10" sm="8" lg="6">
+                    <SafeMutation mutation={UPDATE_PERSONAL_DETAILS}>
+                      {updatePersonalDetails => (
                         <Formik
                           initialValues={{
                             firstName: userProfile.firstName,
@@ -506,7 +516,7 @@ export default class ProfilePage extends React.PureComponent {
                             try {
                               const {
                                 data: { profile },
-                              } = await client.mutate({
+                              } = await updatePersonalDetails({
                                 mutation: UPDATE_PERSONAL_DETAILS,
                                 variables: {
                                   profile: values,
@@ -524,12 +534,13 @@ export default class ProfilePage extends React.PureComponent {
                                 },
                               );
                             } catch (e) {
-                              const err = transformApolloErr(e);
-
-                              if (err.type === 'BAD_USER_INPUT') {
-                                formikBag.setErrors(err.data);
+                              if (
+                                e.name === 'apollo_link_error' &&
+                                e.type === 'BAD_USER_INPUT'
+                              ) {
+                                formikBag.setErrors(e.data);
                               } else {
-                                toast.error(err.message, {
+                                toast.error(e.message, {
                                   position: toast.POSITION.TOP_CENTER,
                                 });
                               }
@@ -566,7 +577,8 @@ export default class ProfilePage extends React.PureComponent {
                                   <FontAwesomeIcon
                                     pulse
                                     icon={faSpinner}
-                                    className={isSubmitting ? 'mr-2' : 'd-none'}
+                                    className="mr-2"
+                                    hidden={!isSubmitting}
                                   />
                                   Save
                                 </Button>
@@ -574,14 +586,14 @@ export default class ProfilePage extends React.PureComponent {
                             </Fragment>
                           )}
                         </Formik>
-                      </Col>
-                    </Row>
-                  </Card>
-                </Fragment>
-              )}
-            </GlobalConsumer>
+                      )}
+                    </SafeMutation>
+                  </Col>
+                </Row>
+              </Card>
+            </Fragment>
           )}
-        </ApolloConsumer>
+        </GlobalConsumer>
       </Fragment>
     );
   }
