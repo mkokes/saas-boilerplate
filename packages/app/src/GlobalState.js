@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 import { LocalStorageApi, AnalyticsApi } from 'api/vendors';
 import { LOGIN_USER_NO_AUTH, REFRESH_ACCESS_TOKEN } from 'graphql/mutations';
+import { USER_PROFILE_QUERY } from 'graphql/queries';
 import { buildAuthHeader } from './utils/requests';
 
 const GlobalContext = createContext({});
@@ -139,6 +140,19 @@ class Provider extends Component {
     MomentTimezone.tz.setDefault(profile.timezone);
   };
 
+  reloadUserProfile = async () => {
+    try {
+      const {
+        data: { profile },
+      } = await this.apolloClient().query({
+        query: USER_PROFILE_QUERY,
+      });
+
+      this.setUserProfile(profile);
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
+  };
+
   refreshAccessTokenReq = async () => {
     const refreshToken = this.authRefreshToken();
 
@@ -228,6 +242,7 @@ class Provider extends Component {
           logOut: this.logOut,
           setAuthTokens: this.setAuthTokens,
           setUserProfile: this.setUserProfile,
+          reloadUserProfile: this.reloadUserProfile,
         }}
       >
         {this.props.children}
