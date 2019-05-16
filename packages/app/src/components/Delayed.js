@@ -2,18 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class Delayed extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = { hidden: true };
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     setTimeout(
       () => {
-        this.setState({ hidden: false });
+        if (this._isMounted) this.setState({ hidden: false });
       },
       this.props.noDelay ? 0 : this.props.wait,
     );
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
