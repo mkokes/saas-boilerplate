@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import { BaseLayout } from 'layout';
 import Loader from 'components/Loader';
 
+import Delayed from 'components/Delayed';
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -24,12 +26,14 @@ const Container = styled.div`
 /* eslint-disable react/prefer-stateless-function */
 function SplashScreen() {
   return (
-    <BaseLayout>
-      <Container>
-        <Loader large />
-        <h1 className="mt-4">Loading Application</h1>
-      </Container>
-    </BaseLayout>
+    <Delayed wait={450}>
+      <BaseLayout>
+        <Container>
+          <Loader large noDelay />
+          <h1 className="mt-4">Loading Application</h1>
+        </Container>
+      </BaseLayout>
+    </Delayed>
   );
 }
 

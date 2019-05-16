@@ -87,7 +87,7 @@ export const BILLING_CURRENT_SUBSCRIPTION = gql`
     subscription: userSubscription @requireAuth {
       status
       startedAt
-      servicePeriodEnd
+      servicePeriodEndAt
       type
       paymentStatus
       price

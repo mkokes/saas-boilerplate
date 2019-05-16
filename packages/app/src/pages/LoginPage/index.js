@@ -168,7 +168,7 @@ const LoginForm = props => {
           />
           <Alert hidden={!show2FALostMsg} color="warning" fade={false}>
             If you have lost your 2FA token, please open a{' '}
-            <Link to="/contact-support?subject=I%20lost%20my%202FA%20device&ticketType=LOST_2FA">
+            <Link to="/support?subject=I%20lost%20my%202FA%20device&ticketType=LOST_2FA">
               support ticket
             </Link>
             .

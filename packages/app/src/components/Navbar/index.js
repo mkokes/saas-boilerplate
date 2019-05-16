@@ -294,7 +294,7 @@ export class NavbarComponent extends React.PureComponent {
                                     )}
                                     <DropdownItem divider />
                                     <DashboardDropdownItem
-                                      to="/contact-support"
+                                      to="/support"
                                       tag={RRNavLink}
                                     >
                                       Contact support
