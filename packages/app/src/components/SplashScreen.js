@@ -29,7 +29,7 @@ function SplashScreen() {
     <Delayed wait={450}>
       <BaseLayout>
         <Container>
-          <Loader large />
+          <Loader large noDelay />
           <h1 className="mt-4">Loading Application</h1>
         </Container>
       </BaseLayout>

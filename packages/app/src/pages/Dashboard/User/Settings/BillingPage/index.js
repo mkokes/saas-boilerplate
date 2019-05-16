@@ -815,7 +815,7 @@ class BillingPage extends React.PureComponent {
                 </SafeQuery>
               </Col>
               <Col hidden={!subscriptionPlansLoading}>
-                <Loader />
+                <Loader noDelay />
               </Col>
             </Row>
             <legend className="mt-3">Receipts</legend>

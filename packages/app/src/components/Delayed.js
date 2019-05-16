@@ -8,9 +8,12 @@ class Delayed extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ hidden: false });
-    }, this.props.wait);
+    setTimeout(
+      () => {
+        this.setState({ hidden: false });
+      },
+      this.props.noDelay ? 0 : this.props.wait,
+    );
   }
 
   render() {
@@ -21,6 +24,7 @@ class Delayed extends React.Component {
 Delayed.propTypes = {
   children: PropTypes.node,
   wait: PropTypes.number.isRequired,
+  noDelay: PropTypes.bool,
 };
 
 export default Delayed;

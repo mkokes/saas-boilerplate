@@ -13,8 +13,8 @@ const Circle = styled.circle`
   stroke: ${props => props.theme.color3};
 `;
 
-const Loader = ({ large }) => (
-  <Delayed wait={450}>
+const Loader = ({ large, noDelay }) => (
+  <Delayed wait={450} noDelay={noDelay}>
     <LoaderContainer>
       <svg
         width={large ? '80' : '40'}
@@ -51,6 +51,7 @@ const Loader = ({ large }) => (
 
 Loader.propTypes = {
   large: PropTypes.bool,
+  noDelay: PropTypes.bool,
 };
 
 export default Loader;
