@@ -2179,15 +2179,15 @@
     "@sentry/types" "5.2.0"
     tslib "^1.9.3"
 
-"@sentry/node@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-5.1.2.tgz#e79bf297f9fe61ddb74c0b61a3d60b116765f3a7"
-  integrity sha512-m6OT5QhSTt/l1+I00JVMdTB4MUtndB+I544W9dx94yS9NvUtfaH5SP+a26pD9ylVsbFqtmsygXXj15ofZ+HCPg==
+"@sentry/node@5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-5.2.0.tgz#f4fa9ca924385f8c4564ffc5bc387fc305e029b8"
+  integrity sha512-pEXRGwwtnr33wGmbrKjvcwrfMWvE5vj9wqQ1nsrPSuGeMgkj9tOpxilfFVUq+hnz9am1L0C2/p17mn1d3tO/nw==
   dependencies:
-    "@sentry/core" "5.1.2"
-    "@sentry/hub" "5.1.2"
-    "@sentry/types" "5.1.0"
-    "@sentry/utils" "5.1.2"
+    "@sentry/core" "5.2.0"
+    "@sentry/hub" "5.2.0"
+    "@sentry/types" "5.2.0"
+    "@sentry/utils" "5.2.0"
     cookie "0.3.1"
     https-proxy-agent "2.2.1"
     lru_map "0.3.3"
