@@ -22,6 +22,20 @@ export const CONTACT_SUPPORT = gql`
   }
 `;
 
+export const SEND_FEEDBACK = gql`
+  mutation sendFeedback(
+    $recaptchaResponse: String!
+    $text: String!
+    $email: String!
+  ) {
+    sendFeedback(
+      recaptchaResponse: $recaptchaResponse
+      text: $text
+      email: $email
+    )
+  }
+`;
+
 export const SIGNUP_USER = gql`
   mutation signUpUser(
     $recaptchaResponse: String

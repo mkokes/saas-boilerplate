@@ -15,6 +15,7 @@ module.exports = [
   'SUBSCRIPTION_ENDED',
   'SUBSCRIPTION_RENEWAL_CANCELLED',
   'PAYMENT_RECEIVED',
+  'SEND_FEEDBACK',
 ].reduce((m, a) => {
   const k = m;
 

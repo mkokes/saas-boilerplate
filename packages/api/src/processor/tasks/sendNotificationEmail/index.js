@@ -19,6 +19,7 @@ const {
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_RENEWAL_CANCELLED,
   PAYMENT_RECEIVED,
+  SEND_FEEDBACK,
 } = require('../../../constants/notifications');
 
 module.exports = ({
@@ -55,6 +56,7 @@ module.exports = ({
     SUBSCRIPTION_ENDED: 'subscription-ended',
     SUBSCRIPTION_RENEWAL_CANCELLED: 'subscription-renewal-cancelled',
     PAYMENT_RECEIVED: 'payment-received',
+    SEND_FEEDBACK: 'send-feedback',
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
@@ -160,6 +162,10 @@ module.exports = ({
               templateModel.paymentMethod =
                 notification.variables.paymentMethod;
               templateModel.description = notification.variables.description;
+              break;
+            case SEND_FEEDBACK:
+              targetEmail = SUPPORT_EMAIL;
+              targetReplyTo = templateModel.feedback_sender_email;
               break;
           }
 

@@ -28,6 +28,7 @@ const {
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_RENEWAL_CANCELLED,
   PAYMENT_RECEIVED,
+  SEND_FEEDBACK,
 } = require('../constants/notifications');
 
 const setupDb = require('./setup');
@@ -1188,6 +1189,13 @@ class Db extends EventEmitter {
     if (targetUserId) {
       this._log.info(`user ${targetUserId} submitted a support ticket`);
     }
+  }
+
+  async sendFeedback(text, email) {
+    this.notifyUser(null, SEND_FEEDBACK, {
+      feedback_text: text,
+      feedback_sender_email: email,
+    });
   }
 
   async isUserTrialExpiringWarningSent(userId) {

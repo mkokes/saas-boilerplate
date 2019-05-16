@@ -110,6 +110,11 @@ module.exports = gql`
       ticketType: ContactSupportTicketType!
       description: String!
     ): Boolean
+    sendFeedback(
+      recaptchaResponse: String!
+      text: String!
+      email: String!
+    ): Boolean
     signUpUser(
       recaptchaResponse: String
       email: String!

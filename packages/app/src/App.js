@@ -16,6 +16,7 @@ import RouteAnalytics from 'components/RouteAnalytics';
 
 import SupportPage from 'pages/SupportPage/Loadable';
 import PricingPage from 'pages/PricingPage/Loadable';
+import FeedbackPage from 'pages/FeedbackPage/Loadable';
 import SignupPage from 'pages/SignupPage/Loadable';
 import LoginPage from 'pages/LoginPage/Loadable';
 import ForgotPasswordPage from 'pages/ForgotPasswordPage/Loadable';
@@ -102,6 +103,12 @@ export default function App() {
                       component={PricingPage}
                       layout={TransactionalLayout}
                       headerTitle="Pricing"
+                    />
+                    <Route
+                      exact
+                      path="/dashboard/feedback"
+                      component={FeedbackPage}
+                      layout={DashboardLayout}
                     />
                     <Route
                       exact

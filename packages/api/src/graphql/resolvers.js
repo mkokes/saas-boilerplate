@@ -227,6 +227,46 @@ module.exports = ({
 
       return true;
     },
+    sendFeedback: async (_, { recaptchaResponse, text, email }) => {
+      const paramsValidationErrors = {};
+
+      if (validator.isEmpty(recaptchaResponse)) {
+        throw new ApolloError(
+          'Our security system could not determine if the request was made by a human. Try it again.',
+          'INVALID_CAPTCHA',
+        );
+      }
+      if (!validator.isLength(text, { min: 10, max: undefined })) {
+        paramsValidationErrors.text = 'Too short!';
+      }
+      if (validator.isEmpty(email) || !validator.isEmail(email)) {
+        paramsValidationErrors.email = 'Email is not valid';
+      }
+
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw new UserInputError(
+          'Failed to process your request due to validation errors',
+          {
+            validationErrors: paramsValidationErrors,
+          },
+        );
+      }
+
+      const isRecaptchaValid = await validateRecaptchaResponse(
+        recaptchaResponse,
+      );
+
+      if (!isRecaptchaValid) {
+        throw new ApolloError(
+          'Our security system could not determine if the request was made by a human. Try it again.',
+          'INVALID_CAPTCHA',
+        );
+      }
+
+      await db.sendFeedback(text, email);
+
+      return true;
+    },
     signUpUser: async (
       _,
       {

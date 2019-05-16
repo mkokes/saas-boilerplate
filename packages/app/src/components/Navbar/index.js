@@ -146,6 +146,22 @@ export class NavbarComponent extends React.PureComponent {
             </NavLink>
           </NavItem>
         </Nav>
+        <Nav navbar>
+          <NavItem
+            key="give-feedback"
+            onClick={() => this.setState({ isNavbarCollapseOpen: false })}
+            className="mr-1"
+          >
+            <NavLink
+              to="/dashboard/feedback"
+              exact
+              activeClassName="active"
+              tag={RRNavLink}
+            >
+              Give Feedback
+            </NavLink>
+          </NavItem>
+        </Nav>
       </Fragment>
     );
   }
