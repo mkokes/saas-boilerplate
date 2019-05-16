@@ -65,7 +65,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 _paddleUpdateURL,
                 _paddleCancelURL,
                 nextBillDateAt,
-                servicePeriodEnd: nextBillDateAt,
+                servicePeriodEndAt: nextBillDateAt,
                 type: 'paddle',
                 paymentStatus: 'active',
               });

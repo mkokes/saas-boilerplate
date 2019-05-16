@@ -5,7 +5,7 @@ export const ProfileFields = gql`
     _id
     _subscription {
       _id
-      servicePeriodEnd
+      servicePeriodEndAt
       _plan {
         _id
         name

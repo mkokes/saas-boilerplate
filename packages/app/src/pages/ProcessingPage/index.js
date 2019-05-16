@@ -32,7 +32,7 @@ export default class ProcessingPage extends React.PureComponent {
         </Helmet>
 
         <Container>
-          <Loader large />
+          <Loader large noDelay />
           <h1 className="mt-4">We are processing your request...</h1>
         </Container>
       </Fragment>
