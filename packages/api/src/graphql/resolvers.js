@@ -11,6 +11,7 @@ const momentTimezone = require('moment-timezone');
 const Coinbase = require('coinbase-commerce-node');
 
 const { MARKETING_INFO } = require('../constants/legal');
+const { VERIFY_EMAIL } = require('../constants/notifications');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
@@ -68,6 +69,14 @@ const hasSubscriptionPlanFeature = async (db, userId, feature) => {
   }
 };
 /* eslint-enable no-unused-vars */
+const hasExceededRequestsLimit = async (db, userId, type) => {
+  if (await db.notificationsLimitExceeded(userId, type)) {
+    throw new ApolloError(
+      'Request limit exceeded, please try it again in a few minutes.',
+      'REQUESTS_LIMIT_EXCEEDED',
+    );
+  }
+};
 
 module.exports = ({
   config: {
@@ -570,6 +579,7 @@ module.exports = ({
     },
     requestUserEmailChange: async (_, { password, email }, { user }) => {
       await assertUser(user);
+      await hasExceededRequestsLimit(db, user, VERIFY_EMAIL);
 
       const userInputError = errors =>
         new UserInputError('Failed to change email due to validation errors', {

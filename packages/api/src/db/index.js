@@ -1302,6 +1302,23 @@ class Db extends EventEmitter {
     }
   }
 
+  async notificationsLimitExceeded(
+    userId,
+    type,
+    maxReqsAllowed = 3,
+    minutes = 5,
+  ) {
+    const notificationsCount = await Notifications.countDocuments({
+      _user: userId,
+      type,
+      generatedAt: {
+        $gt: new Date(Date.now() - 1000 * 60 * minutes),
+      },
+    }).exec();
+
+    return notificationsCount >= maxReqsAllowed;
+  }
+
   async notifyUser(userId, type, variables) {
     const notification = await new Notifications({
       _user: userId,
