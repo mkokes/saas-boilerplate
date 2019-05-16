@@ -104,12 +104,12 @@ module.exports = ({
               templateModel.email = _user.email;
 
               const subscription = await db.getUserSubscription(_user._id);
-              const { startedAt, servicePeriodEnd } = subscription;
+              const { startedAt, servicePeriodEndAt } = subscription;
 
               templateModel.trial_length =
-                moment(servicePeriodEnd).diff(startedAt, 'days') + 1;
+                moment(servicePeriodEndAt).diff(startedAt, 'days') + 1;
               templateModel.trial_start_date = moment(startedAt).format('LL');
-              templateModel.trial_end_date = moment(servicePeriodEnd).format(
+              templateModel.trial_end_date = moment(servicePeriodEndAt).format(
                 'LL',
               );
               break;

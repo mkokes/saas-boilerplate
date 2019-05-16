@@ -41,7 +41,7 @@ const typeDefs = `
     _plan: Plan
     status: String
     startedAt: String
-    servicePeriodEnd: String
+    servicePeriodEndAt: String
     type: String
     paymentStatus: String
     price: Float

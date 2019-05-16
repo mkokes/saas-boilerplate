@@ -757,7 +757,7 @@ module.exports = ({
       if (!plan) {
         throw new ApolloError('Requested plan was not found', 'PLAN_NOT_FOUND');
       }
-      if (plan.status !== 'active') {
+      if (plan.internal === true || plan.status !== 'active') {
         throw new ApolloError(
           'Requested plan is not active',
           'PLAN_NOT_ACTIVE',
@@ -902,7 +902,12 @@ module.exports = ({
       await assertUser(user);
 
       const plan = await db.getPlanById(planId);
-      if (!plan || plan.billingInterval !== 'yearly') {
+      if (
+        !plan ||
+        plan.billingInterval !== 'yearly' ||
+        plan.internal === true ||
+        plan.status !== 'active'
+      ) {
         throw new UserInputError('Plan does not exists or is not valid', {
           validationErrors: {
             plan: 'Invalid plan',
