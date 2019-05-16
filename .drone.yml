@@ -16,33 +16,10 @@ steps:
       - npm -v
       - yarn -v
       - yarn install --pure-lockfile
-
-  #      - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
+  #   - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
   #    when:
   #      changeset:
   #        includes: ["yarn.lock", "package.json", "packages/**"]
-
-  - name: api_test
-    image: node:8.15.0
-    commands:
-      - MONGO_URL=mongodb://mongo:27017/api yarn test:ci:api
-  #    when:
-  #      changeset:
-  #        includes: ["yarn.lock", "package.json", "packages/api/**"]
-  - name: scheduler_test
-    image: node:8.15.0
-    commands:
-      - yarn test:scheduler
-  #    when:
-  #      changeset:
-  #        includes: ["yarn.lock", "package.json", "packages/scheduler/**"]
-  - name: app_test
-    image: node:8.15.0
-    commands:
-      - yarn test:app
-  #    when:
-  #      changeset:
-  #        includes: ["yarn.lock", "package.json", "packages/app/**"]
 
   - name: api_lint
     image: node:8.15.0
@@ -72,6 +49,28 @@ steps:
   #    when:
   #      changeset:
   #        includes: ["packages/app/**"]
+
+  - name: api_test
+    image: node:8.15.0
+    commands:
+      - MONGO_URL=mongodb://mongo:27017/api yarn test:ci:api
+  #    when:
+  #      changeset:
+  #        includes: ["yarn.lock", "package.json", "packages/api/**"]
+  - name: scheduler_test
+    image: node:8.15.0
+    commands:
+      - yarn test:scheduler
+  #    when:
+  #      changeset:
+  #        includes: ["yarn.lock", "package.json", "packages/scheduler/**"]
+  - name: app_test
+    image: node:8.15.0
+    commands:
+      - yarn test:app
+  #    when:
+  #      changeset:
+  #        includes: ["yarn.lock", "package.json", "packages/app/**"]
 
 #  - name: finisher # https://github.com/microadam/drone-config-changeset-conditional/issues/7#issuecomment-489288712
 #    image: node:alpine
@@ -116,19 +115,6 @@ steps:
       - yarn -v
       - yarn install --pure-lockfile --cache-folder /tmp/cache/yarn
 
-  - name: api_test
-    image: node:8.15.0
-    commands:
-      - MONGO_URL=mongodb://mongo:27017/api yarn test:ci:api
-  - name: scheduler_test
-    image: node:8.15.0
-    commands:
-      - yarn test:scheduler
-  - name: app_test
-    image: node:8.15.0
-    commands:
-      - yarn test:app
-
   - name: api_lint
     image: node:8.15.0
     commands:
@@ -145,6 +131,19 @@ steps:
     image: node:8.15.0
     commands:
       - yarn lint:app
+
+  - name: api_test
+    image: node:8.15.0
+    commands:
+      - MONGO_URL=mongodb://mongo:27017/api yarn test:ci:api
+  - name: scheduler_test
+    image: node:8.15.0
+    commands:
+      - yarn test:scheduler
+  - name: app_test
+    image: node:8.15.0
+    commands:
+      - yarn test:app
 
   - name: app_build
     image: node:8.15.0
