@@ -84,7 +84,7 @@ export default class SupportPage extends React.PureComponent {
     return (
       <Fragment>
         <Helmet>
-          <title>Contact Support</title>
+          <title>Support</title>
         </Helmet>
 
         <Container tag="main">

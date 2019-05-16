@@ -72,7 +72,7 @@ const Subscriptions = new mongoose.Schema(
       type: String,
       default: null,
     },
-    servicePeriodEnd: {
+    servicePeriodEndAt: {
       type: Date,
       required: true,
     },

@@ -93,7 +93,7 @@ class Db extends EventEmitter {
     await user
       .populate({
         path: '_subscription',
-        select: '_id servicePeriodEnd',
+        select: '_id servicePeriodEndAt',
         populate: { path: '_plan', select: '_id name features' },
       })
       .execPopulate();
@@ -276,7 +276,7 @@ class Db extends EventEmitter {
     const subscription = await new Subscriptions({
       _user: user._id,
       _plan: trialPlan._id,
-      servicePeriodEnd: trialPeriodEndsAt,
+      servicePeriodEndAt: trialPeriodEndsAt,
     }).save();
 
     user._subscription = subscription._id;
@@ -787,7 +787,7 @@ class Db extends EventEmitter {
       _paddleUpdateURL,
       _paddleCancelURL,
       nextBillDateAt,
-      servicePeriodEnd,
+      servicePeriodEndAt,
       type,
       paymentStatus,
     } = data;
@@ -812,7 +812,7 @@ class Db extends EventEmitter {
       _paddleUpdateURL,
       _paddleCancelURL,
       nextBillDateAt,
-      servicePeriodEnd,
+      servicePeriodEndAt,
       type,
       paymentStatus,
     }).save();
@@ -906,7 +906,7 @@ class Db extends EventEmitter {
       _paddleCancelURL,
       price,
       nextBillDateAt,
-      servicePeriodEnd: nextBillDateAt,
+      servicePeriodEndAt: nextBillDateAt,
     }).exec();
 
     this._log.info(

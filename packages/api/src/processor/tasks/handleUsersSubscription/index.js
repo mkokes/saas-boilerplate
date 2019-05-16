@@ -10,10 +10,10 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
           const subscriptions = await db.getActiveSubscriptionsWithNoPaymentMethod();
 
           subscriptions.forEach(async subscription => {
-            const { servicePeriodEnd } = subscription;
+            const { servicePeriodEndAt } = subscription;
 
             const isAccessExpired = moment().isSameOrAfter(
-              moment(servicePeriodEnd).startOf('day'),
+              moment(servicePeriodEndAt).startOf('day'),
             );
 
             if (isAccessExpired) {
