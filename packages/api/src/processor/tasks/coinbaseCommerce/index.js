@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
   const log = parentLog.create('coinbaseCommerce');
 
@@ -18,19 +20,37 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
             case 'charge:confirmed': {
               const { user_id: userId, plan_id: planId } = metadata;
 
+              const plan = await db.getPlanById(planId);
+
+              let servicePeriodEndAt;
+              switch (plan.billingInterval) {
+                case 'monthly':
+                  servicePeriodEndAt = moment()
+                    .add(1, 'months')
+                    .calendar();
+                  break;
+                case 'yearly':
+                  servicePeriodEndAt = moment()
+                    .add(1, 'years')
+                    .calendar();
+                  break;
+                default:
+                  throw new Error('unhandled plan billing interval');
+              }
+
               await db.cryptoPaymentReceived({
                 _user: userId,
-                _plan: planId,
+                _plan: plan._id,
                 description,
                 _coinbaseCommerceChargeCode: code,
                 saleGross: pricing.local.amount,
               });
               await db.createSubscription(userId, {
                 _user: userId,
-                _plan: planId,
+                _plan: plan._id,
                 type: 'manually',
                 paymentStatus: 'deleted',
-                servicePeriodEnd: '2020-01-01',
+                servicePeriodEndAt,
               });
               break;
             }

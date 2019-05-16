@@ -37,6 +37,7 @@ Sentry.init({
 
 if (!MAINTENANCE_MODE) {
   MomentTimezone.tz.setDefault('America/Los_Angeles');
+  AnalyticsApi.ga.initialize();
   AnalyticsApi.mixpanel.setup();
   PaddleApi.setup();
 

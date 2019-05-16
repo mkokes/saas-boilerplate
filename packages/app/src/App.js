@@ -92,7 +92,7 @@ export default function App() {
 
                     <Route
                       exact
-                      path="/contact-support"
+                      path="/support"
                       component={SupportPage}
                       layout={TransactionalLayout}
                     />
