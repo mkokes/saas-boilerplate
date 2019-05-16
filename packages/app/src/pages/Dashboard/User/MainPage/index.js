@@ -29,7 +29,7 @@ export default class MainPage extends React.PureComponent {
             !(
               !_.isEmpty(userProfile._subscription) &&
               userProfile._subscription._plan.name === 'TRIAL' &&
-              moment(Number(userProfile._subscription.servicePeriodEnd)).diff(
+              moment(Number(userProfile._subscription.servicePeriodEndAt)).diff(
                 new Date(),
                 'days',
               ) <= 3
@@ -44,7 +44,7 @@ export default class MainPage extends React.PureComponent {
             <Moment
               date={
                 userProfile._subscription &&
-                Number(userProfile._subscription.servicePeriodEnd)
+                Number(userProfile._subscription.servicePeriodEndAt)
               }
               diff={new Date()}
               unit="days"

@@ -441,13 +441,15 @@ class BillingPage extends React.PureComponent {
                               <strong>
                                 <Moment
                                   format="LL"
-                                  date={Number(subscription.servicePeriodEnd)}
+                                  date={Number(subscription.servicePeriodEndAt)}
                                 />
                                 <span hidden={!(plan.name === 'TRIAL')}>
                                   {' '}
                                   (
                                   <Moment
-                                    date={Number(subscription.servicePeriodEnd)}
+                                    date={Number(
+                                      subscription.servicePeriodEndAt,
+                                    )}
                                     diff={Number(subscription.startedAt)}
                                     unit="days"
                                   />{' '}
@@ -813,7 +815,7 @@ class BillingPage extends React.PureComponent {
                 </SafeQuery>
               </Col>
               <Col hidden={!subscriptionPlansLoading}>
-                <Loader />
+                <Loader noDelay />
               </Col>
             </Row>
             <legend className="mt-3">Receipts</legend>

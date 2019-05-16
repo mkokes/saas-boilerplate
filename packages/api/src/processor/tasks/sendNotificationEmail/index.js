@@ -61,7 +61,7 @@ module.exports = ({
     product_founder_name: PRODUCT_FOUNDER_NAME,
     product_name: PRODUCT_NAME,
     product_url: PRODUCT_APP_URL,
-    support_url: `${PRODUCT_APP_URL}/contact-support`,
+    support_url: `${PRODUCT_APP_URL}/support`,
     company_name: COMPANY_NAME,
     company_address: null,
   };
@@ -104,12 +104,12 @@ module.exports = ({
               templateModel.email = _user.email;
 
               const subscription = await db.getUserSubscription(_user._id);
-              const { startedAt, servicePeriodEnd } = subscription;
+              const { startedAt, servicePeriodEndAt } = subscription;
 
               templateModel.trial_length =
-                moment(servicePeriodEnd).diff(startedAt, 'days') + 1;
+                moment(servicePeriodEndAt).diff(startedAt, 'days') + 1;
               templateModel.trial_start_date = moment(startedAt).format('LL');
-              templateModel.trial_end_date = moment(servicePeriodEnd).format(
+              templateModel.trial_end_date = moment(servicePeriodEndAt).format(
                 'LL',
               );
               break;

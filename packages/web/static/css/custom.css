@@ -1,3 +1,7 @@
+.fixedHeaderContainer {
+  padding-top: 12px;
+}
+
 .fixedHeaderContainer header .headerTitleWithLogo {
   color: #fff;
   display: block !important;
