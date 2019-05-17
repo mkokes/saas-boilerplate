@@ -15,6 +15,11 @@ const { VERIFY_EMAIL } = require('../constants/notifications');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
+const INVALID_CAPTCHA_ERROR = new ApolloError(
+  'Our security system could not determine if the request was made by a human. Try it again.',
+  'INVALID_CAPTCHA',
+);
+
 const _genJwtIat = () => parseInt((Date.now() / 1000).toFixed(0), 10); // Setting our IAT we avoid clock skew issue (https://en.wikipedia.org/wiki/Clock_skew)
 const createAccessToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
@@ -75,6 +80,12 @@ const hasExceededRequestsLimit = async (db, userId, type) => {
       'Request limit exceeded, please try it again in a few minutes.',
       'REQUESTS_LIMIT_EXCEEDED',
     );
+  }
+};
+
+const assertCaptcha = async captchaResponse => {
+  if (!(await validateRecaptchaResponse(captchaResponse))) {
+    throw INVALID_CAPTCHA_ERROR;
   }
 };
 
@@ -160,10 +171,7 @@ module.exports = ({
       const paramsValidationErrors = {};
 
       if (validator.isEmpty(recaptchaResponse)) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
+        throw INVALID_CAPTCHA_ERROR;
       }
       if (validator.isEmpty(requesterName)) {
         paramsValidationErrors.requesterName = 'Name is required';
@@ -204,16 +212,7 @@ module.exports = ({
         );
       }
 
-      const isRecaptchaValid = await validateRecaptchaResponse(
-        recaptchaResponse,
-      );
-
-      if (!isRecaptchaValid) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
-      }
+      await assertCaptcha(recaptchaResponse);
 
       await db.contactSupport(
         safeGet(user, '_id'),
@@ -230,10 +229,7 @@ module.exports = ({
       const paramsValidationErrors = {};
 
       if (validator.isEmpty(recaptchaResponse)) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
+        throw INVALID_CAPTCHA_ERROR;
       }
       if (!validator.isLength(text, { min: 10, max: undefined })) {
         paramsValidationErrors.text = 'Too short!';
@@ -251,16 +247,7 @@ module.exports = ({
         );
       }
 
-      const isRecaptchaValid = await validateRecaptchaResponse(
-        recaptchaResponse,
-      );
-
-      if (!isRecaptchaValid) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
-      }
+      await assertCaptcha(recaptchaResponse);
 
       await db.sendFeedback(text, email);
 
@@ -284,10 +271,7 @@ module.exports = ({
       const paramsValidationErrors = {};
 
       if (validator.isEmpty(recaptchaResponse)) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
+        throw INVALID_CAPTCHA_ERROR;
       }
       if (!validator.isEmail(email)) {
         paramsValidationErrors.email = 'Email is not valid';
@@ -318,16 +302,7 @@ module.exports = ({
         });
       }
 
-      const isRecaptchaValid = await validateRecaptchaResponse(
-        recaptchaResponse,
-      );
-
-      if (!isRecaptchaValid) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
-      }
+      await assertCaptcha(recaptchaResponse);
 
       try {
         const user = await db.signUpUser(
@@ -483,10 +458,7 @@ module.exports = ({
         recaptchaResponse,
       );
       if (!isRecaptchaValid) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
+        throw INVALID_CAPTCHA_ERROR;
       }
 
       const user = await db.getUserByEmail(email);
