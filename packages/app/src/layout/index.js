@@ -29,6 +29,9 @@ const TransactionalLayout = ({ headerTitle, children }) => (
       {headerTitle && <h1 className="color-primary-theme">{headerTitle}</h1>}
     </div>
     {children}
+    <p className="mt-4 text-center small" style={{ color: '#b8c2cc' }}>
+      ® {new Date().getFullYear()} LEGAL_COMPANY_NAME. All rights reserved.
+    </p>
   </BaseLayout>
 );
 
