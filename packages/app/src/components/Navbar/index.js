@@ -50,6 +50,7 @@ const UserBox = styled.div`
 const DashboardDropdownItem = styled(DropdownItem)`
   padding-left: 16px;
   padding-right: 16px;
+  line-height: 42px;
 
   &.active {
     color: unset;
@@ -272,6 +273,7 @@ export class NavbarComponent extends React.PureComponent {
                                   position: 'absolute',
                                 }}
                                 right
+                                className="pb-0"
                               >
                                 <UserBox>
                                   <Avatar
@@ -299,7 +301,7 @@ export class NavbarComponent extends React.PureComponent {
                                   <Fragment>
                                     {userProfile.isSignUpEmailConfirmed && (
                                       <Fragment>
-                                        <DropdownItem divider />
+                                        <DropdownItem divider className="m-0" />
                                         <DashboardDropdownItem
                                           to="/dashboard/settings/profile"
                                           tag={RRNavLink}
@@ -308,7 +310,7 @@ export class NavbarComponent extends React.PureComponent {
                                         </DashboardDropdownItem>
                                       </Fragment>
                                     )}
-                                    <DropdownItem divider />
+                                    <DropdownItem divider className="m-0" />
                                     <DashboardDropdownItem
                                       to="/support"
                                       tag={RRNavLink}
@@ -318,7 +320,7 @@ export class NavbarComponent extends React.PureComponent {
                                   </Fragment>
                                 ) : (
                                   <Fragment>
-                                    <DropdownItem divider />
+                                    <DropdownItem divider className="m-0" />
                                     <DashboardDropdownItem
                                       to="/dashboard"
                                       tag={RRNavLink}
@@ -331,7 +333,7 @@ export class NavbarComponent extends React.PureComponent {
                                     </DashboardDropdownItem>
                                   </Fragment>
                                 )}
-                                <DropdownItem divider />
+                                <DropdownItem divider className="m-0" />
                                 <DashboardDropdownItem
                                   to="/signout"
                                   tag={RRNavLink}
