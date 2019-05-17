@@ -158,10 +158,10 @@ export default class PricingPage extends React.PureComponent {
                             <CardBody>
                               <h1 className="card-title pricing-card-title">
                                 ${plan.price}{' '}
-                                <small className="text-muted">
+                                <span className="text-muted small">
                                   /{' '}
                                   {displayBillingInterval(plan.billingInterval)}
-                                </small>
+                                </span>
                               </h1>
                               <p className="lead mb-3">
                                 {plan.displayedDescription}
