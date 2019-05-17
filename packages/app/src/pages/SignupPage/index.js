@@ -120,7 +120,10 @@ export default class SignupPage extends React.PureComponent {
                           </SafeMutation>
                         )}
                       </GlobalConsumer>
-                      <p className="mt-1 pr-lg-5 pl-lg-5 text-center text-muted small">
+                      <p
+                        className="mt-1 pr-lg-5 pl-lg-5 text-center small"
+                        style={{ color: '#8795a1' }}
+                      >
                         By signing up, you agree to our{' '}
                         <a
                           href={`${WEBSITE_URL}/legal/terms-service`}
@@ -137,13 +140,17 @@ export default class SignupPage extends React.PureComponent {
                         </a>
                         .
                       </p>
+                      <p className="m-0 mt-3 text-center text-muted">
+                        Already have an account?{' '}
+                        <Link to="/auth/login">
+                          <strong>Log in</strong>
+                        </Link>{' '}
+                        instead.
+                      </p>
                     </Col>
                   </Row>
                 </CardBody>
               </Card>
-              <div className="mt-3 text-center">
-                <Link to="/auth/login">Already have an account? Log in</Link>
-              </div>
             </Col>
           </Row>
         </Container>
@@ -295,7 +302,7 @@ const SignupForm = props => {
               icon={faSpinner}
               className={isSubmitting ? 'mr-2' : 'd-none'}
             />
-            Submit
+            Create Account →
           </Button>
           <Reaptcha
             // eslint-disable-next-line no-return-assign
