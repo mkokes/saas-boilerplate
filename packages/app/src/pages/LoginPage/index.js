@@ -22,9 +22,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { ReactstrapInput } from 'utils/formiik';
+import { ReactstrapInput, ReactstrapCheckbox } from 'utils/formiik';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
+import _ from 'lodash';
 
 import { GlobalConsumer } from 'GlobalState';
 import { LOGIN_USER } from 'graphql/mutations';
@@ -54,10 +55,11 @@ export default class LoginPage extends React.PureComponent {
                   <Row>
                     <Col>
                       <GlobalConsumer>
-                        {({ setAuthTokens, logIn }) => (
+                        {({ setAuthRememberMe, setAuthTokens, logIn }) => (
                           <SafeMutation mutation={LOGIN_USER} showError>
                             {logInRequest => (
                               <LoginForm
+                                setAuthRememberMe={setAuthRememberMe}
                                 setAuthTokens={setAuthTokens}
                                 logIn={logIn}
                                 logInRequest={logInRequest}
@@ -86,19 +88,20 @@ export default class LoginPage extends React.PureComponent {
 }
 
 const LoginForm = props => {
-  const { setAuthTokens, logIn, logInRequest } = props;
+  const { setAuthRememberMe, setAuthTokens, logIn, logInRequest } = props;
 
   const [show2FALostMsg, setShow2FALostMsg] = useState(false);
 
   return (
     <Formik
-      initialValues={{ email: '', password: '', token: '' }}
+      initialValues={{ email: '', password: '', token: '', remember: false }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
           .email('Invalid email')
           .required('Required'),
         password: Yup.string().required('Required'),
         token: Yup.string(),
+        remember: Yup.boolean(),
       })}
       onSubmit={async (values, formikBag) => {
         setShow2FALostMsg(false);
@@ -106,12 +109,13 @@ const LoginForm = props => {
         try {
           const { data } = await logInRequest({
             variables: {
-              ...values,
+              ..._.omit(values, ['remember']),
             },
           });
 
           const { accessToken, refreshToken } = data.loginUser;
 
+          setAuthRememberMe(values.remember);
           await setAuthTokens({
             accessToken,
             refreshToken,
@@ -176,6 +180,13 @@ const LoginForm = props => {
             </Link>
             .
           </Alert>
+          <div className="mb-3">
+            <Field
+              component={ReactstrapCheckbox}
+              name="remember"
+              label="Remember me"
+            />
+          </div>
           <Button
             type="submit"
             block
@@ -196,6 +207,7 @@ const LoginForm = props => {
   );
 };
 LoginForm.propTypes = {
+  setAuthRememberMe: PropTypes.func,
   setAuthTokens: PropTypes.func,
   logIn: PropTypes.func,
   logInRequest: PropTypes.func,

@@ -105,6 +105,8 @@ export const ReactstrapCheckbox = ({
       <Input
         {...props}
         {...fields}
+        type="checkbox"
+        value={fields.value}
         checked={fields.value}
         invalid={Boolean(touched[fields.name] && errors[fields.name])}
         disabled={isSubmitting}
