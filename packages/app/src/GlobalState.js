@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode';
 import MomentTimezone from 'moment-timezone';
 import { toast } from 'react-toastify';
 
-import { LocalStorageApi, AnalyticsApi } from 'api/vendors';
+import { AnalyticsApi, LocalStorageApi, SessionStorageApi } from 'api/vendors';
 import { LOGIN_USER_NO_AUTH, REFRESH_ACCESS_TOKEN } from 'graphql/mutations';
 import { USER_PROFILE_QUERY } from 'graphql/queries';
 import { buildAuthHeader } from './utils/requests';
@@ -27,14 +27,38 @@ class Provider extends Component {
     appLoadStatus: false,
     apolloClient: this.props.client,
     auth: {
-      accessToken: LocalStorageApi.getItem('access_token') || undefined,
-      refreshToken: LocalStorageApi.getItem('refresh_token') || undefined,
+      rememberMe: !!LocalStorageApi.getItem('refresh_token'),
+      accessToken:
+        LocalStorageApi.getItem('access_token') ||
+        SessionStorageApi.getItem('access_token') ||
+        undefined,
+      refreshToken:
+        LocalStorageApi.getItem('refresh_token') ||
+        SessionStorageApi.getItem('refresh_token') ||
+        undefined,
     },
   };
+
+  _getStorageClass() {
+    return this.authRememberMe() ? LocalStorageApi : SessionStorageApi;
+  }
 
   setAppLoadStatus(status) {
     this.setState({ appLoadStatus: status });
   }
+
+  authRememberMe() {
+    return this.state.auth.rememberMe;
+  }
+
+  setAuthRememberMe = bool => {
+    this.setState(state => ({
+      auth: {
+        ...state.auth,
+        rememberMe: bool,
+      },
+    }));
+  };
 
   authAccessToken() {
     return this.state.auth.accessToken;
@@ -173,8 +197,11 @@ class Provider extends Component {
   };
 
   setAuthTokens = async ({ accessToken, refreshToken }) => {
+    const storage = this._getStorageClass();
+
     if (accessToken) {
-      LocalStorageApi.setItem('access_token', accessToken);
+      storage.setItem('access_token', accessToken);
+
       this.setState(state => ({
         auth: {
           ...state.auth,
@@ -183,7 +210,7 @@ class Provider extends Component {
       }));
     }
     if (refreshToken) {
-      LocalStorageApi.setItem('refresh_token', refreshToken);
+      storage.setItem('refresh_token', refreshToken);
       this.setState(state => ({
         auth: {
           ...state.auth,
@@ -193,12 +220,19 @@ class Provider extends Component {
     }
   };
 
+  clearAuthTokens = () => {
+    const storage = this._getStorageClass();
+
+    storage.removeItem('access_token');
+    storage.removeItem('refresh_token');
+  };
+
   logOut = async isForced => {
-    LocalStorageApi.removeItem('access_token');
-    LocalStorageApi.removeItem('refresh_token');
+    this.clearAuthTokens();
 
     this.setState({
       auth: {
+        rememberMe: false,
         accessToken: undefined,
         refreshToken: undefined,
         profile: null,
@@ -234,6 +268,7 @@ class Provider extends Component {
       <GlobalContext.Provider
         value={{
           appLoadStatus: this.state.appLoadStatus,
+          setAuthRememberMe: this.setAuthRememberMe,
           userProfile: this.state.auth.profile,
           loggedIn: this.isLoggedIn(),
           signUp: this.signUp,
