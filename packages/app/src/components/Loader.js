@@ -14,7 +14,7 @@ const Circle = styled.circle`
 `;
 
 const Loader = ({ large, noDelay }) => (
-  <Delayed wait={450} noDelay={noDelay}>
+  <Delayed wait={100} noDelay={noDelay}>
     <LoaderContainer>
       <svg
         width={large ? '80' : '40'}

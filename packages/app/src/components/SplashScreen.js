@@ -26,7 +26,7 @@ const Container = styled.div`
 /* eslint-disable react/prefer-stateless-function */
 function SplashScreen() {
   return (
-    <Delayed wait={450}>
+    <Delayed wait={100}>
       <BaseLayout>
         <Container>
           <Loader large noDelay />
