@@ -197,7 +197,7 @@ export default function App() {
                     <Route
                       protected
                       exact
-                      path="/dashboard/feedback"
+                      path="/dashboard/give-feedback"
                       component={FeedbackPage}
                       layout={DashboardLayout}
                     />

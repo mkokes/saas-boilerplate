@@ -154,7 +154,7 @@ export class NavbarComponent extends React.PureComponent {
             className="mr-1"
           >
             <NavLink
-              to="/dashboard/feedback"
+              to="/dashboard/give-feedback"
               exact
               activeClassName="active"
               tag={RRNavLink}
