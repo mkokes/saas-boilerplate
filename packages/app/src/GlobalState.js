@@ -232,6 +232,7 @@ class Provider extends Component {
 
     this.setState({
       auth: {
+        rememberMe: false,
         accessToken: undefined,
         refreshToken: undefined,
         profile: null,
