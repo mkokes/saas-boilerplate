@@ -38,17 +38,15 @@ export default class ApiPage extends React.PureComponent {
               Credentials{' '}
               <a
                 href={`${WEBSITE_URL}/api/information`}
-                className="float-right"
+                className="float-right small"
                 target="_new"
               >
-                <small>
-                  API information{' '}
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="xs"
-                    className="align-middle"
-                  />
-                </small>
+                API information{' '}
+                <FontAwesomeIcon
+                  icon={faQuestionCircle}
+                  size="xs"
+                  className="align-middle"
+                />
               </a>
             </legend>
             <Row>

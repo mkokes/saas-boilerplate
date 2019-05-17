@@ -585,15 +585,13 @@ class BillingPage extends React.PureComponent {
             </Row>
             <legend className="mt-3 mb-3">
               Plans{' '}
-              <Link to="/pricing" className="float-right">
-                <small>
-                  Pricing page{' '}
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="xs"
-                    className="align-middle"
-                  />
-                </small>
+              <Link to="/pricing" className="float-right small">
+                Pricing page{' '}
+                <FontAwesomeIcon
+                  icon={faQuestionCircle}
+                  size="xs"
+                  className="align-middle"
+                />
               </Link>
             </legend>
             <Row>
