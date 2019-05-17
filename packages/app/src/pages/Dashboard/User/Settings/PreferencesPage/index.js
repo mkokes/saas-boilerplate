@@ -202,15 +202,13 @@ export default class PreferencesPage extends React.PureComponent {
                                 formikBag.setSubmitting(false);
                               }}
                             >
-                              {({ isSubmitting, values }) => (
+                              {({ isSubmitting }) => (
                                 <Fragment>
                                   <Form>
                                     <Field
                                       component={ReactstrapCheckbox}
                                       name="MARKETING_INFO"
-                                      value={values.MARKETING_INFO}
                                       label="News and announcements"
-                                      type="checkbox"
                                     />
 
                                     <Button
