@@ -106,12 +106,6 @@ export default function App() {
                     />
                     <Route
                       exact
-                      path="/dashboard/feedback"
-                      component={FeedbackPage}
-                      layout={DashboardLayout}
-                    />
-                    <Route
-                      exact
                       path="/signup"
                       component={SignupPage}
                       layout={TransactionalLayout}
@@ -199,6 +193,13 @@ export default function App() {
                       path="/dashboard/email-verification"
                       component={EmailVerificationPage}
                       layout={DashboardLayoutWithoutSubNavbar}
+                    />
+                    <Route
+                      protected
+                      exact
+                      path="/dashboard/feedback"
+                      component={FeedbackPage}
+                      layout={DashboardLayout}
                     />
 
                     <Route exact path="/signout" component={SignOutPage} />
