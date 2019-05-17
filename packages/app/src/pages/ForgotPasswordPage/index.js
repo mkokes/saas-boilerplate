@@ -166,10 +166,8 @@ const ForgotPasswordForm = props => {
               autoComplete="email"
               required
             />
-            <PasswordResetText>
-              <small className="text-muted">
-                Password reset instructions will be sent to this email address.
-              </small>
+            <PasswordResetText className="text-muted small">
+              Password reset instructions will be sent to this email address.
             </PasswordResetText>
 
             <Row className="flex-nowrap">
