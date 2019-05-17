@@ -89,6 +89,10 @@ const GlobalStyle = createGlobalStyle`
   .react-confirm-alert-body > h1 {
     font-size: 2.2em;
   }
+
+  textarea {
+    white-space: pre-wrap;
+  }
 `;
 
 export default GlobalStyle;
