@@ -168,6 +168,7 @@ const FeedbackForm = props => {
                 label="Your email (optional)"
                 placeholder="example@email.com"
                 autoComplete="email"
+                required
               />
             </div>
             <div>
