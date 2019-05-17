@@ -64,7 +64,6 @@ module.exports = gql`
     QUESTION
     BILLING
     PROBLEM
-    FEATURE_REQUEST
     BUG_REPORT
     LOST_2FA
   }

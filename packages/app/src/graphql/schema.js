@@ -62,7 +62,6 @@ const typeDefs = `
     QUESTION
     PROBLEM
     BILLING
-    FEATURE_REQUEST
     BUG_REPORT
     LOST_2FA
   }

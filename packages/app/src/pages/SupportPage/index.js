@@ -64,10 +64,6 @@ export default class SupportPage extends React.PureComponent {
         label: 'Bug Report',
         value: 'BUG_REPORT',
       },
-      {
-        label: 'Feature Request',
-        value: 'FEATURE_REQUEST',
-      },
     ];
 
     this.state = {
