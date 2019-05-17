@@ -32,7 +32,6 @@ import SafeMutation from 'components/SafeMutation';
 
 const ForgotPasswordContainer = styled.div`
   margin-top: -10px;
-  font-size: 12px;
   line-height: 18px;
 `;
 
@@ -67,13 +66,17 @@ export default class LoginPage extends React.PureComponent {
                           </SafeMutation>
                         )}
                       </GlobalConsumer>
+                      <p className="m-0 mt-3 text-center text-muted">
+                        Don&#39;t have an account?{' '}
+                        <Link to="/signup">
+                          <strong>Register</strong>
+                        </Link>{' '}
+                        instead.
+                      </p>
                     </Col>
                   </Row>
                 </CardBody>
               </Card>
-              <div className="mt-3 text-center">
-                <Link to="/signup">Don&#39;t have an account?</Link>
-              </div>
             </Col>
           </Row>
         </Container>
@@ -153,8 +156,8 @@ const LoginForm = props => {
             autoComplete="current-password"
             required
           />
-          <ForgotPasswordContainer className="text-right">
-            <Link to="/auth/forgot-password" className="text-muted">
+          <ForgotPasswordContainer className="text-right small">
+            <Link to="/auth/forgot-password" style={{ color: '#8795a1' }}>
               forgot password?
             </Link>
           </ForgotPasswordContainer>
@@ -185,7 +188,7 @@ const LoginForm = props => {
               icon={faSpinner}
               className={isSubmitting ? 'mr-2' : 'd-none'}
             />
-            Log In
+            Log In →
           </Button>
         </Form>
       )}
