@@ -27,6 +27,9 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
     border-bottom: 1px solid #e5e5e5;
   }
+  textarea {
+    white-space: pre-wrap;
+  }
 
   a:hover, a:focus {
     text-decoration: none;
@@ -88,10 +91,6 @@ const GlobalStyle = createGlobalStyle`
 
   .react-confirm-alert-body > h1 {
     font-size: 2.2em;
-  }
-
-  textarea {
-    white-space: pre-wrap;
   }
 `;
 
