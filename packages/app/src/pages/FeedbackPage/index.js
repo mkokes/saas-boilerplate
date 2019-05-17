@@ -107,6 +107,8 @@ const FeedbackForm = props => {
         email: Yup.string().email('Invalid email'),
       })}
       onSubmit={async (values, formikBag) => {
+        setShowSuccessMessage(false);
+
         if (!captchaRendered) await captcha.current.renderExplicitly();
         if (!captchaResponse) {
           await captcha.current.execute();
@@ -122,15 +124,17 @@ const FeedbackForm = props => {
             },
           });
 
-          return setShowSuccessMessage(true);
+          formikBag.resetForm();
+          setShowSuccessMessage(true);
         } catch (e) {
           if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
             formikBag.setErrors(e.data);
           }
 
-          await resetCaptcha();
-          return formikBag.setSubmitting(false);
+          formikBag.setSubmitting(false);
         }
+
+        await resetCaptcha();
       }}
     >
       {({ submitForm, isSubmitting }) => (
@@ -142,9 +146,9 @@ const FeedbackForm = props => {
             className="text-center"
             hidden={!showSuccessMessage}
           >
-            <strong>Feedback sent, thank you.</strong>
+            <strong>Your feedback was sent, thank you.</strong>
           </Alert>
-          <Form hidden={showSuccessMessage}>
+          <Form>
             <p className="text-muted mb-0">
               Please share your thoughts, concerns..etc so PRODUCT_NAME can
               improve!
