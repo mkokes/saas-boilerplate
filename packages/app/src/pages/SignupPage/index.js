@@ -94,10 +94,11 @@ export default class SignupPage extends React.PureComponent {
                   <Row>
                     <Col>
                       <GlobalConsumer>
-                        {({ setAuthTokens, signUp }) => (
+                        {({ setAuthRememberMe, setAuthTokens, signUp }) => (
                           <SafeMutation mutation={SIGNUP_USER} showError>
                             {signUpRequest => (
                               <SignupForm
+                                setAuthRememberMe={setAuthRememberMe}
                                 setAuthTokens={setAuthTokens}
                                 signUp={signUp}
                                 signUpRequest={signUpRequest}
@@ -164,7 +165,13 @@ SignupPage.propTypes = {
 };
 
 const SignupForm = props => {
-  const { setAuthTokens, signUp, signUpRequest, data } = props;
+  const {
+    setAuthRememberMe,
+    setAuthTokens,
+    signUp,
+    signUpRequest,
+    data,
+  } = props;
 
   const [captchaRendered, setCaptchaRendered] = useState(false);
   const [captchaResponse, setCaptchaResponse] = useState('');
@@ -224,6 +231,7 @@ const SignupForm = props => {
 
           const { accessToken, refreshToken } = signUpUser;
 
+          setAuthRememberMe(true);
           await setAuthTokens({
             accessToken,
             refreshToken,
@@ -328,6 +336,7 @@ const SignupForm = props => {
   );
 };
 SignupForm.propTypes = {
+  setAuthRememberMe: PropTypes.func,
   setAuthTokens: PropTypes.func,
   signUp: PropTypes.func,
   signUpRequest: PropTypes.func,
