@@ -134,7 +134,7 @@ const FeedbackForm = props => {
           formikBag.setSubmitting(false);
         }
 
-        await resetCaptcha();
+        return resetCaptcha();
       }}
     >
       {({ submitForm, isSubmitting }) => (
