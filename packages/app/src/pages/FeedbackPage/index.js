@@ -165,17 +165,16 @@ const FeedbackForm = props => {
               style={{ height: 150 }}
               required
             />
-            <div hidden={userProfile}>
-              <Field
-                component={ReactstrapInput}
-                name="email"
-                type="email"
-                label="Your email (optional)"
-                placeholder="example@email.com"
-                autoComplete="email"
-                required
-              />
-            </div>
+            <Field
+              component={ReactstrapInput}
+              name="email"
+              type="email"
+              label="Your email (optional)"
+              placeholder="example@email.com"
+              autoComplete="email"
+              required
+              hidden={userProfile}
+            />
             <div>
               <Button
                 type="submit"

@@ -154,16 +154,15 @@ const ResetPasswordForm = props => {
                 <strong>Password has been reset. Now you can log in.</strong>
               </Alert>
               <Form hidden={hideForm}>
-                <div hidden={data.initialValues.resetToken}>
-                  <Field
-                    component={ReactstrapInput}
-                    name="resetToken"
-                    type="text"
-                    label="Reset token"
-                    placeholder="(check received reset instructions email)"
-                    autoComplete="off"
-                  />
-                </div>
+                <Field
+                  component={ReactstrapInput}
+                  name="resetToken"
+                  type="text"
+                  label="Reset token"
+                  placeholder="(check received reset instructions email)"
+                  autoComplete="off"
+                  hidden={data.initialValues.resetToken}
+                />
                 <Field
                   component={ReactstrapInput}
                   name="newPassword"
