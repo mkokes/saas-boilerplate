@@ -314,6 +314,7 @@ class Db extends EventEmitter {
           $last_name: user.lastName,
           subscribed_plan_id: null,
           trialing: true,
+          accountStatus: 'active',
         },
       ],
     });
@@ -760,6 +761,12 @@ class Db extends EventEmitter {
         },
       ],
     });
+  }
+
+  async hasUserEnabled2FA(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    return user.hasTwoFactorAuthenticationEnabled;
   }
 
   async getPlanById(planId) {
@@ -1308,6 +1315,41 @@ class Db extends EventEmitter {
     } catch (_) {
       return false;
     }
+  }
+
+  async deleteAccount(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+    user.email = `account_deleted___${user.email}`;
+    user.status = 'deleted';
+    user.passwordUpdatedAt = Date.now(); // this invalidates all issued auth tokens.
+    user.accountDeletedAt = Date.now();
+    await user.save();
+
+    this.emit(MIXPANEL_EVENT, {
+      eventType: 'PEOPLE_SET',
+      args: [
+        user._id,
+        {
+          accountStatus: 'deleted',
+        },
+      ],
+    });
+    this.emit(MIXPANEL_EVENT, {
+      eventType: 'TRACK',
+      args: [
+        'account deletion',
+        {
+          distinct_id: user._id,
+        },
+      ],
+    });
+    this.emit(MAILCHIMP, {
+      user,
+      actionType: 'STATUS_CHANGE',
+      status: 'unsubscribed',
+    });
+
+    return true;
   }
 
   async notificationsLimitExceeded(

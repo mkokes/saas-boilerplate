@@ -958,5 +958,30 @@ module.exports = ({
 
       return code;
     },
+    deleteAccount: async (_, { token2FA }, { user }) => {
+      await assertUser(user);
+
+      const hasUserEnabled2FA = await db.hasUserEnabled2FA(user);
+      if (hasUserEnabled2FA) {
+        if (!token2FA) {
+          throw new UserInputError('Need 2FA', {
+            validationErrors: {
+              token2FA: 'Required',
+            },
+          });
+        }
+
+        const isProvided2FAValid = await db.check2FAUser(user, token2FA);
+        if (!isProvided2FAValid) {
+          throw new UserInputError('Invalid 2FA code provided', {
+            validationErrors: {
+              token2FA: 'Provided code is not valid, please try it again',
+            },
+          });
+        }
+      }
+
+      await db.deleteAccount(user);
+    },
   },
 });
