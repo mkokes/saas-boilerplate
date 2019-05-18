@@ -504,6 +504,10 @@ class Db extends EventEmitter {
   async changeUserPassword(userId, oldPassword, newPassword) {
     const user = await this._getUser(userId, true);
 
+    if (user.accountStatus !== 'active') {
+      throw new Error('USER_ACCOUNT_NOT_ACTIVE');
+    }
+
     const isOldPasswordValid = await user.comparePassword(oldPassword);
     if (!isOldPasswordValid) {
       throw new Error('INVALID_OLD_PASSWORD');
