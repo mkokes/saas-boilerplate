@@ -7,7 +7,7 @@ import Footer from 'components/Footer/Loadable';
 import DashboardSettingsNavbar from 'components/DashboardSettingsNavbar/Loadable';
 
 import config from 'config';
-const { WEBSITE_URL } = config;
+const { LEGAL_COMPANY_NAME, WEBSITE_URL } = config;
 
 const BaseLayoutContainer = styled.div`
   min-height: 100vh;
@@ -30,7 +30,7 @@ const TransactionalLayout = ({ headerTitle, children }) => (
     </div>
     {children}
     <p className="mt-4 text-center small" style={{ color: '#b8c2cc' }}>
-      ® {new Date().getFullYear()} LEGAL_COMPANY_NAME. All rights reserved.
+      ® {new Date().getFullYear()} {LEGAL_COMPANY_NAME}. All rights reserved.
     </p>
   </BaseLayout>
 );

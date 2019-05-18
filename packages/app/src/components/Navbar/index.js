@@ -31,6 +31,9 @@ import { useMediaMin } from 'mediaQuery';
 import Avatar from 'components/Avatar';
 import HeadWay from 'components/HeadWay';
 
+import config from 'config';
+const { PRODUCT_NAME } = config;
+
 const MainNavbar = styled(Navbar)`
   background-color: ${props => props.theme.primaryColor};
 `;
@@ -207,7 +210,7 @@ function NavbarComponent(props) {
                         }}
                         className="ml-2"
                       >
-                        PRODUCT_NAME
+                        {PRODUCT_NAME}
                       </span>
                     </NavbarBrand>
                   </NavLink>

@@ -29,7 +29,7 @@ import { SEND_FEEDBACK } from 'graphql/mutations';
 import config from 'config';
 import SafeMutation from 'components/SafeMutation';
 
-const { RECAPTCHA_SITE_KEY } = config;
+const { PRODUCT_NAME, RECAPTCHA_SITE_KEY } = config;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class FeedbackPage extends React.PureComponent {
@@ -150,7 +150,7 @@ const FeedbackForm = props => {
           </Alert>
           <Form>
             <p className="text-muted mb-0">
-              Please share your thoughts, concerns..etc so PRODUCT_NAME can
+              Please share your thoughts, concerns..etc so {PRODUCT_NAME} can
               improve!
             </p>
             <Field
