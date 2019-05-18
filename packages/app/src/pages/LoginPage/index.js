@@ -136,10 +136,6 @@ const LoginForm = props => {
             if ('token' in e.data) {
               setShow2FALostMsg(true);
             }
-          } else {
-            toast.error(e.message, {
-              position: toast.POSITION.TOP_CENTER,
-            });
           }
 
           formikBag.setSubmitting(false);

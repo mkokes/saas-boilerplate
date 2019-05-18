@@ -5,6 +5,7 @@
  */
 
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import {
   Row,
   Col,
@@ -23,6 +24,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+import { confirmAlert } from 'react-confirm-alert';
 
 import { ReactstrapInput } from 'utils/formiik';
 import { GlobalConsumer } from 'GlobalState';
@@ -31,6 +33,7 @@ import {
   UPDATE_USER_PROFILE,
   UPDATE_PERSONAL_DETAILS,
   CHANGE_USER_EMAIL,
+  DELETE_ACCOUNT,
 } from 'graphql/mutations';
 import Avatar from 'components/Avatar';
 import { equalTo } from 'utils/yup';
@@ -65,7 +68,7 @@ export default class ProfilePage extends React.PureComponent {
           <title>Account profile</title>
         </Helmet>
         <GlobalConsumer>
-          {({ setAuthTokens, setUserProfile, userProfile }) => (
+          {({ setAuthTokens, setUserProfile, userProfile, logOut }) => (
             <Fragment>
               <h1 className="mb-3">My Profile</h1>
               <Card body>
@@ -591,6 +594,10 @@ export default class ProfilePage extends React.PureComponent {
                   </Col>
                 </Row>
               </Card>
+              <DeleteUserAccountCard
+                userProfile={userProfile}
+                logOut={logOut}
+              />
             </Fragment>
           )}
         </GlobalConsumer>
@@ -598,5 +605,139 @@ export default class ProfilePage extends React.PureComponent {
     );
   }
 }
-
 ProfilePage.propTypes = {};
+
+const DeleteUserAccountCard = props => {
+  const { userProfile, logOut } = props;
+
+  return (
+    <Card body outline color="danger" className="mt-4">
+      <legend className="text-danger">
+        <strong>Delete account</strong>
+      </legend>
+      <Row>
+        <Col xs="12">
+          <p>
+            Deleting your account removes all sites and stats you have
+            collected.
+          </p>
+        </Col>
+        <Col className="text-center">
+          <SafeMutation mutation={DELETE_ACCOUNT}>
+            {deleteAccountRequest => (
+              <Button
+                color="danger"
+                onClick={() =>
+                  confirmAlert({
+                    // eslint-disable-next-line react/prop-types
+                    customUI: ({ onClose }) => (
+                      <Modal isOpen>
+                        <ModalHeader className="text-danger">
+                          Confirm account deletion
+                        </ModalHeader>
+
+                        <Formik
+                          initialValues={{
+                            token2FA: '',
+                          }}
+                          validationSchema={Yup.object().shape({
+                            token2FA: Yup.string(),
+                          })}
+                          onSubmit={async (values, formikBag) => {
+                            try {
+                              await deleteAccountRequest({
+                                variables: {
+                                  token2FA: values.token2FA,
+                                },
+                              });
+
+                              onClose();
+                              logOut({ silently: true });
+                              toast.success(
+                                'Your account has been deleted. We hope you come back soon.',
+                                {
+                                  position: toast.POSITION.TOP_CENTER,
+                                },
+                              );
+                            } catch (e) {
+                              if (
+                                e.name === 'apollo_link_error' &&
+                                e.type === 'BAD_USER_INPUT'
+                              ) {
+                                formikBag.setErrors(e.data);
+                              } else {
+                                toast.error(e.message, {
+                                  position: toast.POSITION.TOP_CENTER,
+                                });
+                              }
+
+                              formikBag.setSubmitting(false);
+                            }
+                          }}
+                        >
+                          {({ errors, touched, isSubmitting }) => (
+                            <Fragment>
+                              <Form>
+                                <ModalBody>
+                                  <p>
+                                    Are you sure you want to delete your
+                                    account? you will not be able to reactivate
+                                    your account or retrieve any of the content
+                                    or information you have added.{' '}
+                                    <strong>THIS ACTION IS FINAL</strong>.
+                                  </p>
+                                  <div className="pt-3">
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="token2FA"
+                                      label="Enter 2FA authentication code:"
+                                      placeholder="Google Authenticator token"
+                                      type="text"
+                                      autoComplete="off"
+                                      hidden={
+                                        (!userProfile.hasTwoFactorAuthenticationEnabled &&
+                                          !errors.token2FA) ||
+                                        !touched.token2FA
+                                      }
+                                    />
+                                  </div>
+                                </ModalBody>
+                                <ModalFooter>
+                                  <Button color="danger" type="submit">
+                                    <FontAwesomeIcon
+                                      pulse
+                                      icon={faSpinner}
+                                      className="mr-2"
+                                      hidden={!isSubmitting}
+                                    />
+                                    Confirm
+                                  </Button>
+                                  <Button
+                                    color="secondary"
+                                    onClick={() => onClose()}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </ModalFooter>
+                              </Form>
+                            </Fragment>
+                          )}
+                        </Formik>
+                      </Modal>
+                    ),
+                  })
+                }
+              >
+                Delete my account
+              </Button>
+            )}
+          </SafeMutation>
+        </Col>
+      </Row>
+    </Card>
+  );
+};
+DeleteUserAccountCard.propTypes = {
+  userProfile: PropTypes.object,
+  logOut: PropTypes.func,
+};

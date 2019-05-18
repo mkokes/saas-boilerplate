@@ -23,7 +23,6 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { ReactstrapInput } from 'utils/formiik';
 import Reaptcha from 'reaptcha';
-import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
 import { SEND_FEEDBACK } from 'graphql/mutations';
@@ -130,10 +129,6 @@ const FeedbackForm = props => {
         } catch (e) {
           if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
             formikBag.setErrors(e.data);
-          } else {
-            toast.error(e.message, {
-              position: toast.POSITION.TOP_CENTER,
-            });
           }
 
           formikBag.setSubmitting(false);

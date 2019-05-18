@@ -26,7 +26,6 @@ import { ReactstrapInput, ReactstrapSelect } from 'utils/formiik';
 import Reaptcha from 'reaptcha';
 import _ from 'lodash';
 import queryString from 'query-string';
-import { toast } from 'react-toastify';
 
 import { GlobalConsumer } from 'GlobalState';
 import { CONTACT_SUPPORT } from 'graphql/mutations';
@@ -208,10 +207,6 @@ const ContactForm = props => {
         } catch (e) {
           if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
             formikBag.setErrors(e.data);
-          } else {
-            toast.error(e.message, {
-              position: toast.POSITION.TOP_CENTER,
-            });
           }
 
           await resetCaptcha();
