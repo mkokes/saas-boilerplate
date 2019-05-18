@@ -1325,6 +1325,8 @@ class Db extends EventEmitter {
     user.accountDeletedAt = Date.now();
     await user.save();
 
+    this._log.info(`user ${user._id} account deleted`);
+
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
       args: [
@@ -1366,7 +1368,15 @@ class Db extends EventEmitter {
       },
     }).exec();
 
-    return notificationsCount >= maxReqsAllowed;
+    const hasExceeded = notificationsCount >= maxReqsAllowed;
+
+    if (hasExceeded) {
+      this._log.info(
+        `user ${userId} exceeded notification limit for notification type ${type}`,
+      );
+    }
+
+    return hasExceeded;
   }
 
   async notifyUser(userId, type, variables) {
