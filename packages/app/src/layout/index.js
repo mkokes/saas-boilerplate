@@ -43,14 +43,12 @@ const BaseLayout = ({ children }) => (
 
 const DashboardBaseLayout = ({
   dashboardNavbarHidden,
-  navbarExpand,
   brandNameLink,
   children,
 }) => (
   <BaseLayout>
     <Navbar
       dashboardNavbarHidden={dashboardNavbarHidden}
-      expand={navbarExpand}
       brandNameLink={brandNameLink}
     />
     {children}
@@ -59,11 +57,7 @@ const DashboardBaseLayout = ({
 );
 
 const DashboardLayout = ({ children }) => (
-  <DashboardBaseLayout
-    dashboardNavbarHidden={false}
-    navbarExpand="md"
-    brandNameLink="/dashboard"
-  >
+  <DashboardBaseLayout dashboardNavbarHidden={false} brandNameLink="/dashboard">
     <div style={{ paddingTop: '25px', paddingBottom: '25px' }} className="flex">
       {children}
     </div>
@@ -71,11 +65,7 @@ const DashboardLayout = ({ children }) => (
 );
 
 const DashboardLayoutWithoutSubNavbar = ({ children }) => (
-  <DashboardBaseLayout
-    dashboardNavbarHidden
-    navbarExpand="md"
-    brandNameLink="/dashboard"
-  >
+  <DashboardBaseLayout dashboardNavbarHidden brandNameLink="/dashboard">
     <div className="flex">{children}</div>
   </DashboardBaseLayout>
 );
@@ -105,7 +95,6 @@ DashboardLayoutWithoutSubNavbar.propTypes = {
 
 DashboardBaseLayout.propTypes = {
   dashboardNavbarHidden: PropTypes.bool,
-  navbarExpand: PropTypes.string,
   brandNameLink: PropTypes.string,
   children: PropTypes.node,
 };

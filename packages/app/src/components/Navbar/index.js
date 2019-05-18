@@ -94,7 +94,7 @@ const Backdrop = styled.div`
 `;
 
 function NavbarComponent(props) {
-  const { location, expand, brandNameLink, dashboardNavbarHidden } = props;
+  const { location, brandNameLink, dashboardNavbarHidden } = props;
 
   const { pathname } = location;
   const isDashboardRoute = pathname.indexOf('/dashboard') === 0;
@@ -164,21 +164,14 @@ function NavbarComponent(props) {
         {({ userProfile }) => (
           <header>
             <Fragment>
-              <MainNavbar dark expand={expand} className="pt-0 pb-0">
+              <MainNavbar dark expand="md" className="pt-0 pb-0">
                 <Container>
-                  {!dashboardNavbarHidden && (
-                    <>
-                      {!isMinMedium && (
-                        <NavbarToggler
-                          key="navbar-toggler"
-                          onClick={() =>
-                            setIsNavbarCollapseOpen(status => !status)
-                          }
-                          className="mr-1"
-                        />
-                      )}
-                    </>
-                  )}
+                  <NavbarToggler
+                    key="navbar-toggler"
+                    onClick={() => setIsNavbarCollapseOpen(status => !status)}
+                    className="mr-1"
+                    hidden={dashboardNavbarHidden && isMinMedium}
+                  />
 
                   <NavLink
                     to={brandNameLink}
@@ -257,9 +250,7 @@ function NavbarComponent(props) {
                               }`}
                             />
                             <span className="mb-1" style={{ fontSize: 18 }}>
-                              {`${userProfile.firstName} ${
-                                userProfile.lastName
-                              }`}
+                              {userProfile.firstName} {userProfile.lastName}
                             </span>
                             <span
                               className="text-muted"
@@ -320,38 +311,28 @@ function NavbarComponent(props) {
                       <Backdrop hidden={!isDropdownOpen} />
                     </Nav>
 
-                    {!dashboardNavbarHidden && (
-                      <>
-                        {!isMinMedium && (
-                          <Collapse
-                            key="navbar-collapse"
-                            isOpen={isNavbarCollapseOpen}
-                            navbar
-                          >
-                            <Container>{renderDashboardNavItems()}</Container>
-                          </Collapse>
-                        )}
-                      </>
+                    {!dashboardNavbarHidden && isNavbarCollapseOpen && (
+                      <Collapse
+                        key="navbar-collapse"
+                        isOpen={isNavbarCollapseOpen}
+                        navbar
+                      >
+                        <Container>{renderDashboardNavItems()}</Container>
+                      </Collapse>
                     )}
                   </Fragment>
                 </Container>
               </MainNavbar>
-              {!dashboardNavbarHidden && (
-                <>
-                  {isMinMedium && (
-                    <DashboardNavbar light expand="xs">
-                      <Container
-                        style={{
-                          paddingLeft: '15px',
-                          paddingRight: '15px',
-                        }}
-                      >
-                        {renderDashboardNavItems()}
-                      </Container>
-                    </DashboardNavbar>
-                  )}
-                </>
-              )}
+              <DashboardNavbar light expand="xs" hidden={!isMinMedium}>
+                <Container
+                  style={{
+                    paddingLeft: '15px',
+                    paddingRight: '15px',
+                  }}
+                >
+                  {renderDashboardNavItems()}
+                </Container>
+              </DashboardNavbar>
             </Fragment>
           </header>
         )}
@@ -361,13 +342,11 @@ function NavbarComponent(props) {
 }
 
 NavbarComponent.propTypes = {
-  expand: PropTypes.string,
   brandNameLink: PropTypes.string,
   location: PropTypes.object,
   dashboardNavbarHidden: PropTypes.bool,
 };
 NavbarComponent.defaultProps = {
-  expand: 'sm',
   brandNameLink: '/',
   dashboardNavbarHidden: true,
 };
