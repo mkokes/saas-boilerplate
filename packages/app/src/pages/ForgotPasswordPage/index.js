@@ -25,6 +25,7 @@ import * as Yup from 'yup';
 import styled from 'styled-components';
 import { ReactstrapInput } from 'utils/formiik';
 import Reaptcha from 'reaptcha';
+import { toast } from 'react-toastify';
 
 import { FORGOT_PASSWORD_REQUEST } from 'graphql/mutations';
 import config from 'config';
@@ -134,6 +135,10 @@ const ForgotPasswordForm = props => {
         } catch (e) {
           if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
             formikBag.setErrors(e.data);
+          } else {
+            toast.error(e.message, {
+              position: toast.POSITION.TOP_CENTER,
+            });
           }
         }
 

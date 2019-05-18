@@ -26,6 +26,7 @@ import Reaptcha from 'reaptcha';
 import MomentTimezone from 'moment-timezone';
 import queryString from 'query-string';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { SIGNUP_USER } from 'graphql/mutations';
 import { GlobalConsumer } from 'GlobalState';
@@ -245,6 +246,10 @@ const SignupForm = props => {
             if ('email' in e.data) {
               setAlreadyTakenEmails([...alreadyTakenEmails, values.email]);
             }
+          } else {
+            toast.error(e.message, {
+              position: toast.POSITION.TOP_CENTER,
+            });
           }
 
           await resetCaptcha();
