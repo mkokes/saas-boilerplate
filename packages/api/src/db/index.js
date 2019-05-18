@@ -1319,8 +1319,8 @@ class Db extends EventEmitter {
 
   async deleteAccount(userId) {
     const user = await this._getUser(userId, { mustExist: true });
-    user.email = `account_deleted___${user.email}`;
-    user.status = 'deleted';
+    user.email = `account_deleted__${uuidv4()}__-${user.email}`;
+    user.accountStatus = 'deleted';
     user.passwordUpdatedAt = Date.now(); // this invalidates all issued auth tokens.
     user.accountDeletedAt = Date.now();
     await user.save();
