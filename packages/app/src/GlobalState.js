@@ -227,7 +227,7 @@ class Provider extends Component {
     storage.removeItem('refresh_token');
   };
 
-  logOut = async isForced => {
+  logOut = async ({ isForced, silently }) => {
     this.clearAuthTokens();
 
     this.setState({
@@ -239,6 +239,8 @@ class Provider extends Component {
         loggedIn: false,
       },
     });
+
+    if (silently) return;
 
     if (isForced) {
       toast.error(`An error ocurred. Please log in again.`, {
