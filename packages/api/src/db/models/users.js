@@ -152,6 +152,10 @@ const UsersSchema = new mongoose.Schema(
       default: null,
       trim: true,
     },
+    accountDeletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: {
