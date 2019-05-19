@@ -723,6 +723,10 @@ class BillingPage extends React.PureComponent {
                                           e.type === 'BAD_USER_INPUT'
                                         ) {
                                           formikBag.setErrors(e.data);
+                                        } else {
+                                          toast.error(e.message, {
+                                            position: toast.POSITION.TOP_CENTER,
+                                          });
                                         }
                                       }
 
@@ -769,11 +773,8 @@ class BillingPage extends React.PureComponent {
                                               <FontAwesomeIcon
                                                 pulse
                                                 icon={faSpinner}
-                                                className={
-                                                  isSubmitting
-                                                    ? 'mr-2'
-                                                    : 'd-none'
-                                                }
+                                                className="mr-2"
+                                                hidden={!isSubmitting}
                                               />
                                             </div>
                                           </ModalBody>

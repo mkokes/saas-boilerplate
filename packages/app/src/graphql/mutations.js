@@ -215,3 +215,9 @@ export const CREATE_COINBASE_COMMERCE_CHARGE = gql`
     chargeId: createCoinbaseCommerceCharge(plan: $plan) @requireAuth
   }
 `;
+
+export const DELETE_ACCOUNT = gql`
+  mutation deleteAccount($token2FA: String) {
+    deleteAccount(token2FA: $token2FA) @requireAuth
+  }
+`;

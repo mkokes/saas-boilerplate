@@ -26,6 +26,7 @@ import Reaptcha from 'reaptcha';
 import MomentTimezone from 'moment-timezone';
 import queryString from 'query-string';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { SIGNUP_USER } from 'graphql/mutations';
 import { GlobalConsumer } from 'GlobalState';
@@ -94,10 +95,11 @@ export default class SignupPage extends React.PureComponent {
                   <Row>
                     <Col>
                       <GlobalConsumer>
-                        {({ setAuthTokens, signUp }) => (
+                        {({ setAuthRememberMe, setAuthTokens, signUp }) => (
                           <SafeMutation mutation={SIGNUP_USER} showError>
                             {signUpRequest => (
                               <SignupForm
+                                setAuthRememberMe={setAuthRememberMe}
                                 setAuthTokens={setAuthTokens}
                                 signUp={signUp}
                                 signUpRequest={signUpRequest}
@@ -128,6 +130,10 @@ export default class SignupPage extends React.PureComponent {
                         <a
                           href={`${WEBSITE_URL}/legal/terms-service`}
                           target="popup"
+                          style={{
+                            color: '#8795a1',
+                            textDecoration: 'underline',
+                          }}
                         >
                           Terms of Service
                         </a>{' '}
@@ -135,6 +141,10 @@ export default class SignupPage extends React.PureComponent {
                         <a
                           href={`${WEBSITE_URL}/legal/privacy-policy`}
                           target="popup"
+                          style={{
+                            color: '#8795a1',
+                            textDecoration: 'underline',
+                          }}
                         >
                           Privacy Policy
                         </a>
@@ -142,7 +152,11 @@ export default class SignupPage extends React.PureComponent {
                       </p>
                       <p className="m-0 mt-3 text-center text-muted">
                         Already have an account?{' '}
-                        <Link to="/auth/login">
+                        <Link
+                          to="/auth/login"
+                          className="text-muted"
+                          style={{ textDecoration: 'underline' }}
+                        >
                           <strong>Log in</strong>
                         </Link>{' '}
                         instead.
@@ -164,7 +178,13 @@ SignupPage.propTypes = {
 };
 
 const SignupForm = props => {
-  const { setAuthTokens, signUp, signUpRequest, data } = props;
+  const {
+    setAuthRememberMe,
+    setAuthTokens,
+    signUp,
+    signUpRequest,
+    data,
+  } = props;
 
   const [captchaRendered, setCaptchaRendered] = useState(false);
   const [captchaResponse, setCaptchaResponse] = useState('');
@@ -224,12 +244,19 @@ const SignupForm = props => {
 
           const { accessToken, refreshToken } = signUpUser;
 
+          setAuthRememberMe(true);
           await setAuthTokens({
             accessToken,
             refreshToken,
           });
 
-          return await signUp();
+          try {
+            await signUp();
+          } catch (e) {
+            toast.error(e.message, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         } catch (e) {
           if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
             formikBag.setErrors(e.data);
@@ -240,8 +267,9 @@ const SignupForm = props => {
           }
 
           await resetCaptcha();
-          return formikBag.setSubmitting(false);
         }
+
+        formikBag.setSubmitting(false);
       }}
     >
       {({ submitForm, isSubmitting }) => (
@@ -328,6 +356,7 @@ const SignupForm = props => {
   );
 };
 SignupForm.propTypes = {
+  setAuthRememberMe: PropTypes.func,
   setAuthTokens: PropTypes.func,
   signUp: PropTypes.func,
   signUpRequest: PropTypes.func,

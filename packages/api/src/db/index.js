@@ -314,6 +314,7 @@ class Db extends EventEmitter {
           $last_name: user.lastName,
           subscribed_plan_id: null,
           trialing: true,
+          accountStatus: 'active',
         },
       ],
     });
@@ -502,6 +503,10 @@ class Db extends EventEmitter {
 
   async changeUserPassword(userId, oldPassword, newPassword) {
     const user = await this._getUser(userId, true);
+
+    if (user.accountStatus !== 'active') {
+      throw new Error('USER_ACCOUNT_NOT_ACTIVE');
+    }
 
     const isOldPasswordValid = await user.comparePassword(oldPassword);
     if (!isOldPasswordValid) {
@@ -760,6 +765,12 @@ class Db extends EventEmitter {
         },
       ],
     });
+  }
+
+  async hasUserEnabled2FA(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    return user.hasTwoFactorAuthenticationEnabled;
   }
 
   async getPlanById(planId) {
@@ -1310,6 +1321,43 @@ class Db extends EventEmitter {
     }
   }
 
+  async deleteAccount(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+    user.email = `account_deleted__${uuidv4()}__-${user.email}`;
+    user.accountStatus = 'deleted';
+    user.passwordUpdatedAt = Date.now(); // this invalidates all issued auth tokens.
+    user.accountDeletedAt = Date.now();
+    await user.save();
+
+    this._log.info(`user ${user._id} account deleted`);
+
+    this.emit(MIXPANEL_EVENT, {
+      eventType: 'PEOPLE_SET',
+      args: [
+        user._id,
+        {
+          accountStatus: 'deleted',
+        },
+      ],
+    });
+    this.emit(MIXPANEL_EVENT, {
+      eventType: 'TRACK',
+      args: [
+        'account deletion',
+        {
+          distinct_id: user._id,
+        },
+      ],
+    });
+    this.emit(MAILCHIMP, {
+      user,
+      actionType: 'STATUS_CHANGE',
+      status: 'unsubscribed',
+    });
+
+    return true;
+  }
+
   async notificationsLimitExceeded(
     userId,
     type,
@@ -1324,7 +1372,15 @@ class Db extends EventEmitter {
       },
     }).exec();
 
-    return notificationsCount >= maxReqsAllowed;
+    const hasExceeded = notificationsCount >= maxReqsAllowed;
+
+    if (hasExceeded) {
+      this._log.info(
+        `user ${userId} exceeded notification limit for notification type ${type}`,
+      );
+    }
+
+    return hasExceeded;
   }
 
   async notifyUser(userId, type, variables) {

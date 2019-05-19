@@ -43,6 +43,9 @@ import {
 } from 'layout';
 import { GlobalConsumer } from 'GlobalState';
 
+import config from 'config';
+const { PRODUCT_NAME } = config;
+
 const Route = ({
   component: Component,
   layout: Layout = DefaultLayout,
@@ -81,7 +84,7 @@ export default function App() {
         <>
           {appLoadStatus ? (
             <>
-              <Helmet titleTemplate="%s - SaaS boilerplate" />
+              <Helmet titleTemplate={`%s – ${PRODUCT_NAME}`} />
               <Router>
                 <ScrollToTop>
                   <Switch>
