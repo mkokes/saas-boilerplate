@@ -638,9 +638,15 @@ const DeleteUserAccountCard = props => {
 
                         <Formik
                           initialValues={{
+                            confirmationText: '',
                             token2FA: '',
                           }}
                           validationSchema={Yup.object().shape({
+                            confirmationText: Yup.string().test(
+                              'confirmationText',
+                              'Does not match',
+                              value => value === 'DELETE MY ACCOUNT',
+                            ),
                             token2FA: Yup.string(),
                           })}
                           onSubmit={async (values, formikBag) => {
@@ -687,6 +693,14 @@ const DeleteUserAccountCard = props => {
                                     <strong>THIS ACTION IS FINAL</strong>.
                                   </p>
                                   <div className="pt-3">
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="confirmationText"
+                                      label='Please type in "DELETE MY ACCOUNT" to confirm:'
+                                      placeholder="DELETE MY ACCOUNT"
+                                      type="text"
+                                      autoComplete="off"
+                                    />
                                     <Field
                                       component={ReactstrapInput}
                                       name="token2FA"
