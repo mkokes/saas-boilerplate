@@ -27,6 +27,7 @@ import MomentTimezone from 'moment-timezone';
 import queryString from 'query-string';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as Sentry from '@sentry/browser';
 
 import { SIGNUP_USER } from 'graphql/mutations';
 import { GlobalConsumer } from 'GlobalState';
@@ -253,6 +254,11 @@ const SignupForm = props => {
 
           try {
             await signUp();
+            Sentry.addBreadcrumb({
+              category: 'auth',
+              message: `Signed up user ${values.emai}`,
+              level: Sentry.Severity.Info,
+            });
           } catch (e) {
             toast.error(e.message, {
               position: toast.POSITION.TOP_CENTER,

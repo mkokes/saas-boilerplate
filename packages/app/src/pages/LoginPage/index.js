@@ -26,6 +26,7 @@ import { ReactstrapInput, ReactstrapCheckbox } from 'utils/formiik';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
+import * as Sentry from '@sentry/browser';
 
 import { GlobalConsumer } from 'GlobalState';
 import { LOGIN_USER } from 'graphql/mutations';
@@ -127,6 +128,13 @@ const LoginForm = props => {
 
           try {
             await logIn();
+
+            Sentry.addBreadcrumb({
+              category: 'auth',
+              message: `Authenticated user ${values.email}`,
+              level: Sentry.Severity.Info,
+            });
+
             toast.info(`Logged in successfully.`, {
               position: toast.POSITION.BOTTOM_LEFT,
               hideProgressBar: true,
