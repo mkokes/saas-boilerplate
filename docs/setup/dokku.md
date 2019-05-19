@@ -11,11 +11,19 @@ Dokku docs: <http://dokku.viewdocs.io/dokku>.
 - `dokku-monorepo`: <https://github.com/notpushkin/dokku-monorepo>.
 - `dokku-mongo`: <https://github.com/dokku/dokku-mongo>.
 - `dokku-hostname`: <https://github.com/michaelshobbs/dokku-hostname>
+- `dokku-letsencrypt`: <https://github.com/dokku/dokku-letsencrypt>
 
 ## Setup DNS on Cloudflare
 
 ![dokku dns](images/dokku/dns.png)
 ^Points to DO server IP address
+
+## Configuration
+
+```bash
+  dokku config:set --global DOKKU_LETSENCRYPT_EMAIL=your@email.tld
+  dokku config:set --global DOKKU_LETSENCRYPT_SERVER=default # or stage
+```
 
 ## Create API DB
 
@@ -99,10 +107,10 @@ dokku config:set --no-restart api COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET=XXX
 
 ## Adding a new application
 
-Add application name and directory path to file `.dokku-monorepo` and ssh to the `Dokku server` to setup your application (domain, ports, ssl, env config..etc).
+Add application name and directory path to file `.dokku-monorepo` and ssh to the `Dokku server` to setup your application dokku config (domain, ports, ssl, env config..etc).
 
 ## Adding SSH keys
 
-```
+```bash
 dokku ssh-keys:add CI /path/to/pub_ci_ssh_key
 ```
