@@ -5,6 +5,7 @@ import jwtDecode from 'jwt-decode';
 import MomentTimezone from 'moment-timezone';
 import { toast } from 'react-toastify';
 import { transformApolloErr } from 'utils/apollo';
+import * as Sentry from '@sentry/browser';
 
 import { AnalyticsApi, LocalStorageApi, SessionStorageApi } from 'api/vendors';
 import { LOGIN_USER_NO_AUTH, REFRESH_ACCESS_TOKEN } from 'graphql/mutations';
@@ -165,6 +166,9 @@ class Provider extends Component {
       },
     }));
 
+    Sentry.configureScope(scope => {
+      scope.setUser({ id: profile._id });
+    });
     MomentTimezone.tz.setDefault(profile.timezone);
   };
 

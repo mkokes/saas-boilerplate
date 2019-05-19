@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import MomentTimezone from 'moment-timezone';
 import * as Sentry from '@sentry/browser';
+import ErrorBoundary from 'react-error-boundary';
 
 import 'sanitize.css/sanitize.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -16,6 +17,7 @@ import { AnalyticsApi, PaddleApi } from 'api/vendors';
 import { GlobalProvider } from 'GlobalState';
 import GlobalStyle from 'GlobalStyle';
 import App from 'App';
+import ErrorPage from 'pages/ErrorPage/Loadable';
 import MaintenancePage from 'pages/MaintenancePage/Loadable';
 import config from 'config';
 import { clientInstance } from './graphql';
@@ -47,7 +49,14 @@ if (!MAINTENANCE_MODE) {
         <ThemeProvider theme={APP_THEME}>
           <Fragment>
             <ToastContainer />
-            <App />
+            <ErrorBoundary
+              onError={Sentry.captureException}
+              FallbackComponent={({ componentStack, error }) => (
+                <ErrorPage stacktrace={componentStack} error={error} />
+              )}
+            >
+              <App />
+            </ErrorBoundary>
             <GlobalStyle />
           </Fragment>
         </ThemeProvider>
