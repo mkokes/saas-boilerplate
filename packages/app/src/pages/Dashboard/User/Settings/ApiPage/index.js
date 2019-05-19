@@ -122,9 +122,9 @@ const RegenerateApiForm = props => {
           toast.error(e.message, {
             position: toast.POSITION.TOP_CENTER,
           });
+        } finally {
+          formikBag.setSubmitting(false);
         }
-
-        formikBag.setSubmitting(false);
       }}
     >
       {({ values, isSubmitting }) => (

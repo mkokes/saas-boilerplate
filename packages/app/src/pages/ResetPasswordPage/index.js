@@ -135,9 +135,9 @@ const ResetPasswordForm = props => {
                 break;
             }
           }
+        } finally {
+          formikBag.setSubmitting(false);
         }
-
-        formikBag.setSubmitting(false);
       }}
     >
       {({ isSubmitting }) => (

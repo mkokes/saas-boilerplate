@@ -217,8 +217,9 @@ export default class SecurityPage extends React.PureComponent {
                                           position: toast.POSITION.TOP_CENTER,
                                         });
                                       }
+                                    } finally {
+                                      formikBag.setSubmitting(false);
                                     }
-                                    formikBag.setSubmitting(false);
                                   }}
                                 >
                                   {({ isSubmitting }) => (

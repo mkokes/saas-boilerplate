@@ -222,6 +222,7 @@ const SignupForm = props => {
           .required('Required'),
         password: Yup.string().required('Required'),
       })}
+      // eslint-disable-next-line consistent-return
       onSubmit={async (values, formikBag) => {
         if (!captchaRendered) await captcha.current.renderExplicitly();
         if (!captchaResponse) {
@@ -267,9 +268,9 @@ const SignupForm = props => {
           }
 
           await resetCaptcha();
+        } finally {
+          formikBag.setSubmitting(false);
         }
-
-        return formikBag.setSubmitting(false);
       }}
     >
       {({ submitForm, isSubmitting }) => (

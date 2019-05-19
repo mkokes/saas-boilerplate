@@ -147,9 +147,9 @@ const LoginForm = props => {
               setShow2FALostMsg(true);
             }
           }
+        } finally {
+          formikBag.setSubmitting(false);
         }
-
-        formikBag.setSubmitting(false);
       }}
     >
       {({ isSubmitting }) => (

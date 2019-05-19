@@ -728,9 +728,9 @@ class BillingPage extends React.PureComponent {
                                             position: toast.POSITION.TOP_CENTER,
                                           });
                                         }
+                                      } finally {
+                                        formikBag.setSubmitting(false);
                                       }
-
-                                      formikBag.setSubmitting(false);
                                     }}
                                   >
                                     {({ values, isSubmitting }) => (

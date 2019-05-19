@@ -109,6 +109,7 @@ const ForgotPasswordForm = props => {
           .email('Invalid email')
           .required('Required'),
       })}
+      // eslint-disable-next-line consistent-return
       onSubmit={async (values, formikBag) => {
         setShowSuccessMessage(false);
 
@@ -135,10 +136,10 @@ const ForgotPasswordForm = props => {
           if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
             formikBag.setErrors(e.data);
           }
+        } finally {
+          await resetCaptcha();
+          formikBag.setSubmitting(false);
         }
-
-        await resetCaptcha();
-        return formikBag.setSubmitting(false);
       }}
     >
       {({ submitForm, isSubmitting }) => (

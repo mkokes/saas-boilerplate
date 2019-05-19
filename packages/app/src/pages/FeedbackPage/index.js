@@ -106,6 +106,7 @@ const FeedbackForm = props => {
           .required('Required'),
         email: Yup.string().email('Invalid email'),
       })}
+      // eslint-disable-next-line consistent-return
       onSubmit={async (values, formikBag) => {
         setShowSuccessMessage(false);
 
@@ -132,9 +133,9 @@ const FeedbackForm = props => {
           }
 
           formikBag.setSubmitting(false);
+        } finally {
+          resetCaptcha();
         }
-
-        return resetCaptcha();
       }}
     >
       {({ submitForm, isSubmitting }) => (
