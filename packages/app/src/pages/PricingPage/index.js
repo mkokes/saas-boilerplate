@@ -230,7 +230,10 @@ export default class PricingPage extends React.PureComponent {
                     <FaqQuestionTitle>More questions?</FaqQuestionTitle>
                     <p>
                       Get in touch at{' '}
-                      <a href="mailto:sales@domain.io" className="link">
+                      <a
+                        href="mailto:sales@domain.io?subject=Pricing"
+                        className="link"
+                      >
                         sales@domain.io
                       </a>
                     </p>
