@@ -18,15 +18,12 @@ export default class ErrorPage extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    const { stacktrace, error } = props;
+    const { error } = props;
 
     this.state = { eventId: null };
 
-    Sentry.withScope(scope => {
-      scope.setExtras(stacktrace);
-      const eventId = Sentry.captureException(error);
-      this.setState({ eventId });
-    });
+    const eventId = Sentry.captureException(error);
+    this.setState({ eventId });
   }
 
   render() {
@@ -54,7 +51,7 @@ export default class ErrorPage extends React.PureComponent {
             block
             className="btn-theme"
           >
-            Report feedback to {PRODUCT_NAME} team
+            Report error to {PRODUCT_NAME} team
           </Button>
           <div className="text-center mt-5">
             <a href={WEBSITE_URL} className="text-muted">
