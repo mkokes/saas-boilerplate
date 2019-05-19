@@ -414,13 +414,10 @@ module.exports = ({
     loginUserNoAuth: async (_, __, { user }) => {
       const err = new ApolloError('Cannot log in user', 'INVALID_LOGIN');
 
-      if (!user) {
-        throw err;
-      }
-
       try {
+        await assertUser(user);
         return db.loginUser(user._id);
-      } catch (e) {
+      } catch (___) {
         throw err;
       }
     },
