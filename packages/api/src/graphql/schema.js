@@ -147,5 +147,6 @@ module.exports = gql`
     disable2FA(token: String!): Boolean
     regenerateUserApiSecretKey: UserProfile
     createCoinbaseCommerceCharge(plan: String!): String
+    deleteAccount(token2FA: String): Boolean
   }
 `;

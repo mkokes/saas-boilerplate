@@ -16,6 +16,9 @@ import moment from 'moment';
 
 import { GlobalConsumer } from 'GlobalState';
 
+import config from 'config';
+const { PRODUCT_NAME } = config;
+
 /* eslint-disable react/prefer-stateless-function */
 export default class MainPage extends React.PureComponent {
   renderMainAlerts(userProfile) {
@@ -63,7 +66,7 @@ export default class MainPage extends React.PureComponent {
           <strong>
             Please{' '}
             <Link to="/dashboard/settings/billing">upgrade your account</Link>{' '}
-            to continue using PRODUCT_NAME
+            to continue using {PRODUCT_NAME}
           </strong>
         </Alert>
       </Fragment>

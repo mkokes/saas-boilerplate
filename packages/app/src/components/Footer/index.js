@@ -9,6 +9,9 @@ import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import config from 'config';
+const { LEGAL_COMPANY_NAME } = config;
+
 const FooterContainer = styled.footer`
   position: relative;
   bottom: 0;
@@ -44,7 +47,7 @@ export class FooterComponent extends React.PureComponent {
             />
           </Link>
           <span className="float-right">
-            ® {new Date().getFullYear()} LEGAL_COMPANY_NAME.
+            ® {new Date().getFullYear()} {LEGAL_COMPANY_NAME}.
           </span>
         </Container>
       </FooterContainer>
