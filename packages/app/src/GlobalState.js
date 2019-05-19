@@ -4,6 +4,7 @@ import { withApollo } from 'react-apollo';
 import jwtDecode from 'jwt-decode';
 import MomentTimezone from 'moment-timezone';
 import { toast } from 'react-toastify';
+import { transformApolloErr } from 'utils/apollo';
 
 import { AnalyticsApi, LocalStorageApi, SessionStorageApi } from 'api/vendors';
 import { LOGIN_USER_NO_AUTH, REFRESH_ACCESS_TOKEN } from 'graphql/mutations';
@@ -125,6 +126,10 @@ class Provider extends Component {
           loggedIn: false,
         },
       }));
+
+      throw err.constructor.name === 'ApolloError'
+        ? transformApolloErr(err)
+        : err;
     }
   };
 
@@ -177,23 +182,29 @@ class Provider extends Component {
   };
 
   refreshAccessTokenReq = async () => {
-    const refreshToken = this.authRefreshToken();
+    try {
+      const refreshToken = this.authRefreshToken();
 
-    if (!refreshToken)
-      throw new Error('no refresh token to renew access token');
+      if (!refreshToken)
+        throw new Error('no refresh token to renew access token');
 
-    const { data } = await this.apolloClient().mutate({
-      mutation: REFRESH_ACCESS_TOKEN,
-      variables: {
-        refreshToken,
-      },
-    });
+      const { data } = await this.apolloClient().mutate({
+        mutation: REFRESH_ACCESS_TOKEN,
+        variables: {
+          refreshToken,
+        },
+      });
 
-    const { accessToken } = data.refreshAccessToken;
+      const { accessToken } = data.refreshAccessToken;
 
-    await this.setAuthTokens({ accessToken });
+      await this.setAuthTokens({ accessToken });
 
-    return accessToken;
+      return accessToken;
+    } catch (err) {
+      throw err.constructor.name === 'ApolloError'
+        ? transformApolloErr(err)
+        : err;
+    }
   };
 
   setAuthTokens = async ({ accessToken, refreshToken }) => {
@@ -259,7 +270,10 @@ class Provider extends Component {
   };
 
   async componentDidMount() {
-    await this.logIn();
+    try {
+      await this.logIn();
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
 
     setProviderInstance(this);
     this.setAppLoadStatus(true);
