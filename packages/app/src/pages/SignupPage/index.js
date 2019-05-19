@@ -130,6 +130,10 @@ export default class SignupPage extends React.PureComponent {
                         <a
                           href={`${WEBSITE_URL}/legal/terms-service`}
                           target="popup"
+                          style={{
+                            color: '#8795a1',
+                            textDecoration: 'underline',
+                          }}
                         >
                           Terms of Service
                         </a>{' '}
@@ -137,6 +141,10 @@ export default class SignupPage extends React.PureComponent {
                         <a
                           href={`${WEBSITE_URL}/legal/privacy-policy`}
                           target="popup"
+                          style={{
+                            color: '#8795a1',
+                            textDecoration: 'underline',
+                          }}
                         >
                           Privacy Policy
                         </a>
@@ -144,7 +152,11 @@ export default class SignupPage extends React.PureComponent {
                       </p>
                       <p className="m-0 mt-3 text-center text-muted">
                         Already have an account?{' '}
-                        <Link to="/auth/login">
+                        <Link
+                          to="/auth/login"
+                          className="text-muted"
+                          style={{ textDecoration: 'underline' }}
+                        >
                           <strong>Log in</strong>
                         </Link>{' '}
                         instead.

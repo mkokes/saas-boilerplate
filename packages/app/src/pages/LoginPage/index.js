@@ -70,7 +70,11 @@ export default class LoginPage extends React.PureComponent {
                       </GlobalConsumer>
                       <p className="m-0 mt-3 text-center text-muted">
                         Don&#39;t have an account?{' '}
-                        <Link to="/signup">
+                        <Link
+                          to="/signup"
+                          className="text-muted"
+                          style={{ textDecoration: 'underline' }}
+                        >
                           <strong>Register</strong>
                         </Link>{' '}
                         instead.
