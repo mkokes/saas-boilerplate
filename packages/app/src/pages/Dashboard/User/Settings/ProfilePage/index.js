@@ -202,7 +202,7 @@ export default class ProfilePage extends React.PureComponent {
                               }
                             }}
                           >
-                            {({ errors, touched, isSubmitting }) => (
+                            {({ isSubmitting }) => (
                               <Fragment>
                                 <Form>
                                   <ModalBody>
@@ -248,7 +248,9 @@ export default class ProfilePage extends React.PureComponent {
                                       placeholder="Google Authenticator token"
                                       type="text"
                                       autoComplete="off"
-                                      hidden={!userProfile.hasTwoFactorAuthenticationEnabled}
+                                      hidden={
+                                        !userProfile.hasTwoFactorAuthenticationEnabled
+                                      }
                                     />
                                     <Alert
                                       color="warning"
@@ -692,7 +694,7 @@ const DeleteUserAccountCard = props => {
                             }
                           }}
                         >
-                          {({ errors, touched, isSubmitting }) => (
+                          {({ isSubmitting }) => (
                             <Fragment>
                               <Form>
                                 <ModalBody>
