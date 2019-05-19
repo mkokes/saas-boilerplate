@@ -269,7 +269,7 @@ const SignupForm = props => {
           await resetCaptcha();
         }
 
-        formikBag.setSubmitting(false);
+        return formikBag.setSubmitting(false);
       }}
     >
       {({ submitForm, isSubmitting }) => (
