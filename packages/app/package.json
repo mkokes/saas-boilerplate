@@ -11,7 +11,7 @@
     "test": "REACT_APP_MODE=test react-scripts test --watchAll=false",
     "test:watch": "REACT_APP_MODE=test react-scripts test --watchAll",
     "lint": "yarn lint:js && yarn lint:css",
-    "lint:js": "yarn lint:eslint -- .",
+    "lint:js": "yarn lint:eslint .",
     "lint:css": "stylelint './src/**/*.js'",
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix",
