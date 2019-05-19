@@ -26,6 +26,7 @@ import Reaptcha from 'reaptcha';
 import MomentTimezone from 'moment-timezone';
 import queryString from 'query-string';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { SIGNUP_USER } from 'graphql/mutations';
 import { GlobalConsumer } from 'GlobalState';
@@ -237,7 +238,13 @@ const SignupForm = props => {
             refreshToken,
           });
 
-          return await signUp();
+          try {
+            await signUp();
+          } catch (e) {
+            toast.error(e.message, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         } catch (e) {
           if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
             formikBag.setErrors(e.data);
@@ -248,8 +255,9 @@ const SignupForm = props => {
           }
 
           await resetCaptcha();
-          return formikBag.setSubmitting(false);
         }
+
+        formikBag.setSubmitting(false);
       }}
     >
       {({ submitForm, isSubmitting }) => (

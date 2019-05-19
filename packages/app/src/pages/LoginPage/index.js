@@ -121,14 +121,20 @@ const LoginForm = props => {
             refreshToken,
           });
 
-          await logIn();
-          toast.info(`Logged in successfully.`, {
-            position: toast.POSITION.BOTTOM_LEFT,
-            hideProgressBar: true,
-            pauseOnHover: false,
-            autoClose: 3000,
-            draggable: false,
-          });
+          try {
+            await logIn();
+            toast.info(`Logged in successfully.`, {
+              position: toast.POSITION.BOTTOM_LEFT,
+              hideProgressBar: true,
+              pauseOnHover: false,
+              autoClose: 3000,
+              draggable: false,
+            });
+          } catch (e) {
+            toast.error(e.message, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         } catch (e) {
           if (e.name === 'apollo_link_error' && e.type === 'BAD_USER_INPUT') {
             formikBag.setErrors(e.data);
@@ -137,9 +143,9 @@ const LoginForm = props => {
               setShow2FALostMsg(true);
             }
           }
-
-          formikBag.setSubmitting(false);
         }
+
+        formikBag.setSubmitting(false);
       }}
     >
       {({ isSubmitting }) => (
