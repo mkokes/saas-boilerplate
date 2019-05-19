@@ -18,7 +18,7 @@ export default class SignOutPage extends React.PureComponent {
 
     const globalProvider = await getGlobalProvider();
 
-    globalProvider.logOut(false);
+    globalProvider.logOut({ isForced: false });
     history.push(redirectTo || '/auth/login');
   }
 

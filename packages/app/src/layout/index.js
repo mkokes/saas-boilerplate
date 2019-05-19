@@ -7,7 +7,7 @@ import Footer from 'components/Footer/Loadable';
 import DashboardSettingsNavbar from 'components/DashboardSettingsNavbar/Loadable';
 
 import config from 'config';
-const { WEBSITE_URL } = config;
+const { LEGAL_COMPANY_NAME, WEBSITE_URL } = config;
 
 const BaseLayoutContainer = styled.div`
   min-height: 100vh;
@@ -30,7 +30,7 @@ const TransactionalLayout = ({ headerTitle, children }) => (
     </div>
     {children}
     <p className="mt-4 text-center small" style={{ color: '#b8c2cc' }}>
-      ® {new Date().getFullYear()} LEGAL_COMPANY_NAME. All rights reserved.
+      ® {new Date().getFullYear()} {LEGAL_COMPANY_NAME}. All rights reserved.
     </p>
   </BaseLayout>
 );
@@ -43,14 +43,12 @@ const BaseLayout = ({ children }) => (
 
 const DashboardBaseLayout = ({
   dashboardNavbarHidden,
-  navbarExpand,
   brandNameLink,
   children,
 }) => (
   <BaseLayout>
     <Navbar
       dashboardNavbarHidden={dashboardNavbarHidden}
-      expand={navbarExpand}
       brandNameLink={brandNameLink}
     />
     {children}
@@ -59,11 +57,7 @@ const DashboardBaseLayout = ({
 );
 
 const DashboardLayout = ({ children }) => (
-  <DashboardBaseLayout
-    dashboardNavbarHidden={false}
-    navbarExpand="md"
-    brandNameLink="/dashboard"
-  >
+  <DashboardBaseLayout dashboardNavbarHidden={false} brandNameLink="/dashboard">
     <div style={{ paddingTop: '25px', paddingBottom: '25px' }} className="flex">
       {children}
     </div>
@@ -71,11 +65,7 @@ const DashboardLayout = ({ children }) => (
 );
 
 const DashboardLayoutWithoutSubNavbar = ({ children }) => (
-  <DashboardBaseLayout
-    dashboardNavbarHidden
-    navbarExpand="md"
-    brandNameLink="/dashboard"
-  >
+  <DashboardBaseLayout dashboardNavbarHidden brandNameLink="/dashboard">
     <div className="flex">{children}</div>
   </DashboardBaseLayout>
 );
@@ -105,7 +95,6 @@ DashboardLayoutWithoutSubNavbar.propTypes = {
 
 DashboardBaseLayout.propTypes = {
   dashboardNavbarHidden: PropTypes.bool,
-  navbarExpand: PropTypes.string,
   brandNameLink: PropTypes.string,
   children: PropTypes.node,
 };

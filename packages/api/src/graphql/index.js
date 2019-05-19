@@ -3,7 +3,7 @@ const { ApolloServer } = require('apollo-server-koa');
 const schema = require('./schema');
 const createResolvers = require('./resolvers');
 
-module.exports = ({ config, db, app, log: parentLog }) => {
+module.exports = ({ config, db, app, log: parentLog, Sentry }) => {
   const { APP_MODE } = config;
 
   const log = parentLog.create('graphql');
@@ -27,7 +27,16 @@ module.exports = ({ config, db, app, log: parentLog }) => {
         state: { user },
       },
     }) => ({ user }),
-    formatError: error => error,
+    formatError: err => {
+      if (err.extensions.code === 'INTERNAL_SERVER_ERROR') {
+        const { originalError } = err;
+
+        log.error(originalError.message);
+        Sentry.captureException(originalError);
+      }
+
+      return err;
+    },
   });
 
   server.applyMiddleware({ app });

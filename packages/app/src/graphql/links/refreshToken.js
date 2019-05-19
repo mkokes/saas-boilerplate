@@ -63,7 +63,7 @@ const refreshAuthTokenLink = () =>
                     tokenSubscribers = [];
                     isFetchingToken = false;
 
-                    return globalProvider.logOut(true);
+                    return globalProvider.logOut({ isForced: true });
                   }
                 }
 
