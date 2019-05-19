@@ -7072,10 +7072,10 @@ eslint-config-airbnb@17.1.0:
     object.assign "^4.1.0"
     object.entries "^1.0.4"
 
-eslint-config-prettier@4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-4.2.0.tgz#70b946b629cd0e3e98233fd9ecde4cb9778de96c"
-  integrity sha512-y0uWc/FRfrHhpPZCYflWC8aE0KRJRY04rdZVfl8cL3sEZmOYyaBdhdlQPjKZBnuRMyLVK+JUZr7HaZFClQiH4w==
+eslint-config-prettier@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-4.3.0.tgz#c55c1fcac8ce4518aeb77906984e134d9eb5a4f0"
+  integrity sha512-sZwhSTHVVz78+kYD3t5pCWSYEdVSBR0PXnwjDRsUs8ytIrK8PLXw+6FKp8r3Z7rx4ZszdetWlXYKOHoUrrwPlA==
   dependencies:
     get-stdin "^6.0.0"
 
@@ -12145,9 +12145,9 @@ mongoose-unique-validator@^2.0.2:
     lodash.get "^4.0.2"
 
 mongoose@^5.3.8:
-  version "5.5.8"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.5.8.tgz#86128937c38c038680741041e846317a43c065cd"
-  integrity sha512-BcClXFUAl0L9T57LEztGv+dzHfd8t29cqd3X9NSRHfjHOmj1mduJA3pKSunnb7vah7VvIBCHzEocJtw4Q5WGFA==
+  version "5.5.9"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.5.9.tgz#3318979721cbaf8ee0d856ceeb6e2aaa3d1647c2"
+  integrity sha512-0FQ9pJS9m0GpPVv6aUNfyhjW+VMKlX/VgnfMkk+sK50shjtO3uG3xweoZrdXuANBEJ9hGH63mivi4301DItjUg==
   dependencies:
     async "2.6.2"
     bson "~1.1.1"
@@ -16006,10 +16006,10 @@ sane@^4.0.3:
     minimist "^1.1.1"
     walker "~1.0.5"
 
-sanitize.css@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/sanitize.css/-/sanitize.css-8.0.0.tgz#b025845b772a2c0c996e62e3b2d1bbf10ca78e37"
-  integrity sha512-Ru+piIyTyioaaOj/pbJEo57lMXV70FV07AslpZ8K2Me8B2021v2Nx0Wq5hf29/fNwdjsXLdTbf4Ypmk24PnPtQ==
+sanitize.css@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/sanitize.css/-/sanitize.css-9.0.0.tgz#265046e3e680b499ae8b349811875688d0fce84a"
+  integrity sha512-1Ux0Tn6eoLJMzCqb1gVgWaZWurTb5PbsxZIegJ7WVggGeTKx7jaHZ6U8GJenwuJRsH1eqBmwtqcaOKXhatILtg==
 
 saslprep@^1.0.0:
   version "1.0.2"
