@@ -323,7 +323,11 @@ function NavbarComponent(props) {
                   </Fragment>
                 </Container>
               </MainNavbar>
-              <DashboardNavbar light expand="xs" hidden={!isMinMedium}>
+              <DashboardNavbar
+                light
+                expand="xs"
+                hidden={!isMinMedium || dashboardNavbarHidden}
+              >
                 <Container
                   style={{
                     paddingLeft: '15px',
