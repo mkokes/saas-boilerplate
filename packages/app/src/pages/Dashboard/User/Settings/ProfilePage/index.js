@@ -139,6 +139,7 @@ export default class ProfilePage extends React.PureComponent {
                               oldPassword: '',
                               newPassword: '',
                               confirmNewPassword: '',
+                              token2FA: '',
                             }}
                             validationSchema={Yup.object().shape({
                               oldPassword: Yup.string().required('Required'),
@@ -149,6 +150,7 @@ export default class ProfilePage extends React.PureComponent {
                                   'Password does not match',
                                 )
                                 .required('Required'),
+                              token2FA: Yup.string(),
                             })}
                             onSubmit={async (values, formikBag) => {
                               this.setState({
@@ -200,7 +202,7 @@ export default class ProfilePage extends React.PureComponent {
                               }
                             }}
                           >
-                            {({ isSubmitting }) => (
+                            {({ errors, touched, isSubmitting }) => (
                               <Fragment>
                                 <Form>
                                   <ModalBody>
@@ -238,6 +240,15 @@ export default class ProfilePage extends React.PureComponent {
                                       type="password"
                                       autoComplete="off"
                                       required
+                                    />
+                                    <Field
+                                      component={ReactstrapInput}
+                                      name="token2FA"
+                                      label="Enter 2FA authentication code:"
+                                      placeholder="Google Authenticator token"
+                                      type="text"
+                                      autoComplete="off"
+                                      hidden={!userProfile.hasTwoFactorAuthenticationEnabled}
                                     />
                                     <Alert
                                       color="warning"
@@ -709,9 +720,7 @@ const DeleteUserAccountCard = props => {
                                       type="text"
                                       autoComplete="off"
                                       hidden={
-                                        (!userProfile.hasTwoFactorAuthenticationEnabled &&
-                                          !errors.token2FA) ||
-                                        !touched.token2FA
+                                        !userProfile.hasTwoFactorAuthenticationEnabled
                                       }
                                     />
                                   </div>

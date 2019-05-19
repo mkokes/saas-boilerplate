@@ -526,7 +526,11 @@ module.exports = ({
 
       return true;
     },
-    changeUserPassword: async (_, { oldPassword, newPassword }, { user }) => {
+    changeUserPassword: async (
+      _,
+      { oldPassword, newPassword, token2FA },
+      { user },
+    ) => {
       await assertUser(user);
 
       const paramsValidationErrors = {};
@@ -536,6 +540,19 @@ module.exports = ({
       }
       if (validator.isEmpty(newPassword)) {
         paramsValidationErrors.newPassword = 'Invalid password';
+      }
+
+      const hasUserEnabled2FA = await db.hasUserEnabled2FA(user);
+      if (hasUserEnabled2FA) {
+        if (validator.isEmpty(token2FA)) {
+          paramsValidationErrors.token2FA = 'Required';
+        }
+
+        const isProvided2FAValid = await db.check2FAUser(user, token2FA);
+        if (!isProvided2FAValid) {
+          paramsValidationErrors.token2FA =
+            'Provided code is not valid, please try it again';
+        }
       }
 
       if (Object.keys(paramsValidationErrors).length > 0) {
@@ -956,8 +973,8 @@ module.exports = ({
 
       const hasUserEnabled2FA = await db.hasUserEnabled2FA(user);
       if (hasUserEnabled2FA) {
-        if (!token2FA) {
-          throw new UserInputError('Need 2FA', {
+        if (validator.isEmpty(token2FA)) {
+          throw new UserInputError('2FA Required', {
             validationErrors: {
               token2FA: 'Required',
             },
@@ -966,7 +983,7 @@ module.exports = ({
 
         const isProvided2FAValid = await db.check2FAUser(user, token2FA);
         if (!isProvided2FAValid) {
-          throw new UserInputError('Invalid 2FA code provided', {
+          throw new UserInputError('Invalid 2FA code submitted', {
             validationErrors: {
               token2FA: 'Provided code is not valid, please try it again',
             },

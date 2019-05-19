@@ -132,7 +132,11 @@ module.exports = gql`
     forgotPassword(email: String!, recaptchaResponse: String!): Boolean
     resetPassword(resetToken: String!, newPassword: String!): Boolean
     confirmUserEmail(confirmationToken: String!): Boolean
-    changeUserPassword(oldPassword: String!, newPassword: String!): AuthTokens
+    changeUserPassword(
+      oldPassword: String!
+      newPassword: String!
+      token2FA: String
+    ): AuthTokens
     requestUserEmailChange(password: String!, email: String!): Boolean
     updateUserProfile(profile: UserProfileInput!): UserProfile
     updateUserPersonalDetails(profile: UserPersonalDetailsInput!): UserProfile
