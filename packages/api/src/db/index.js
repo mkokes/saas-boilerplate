@@ -62,10 +62,6 @@ class Db extends EventEmitter {
     return Users.findOne({ email }).exec();
   }
 
-  async getUserById(id) {
-    return Users.findById(id).exec();
-  }
-
   async getUsersInTrialPeriod() {
     const trialPlan = await Plans.findOne({ name: 'TRIAL' }).exec();
 
@@ -157,7 +153,7 @@ class Db extends EventEmitter {
   }
 
   async getUserSubscription(userId) {
-    const user = await this.getUserById(userId);
+    const user = await this._getUser(userId, { mustExist: true });
 
     if (!user._subscription) {
       return null;
@@ -171,7 +167,7 @@ class Db extends EventEmitter {
   }
 
   async getUserSubscriptionPlan(userId) {
-    const user = await this.getUserById(userId);
+    const user = await this._getUser(userId, { mustExist: true });
 
     if (!user._subscription) {
       return null;

@@ -131,16 +131,12 @@ module.exports = ({
     userSubscription: async (_, __, { user }) => {
       await assertUser(user);
 
-      const subscription = await db.getUserSubscription(user._id);
-
-      return subscription;
+      return db.getUserSubscription(user._id);
     },
     userSubscriptionPlan: async (_, __, { user }) => {
       await assertUser(user);
 
-      const plan = await db.getUserSubscriptionPlan(user._id);
-
-      return plan;
+      return db.getUserSubscriptionPlan(user._id);
     },
     userPaymentsReceipt: async (_, __, { user }) => {
       await assertUser(user);
