@@ -131,7 +131,7 @@ const LoginForm = props => {
 
             Sentry.addBreadcrumb({
               category: 'auth',
-              message: `Authenticated user ${values.email}`,
+              message: `Authenticated user`,
               level: Sentry.Severity.Info,
             });
 

@@ -256,7 +256,7 @@ const SignupForm = props => {
             await signUp();
             Sentry.addBreadcrumb({
               category: 'auth',
-              message: `Signed up user ${values.emai}`,
+              message: `Signed up`,
               level: Sentry.Severity.Info,
             });
           } catch (e) {
