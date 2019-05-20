@@ -34,7 +34,7 @@ export default class ErrorPage extends React.PureComponent {
       <Fragment>
         <Helmet>
           <title>Oops! An error occured!</title>
-          <meta name="description" content="Description of ErrorPage" />
+          <meta name="robots" content="noindex, follow" />
         </Helmet>
         <Container className="flex flex-column justify-content-center min-vh-100">
           <h1 className="text-danger">Oops! An error occured!</h1>
