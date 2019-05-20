@@ -187,8 +187,10 @@ module.exports = ({
             TrackLinks: 'TextOnly',
           });
 
-          /* eslint-disable-next-line no-param-reassign */
+          /* eslint-disable no-param-reassign  */
           notification.sent = true;
+          notification.sentAt = Date.now();
+          /* eslint-enable no-param-reassign  */
           await notification.save();
         } catch (e) {
           log.error(e.message);
