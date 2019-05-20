@@ -5,6 +5,10 @@
   "private": true,
   "version": "1.0.0",
   "license": "MIT",
+  "author": "AMGA Ventures <info@amgaventures.com>",
+  "contributors": [
+    "Alfonso Manuel García Astorga <alfon@amgaventures.com>"
+  ],
   "workspaces": [
     "packages/*"
   ],
@@ -67,9 +71,5 @@
   },
   "bugs": {
     "url": "https://github.com/AMGAVentures/saas-boilerplate/issues"
-  },
-  "author": "AMGA Ventures <info@amgaventures.com>",
-  "contributors": [
-    "Alfonso Manuel García Astorga <alfon@amgaventures.com>"
-  ]
+  }
 }
