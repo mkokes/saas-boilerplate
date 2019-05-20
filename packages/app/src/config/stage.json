@@ -1,10 +1,10 @@
 {
-  "API_URL": "https://stage.api.dokku.amgaventures.com",
-  "WEBSITE_URL": "https://www.stage.web.saas.amgaventures.com",
-  "RECAPTCHA_SITE_KEY": "6LdLQ3sUAAAAAKF9xzwObsKByPi0aUwa34atJWYH",
-  "MIXPANEL_ID": "10d9e1131949749220397c144c4c6826",
-  "PADDLE_VENDOR_ID": 38114,
-  "SENTRY_DSN": "https://614c2c61a38141c584a4cc4e19a96f46@sentry.io/1385946",
+  "API_URL": "https://stage.api.domain.io",
+  "WEBSITE_URL": "https://www.stage.web.domain.io",
+  "RECAPTCHA_SITE_KEY": "",
+  "MIXPANEL_ID": "",
+  "PADDLE_VENDOR_ID": null,
+  "SENTRY_DSN": "",
   "GOOGLE_ANALYTICS": "",
-  "HEADWAY_ID": "xaEvgx"
+  "HEADWAY_ID": ""
 }
