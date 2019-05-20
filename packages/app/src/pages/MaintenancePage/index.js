@@ -11,7 +11,7 @@ import styled from 'styled-components';
 
 import config from 'config';
 
-const { WEBSITE_URL } = config;
+const { PRODUCT_NAME, WEBSITE_URL } = config;
 
 const MainContainer = styled(Container)`
   min-height: 100vh;
@@ -38,7 +38,7 @@ export default class MaintenancePage extends React.PureComponent {
           <div>
             <Card>
               <CardHeader>
-                <strong>Under maintenance</strong>
+                <strong>{PRODUCT_NAME} is under maintenance</strong>
               </CardHeader>
               <CardBody className="text-center">
                 <a href={WEBSITE_URL}>
@@ -62,9 +62,13 @@ export default class MaintenancePage extends React.PureComponent {
                   We are performing scheduled maintenance. We will be back
                   online shortly!
                 </p>
-                <a href={WEBSITE_URL}>Go to homepage</a>
               </CardBody>
             </Card>
+            <div className="mt-4 text-center">
+              <a href={WEBSITE_URL} className="text-muted">
+                Go to homepage
+              </a>
+            </div>
           </div>
         </MainContainer>
       </Fragment>
