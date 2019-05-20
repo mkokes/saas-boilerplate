@@ -4,9 +4,12 @@ import { withApollo } from 'react-apollo';
 import jwtDecode from 'jwt-decode';
 import MomentTimezone from 'moment-timezone';
 import { toast } from 'react-toastify';
+import { transformApolloErr } from 'utils/apollo';
+import * as Sentry from '@sentry/browser';
 
-import { LocalStorageApi, AnalyticsApi } from 'api/vendors';
+import { AnalyticsApi, LocalStorageApi, SessionStorageApi } from 'api/vendors';
 import { LOGIN_USER_NO_AUTH, REFRESH_ACCESS_TOKEN } from 'graphql/mutations';
+import { USER_PROFILE_QUERY } from 'graphql/queries';
 import { buildAuthHeader } from './utils/requests';
 
 const GlobalContext = createContext({});
@@ -26,14 +29,38 @@ class Provider extends Component {
     appLoadStatus: false,
     apolloClient: this.props.client,
     auth: {
-      accessToken: LocalStorageApi.getItem('access_token') || undefined,
-      refreshToken: LocalStorageApi.getItem('refresh_token') || undefined,
+      rememberMe: !!LocalStorageApi.getItem('refresh_token'),
+      accessToken:
+        LocalStorageApi.getItem('access_token') ||
+        SessionStorageApi.getItem('access_token') ||
+        undefined,
+      refreshToken:
+        LocalStorageApi.getItem('refresh_token') ||
+        SessionStorageApi.getItem('refresh_token') ||
+        undefined,
     },
   };
+
+  _getStorageClass() {
+    return this.authRememberMe() ? LocalStorageApi : SessionStorageApi;
+  }
 
   setAppLoadStatus(status) {
     this.setState({ appLoadStatus: status });
   }
+
+  authRememberMe() {
+    return this.state.auth.rememberMe;
+  }
+
+  setAuthRememberMe = bool => {
+    this.setState(state => ({
+      auth: {
+        ...state.auth,
+        rememberMe: bool,
+      },
+    }));
+  };
 
   authAccessToken() {
     return this.state.auth.accessToken;
@@ -62,8 +89,7 @@ class Provider extends Component {
         if (isExpired) return 'EXPIRED';
 
         return 'OK';
-      } catch (e) {
-        console.error(e);
+      } catch (_) {
         return 'INVALID_TOKEN';
       }
     }
@@ -101,6 +127,10 @@ class Provider extends Component {
           loggedIn: false,
         },
       }));
+
+      throw err.constructor.name === 'ApolloError'
+        ? transformApolloErr(err)
+        : err;
     }
   };
 
@@ -126,7 +156,7 @@ class Provider extends Component {
   };
 
   setUserProfile = profile => {
-    console.debug('Current user', profile);
+    // console.debug('Current user', profile);
 
     this.setState(state => ({
       auth: {
@@ -136,32 +166,57 @@ class Provider extends Component {
       },
     }));
 
+    Sentry.configureScope(scope => {
+      scope.setUser({ id: profile._id });
+    });
     MomentTimezone.tz.setDefault(profile.timezone);
   };
 
+  reloadUserProfile = async () => {
+    try {
+      const {
+        data: { profile },
+      } = await this.apolloClient().query({
+        query: USER_PROFILE_QUERY,
+      });
+
+      this.setUserProfile(profile);
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
+  };
+
   refreshAccessTokenReq = async () => {
-    const refreshToken = this.authRefreshToken();
+    try {
+      const refreshToken = this.authRefreshToken();
 
-    if (!refreshToken)
-      throw new Error('no refresh token to renew access token');
+      if (!refreshToken)
+        throw new Error('no refresh token to renew access token');
 
-    const { data } = await this.apolloClient().mutate({
-      mutation: REFRESH_ACCESS_TOKEN,
-      variables: {
-        refreshToken,
-      },
-    });
+      const { data } = await this.apolloClient().mutate({
+        mutation: REFRESH_ACCESS_TOKEN,
+        variables: {
+          refreshToken,
+        },
+      });
 
-    const { accessToken } = data.refreshAccessToken;
+      const { accessToken } = data.refreshAccessToken;
 
-    await this.setAuthTokens({ accessToken });
+      await this.setAuthTokens({ accessToken });
 
-    return accessToken;
+      return accessToken;
+    } catch (err) {
+      throw err.constructor.name === 'ApolloError'
+        ? transformApolloErr(err)
+        : err;
+    }
   };
 
   setAuthTokens = async ({ accessToken, refreshToken }) => {
+    const storage = this._getStorageClass();
+
     if (accessToken) {
-      LocalStorageApi.setItem('access_token', accessToken);
+      storage.setItem('access_token', accessToken);
+
       this.setState(state => ({
         auth: {
           ...state.auth,
@@ -170,7 +225,7 @@ class Provider extends Component {
       }));
     }
     if (refreshToken) {
-      LocalStorageApi.setItem('refresh_token', refreshToken);
+      storage.setItem('refresh_token', refreshToken);
       this.setState(state => ({
         auth: {
           ...state.auth,
@@ -180,18 +235,27 @@ class Provider extends Component {
     }
   };
 
-  logOut = async isForced => {
-    LocalStorageApi.removeItem('access_token');
-    LocalStorageApi.removeItem('refresh_token');
+  clearAuthTokens = () => {
+    const storage = this._getStorageClass();
+
+    storage.removeItem('access_token');
+    storage.removeItem('refresh_token');
+  };
+
+  logOut = async ({ isForced, silently }) => {
+    this.clearAuthTokens();
 
     this.setState({
       auth: {
+        rememberMe: false,
         accessToken: undefined,
         refreshToken: undefined,
         profile: null,
         loggedIn: false,
       },
     });
+
+    if (silently) return;
 
     if (isForced) {
       toast.error(`An error ocurred. Please log in again.`, {
@@ -210,7 +274,10 @@ class Provider extends Component {
   };
 
   async componentDidMount() {
-    await this.logIn();
+    try {
+      await this.logIn();
+      // eslint-disable-next-line no-empty
+    } catch (_) {}
 
     setProviderInstance(this);
     this.setAppLoadStatus(true);
@@ -221,6 +288,7 @@ class Provider extends Component {
       <GlobalContext.Provider
         value={{
           appLoadStatus: this.state.appLoadStatus,
+          setAuthRememberMe: this.setAuthRememberMe,
           userProfile: this.state.auth.profile,
           loggedIn: this.isLoggedIn(),
           signUp: this.signUp,
@@ -228,6 +296,7 @@ class Provider extends Component {
           logOut: this.logOut,
           setAuthTokens: this.setAuthTokens,
           setUserProfile: this.setUserProfile,
+          reloadUserProfile: this.reloadUserProfile,
         }}
       >
         {this.props.children}

@@ -8,29 +8,30 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import AppLoader from 'components/AppLoader';
+import SplashScreen from 'components/SplashScreen';
 import ScrollToTop from 'components/ScrollToTop';
-import NotFoundPage from 'components/NotFoundPage/Loadable';
-import Middleware from 'containers/Middleware';
+import Middleware from 'components/Middleware';
 import PrivateRoute from 'components/PrivateRoute';
 import RouteAnalytics from 'components/RouteAnalytics';
 
-import SupportPage from 'containers/SupportPage';
-import PricingPage from 'containers/PricingPage/Loadable';
-import SignupPage from 'containers/SignupPage/Loadable';
-import LoginPage from 'containers/LoginPage/Loadable';
-import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
-import ResetPasswordPage from 'containers/ResetPasswordPage/Loadable';
-import EmailConfirmationPage from 'containers/EmailConfirmationPage/Loadable';
-import MainPage from 'containers/Dashboard/User/MainPage/Loadable';
-import ProfilePage from 'containers/Dashboard/User/Settings/ProfilePage/Loadable';
-import PreferencesPage from 'containers/Dashboard/User/Settings/PreferencesPage/Loadable';
-import BillingPage from 'containers/Dashboard/User/Settings/BillingPage/Loadable';
-import SecurityPage from 'containers/Dashboard/User/Settings/SecurityPage/Loadable';
-import ApiPage from 'containers/Dashboard/User/Settings/ApiPage/Loadable';
-import EmailVerificationPage from 'containers/Dashboard/User/EmailVerificationPage/Loadable';
-import SignOutPage from 'containers/SignOutPage/Loadable';
-import ProcessingPage from 'containers/ProcessingPage/Loadable';
+import SupportPage from 'pages/SupportPage/Loadable';
+import PricingPage from 'pages/PricingPage/Loadable';
+import FeedbackPage from 'pages/FeedbackPage/Loadable';
+import SignupPage from 'pages/SignupPage/Loadable';
+import LoginPage from 'pages/LoginPage/Loadable';
+import ForgotPasswordPage from 'pages/ForgotPasswordPage/Loadable';
+import ResetPasswordPage from 'pages/ResetPasswordPage/Loadable';
+import EmailConfirmationPage from 'pages/EmailConfirmationPage/Loadable';
+import MainPage from 'pages/Dashboard/User/MainPage/Loadable';
+import ProfilePage from 'pages/Dashboard/User/Settings/ProfilePage/Loadable';
+import PreferencesPage from 'pages/Dashboard/User/Settings/PreferencesPage/Loadable';
+import BillingPage from 'pages/Dashboard/User/Settings/BillingPage/Loadable';
+import SecurityPage from 'pages/Dashboard/User/Settings/SecurityPage/Loadable';
+import ApiPage from 'pages/Dashboard/User/Settings/ApiPage/Loadable';
+import EmailVerificationPage from 'pages/Dashboard/User/EmailVerificationPage/Loadable';
+import SignOutPage from 'pages/SignOutPage/Loadable';
+import ProcessingPage from 'pages/ProcessingPage/Loadable';
+import NotFoundPage from 'pages/NotFoundPage/Loadable';
 
 import {
   DefaultLayout,
@@ -41,6 +42,9 @@ import {
   DashboardLayoutWithoutSubNavbar,
 } from 'layout';
 import { GlobalConsumer } from 'GlobalState';
+
+import config from 'config';
+const { PRODUCT_NAME } = config;
 
 const Route = ({
   component: Component,
@@ -80,7 +84,7 @@ export default function App() {
         <>
           {appLoadStatus ? (
             <>
-              <Helmet titleTemplate="%s - SaaS boilerplate" />
+              <Helmet titleTemplate={`%s – ${PRODUCT_NAME}`} />
               <Router>
                 <ScrollToTop>
                   <Switch>
@@ -92,7 +96,7 @@ export default function App() {
 
                     <Route
                       exact
-                      path="/contact-support"
+                      path="/support"
                       component={SupportPage}
                       layout={TransactionalLayout}
                     />
@@ -193,13 +197,15 @@ export default function App() {
                       component={EmailVerificationPage}
                       layout={DashboardLayoutWithoutSubNavbar}
                     />
-
                     <Route
                       protected
                       exact
-                      path="/signout"
-                      component={SignOutPage}
+                      path="/dashboard/give-feedback"
+                      component={FeedbackPage}
+                      layout={DashboardLayout}
                     />
+
+                    <Route exact path="/signout" component={SignOutPage} />
 
                     <Route component={NotFoundPage} />
                   </Switch>
@@ -207,7 +213,7 @@ export default function App() {
               </Router>
             </>
           ) : (
-            <AppLoader />
+            <SplashScreen />
           )}
         </>
       )}

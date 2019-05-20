@@ -1,4 +1,5 @@
-const Router = require('koa-router');
+const Router = require('koa-joi-router');
+const { Joi } = Router;
 
 const {
   HANDLE_USERS_TRIAL,
@@ -8,33 +9,45 @@ const {
 module.exports = async ({ config: { API_SECRET_KEY }, log: parentLog, db }) => {
   const log = parentLog.create('routes/private');
 
-  const router = new Router();
-  router.prefix('/private');
+  const privateApi = Router();
+  privateApi.prefix('/private');
 
-  const authMiddleware = async (ctx, next) => {
-    const { key } = ctx.request.body;
+  privateApi.route({
+    method: 'post',
+    path: '/processor/run-task',
+    validate: {
+      body: {
+        key: Joi.string(),
+        type: Joi.string(),
+      },
+      type: 'json',
+      failure: 400,
+    },
+    pre: (ctx, next) => {
+      const { key } = ctx.request.body;
 
-    if (key !== API_SECRET_KEY) {
-      log.error(`invalid private API key used: ${key}`);
-      ctx.throw(401, 'Authentication Error');
-    }
+      if (key !== API_SECRET_KEY) {
+        log.error(`invalid private API key used: ${key}`);
+        ctx.throw(401, 'Authentication Error');
+      }
 
-    return next();
-  };
+      return next();
+    },
+    handler: ctx => {
+      const { type } = ctx.request.body;
 
-  router.post('/processor/run-task', authMiddleware, ctx => {
-    const { type } = ctx.request.body;
-
-    /* eslint-disable-next-line default-case */
-    switch (type) {
-      case HANDLE_USERS_TRIAL:
-        db.emit(HANDLE_USERS_TRIAL);
-        break;
-      case HANDLE_USERS_SUBSCRIPTION:
-        db.emit(HANDLE_USERS_SUBSCRIPTION);
-        break;
-    }
+      switch (type) {
+        case HANDLE_USERS_TRIAL:
+          db.emit(HANDLE_USERS_TRIAL);
+          break;
+        case HANDLE_USERS_SUBSCRIPTION:
+          db.emit(HANDLE_USERS_SUBSCRIPTION);
+          break;
+        default:
+          throw new Error('unhandled event');
+      }
+    },
   });
 
-  return router;
+  return privateApi;
 };

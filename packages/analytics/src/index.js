@@ -9,9 +9,7 @@ const { NODE_ENV, PROXY, HOST, PORT } = process.env;
 
 const isProd = NODE_ENV === 'production';
 
-const SENTRY_DSN = isProd
-  ? 'https://614c2c61a38141c584a4cc4e19a96f46@sentry.io/1385946'
-  : null;
+const SENTRY_DSN = isProd ? '' : null;
 
 const MIXPANEL_API_URL = 'https://api.mixpanel.com';
 const MIXPANEL_JS_LIB_URL =

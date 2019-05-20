@@ -5,6 +5,10 @@
   "private": true,
   "version": "1.0.0",
   "license": "MIT",
+  "author": "AMGA Ventures <info@amgaventures.com>",
+  "contributors": [
+    "Alfonso Manuel García Astorga <alfon@amgaventures.com>"
+  ],
   "workspaces": [
     "packages/*"
   ],
@@ -16,6 +20,7 @@
     "test:watch:api": "(cd packages/api && yarn test:watch)",
     "test:watch:scheduler": "(cd packages/api && yarn test:watch)",
     "test:scheduler": "(cd packages/scheduler && yarn test)",
+    "lint": "yarn lint:app;yarn lint:api;yarn lint:scheduler; yarn lint:analytics",
     "lint:app": "(cd packages/app && yarn lint)",
     "lint:analytics": "(cd packages/analytics && yarn lint)",
     "lint:api": "(cd packages/api && yarn lint)",
@@ -33,7 +38,10 @@
     "build:app:stage": "(cd packages/app && yarn build:stage)",
     "build:app": "(cd packages/app && yarn build:live)",
     "db:fixtures:api": "(cd packages/api && yarn db:fixtures)",
-    "expose:api": "lt --port 3001 --subdomain local-api"
+    "app:generate": "(cd packages/app && yarn generate)",
+    "expose:api": "lt --port 3001 --subdomain local-api",
+    "lerna:bootstrap": "lerna bootstrap",
+    "lerna:clean": "lerna clean"
   },
   "lint-staged": {
     "*.js": [
@@ -55,7 +63,7 @@
     "lerna": "^3.5.1",
     "lint-staged": "^8.0.3",
     "localtunnel": "^1.9.1",
-    "prettier": "1.17.0"
+    "prettier": "1.17.1"
   },
   "repository": {
     "type": "git",
@@ -63,9 +71,5 @@
   },
   "bugs": {
     "url": "https://github.com/AMGAVentures/saas-boilerplate/issues"
-  },
-  "author": "AMGA Ventures <info@amgaventures.com>",
-  "contributors": [
-    "Alfonso Manuel García Astorga <alfon@amgaventures.com>"
-  ]
+  }
 }

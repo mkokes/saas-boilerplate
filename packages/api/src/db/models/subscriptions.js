@@ -52,7 +52,7 @@ const Subscriptions = new mongoose.Schema(
       type: String,
       default: 'active',
     },
-    paymentMethod: {
+    type: {
       type: String,
       default: null,
     },
@@ -72,7 +72,7 @@ const Subscriptions = new mongoose.Schema(
       type: String,
       default: null,
     },
-    servicePeriodEnd: {
+    servicePeriodEndAt: {
       type: Date,
       required: true,
     },

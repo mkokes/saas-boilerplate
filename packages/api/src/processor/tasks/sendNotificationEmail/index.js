@@ -19,6 +19,7 @@ const {
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_RENEWAL_CANCELLED,
   PAYMENT_RECEIVED,
+  SEND_FEEDBACK,
 } = require('../../../constants/notifications');
 
 module.exports = ({
@@ -55,13 +56,14 @@ module.exports = ({
     SUBSCRIPTION_ENDED: 'subscription-ended',
     SUBSCRIPTION_RENEWAL_CANCELLED: 'subscription-renewal-cancelled',
     PAYMENT_RECEIVED: 'payment-received',
+    SEND_FEEDBACK: 'send-feedback',
   };
 
   const POSTMARK_TEMPLATE_VALUES = {
     product_founder_name: PRODUCT_FOUNDER_NAME,
     product_name: PRODUCT_NAME,
     product_url: PRODUCT_APP_URL,
-    support_url: `${PRODUCT_APP_URL}/contact-support`,
+    support_url: `${PRODUCT_APP_URL}/support`,
     company_name: COMPANY_NAME,
     company_address: null,
   };
@@ -104,18 +106,14 @@ module.exports = ({
               templateModel.email = _user.email;
 
               const subscription = await db.getUserSubscription(_user._id);
-              const { startedAt, servicePeriodEnd } = subscription;
+              const { startedAt, servicePeriodEndAt } = subscription;
 
               templateModel.trial_length =
-                moment(servicePeriodEnd).diff(startedAt, 'days') + 1;
-              templateModel.trial_start_date = moment(
-                startedAt,
-                _user.timezone,
-              ).format('LL');
-              templateModel.trial_end_date = moment(
-                servicePeriodEnd,
-                _user.timezone,
-              ).format('LL');
+                moment(servicePeriodEndAt).diff(startedAt, 'days') + 1;
+              templateModel.trial_start_date = moment(startedAt).format('LL');
+              templateModel.trial_end_date = moment(servicePeriodEndAt).format(
+                'LL',
+              );
               break;
             }
             case FORGOT_PASSWORD:
@@ -165,6 +163,10 @@ module.exports = ({
                 notification.variables.paymentMethod;
               templateModel.description = notification.variables.description;
               break;
+            case SEND_FEEDBACK:
+              targetEmail = SUPPORT_EMAIL;
+              targetReplyTo = templateModel.feedback_sender_email;
+              break;
           }
 
           /* eslint-disable-next-line no-param-reassign */
@@ -185,8 +187,10 @@ module.exports = ({
             TrackLinks: 'TextOnly',
           });
 
-          /* eslint-disable-next-line no-param-reassign */
+          /* eslint-disable no-param-reassign  */
           notification.sent = true;
+          notification.sentAt = Date.now();
+          /* eslint-enable no-param-reassign  */
           await notification.save();
         } catch (e) {
           log.error(e.message);

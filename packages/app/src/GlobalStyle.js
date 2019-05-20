@@ -27,6 +27,9 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
     border-bottom: 1px solid #e5e5e5;
   }
+  textarea {
+    white-space: pre-wrap;
+  }
 
   a:hover, a:focus {
     text-decoration: none;
@@ -70,12 +73,12 @@ const GlobalStyle = createGlobalStyle`
     color: ${props => props.theme.secondaryColor};
   }
 
-  .btn-theme, .btn-theme:hover {
+  .btn-theme, .btn-theme:hover:enabled {
     color: #fff;
     background-color: ${props => props.theme.primaryColor};
     border-color: ${props => props.theme.primaryColor};
   }
-  .btn-theme:active {
+  .btn-theme:active:enabled {
     background-color: ${props => props.theme.color4} !important;
   }
 

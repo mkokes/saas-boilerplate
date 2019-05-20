@@ -22,6 +22,20 @@ export const CONTACT_SUPPORT = gql`
   }
 `;
 
+export const SEND_FEEDBACK = gql`
+  mutation sendFeedback(
+    $recaptchaResponse: String!
+    $text: String!
+    $email: String!
+  ) {
+    sendFeedback(
+      recaptchaResponse: $recaptchaResponse
+      text: $text
+      email: $email
+    )
+  }
+`;
+
 export const SIGNUP_USER = gql`
   mutation signUpUser(
     $recaptchaResponse: String
@@ -101,9 +115,16 @@ export const CONFIRM_USER_EMAIL = gql`
 `;
 
 export const CHANGE_USER_PASSWORD = gql`
-  mutation changeUserPassword($oldPassword: String!, $newPassword: String!) {
-    changeUserPassword(oldPassword: $oldPassword, newPassword: $newPassword)
-      @requireAuth {
+  mutation changeUserPassword(
+    $oldPassword: String!
+    $newPassword: String!
+    $token2FA: String
+  ) {
+    changeUserPassword(
+      oldPassword: $oldPassword
+      newPassword: $newPassword
+      token2FA: $token2FA
+    ) @requireAuth {
       accessToken
       refreshToken
     }
@@ -129,8 +150,8 @@ export const UPDATE_PERSONAL_DETAILS = gql`
 `;
 
 export const CHANGE_USER_EMAIL = gql`
-  mutation changeUserEmail($password: String!, $email: String!) {
-    changeUserEmail(password: $password, email: $email) @requireAuth
+  mutation requestUserEmailChange($password: String!, $email: String!) {
+    requestUserEmailChange(password: $password, email: $email) @requireAuth
   }
 `;
 
@@ -199,5 +220,11 @@ export const REGENERATE_USER_API_SECRET_KEY = gql`
 export const CREATE_COINBASE_COMMERCE_CHARGE = gql`
   mutation createCoinbaseCommerceCharge($plan: String!) {
     chargeId: createCoinbaseCommerceCharge(plan: $plan) @requireAuth
+  }
+`;
+
+export const DELETE_ACCOUNT = gql`
+  mutation deleteAccount($token2FA: String) {
+    deleteAccount(token2FA: $token2FA) @requireAuth
   }
 `;

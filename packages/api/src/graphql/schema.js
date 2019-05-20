@@ -7,7 +7,7 @@ module.exports = gql`
   }
   type UserProfile {
     _id: String
-    _subscription: String
+    _subscription: Subscription
     accountStatus: String
     firstName: String
     lastName: String
@@ -15,12 +15,12 @@ module.exports = gql`
     email: String
     avatar: String
     isSignUpEmailConfirmed: Boolean
-    isTwoFactorAuthenticationEnabled: Boolean
+    hasTwoFactorAuthenticationEnabled: Boolean
     timezone: String
     apiSecretKey: String
-    legal: [LegalAgreement]
   }
-  type userPaymentsReceipt {
+  type Payment {
+    _shortId: String
     saleGross: String
     _paddleReceiptURL: String
     paymentMethod: String
@@ -30,9 +30,10 @@ module.exports = gql`
     _id: String
     _paddleProductId: Int
     name: String
-    displayName: String
-    displayedDescription: String
     features: [String]
+    displayedName: String
+    displayedDescription: String
+    displayedFeatures: [String]
     price: Float
     tier: Int
     billingInterval: String
@@ -42,8 +43,8 @@ module.exports = gql`
     _plan: Plan
     status: String
     startedAt: String
-    servicePeriodEnd: String
-    paymentMethod: String
+    servicePeriodEndAt: String
+    type: String
     paymentStatus: String
     price: Float
     _paddleUpdateURL: String
@@ -63,7 +64,6 @@ module.exports = gql`
     QUESTION
     BILLING
     PROBLEM
-    FEATURE_REQUEST
     BUG_REPORT
     LOST_2FA
   }
@@ -93,10 +93,11 @@ module.exports = gql`
 
   type Query {
     userProfile: UserProfile
+    userNotificationsPreferences: [LegalAgreement]
     userApiSecretKey: UserProfile
     userSubscription: Subscription
     userSubscriptionPlan: Plan
-    userPaymentsReceipt: [userPaymentsReceipt]
+    userPaymentsReceipt: [Payment]
     plans: [Plan]
   }
   type Mutation {
@@ -107,6 +108,11 @@ module.exports = gql`
       subject: String!
       ticketType: ContactSupportTicketType!
       description: String!
+    ): Boolean
+    sendFeedback(
+      recaptchaResponse: String!
+      text: String!
+      email: String!
     ): Boolean
     signUpUser(
       recaptchaResponse: String
@@ -126,8 +132,12 @@ module.exports = gql`
     forgotPassword(email: String!, recaptchaResponse: String!): Boolean
     resetPassword(resetToken: String!, newPassword: String!): Boolean
     confirmUserEmail(confirmationToken: String!): Boolean
-    changeUserPassword(oldPassword: String!, newPassword: String!): AuthTokens
-    changeUserEmail(password: String!, email: String!): Boolean
+    changeUserPassword(
+      oldPassword: String!
+      newPassword: String!
+      token2FA: String
+    ): AuthTokens
+    requestUserEmailChange(password: String!, email: String!): Boolean
     updateUserProfile(profile: UserProfileInput!): UserProfile
     updateUserPersonalDetails(profile: UserPersonalDetailsInput!): UserProfile
     updateUserNotificationsPreferences(
@@ -141,5 +151,6 @@ module.exports = gql`
     disable2FA(token: String!): Boolean
     regenerateUserApiSecretKey: UserProfile
     createCoinbaseCommerceCharge(plan: String!): String
+    deleteAccount(token2FA: String): Boolean
   }
 `;

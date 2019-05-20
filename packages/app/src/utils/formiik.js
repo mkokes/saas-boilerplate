@@ -8,7 +8,7 @@ export const ReactstrapInput = ({
   form: { isSubmitting, touched, errors },
   ...props
 }) => (
-  <FormGroup>
+  <FormGroup hidden={props.hidden}>
     <Label for={fields.name} className="label-color">
       {props.label}
     </Label>
@@ -30,6 +30,7 @@ ReactstrapInput.propTypes = {
   form: PropTypes.object,
   label: PropTypes.string,
   disabled: PropTypes.bool,
+  hidden: PropTypes.bool,
 };
 
 export const ReactstrapSelect = ({
@@ -105,6 +106,8 @@ export const ReactstrapCheckbox = ({
       <Input
         {...props}
         {...fields}
+        type="checkbox"
+        value={fields.value}
         checked={fields.value}
         invalid={Boolean(touched[fields.name] && errors[fields.name])}
         disabled={isSubmitting}

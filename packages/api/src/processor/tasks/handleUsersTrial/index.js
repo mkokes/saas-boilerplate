@@ -10,13 +10,14 @@ module.exports = ({ log: parentLog, db, eventQueue, Sentry }) => {
           const trialSubscriptions = await db.getUsersInTrialPeriod();
 
           trialSubscriptions.forEach(async trialSubscription => {
-            const { _user, startedAt, servicePeriodEnd } = trialSubscription;
+            const { _user, startedAt, servicePeriodEndAt } = trialSubscription;
 
             const isTrialExpired = moment().isSameOrAfter(
-              moment(servicePeriodEnd).startOf('day'),
+              moment(servicePeriodEndAt).startOf('day'),
             );
-            const daysLeftUntilTrialExpiration =
-              moment(servicePeriodEnd).diff(startedAt, 'days') + 1;
+            const daysLeftUntilTrialExpiration = moment(
+              servicePeriodEndAt,
+            ).diff(startedAt, 'days');
 
             if (isTrialExpired === true) {
               await db.userTrialExpired(_user);

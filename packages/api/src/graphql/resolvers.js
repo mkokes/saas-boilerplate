@@ -1,20 +1,30 @@
 const safeGet = require('lodash.get');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
-const { ApolloError, UserInputError } = require('apollo-server-koa');
+const {
+  ApolloError,
+  AuthenticationError,
+  UserInputError,
+} = require('apollo-server-koa');
 const axios = require('axios');
 const momentTimezone = require('moment-timezone');
 const Coinbase = require('coinbase-commerce-node');
 
 const { MARKETING_INFO } = require('../constants/legal');
-
+const { VERIFY_EMAIL } = require('../constants/notifications');
 const { assertRefreshTokenPayload } = require('../utils/asserts');
 const { validateRecaptchaResponse } = require('../utils/recaptcha');
 
+const INVALID_CAPTCHA_ERROR = new ApolloError(
+  'Our security system could not determine if the request was made by a human. Try it again.',
+  'INVALID_CAPTCHA',
+);
+
+const _genJwtIat = () => parseInt((Date.now() / 1000).toFixed(0), 10); // Setting our IAT we avoid clock skew issue (https://en.wikipedia.org/wiki/Clock_skew)
 const createAccessToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {
-      iat: parseInt((Date.now() / 1000).toFixed(0), 10), // Setting our IAT we avoid clock skew issue (https://en.wikipedia.org/wiki/Clock_skew)
+      iat: _genJwtIat(),
       ...data,
       type: 'access',
     },
@@ -24,7 +34,7 @@ const createAccessToken = ({ JWT_SECRET, data }) =>
 const createRefreshToken = ({ JWT_SECRET, data }) =>
   jwt.sign(
     {
-      iat: parseInt((Date.now() / 1000).toFixed(0), 10), // Setting our IAT we avoid clock skew issue (https://en.wikipedia.org/wiki/Clock_skew)
+      iat: _genJwtIat(),
       ...data,
       type: 'refresh',
     },
@@ -34,7 +44,48 @@ const createRefreshToken = ({ JWT_SECRET, data }) =>
 
 const assertUser = async user => {
   if (!safeGet(user, '_id')) {
-    throw new ApolloError('Authentication required', 'UNAUTHENTICATED');
+    throw new AuthenticationError('Authentication required');
+  }
+};
+
+/* eslint-disable no-unused-vars */
+const hasRoles = async (db, userId, roles) => {
+  if (!(await db.userHasRoles(userId, roles))) {
+    throw new ApolloError(
+      'Your account does not have sufficient privileges to perform this action',
+      'INSUFFICIENT_PRIVILEGES',
+    );
+  }
+};
+const hasSubscription = async (db, userId) => {
+  if (!(await db.userHasSubscription(userId))) {
+    throw new ApolloError(
+      `Upgrade your account to a paying plan to perform this action`,
+      'USER_SUBSCRIPTION_NOT_FOUND',
+    );
+  }
+};
+const hasSubscriptionPlanFeature = async (db, userId, feature) => {
+  if (!(await db.userhasSubscriptionPlanFeature(userId, feature))) {
+    throw new ApolloError(
+      'Your current plan does not allow access to this feature',
+      'PLAN_FEATURE_NOT_ALLOWED',
+    );
+  }
+};
+/* eslint-enable no-unused-vars */
+const hasExceededRequestsLimit = async (db, userId, type) => {
+  if (await db.notificationsLimitExceeded(userId, type)) {
+    throw new ApolloError(
+      'Request limit exceeded, please try it again in a few minutes.',
+      'REQUESTS_LIMIT_EXCEEDED',
+    );
+  }
+};
+
+const assertCaptcha = async captchaResponse => {
+  if (!(await validateRecaptchaResponse(captchaResponse))) {
+    throw INVALID_CAPTCHA_ERROR;
   }
 };
 
@@ -59,6 +110,15 @@ module.exports = ({
         ...profile,
       };
     },
+    userNotificationsPreferences: async (_, __, { user }) => {
+      await assertUser(user);
+
+      const notificationsPreferences = await db.getUserNotificationsPreferences(
+        user._id,
+      );
+
+      return notificationsPreferences;
+    },
     userApiSecretKey: async (_, __, { user }) => {
       await assertUser(user);
 
@@ -71,16 +131,12 @@ module.exports = ({
     userSubscription: async (_, __, { user }) => {
       await assertUser(user);
 
-      const subscription = await db.getUserSubscription(user._id);
-
-      return subscription;
+      return db.getUserSubscription(user._id);
     },
     userSubscriptionPlan: async (_, __, { user }) => {
       await assertUser(user);
 
-      const plan = await db.getUserSubscriptionPlan(user._id);
-
-      return plan;
+      return db.getUserSubscriptionPlan(user._id);
     },
     userPaymentsReceipt: async (_, __, { user }) => {
       await assertUser(user);
@@ -111,10 +167,7 @@ module.exports = ({
       const paramsValidationErrors = {};
 
       if (validator.isEmpty(recaptchaResponse)) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
+        throw INVALID_CAPTCHA_ERROR;
       }
       if (validator.isEmpty(requesterName)) {
         paramsValidationErrors.requesterName = 'Name is required';
@@ -136,14 +189,13 @@ module.exports = ({
           'QUESTION',
           'BILLING',
           'PROBLEM',
-          'FEATURE_REQUEST',
           'BUG_REPORT',
           'LOST_2FA',
         ])
       ) {
         paramsValidationErrors.ticketType = 'Selected option is not valid';
       }
-      if (!validator.isLength(description, { min: 50, max: undefined })) {
+      if (!validator.isLength(description, { min: 40, max: undefined })) {
         paramsValidationErrors.description = 'Too short!';
       }
 
@@ -156,16 +208,7 @@ module.exports = ({
         );
       }
 
-      const isRecaptchaValid = await validateRecaptchaResponse(
-        recaptchaResponse,
-      );
-
-      if (!isRecaptchaValid) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
-      }
+      await assertCaptcha(recaptchaResponse);
 
       await db.contactSupport(
         safeGet(user, '_id'),
@@ -175,6 +218,34 @@ module.exports = ({
         ticketType,
         description,
       );
+
+      return true;
+    },
+    sendFeedback: async (_, { recaptchaResponse, text, email }) => {
+      const paramsValidationErrors = {};
+
+      if (validator.isEmpty(recaptchaResponse)) {
+        throw INVALID_CAPTCHA_ERROR;
+      }
+      if (!validator.isLength(text, { min: 10, max: undefined })) {
+        paramsValidationErrors.text = 'Too short!';
+      }
+      if (validator.isEmpty(email) || !validator.isEmail(email)) {
+        paramsValidationErrors.email = 'Email is not valid';
+      }
+
+      if (Object.keys(paramsValidationErrors).length > 0) {
+        throw new UserInputError(
+          'Failed to process your request due to validation errors',
+          {
+            validationErrors: paramsValidationErrors,
+          },
+        );
+      }
+
+      await assertCaptcha(recaptchaResponse);
+
+      await db.sendFeedback(text, email);
 
       return true;
     },
@@ -196,10 +267,7 @@ module.exports = ({
       const paramsValidationErrors = {};
 
       if (validator.isEmpty(recaptchaResponse)) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
+        throw INVALID_CAPTCHA_ERROR;
       }
       if (!validator.isEmail(email)) {
         paramsValidationErrors.email = 'Email is not valid';
@@ -230,16 +298,7 @@ module.exports = ({
         });
       }
 
-      const isRecaptchaValid = await validateRecaptchaResponse(
-        recaptchaResponse,
-      );
-
-      if (!isRecaptchaValid) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
-      }
+      await assertCaptcha(recaptchaResponse);
 
       try {
         const user = await db.signUpUser(
@@ -304,7 +363,7 @@ module.exports = ({
         });
       }
 
-      const user = await db.getUserByEmail(email);
+      const user = await db.getUserForLogin(email);
 
       try {
         if (!user) throw logInErr;
@@ -322,7 +381,7 @@ module.exports = ({
         );
       }
 
-      if (user.isTwoFactorAuthenticationEnabled) {
+      if (user.hasTwoFactorAuthenticationEnabled) {
         const is2FAValid = await db.check2FAUser(user._id, token);
         if (!is2FAValid) {
           throw new UserInputError('Failed to log in', {
@@ -351,13 +410,10 @@ module.exports = ({
     loginUserNoAuth: async (_, __, { user }) => {
       const err = new ApolloError('Cannot log in user', 'INVALID_LOGIN');
 
-      if (!user) {
-        throw err;
-      }
-
       try {
+        await assertUser(user);
         return db.loginUser(user._id);
-      } catch (e) {
+      } catch (___) {
         throw err;
       }
     },
@@ -366,29 +422,20 @@ module.exports = ({
       try {
         decodedJWT = jwt.verify(refreshToken, JWT_SECRET);
         assertRefreshTokenPayload(decodedJWT);
+
+        await db.authChallenge(decodedJWT._id, decodedJWT.iat);
+
+        const accessToken = createAccessToken({
+          JWT_SECRET,
+          data: {
+            _id: decodedJWT._id,
+          },
+        });
+
+        return { accessToken };
       } catch (e) {
         throw new ApolloError('Invalid refresh token', 'INVALID_REFRESH_TOKEN');
       }
-
-      const challengeStatus = await db.authChallenge(
-        decodedJWT._id,
-        decodedJWT.iat,
-      );
-      if (!challengeStatus) {
-        throw new ApolloError(
-          'User did not pass auth challenge',
-          'INVALID_REFRESH_TOKEN',
-        );
-      }
-
-      const accessToken = createAccessToken({
-        JWT_SECRET,
-        data: {
-          _id: decodedJWT._id,
-        },
-      });
-
-      return { accessToken };
     },
     forgotPassword: async (_, { email, recaptchaResponse }) => {
       if (!validator.isEmail(email)) {
@@ -404,14 +451,11 @@ module.exports = ({
         recaptchaResponse,
       );
       if (!isRecaptchaValid) {
-        throw new ApolloError(
-          'Our security system could not determine if the request was made by a human. Try it again.',
-          'INVALID_CAPTCHA',
-        );
+        throw INVALID_CAPTCHA_ERROR;
       }
 
       const user = await db.getUserByEmail(email);
-      if (!user) throw new ApolloError('User does not exists', '');
+      if (!user) return true; // avoid hints if user does not exists
 
       db.forgotPasswordRequest(user._id);
 
@@ -482,7 +526,11 @@ module.exports = ({
 
       return true;
     },
-    changeUserPassword: async (_, { oldPassword, newPassword }, { user }) => {
+    changeUserPassword: async (
+      _,
+      { oldPassword, newPassword, token2FA },
+      { user },
+    ) => {
       await assertUser(user);
 
       const paramsValidationErrors = {};
@@ -492,6 +540,19 @@ module.exports = ({
       }
       if (validator.isEmpty(newPassword)) {
         paramsValidationErrors.newPassword = 'Invalid password';
+      }
+
+      const hasUserEnabled2FA = await db.hasUserEnabled2FA(user);
+      if (hasUserEnabled2FA) {
+        if (validator.isEmpty(token2FA)) {
+          paramsValidationErrors.token2FA = 'Required';
+        }
+
+        const isProvided2FAValid = await db.check2FAUser(user, token2FA);
+        if (!isProvided2FAValid) {
+          paramsValidationErrors.token2FA =
+            'Provided code is not valid, please try it again';
+        }
       }
 
       if (Object.keys(paramsValidationErrors).length > 0) {
@@ -537,8 +598,9 @@ module.exports = ({
 
       return { accessToken, refreshToken };
     },
-    changeUserEmail: async (_, { password, email }, { user }) => {
+    requestUserEmailChange: async (_, { password, email }, { user }) => {
       await assertUser(user);
+      await hasExceededRequestsLimit(db, user, VERIFY_EMAIL);
 
       const userInputError = errors =>
         new UserInputError('Failed to change email due to validation errors', {
@@ -571,7 +633,7 @@ module.exports = ({
         });
       }
 
-      await db.changeUserEmail(user._id, email);
+      await db.requestUserEmailChange(user._id, email);
 
       return true;
     },
@@ -726,7 +788,7 @@ module.exports = ({
       if (!plan) {
         throw new ApolloError('Requested plan was not found', 'PLAN_NOT_FOUND');
       }
-      if (plan.status !== 'active') {
+      if (plan.internal === true || plan.status !== 'active') {
         throw new ApolloError(
           'Requested plan is not active',
           'PLAN_NOT_ACTIVE',
@@ -871,7 +933,12 @@ module.exports = ({
       await assertUser(user);
 
       const plan = await db.getPlanById(planId);
-      if (!plan || plan.billingInterval !== 'yearly') {
+      if (
+        !plan ||
+        plan.billingInterval !== 'yearly' ||
+        plan.internal === true ||
+        plan.status !== 'active'
+      ) {
         throw new UserInputError('Plan does not exists or is not valid', {
           validationErrors: {
             plan: 'Invalid plan',
@@ -886,7 +953,7 @@ module.exports = ({
 
       const { code } = await Charge.create({
         name: PRODUCT_NAME,
-        description: `Plan: ${plan.displayName} - 1 YEAR`,
+        description: `Plan: ${plan.displayedName} - 1 YEAR`,
         local_price: {
           amount: plan.price,
           currency: 'USD',
@@ -900,6 +967,31 @@ module.exports = ({
       });
 
       return code;
+    },
+    deleteAccount: async (_, { token2FA }, { user }) => {
+      await assertUser(user);
+
+      const hasUserEnabled2FA = await db.hasUserEnabled2FA(user);
+      if (hasUserEnabled2FA) {
+        if (validator.isEmpty(token2FA)) {
+          throw new UserInputError('2FA Required', {
+            validationErrors: {
+              token2FA: 'Required',
+            },
+          });
+        }
+
+        const isProvided2FAValid = await db.check2FAUser(user, token2FA);
+        if (!isProvided2FAValid) {
+          throw new UserInputError('Invalid 2FA code submitted', {
+            validationErrors: {
+              token2FA: 'Provided code is not valid, please try it again',
+            },
+          });
+        }
+      }
+
+      await db.deleteAccount(user);
     },
   },
 });

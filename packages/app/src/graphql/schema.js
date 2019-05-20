@@ -5,7 +5,7 @@ const typeDefs = `
   }
   type UserProfile {
     _id: String
-    _subscription: String
+    _subscription: Subscription
     accountStatus: String
     firstName: String
     lastName: String
@@ -13,12 +13,12 @@ const typeDefs = `
     email: String
     avatar: String
     isSignUpEmailConfirmed: Boolean
-    isTwoFactorAuthenticationEnabled: Boolean
+    hasTwoFactorAuthenticationEnabled: Boolean
     timezone: String
-    apiSecretKey: String,
-    legal: [LegalAgreement]
+    apiSecretKey: String
   }
-  type USER_PAYMENTS_RECEIPT_QUERY {
+  type Payment {
+    _shortId: String
     saleGross: String
     _paddleReceiptURL: String
     paymentMethod: String
@@ -28,10 +28,11 @@ const typeDefs = `
     _id: String
     _paddleProductId: Int
     name: String
-    displayName: String
+    features: [String]
+    displayedName: String
     displayedDescription: String
     tier: Int
-    features: [String]
+    displayedFeatures: [String]
     price: Float
     billingInterval: String
   }
@@ -40,8 +41,8 @@ const typeDefs = `
     _plan: Plan
     status: String
     startedAt: String
-    servicePeriodEnd: String
-    paymentMethod: String
+    servicePeriodEndAt: String
+    type: String
     paymentStatus: String
     price: Float
     _paddleUpdateURL: String
@@ -61,7 +62,6 @@ const typeDefs = `
     QUESTION
     PROBLEM
     BILLING
-    FEATURE_REQUEST
     BUG_REPORT
     LOST_2FA
   }

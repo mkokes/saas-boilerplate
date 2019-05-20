@@ -12,7 +12,7 @@ module.exports = ({
 
     try {
       await rp.post(`${API_URL}/private/processor/run-task`, {
-        form: { key: API_SECRET_KEY, type },
+        json: { key: API_SECRET_KEY, type },
       });
     } catch (e) {
       log.error(`FAILED ❌`);

@@ -1,12 +1,12 @@
 {
   "name": "analytics",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "lint": "yarn lint:js",
-    "lint:js": "yarn lint:eslint -- .",
+    "lint:js": "yarn lint:eslint .",
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix",
     "pretty": "prettier --config .prettierrc --write \"src/**/*.js\""
@@ -17,7 +17,7 @@
     "got": "^9.2.2",
     "koa": "^2.5.3",
     "koa-router": "^7.4.0",
-    "@sentry/node": "5.1.2"
+    "@sentry/node": "5.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",

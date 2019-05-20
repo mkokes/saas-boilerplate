@@ -22,7 +22,11 @@ const Plans = new mongoose.Schema(
       type: String,
       required: true,
     },
-    displayName: {
+    features: {
+      type: [String],
+      required: true,
+    },
+    displayedName: {
       type: String,
       required: true,
     },
@@ -30,7 +34,7 @@ const Plans = new mongoose.Schema(
       type: String,
       default: null,
     },
-    features: {
+    displayedFeatures: {
       type: [String],
       default: null,
     },

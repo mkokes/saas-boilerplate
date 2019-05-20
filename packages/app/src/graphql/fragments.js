@@ -3,7 +3,15 @@ import gql from 'graphql-tag';
 export const ProfileFields = gql`
   fragment ProfileFields on UserProfile {
     _id
-    _subscription
+    _subscription {
+      _id
+      servicePeriodEndAt
+      _plan {
+        _id
+        name
+        features
+      }
+    }
     accountStatus
     firstName
     lastName
@@ -11,12 +19,8 @@ export const ProfileFields = gql`
     email
     avatar
     isSignUpEmailConfirmed
-    isTwoFactorAuthenticationEnabled
+    hasTwoFactorAuthenticationEnabled
     timezone
-    legal {
-      type
-      accepted
-    }
   }
 `;
 
@@ -25,11 +29,11 @@ export const PlanFields = gql`
     _id
     _paddleProductId
     name
-    displayName
+    displayedName
     displayedDescription
     tier
     price
-    features
+    displayedFeatures
     billingInterval
   }
 `;

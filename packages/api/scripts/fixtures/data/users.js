@@ -2,7 +2,7 @@ module.exports = [
   {
     _subscription: null,
     passwordUpdatedAt: new Date(),
-    isTwoFactorAuthenticationEnabled: false,
+    hasTwoFactorAuthenticationEnabled: false,
     twoFactorAuthenticationSecret: null,
     isSignUpEmailConfirmed: true,
     emailConfirmedAt: new Date(),
@@ -28,7 +28,7 @@ module.exports = [
     signupIP: null,
     signupCity: null,
     signupCountry: null,
-    email: 'me@alfon.io',
+    email: 'me@domain.io',
     password: '$2a$10$V5Cd0AUc6Fb.SyRjytLSs.yY2.zPFN9yn838AfraNJ25DXRMI2ExO', // foo
     firstName: 'Alfonso Manuel',
     lastName: 'García Astorga',

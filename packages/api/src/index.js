@@ -62,7 +62,7 @@ const init = async () => {
 
   setupRoutes({ config, db, app, log });
   setupAuthMiddleware({ config, db, app });
-  setupGraphQLEndpoint({ config, db, app, log });
+  setupGraphQLEndpoint({ config, db, app, log, Sentry });
 
   const router = new Router();
   router.get('/health', ctx => {

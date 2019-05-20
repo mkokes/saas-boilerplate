@@ -28,6 +28,7 @@ const {
   SUBSCRIPTION_ENDED,
   SUBSCRIPTION_RENEWAL_CANCELLED,
   PAYMENT_RECEIVED,
+  SEND_FEEDBACK,
 } = require('../constants/notifications');
 
 const setupDb = require('./setup');
@@ -61,10 +62,6 @@ class Db extends EventEmitter {
     return Users.findOne({ email }).exec();
   }
 
-  async getUserById(id) {
-    return Users.findById(id).exec();
-  }
-
   async getUsersInTrialPeriod() {
     const trialPlan = await Plans.findOne({ name: 'TRIAL' }).exec();
 
@@ -90,6 +87,14 @@ class Db extends EventEmitter {
       return {};
     }
 
+    await user
+      .populate({
+        path: '_subscription',
+        select: '_id servicePeriodEndAt',
+        populate: { path: '_plan', select: '_id name features' },
+      })
+      .execPopulate();
+
     const {
       _id,
       _subscription,
@@ -101,10 +106,9 @@ class Db extends EventEmitter {
       nickname,
       avatar,
       isSignUpEmailConfirmed,
-      isTwoFactorAuthenticationEnabled,
+      hasTwoFactorAuthenticationEnabled,
       apiSecretKey,
       timezone,
-      legal,
     } = user;
 
     /* eslint-disable */
@@ -114,14 +118,13 @@ class Db extends EventEmitter {
       avatar,
       firstName,
       lastName,
-      _subscription: _subscription ? _subscription.toString() : null,
+      _subscription,
       email,
       lastLoginAt,
       signupAt,
       isSignUpEmailConfirmed,
-      isTwoFactorAuthenticationEnabled,
+      hasTwoFactorAuthenticationEnabled,
       timezone,
-      legal,
       ...(canViewPrivateFields
         ? {
             apiSecretKey,
@@ -131,8 +134,26 @@ class Db extends EventEmitter {
     /* eslint-enable */
   }
 
+  async getUserForAuthChallenge(userId) {
+    const user = await Users.findOne({ _id: userId })
+      .select('_id accountStatus passwordUpdatedAt')
+      .exec();
+
+    if (!user) {
+      throw new Error(`user not found: ${userId}`);
+    }
+
+    return user;
+  }
+
+  async getUserForLogin(userEmail) {
+    return Users.findOne({ email: userEmail })
+      .select('_id password accountStatus hasTwoFactorAuthenticationEnabled')
+      .exec();
+  }
+
   async getUserSubscription(userId) {
-    const user = await this.getUserById(userId);
+    const user = await this._getUser(userId, { mustExist: true });
 
     if (!user._subscription) {
       return null;
@@ -146,7 +167,7 @@ class Db extends EventEmitter {
   }
 
   async getUserSubscriptionPlan(userId) {
-    const user = await this.getUserById(userId);
+    const user = await this._getUser(userId, { mustExist: true });
 
     if (!user._subscription) {
       return null;
@@ -185,9 +206,7 @@ class Db extends EventEmitter {
   }
 
   async existsUserWithEmail(email) {
-    const count = await Users.countDocuments({ email }).exec();
-
-    return !!count;
+    return !!(await Users.countDocuments({ email }).exec());
   }
 
   async compareUserPassword(userId, password) {
@@ -246,6 +265,7 @@ class Db extends EventEmitter {
       signupIP: signupIP || null,
       signupCity: signupCity || null,
       signupCountry: signupCountry || null,
+      roles: [],
     }).save();
 
     const trialPlan = await Plans.findOne({ name: 'TRIAL' }).select('_id');
@@ -253,7 +273,7 @@ class Db extends EventEmitter {
     const subscription = await new Subscriptions({
       _user: user._id,
       _plan: trialPlan._id,
-      servicePeriodEnd: trialPeriodEndsAt,
+      servicePeriodEndAt: trialPeriodEndsAt,
     }).save();
 
     user._subscription = subscription._id;
@@ -264,6 +284,8 @@ class Db extends EventEmitter {
         user.emailConfirmationToken
       }`,
     });
+
+    this._log.info(`user ${user._id} signed up`);
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET_ONCE',
@@ -288,6 +310,7 @@ class Db extends EventEmitter {
           $last_name: user.lastName,
           subscribed_plan_id: null,
           trialing: true,
+          accountStatus: 'active',
         },
       ],
     });
@@ -314,10 +337,10 @@ class Db extends EventEmitter {
   }
 
   async authChallenge(userId, JWTiat) {
-    const user = await this._getUser(userId, { mustExist: true });
-    const { passwordUpdatedAt } = user;
+    const user = await this.getUserForAuthChallenge(userId);
+    const { accountStatus, passwordUpdatedAt } = user;
 
-    if (user.accountStatus !== 'active') {
+    if (accountStatus !== 'active') {
       throw new Error('user account status is not active');
     }
     if (JWTiat < (new Date(passwordUpdatedAt).getTime() / 1000).toFixed(0)) {
@@ -339,6 +362,8 @@ class Db extends EventEmitter {
         resetPasswordToken.token
       }`,
     });
+
+    this._log.info(`user ${userId} requested password reset`);
   }
 
   async resetPasswordRequest(resetToken, newPassword) {
@@ -367,6 +392,9 @@ class Db extends EventEmitter {
     await resetPasswordToken.save();
 
     this.notifyUser(_user._id, PASSWORD_RESETED);
+
+    this._log.info(`user ${_user._id} reseted account password`);
+
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
       args: [
@@ -424,6 +452,8 @@ class Db extends EventEmitter {
 
     switch (decodedToken.type) {
       case 'signup':
+        this._log.info(`user ${user._id} confirmed signup email`);
+
         this.notifyUser(user._id, WELCOME);
 
         this.emit(MAILCHIMP, { user, actionType: 'ADD' });
@@ -442,6 +472,9 @@ class Db extends EventEmitter {
         this.notifyUser(user._id, EMAIL_CHANGED, {
           old_email: oldUserEmail,
         });
+
+        this._log.info(`user ${user._id} confirmed email change`);
+
         this.emit(MAILCHIMP, {
           user,
           actionType: 'EMAIL_CHANGE',
@@ -467,6 +500,10 @@ class Db extends EventEmitter {
   async changeUserPassword(userId, oldPassword, newPassword) {
     const user = await this._getUser(userId, true);
 
+    if (user.accountStatus !== 'active') {
+      throw new Error('USER_ACCOUNT_NOT_ACTIVE');
+    }
+
     const isOldPasswordValid = await user.comparePassword(oldPassword);
     if (!isOldPasswordValid) {
       throw new Error('INVALID_OLD_PASSWORD');
@@ -474,6 +511,8 @@ class Db extends EventEmitter {
 
     user.password = newPassword;
     await user.save();
+
+    this._log.info(`user ${userId} changed account password`);
 
     this.notifyUser(user._id, PASSWORD_CHANGED);
     this.emit(MIXPANEL_EVENT, {
@@ -487,7 +526,7 @@ class Db extends EventEmitter {
     });
   }
 
-  async changeUserEmail(userId, candidateEmail) {
+  async requestUserEmailChange(userId, candidateEmail) {
     const user = await this._getUser(userId, true);
 
     user.emailConfirmationToken = jwt.sign(
@@ -498,6 +537,8 @@ class Db extends EventEmitter {
       this._config.JWT_SECRET,
     );
     await user.save();
+
+    this._log.info(`user ${userId} requested email change`);
 
     this.notifyUser(user._id, VERIFY_EMAIL, {
       action_url: `${this._config.PRODUCT_APP_URL}/confirm-email?token=${
@@ -516,6 +557,8 @@ class Db extends EventEmitter {
     user.nickname = nickname || existingNickname;
     await user.save();
 
+    this._log.info(`user ${userId} updated account profile`);
+
     return this.getUserProfile(userId, false);
   }
 
@@ -531,6 +574,8 @@ class Db extends EventEmitter {
     user.firstName = finalFirstName;
     user.lastName = finalLastName;
     await user.save();
+
+    this._log.info(`user ${userId} updated account personal details`);
 
     this.emit(MAILCHIMP, {
       user,
@@ -550,6 +595,19 @@ class Db extends EventEmitter {
     return this.getUserProfile(userId, false);
   }
 
+  async getUserNotificationsPreferences(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    const NOTIFICATIONS_KEYS = [MARKETING_INFO];
+
+    const notificationPreferences = user.legal.filter(value => {
+      if (value.type.includes(NOTIFICATIONS_KEYS)) return true;
+      return false;
+    });
+
+    return notificationPreferences;
+  }
+
   async updateUserNotificationsPreferences(userId, notifications) {
     const NOTIFICATIONS_KEYS = [MARKETING_INFO];
 
@@ -558,7 +616,6 @@ class Db extends EventEmitter {
 
     const existingLegalFiltered = existingLegal.filter(value => {
       if (value.type.includes(NOTIFICATIONS_KEYS)) return false;
-
       return true;
     });
 
@@ -566,6 +623,8 @@ class Db extends EventEmitter {
     user.legal = finalLegal;
 
     await user.save();
+
+    this._log.info(`user ${userId} updated account notifications preferences`);
 
     const wasMarketingInfoAceptedBefore = existingLegal.find(
       e => e.type === MARKETING_INFO,
@@ -596,13 +655,15 @@ class Db extends EventEmitter {
 
     await user.save();
 
+    this._log.info(`user ${userId} updated account preferences`);
+
     return this.getUserProfile(userId, false);
   }
 
   async generate2FAUser(userId) {
     const user = await this._getUser(userId, { mustExist: true });
 
-    if (user.isTwoFactorAuthenticationEnabled) {
+    if (user.hasTwoFactorAuthenticationEnabled) {
       throw new Error('2FA_ALREADY_ENABLED');
     }
 
@@ -610,6 +671,8 @@ class Db extends EventEmitter {
 
     user.twoFactorAuthenticationSecret = secret;
     await user.save();
+
+    this._log.info(`user ${userId} generated new 2FA secret`);
 
     return {
       secret,
@@ -638,7 +701,7 @@ class Db extends EventEmitter {
   async confirmEnable2FAUser(userId, token) {
     const user = await this._getUser(userId, { mustExist: true });
 
-    if (user.isTwoFactorAuthenticationEnabled) {
+    if (user.hasTwoFactorAuthenticationEnabled) {
       throw new Error('2FA_ALREADY_ENABLED');
     }
 
@@ -650,8 +713,10 @@ class Db extends EventEmitter {
       throw new Error('INVALID_TOKEN');
     }
 
-    user.isTwoFactorAuthenticationEnabled = true;
+    user.hasTwoFactorAuthenticationEnabled = true;
     await user.save();
+
+    this._log.info(`user ${userId} enabled 2FA`);
 
     this.notifyUser(user._id, ENABLED_2FA);
     this.emit(MIXPANEL_EVENT, {
@@ -668,7 +733,7 @@ class Db extends EventEmitter {
   async disable2FA(userId, token) {
     const user = await this._getUser(userId, { mustExist: true });
 
-    if (!user.isTwoFactorAuthenticationEnabled) {
+    if (!user.hasTwoFactorAuthenticationEnabled) {
       throw new Error('2FA_ALREADY_DISABLED');
     }
 
@@ -680,9 +745,11 @@ class Db extends EventEmitter {
       throw new Error('INVALID_TOKEN');
     }
 
-    user.isTwoFactorAuthenticationEnabled = false;
+    user.hasTwoFactorAuthenticationEnabled = false;
     user.twoFactorAuthenticationSecret = null;
     await user.save();
+
+    this._log.info(`user ${userId} disabled 2FA`);
 
     this.notifyUser(user._id, DISABLED_2FA);
     this.emit(MIXPANEL_EVENT, {
@@ -694,6 +761,12 @@ class Db extends EventEmitter {
         },
       ],
     });
+  }
+
+  async hasUserEnabled2FA(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+
+    return user.hasTwoFactorAuthenticationEnabled;
   }
 
   async getPlanById(planId) {
@@ -722,8 +795,8 @@ class Db extends EventEmitter {
       _paddleUpdateURL,
       _paddleCancelURL,
       nextBillDateAt,
-      servicePeriodEnd,
-      paymentMethod,
+      servicePeriodEndAt,
+      type,
       paymentStatus,
     } = data;
 
@@ -747,8 +820,8 @@ class Db extends EventEmitter {
       _paddleUpdateURL,
       _paddleCancelURL,
       nextBillDateAt,
-      servicePeriodEnd,
-      paymentMethod,
+      servicePeriodEndAt,
+      type,
       paymentStatus,
     }).save();
 
@@ -756,7 +829,9 @@ class Db extends EventEmitter {
       _subscription: subscription._id,
     }).exec();
 
-    this._log.info(`subscription created for user ${user._id}`);
+    this._log.info(
+      `subscription ${subscription._id} created for user ${user._id}`,
+    );
 
     this.notifyUser(user._id, SUBSCRIPTION_STARTED);
 
@@ -792,11 +867,17 @@ class Db extends EventEmitter {
     });
   }
 
-  async subscriptionPaymentPastDue(id) {
-    const subscription = await Subscriptions.findByIdAndUpdate(id, {
+  async subscriptionPaymentPastDue(subscriptionId) {
+    const subscription = await Subscriptions.findByIdAndUpdate(subscriptionId, {
       paymentStatus: 'past_due',
       paymentPastDueAt: Date.now(),
     }).exec();
+
+    this._log.info(
+      `subscription ${subscriptionId} payment past due user ${
+        subscription._user
+      }`,
+    );
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
@@ -833,10 +914,12 @@ class Db extends EventEmitter {
       _paddleCancelURL,
       price,
       nextBillDateAt,
-      servicePeriodEnd: nextBillDateAt,
+      servicePeriodEndAt: nextBillDateAt,
     }).exec();
 
-    this._log.info(`subscription ${subscription._id} updated`);
+    this._log.info(
+      `subscription ${subscription._id} updated user ${subscription._user}`,
+    );
 
     // handle plan upgrade or downgrade
     if (_plan !== oldSubscriptionPlanId) {
@@ -892,6 +975,9 @@ class Db extends EventEmitter {
         _subscription: null,
       },
     ).exec();
+    this._log.info(
+      `subscription ${subscriptionId} cancelled user ${_user._id}`,
+    );
 
     this.emit(MAILCHIMP, {
       user: _user,
@@ -929,7 +1015,7 @@ class Db extends EventEmitter {
     this.notifyUser(_user._id, SUBSCRIPTION_ENDED);
   }
 
-  async cancelSubscriptionPaymentMethod(paddleSubscriptionId) {
+  async cancelSubscriptionRenewal(paddleSubscriptionId) {
     const subscription = await Subscriptions.findOneAndUpdate(
       {
         _paddleSubscriptionId: paddleSubscriptionId,
@@ -942,6 +1028,9 @@ class Db extends EventEmitter {
       .populate('_user', '_id email')
       .exec();
     const { _user } = subscription;
+    this._log.info(
+      `subscription ${subscription._id} renewal cancelled user ${_user._id}`,
+    );
 
     this.notifyUser(_user._id, SUBSCRIPTION_RENEWAL_CANCELLED);
 
@@ -998,7 +1087,9 @@ class Db extends EventEmitter {
       _paddleReceiptURL,
     }).save();
 
-    this._log.info(`payment received #${payment._id} +$${earnings}`);
+    this._log.info(
+      `payment received #${payment._id} +$${earnings} from user ${_user}`,
+    );
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_TRACK_CHARGE',
@@ -1046,15 +1137,19 @@ class Db extends EventEmitter {
       },
     ).exec();
 
-    this._log.info(`payment refunded #${payment._id} -$${saleGrossRefund}`);
+    this._log.info(
+      `payment refunded #${payment._id} -$${saleGrossRefund} for user ${
+        payment._user
+      }`,
+    );
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'TRACK',
       args: [
         'subscription payment refunded',
         {
-          distinct_id: data._user,
-          payment_id: payment._user,
+          distinct_id: payment._user,
+          payment_id: payment._id,
           plan_id: payment._plan,
           amount: payment.saleGrossRefund,
         },
@@ -1097,6 +1192,17 @@ class Db extends EventEmitter {
       ticket_subject: subject,
       ticket_description: description,
     });
+
+    if (targetUserId) {
+      this._log.info(`user ${targetUserId} submitted a support ticket`);
+    }
+  }
+
+  async sendFeedback(text, email) {
+    this.notifyUser(null, SEND_FEEDBACK, {
+      feedback_text: text,
+      feedback_sender_email: email,
+    });
   }
 
   async isUserTrialExpiringWarningSent(userId) {
@@ -1110,6 +1216,8 @@ class Db extends EventEmitter {
 
   async sendUserTrialExpiringWarning(userId) {
     this.notifyUser(userId, TRIAL_EXPIRING);
+
+    this._log.info(`trial warning sent for user ${userId}`);
   }
 
   async userTrialExpired(userId) {
@@ -1121,6 +1229,8 @@ class Db extends EventEmitter {
       },
     ).exec();
     await Users.updateOne({ _id: userId }, { _subscription: null }).exec();
+
+    this._log.info(`trial expired for user ${userId}`);
 
     this.emit(MIXPANEL_EVENT, {
       eventType: 'PEOPLE_SET',
@@ -1159,7 +1269,9 @@ class Db extends EventEmitter {
       paymentMethod: 'cryptocurrency',
     }).save();
 
-    this._log.info(`payment received #${payment._id} +$${earnings}`);
+    this._log.info(
+      `payment received #${payment._id} +$${earnings} from user ${_user._id}`,
+    );
 
     this.notifyUser(_user, PAYMENT_RECEIVED, {
       _shortId: payment._shortId,
@@ -1172,6 +1284,99 @@ class Db extends EventEmitter {
       eventType: 'PEOPLE_TRACK_CHARGE',
       args: [data._user, data.saleGross],
     });
+  }
+
+  async userHasRoles(userId, roles) {
+    return !!(await Users.countDocuments({
+      _id: userId,
+      roles: { $in: roles },
+    }).exec());
+  }
+
+  async userHasSubscription(userId) {
+    return !!(await Users.countDocuments({
+      _id: userId,
+      _subscription: { $ne: null },
+    }).exec());
+  }
+
+  async userhasSubscriptionPlanFeature(userId, feature) {
+    try {
+      const user = await Users.findById(userId)
+        .select('_subscription')
+        .populate({
+          path: '_subscription',
+          select: '_plan',
+          populate: { path: '_plan', select: 'features' },
+        })
+        .exec();
+
+      return !!user._subscription._plan.features.includes(feature);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async deleteAccount(userId) {
+    const user = await this._getUser(userId, { mustExist: true });
+    user.email = `account_deleted__${uuidv4()}__-${user.email}`;
+    user.accountStatus = 'deleted';
+    user.passwordUpdatedAt = Date.now(); // this invalidates all issued auth tokens.
+    user.accountDeletedAt = Date.now();
+    await user.save();
+
+    this._log.info(`user ${user._id} account deleted`);
+
+    this.emit(MIXPANEL_EVENT, {
+      eventType: 'PEOPLE_SET',
+      args: [
+        user._id,
+        {
+          accountStatus: 'deleted',
+        },
+      ],
+    });
+    this.emit(MIXPANEL_EVENT, {
+      eventType: 'TRACK',
+      args: [
+        'account deletion',
+        {
+          distinct_id: user._id,
+        },
+      ],
+    });
+    this.emit(MAILCHIMP, {
+      user,
+      actionType: 'STATUS_CHANGE',
+      status: 'unsubscribed',
+    });
+
+    return true;
+  }
+
+  async notificationsLimitExceeded(
+    userId,
+    type,
+    maxReqsAllowed = 3,
+    minutes = 5,
+  ) {
+    const notificationsCount = await Notifications.countDocuments({
+      _user: userId,
+      type,
+      generatedAt: {
+        $gt: new Date(Date.now() - 1000 * 60 * minutes),
+      },
+    }).exec();
+
+    const hasExceeded = notificationsCount >= maxReqsAllowed;
+
+    if (hasExceeded) {
+      this._log.info(
+        `user ${userId} exceeded notification limit for notification type ${type}`,
+      );
+    }
+
+    return hasExceeded;
   }
 
   async notifyUser(userId, type, variables) {

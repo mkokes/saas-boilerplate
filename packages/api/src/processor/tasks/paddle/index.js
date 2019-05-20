@@ -65,8 +65,8 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
                 _paddleUpdateURL,
                 _paddleCancelURL,
                 nextBillDateAt,
-                servicePeriodEnd: nextBillDateAt,
-                paymentMethod: 'paddle',
+                servicePeriodEndAt: nextBillDateAt,
+                type: 'paddle',
                 paymentStatus: 'active',
               });
               break;
@@ -118,7 +118,7 @@ module.exports = ({ log: parentLog, eventQueue, db, Sentry }) => {
               break;
             }
             case 'SUBSCRIPTION_CANCELLED': {
-              await db.cancelSubscriptionPaymentMethod(paddleSubscriptionId);
+              await db.cancelSubscriptionRenewal(paddleSubscriptionId);
               log.info(`paddle subscription ${paddleSubscriptionId} cancelled`);
               break;
             }

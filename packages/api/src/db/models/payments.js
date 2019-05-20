@@ -10,7 +10,7 @@ const Payments = new mongoose.Schema(
   {
     _shortId: {
       type: ShortId,
-      len: 5,
+      len: 7,
       base: 64,
       alphabet: 'VBYRFTPLKMNWZSQXHJG0123456789',
       retries: 10,

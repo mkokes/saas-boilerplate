@@ -18,13 +18,7 @@ module.exports = ({ config: { JWT_SECRET }, app, db }) => {
         const decodedJWT = ctx.state.user;
         assertAccessTokenPayload(decodedJWT);
 
-        const challengeStatus = await db.authChallenge(
-          decodedJWT._id,
-          decodedJWT.iat,
-        );
-        if (!challengeStatus) {
-          throw new Error('user did not pass auth challenge');
-        }
+        await db.authChallenge(decodedJWT._id, decodedJWT.iat);
       } catch (err) {
         ctx.state.user = '';
       }

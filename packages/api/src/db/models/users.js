@@ -49,7 +49,7 @@ const UsersSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    isTwoFactorAuthenticationEnabled: {
+    hasTwoFactorAuthenticationEnabled: {
       type: Boolean,
       default: false,
     },
@@ -109,12 +109,12 @@ const UsersSchema = new mongoose.Schema(
     apiAccountToken: {
       type: String,
       unique: true,
-      default: uuidv4(),
+      default: () => uuidv4(),
     },
     apiSecretKey: {
       type: String,
       unique: true,
-      default: uuidv4(),
+      default: () => uuidv4(),
     },
     apiAccess: {
       type: String,
@@ -151,6 +151,10 @@ const UsersSchema = new mongoose.Schema(
       type: String,
       default: null,
       trim: true,
+    },
+    accountDeletedAt: {
+      type: Date,
+      default: null,
     },
   },
   {

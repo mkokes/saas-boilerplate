@@ -7,6 +7,7 @@ const {
   MAILCHIMP,
   MIXPANEL_EVENT,
   PADDLE,
+  COINBASE_COMMERCE,
 } = require('../constants/events');
 
 const config = require('../config');
@@ -34,6 +35,10 @@ const {
   getMixpanelEventArgs,
 } = require('./tasks/mixpanel');
 const { getPaddleSetupArgs, getPaddleArgs } = require('./tasks/paddle');
+const {
+  getCoinbaseCommerceSetupArgs,
+  getCoinbaseCommerceArgs,
+} = require('./tasks/coinbaseCommerce');
 
 jest.mock('./tasks/sendNotificationEmail', () => {
   let setupArgs;
@@ -133,6 +138,22 @@ jest.mock('./tasks/paddle', () => {
 
   fn.getPaddleSetupArgs = () => setupArgs;
   fn.getPaddleArgs = () => callArgs;
+
+  return fn;
+});
+jest.mock('./tasks/coinbaseCommerce', () => {
+  let setupArgs;
+  let callArgs;
+
+  const fn = args => {
+    setupArgs = args;
+    return na => {
+      callArgs = na;
+    };
+  };
+
+  fn.getCoinbaseCommerceSetupArgs = () => setupArgs;
+  fn.getCoinbaseCommerceArgs = () => callArgs;
 
   return fn;
 });
@@ -259,5 +280,22 @@ describe('processor', () => {
 
     db.emit(PADDLE, 123);
     expect(getPaddleArgs()).toEqual(123);
+  });
+
+  it('handles coinbase_commerce events', async () => {
+    await createProcessor({
+      log,
+      db,
+      eventQueue,
+      Sentry,
+    });
+
+    const setupArgs = getCoinbaseCommerceSetupArgs();
+    expect(setupArgs.db).toEqual(db);
+    expect(setupArgs.eventQueue).toEqual(eventQueue);
+    expect(setupArgs.Sentry).toEqual(Sentry);
+
+    db.emit(COINBASE_COMMERCE, 123);
+    expect(getCoinbaseCommerceArgs()).toEqual(123);
   });
 });

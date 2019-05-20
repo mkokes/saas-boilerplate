@@ -6,7 +6,7 @@
 
 'use strict';
 
-const componentExists = require('../utils/componentExists');
+const componentExists = require('../utils/exists');
 
 module.exports = {
   description: 'Add an unconnected component',

@@ -1,7 +1,7 @@
 {
   "name": "scheduler",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -9,7 +9,7 @@
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
     "lint": "yarn lint:js",
-    "lint:js": "yarn lint:eslint -- .",
+    "lint:js": "yarn lint:eslint .",
     "lint:eslint": "eslint --ignore-path .gitignore",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --fix",
     "pretty": "prettier --config .prettierrc --write \"src/**/*.js\""
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
-    "@sentry/node": "5.1.2",
+    "@sentry/node": "5.2.0",
     "apollo-server-koa": "^2.1.0",
     "axios": "^0.18.0",
     "bunyan": "^1.8.12",
@@ -55,9 +55,9 @@
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-airbnb-base": "13.1.0",
-    "eslint-config-prettier": "4.2.0",
+    "eslint-config-prettier": "4.3.0",
     "eslint-plugin-import": "2.16.0",
-    "eslint-plugin-prettier": "3.0.1",
+    "eslint-plugin-prettier": "3.1.0",
     "jest": "24.7.1"
   }
 }

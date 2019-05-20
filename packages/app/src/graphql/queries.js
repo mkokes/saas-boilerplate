@@ -12,9 +12,19 @@ export const USER_PROFILE_QUERY = gql`
   }
 `;
 
+export const USER_NOTIFICATIONS_PREFERENCES = gql`
+  query getUserNotificationsPreferences {
+    notificationsPreferences: userNotificationsPreferences @requireAuth {
+      type
+      accepted
+    }
+  }
+`;
+
 export const USER_PAYMENTS_RECEIPT_QUERY = gql`
   query getUserPaymentsReceipt {
     payments: userPaymentsReceipt @requireAuth {
+      _shortId
       saleGross
       _paddleReceiptURL
       receivedAt
@@ -57,7 +67,7 @@ export const BILLING_SHOW_PLANS_QUERY = gql`
   query getActivePlans {
     currentSubscription: userSubscription @requireAuth {
       paymentStatus
-      paymentMethod
+      type
     }
     currentPlan: userSubscriptionPlan @requireAuth {
       ...PlanFields
@@ -77,8 +87,8 @@ export const BILLING_CURRENT_SUBSCRIPTION = gql`
     subscription: userSubscription @requireAuth {
       status
       startedAt
-      servicePeriodEnd
-      paymentMethod
+      servicePeriodEndAt
+      type
       paymentStatus
       price
       _paddleUpdateURL

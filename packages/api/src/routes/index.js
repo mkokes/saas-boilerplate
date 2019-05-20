@@ -16,7 +16,7 @@ module.exports = async ({ config, db, app, log }) => {
     app,
   });
 
-  app.use(apiPrivateRouter.routes());
-  app.use(paddleRouter.routes());
-  app.use(coinbaseCommerceRouter.routes());
+  app.use(apiPrivateRouter.middleware());
+  app.use(paddleRouter.middleware());
+  app.use(coinbaseCommerceRouter.middleware());
 };

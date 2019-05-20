@@ -33,8 +33,8 @@ class HomeSplash extends React.Component {
           src="/img/hero-logo.svg"
           width="130px"
         />
-        Fast and Open Source
-        <small>Data storage for React Native</small>
+        AMGA Ventures's SaaS Boilerplate
+        <small>Launch projects quickly 🔥</small>
       </h1>
     );
 
@@ -57,7 +57,7 @@ class HomeSplash extends React.Component {
                   className="get-started-input"
                   type="email"
                   autoComplete="email"
-                  placeholder="Your Email"
+                  placeholder="Your email address"
                   name="email"
                   required
                 />
