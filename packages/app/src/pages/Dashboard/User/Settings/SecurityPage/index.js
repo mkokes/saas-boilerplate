@@ -168,7 +168,7 @@ export default class SecurityPage extends React.PureComponent {
                             />
                             <p>
                               <strong>
-                                Scan this QR code with the authenticator app
+                                Scan this QR code with Google Authenticator app
                               </strong>
                             </p>
                           </Col>
@@ -239,7 +239,8 @@ export default class SecurityPage extends React.PureComponent {
                                         <Field
                                           component={ReactstrapInput}
                                           name="token"
-                                          label="Enter generated 2FA code:"
+                                          label="Enter your 2FA authentication code:"
+                                          placeholder="Google Authenticator token"
                                           type="text"
                                           autoComplete="off"
                                           required
@@ -351,7 +352,8 @@ export default class SecurityPage extends React.PureComponent {
                                     <Field
                                       component={ReactstrapInput}
                                       name="token"
-                                      label="Enter Two-factor authentication code (security confirmation):"
+                                      label="Enter your 2FA authentication code (security confirmation):"
+                                      placeholder="Google Authenticator token"
                                       type="text"
                                       autoComplete="off"
                                       required

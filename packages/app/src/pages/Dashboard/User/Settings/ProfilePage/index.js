@@ -244,7 +244,7 @@ export default class ProfilePage extends React.PureComponent {
                                     <Field
                                       component={ReactstrapInput}
                                       name="token2FA"
-                                      label="Enter 2FA authentication code:"
+                                      label="Enter your 2FA authentication code:"
                                       placeholder="Google Authenticator token"
                                       type="text"
                                       autoComplete="off"
@@ -717,7 +717,7 @@ const DeleteUserAccountCard = props => {
                                     <Field
                                       component={ReactstrapInput}
                                       name="token2FA"
-                                      label="Enter 2FA authentication code:"
+                                      label="Enter your 2FA authentication code:"
                                       placeholder="Google Authenticator token"
                                       type="text"
                                       autoComplete="off"
