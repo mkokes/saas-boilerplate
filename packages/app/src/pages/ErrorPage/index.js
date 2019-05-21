@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Container, Button } from 'reactstrap';
 import * as Sentry from '@sentry/browser';
+import { GlobalConsumer } from 'GlobalState';
 
 import config from 'config';
 const { PRODUCT_NAME, WEBSITE_URL } = config;
@@ -45,14 +46,26 @@ export default class ErrorPage extends React.PureComponent {
           <p>
             <strong>Stacktrace:</strong> <pre>{stacktrace}</pre>
           </p>
-          <Button
-            onClick={() => Sentry.showReportDialog({ eventId })}
-            size="lg"
-            block
-            className="btn-theme"
-          >
-            Report error to {PRODUCT_NAME} team
-          </Button>
+          <GlobalConsumer>
+            {({ userProfile }) => (
+              <Button
+                onClick={() =>
+                  Sentry.showReportDialog({
+                    eventId,
+                    user: {
+                      name: `${userProfile.firstName} ${userProfile.lastName}`,
+                      email: userProfile.email,
+                    },
+                  })
+                }
+                size="lg"
+                block
+                className="btn-theme"
+              >
+                Report error to {PRODUCT_NAME} team
+              </Button>
+            )}
+          </GlobalConsumer>
           <div className="text-center mt-5">
             <a href={WEBSITE_URL} className="text-muted">
               Go to homepage
