@@ -2,7 +2,7 @@ const { WEB_URL, APP_URL } = process.env;
 
 const siteConfig = {
   customDocsPath: "web/docs",
-  title: "ACME",
+  title: "PRODUCT_NAME",
   tagline: "Tagline",
   url: WEB_URL,
   baseUrl: "/",
