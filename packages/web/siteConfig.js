@@ -25,7 +25,7 @@ const siteConfig = {
     thirdColor: "#6f2dd9",
     accentColor: "#717171"
   },
-  copyright: `Copyright © ${new Date().getFullYear()} Brand name.`,
+  copyright: `Copyright © ${new Date().getFullYear()} LEGAL_COMPANY_NAME.`,
   highlight: {
     theme: "atom-one-dark"
   },
