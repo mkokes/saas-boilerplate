@@ -11,6 +11,8 @@ module.exports = ({
   return async ({ eventType, args }) => {
     eventQueue.add(
       async () => {
+        if (!MIXPANEL_API_KEY) return;
+        
         try {
           const mixpanel = Mixpanel.init(MIXPANEL_API_KEY, {
             protocol: 'https',
