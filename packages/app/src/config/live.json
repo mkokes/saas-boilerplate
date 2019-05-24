@@ -2,7 +2,7 @@
   "API_URL": "https://api.domain.io",
   "WEBSITE_URL": "https://www.domain.io",
   "RECAPTCHA_SITE_KEY": "",
-  "MIXPANEL_ID": "",
+  "MIXPANEL_TOKEN": "",
   "PADDLE_VENDOR_ID": null,
   "SENTRY_DSN": "",
   "GOOGLE_ANALYTICS": "",

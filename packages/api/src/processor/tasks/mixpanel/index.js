@@ -1,7 +1,7 @@
 const Mixpanel = require('mixpanel');
 
 module.exports = ({
-  config: { MIXPANEL_API_KEY },
+  config: { MIXPANEL_TOKEN },
   log: parentLog,
   eventQueue,
   Sentry,
@@ -11,8 +11,10 @@ module.exports = ({
   return async ({ eventType, args }) => {
     eventQueue.add(
       async () => {
+        if (!MIXPANEL_TOKEN) return;
+
         try {
-          const mixpanel = Mixpanel.init(MIXPANEL_API_KEY, {
+          const mixpanel = Mixpanel.init(MIXPANEL_TOKEN, {
             protocol: 'https',
           });
 
