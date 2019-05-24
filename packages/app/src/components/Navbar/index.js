@@ -260,42 +260,17 @@ function NavbarComponent(props) {
                             </span>
                           </UserBox>
 
-                          {isDashboardRoute ? (
-                            <Fragment>
-                              {userProfile.isSignUpEmailConfirmed && (
-                                <Fragment>
-                                  <DropdownItem divider className="m-0" />
-                                  <DashboardDropdownItem
-                                    to="/dashboard/settings/profile"
-                                    tag={RRNavLink}
-                                  >
-                                    Settings
-                                  </DashboardDropdownItem>
-                                </Fragment>
-                              )}
-                              <DropdownItem divider className="m-0" />
-                              <DashboardDropdownItem
-                                to="/support"
-                                tag={RRNavLink}
-                              >
-                                Contact support
-                              </DashboardDropdownItem>
-                            </Fragment>
-                          ) : (
-                            <Fragment>
-                              <DropdownItem divider className="m-0" />
-                              <DashboardDropdownItem
-                                to="/dashboard"
-                                tag={RRNavLink}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faHome}
-                                  className="align-text-top mr-1"
-                                />
-                                Dashboard
-                              </DashboardDropdownItem>
-                            </Fragment>
-                          )}
+                          <DropdownItem divider className="m-0" />
+                          <DashboardDropdownItem
+                            to="/dashboard/settings/profile"
+                            tag={RRNavLink}
+                          >
+                            Settings
+                          </DashboardDropdownItem>
+                          <DropdownItem divider className="m-0" />
+                          <DashboardDropdownItem to="/support" tag={RRNavLink}>
+                            Contact support
+                          </DashboardDropdownItem>
                           <DropdownItem divider className="m-0" />
                           <DashboardDropdownItem to="/signout" tag={RRNavLink}>
                             {isDashboardRoute && (
