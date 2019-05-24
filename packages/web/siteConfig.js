@@ -2,7 +2,7 @@ const { WEB_URL, APP_URL } = process.env;
 
 const siteConfig = {
   customDocsPath: "web/docs",
-  title: "ACME",
+  title: "PRODUCT_NAME",
   tagline: "Tagline",
   url: WEB_URL,
   baseUrl: "/",
@@ -25,7 +25,7 @@ const siteConfig = {
     thirdColor: "#6f2dd9",
     accentColor: "#717171"
   },
-  copyright: `Copyright © ${new Date().getFullYear()} Brand name.`,
+  copyright: `Copyright © ${new Date().getFullYear()} LEGAL_COMPANY_NAME.`,
   highlight: {
     theme: "atom-one-dark"
   },

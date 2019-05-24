@@ -1,7 +1,7 @@
 {
   "API_URL": "http://localhost:3001",
   "WEBSITE_URL": "http://localhost:3002",
-  "MIXPANEL_ID": "",
+  "MIXPANEL_TOKEN": "",
   "PADDLE_VENDOR_ID": null,
   "SENTRY_DSN": "",
   "GOOGLE_ANALYTICS": "",
