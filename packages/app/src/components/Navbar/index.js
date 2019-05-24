@@ -97,7 +97,6 @@ function NavbarComponent(props) {
   const { location, brandNameLink, dashboardNavbarHidden } = props;
 
   const { pathname } = location;
-  const isDashboardRoute = pathname.indexOf('/dashboard') === 0;
 
   const [isNavbarCollapseOpen, setIsNavbarCollapseOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -273,12 +272,10 @@ function NavbarComponent(props) {
                           </DashboardDropdownItem>
                           <DropdownItem divider className="m-0" />
                           <DashboardDropdownItem to="/signout" tag={RRNavLink}>
-                            {isDashboardRoute && (
-                              <FontAwesomeIcon
-                                icon={faUnlockAlt}
-                                className="align-text-top mr-1"
-                              />
-                            )}
+                            <FontAwesomeIcon
+                              icon={faUnlockAlt}
+                              className="align-text-top mr-1"
+                            />
                             Sign out
                           </DashboardDropdownItem>
                         </DropdownMenu>
