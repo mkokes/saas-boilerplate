@@ -53,8 +53,10 @@ export default class ErrorPage extends React.PureComponent {
                   Sentry.showReportDialog({
                     eventId,
                     user: {
-                      name: `${userProfile.firstName} ${userProfile.lastName}`,
-                      email: userProfile.email,
+                      name: userProfile
+                        ? `${userProfile.firstName} ${userProfile.lastName}`
+                        : null,
+                      email: userProfile ? userProfile.email : null,
                     },
                   })
                 }
@@ -78,6 +80,6 @@ export default class ErrorPage extends React.PureComponent {
 }
 
 ErrorPage.propTypes = {
-  stacktrace: PropTypes.object,
+  stacktrace: PropTypes.string,
   error: PropTypes.object,
 };

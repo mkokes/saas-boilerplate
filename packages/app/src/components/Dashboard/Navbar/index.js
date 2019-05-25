@@ -27,7 +27,7 @@ import {
 } from 'reactstrap';
 
 import { GlobalConsumer } from 'GlobalState';
-import { useMediaMin } from 'mediaQuery';
+import { useMediaMin } from 'MediaQuery';
 import Avatar from 'components/Avatar';
 import HeadWay from 'components/HeadWay';
 
@@ -97,7 +97,6 @@ function NavbarComponent(props) {
   const { location, brandNameLink, dashboardNavbarHidden } = props;
 
   const { pathname } = location;
-  const isDashboardRoute = pathname.indexOf('/dashboard') === 0;
 
   const [isNavbarCollapseOpen, setIsNavbarCollapseOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -112,12 +111,7 @@ function NavbarComponent(props) {
           onClick={() => setIsNavbarCollapseOpen(false)}
           className="mr-1"
         >
-          <NavLink
-            to="/dashboard"
-            exact
-            activeClassName="active"
-            tag={RRNavLink}
-          >
+          <NavLink to="/dashboard" exact tag={RRNavLink}>
             <FontAwesomeIcon icon={faHome} className="align-text-top mr-1" />
             Dashboard
           </NavLink>
@@ -145,12 +139,7 @@ function NavbarComponent(props) {
           onClick={() => setIsNavbarCollapseOpen(false)}
           className="mr-1"
         >
-          <NavLink
-            to="/dashboard/give-feedback"
-            exact
-            activeClassName="active"
-            tag={RRNavLink}
-          >
+          <NavLink to="/dashboard/give-feedback" exact tag={RRNavLink}>
             Give Feedback
           </NavLink>
         </NavItem>
@@ -260,50 +249,23 @@ function NavbarComponent(props) {
                             </span>
                           </UserBox>
 
-                          {isDashboardRoute ? (
-                            <Fragment>
-                              {userProfile.isSignUpEmailConfirmed && (
-                                <Fragment>
-                                  <DropdownItem divider className="m-0" />
-                                  <DashboardDropdownItem
-                                    to="/dashboard/settings/profile"
-                                    tag={RRNavLink}
-                                  >
-                                    Settings
-                                  </DashboardDropdownItem>
-                                </Fragment>
-                              )}
-                              <DropdownItem divider className="m-0" />
-                              <DashboardDropdownItem
-                                to="/support"
-                                tag={RRNavLink}
-                              >
-                                Contact support
-                              </DashboardDropdownItem>
-                            </Fragment>
-                          ) : (
-                            <Fragment>
-                              <DropdownItem divider className="m-0" />
-                              <DashboardDropdownItem
-                                to="/dashboard"
-                                tag={RRNavLink}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faHome}
-                                  className="align-text-top mr-1"
-                                />
-                                Dashboard
-                              </DashboardDropdownItem>
-                            </Fragment>
-                          )}
+                          <DropdownItem divider className="m-0" />
+                          <DashboardDropdownItem
+                            to="/dashboard/settings/profile"
+                            tag={RRNavLink}
+                          >
+                            Settings
+                          </DashboardDropdownItem>
+                          <DropdownItem divider className="m-0" />
+                          <DashboardDropdownItem to="/support" tag={RRNavLink}>
+                            Contact support
+                          </DashboardDropdownItem>
                           <DropdownItem divider className="m-0" />
                           <DashboardDropdownItem to="/signout" tag={RRNavLink}>
-                            {isDashboardRoute && (
-                              <FontAwesomeIcon
-                                icon={faUnlockAlt}
-                                className="align-text-top mr-1"
-                              />
-                            )}
+                            <FontAwesomeIcon
+                              icon={faUnlockAlt}
+                              className="align-text-top mr-1"
+                            />
                             Sign out
                           </DashboardDropdownItem>
                         </DropdownMenu>

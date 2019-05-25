@@ -40,7 +40,7 @@ import {
   DashboardLayout,
   DashboardSettingsLayout,
   DashboardLayoutWithoutSubNavbar,
-} from 'layout';
+} from 'Layout';
 import { GlobalConsumer } from 'GlobalState';
 
 import config from 'config';

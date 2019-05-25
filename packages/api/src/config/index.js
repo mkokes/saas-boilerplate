@@ -32,7 +32,7 @@ const env = envalid.cleanEnv(
     GOOGLE_AUTHENTICATOR_DISPLAY_NAME: str({ default: 'PRODUCT_NAME' }),
     PADDLE_VENDOR_ID: str({ default: '' }),
     PADDLE_VENDOR_AUTH_CODE: str({ default: '' }),
-    MIXPANEL_API_KEY: str({ default: '' }),
+    MIXPANEL_TOKEN: str({ default: '' }),
     MAILCHIMP_API_KEY: str({ default: '' }),
     MAILCHIMP_LIST_ID: str({ default: '' }),
     POSTMARK_API_TOKEN: str({ default: '' }),

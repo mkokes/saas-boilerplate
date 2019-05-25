@@ -2,8 +2,8 @@
   "API_URL": "https://stage.api.domain.io",
   "WEBSITE_URL": "https://www.stage.web.domain.io",
   "RECAPTCHA_SITE_KEY": "",
-  "MIXPANEL_ID": "",
-  "PADDLE_VENDOR_ID": null,
+  "MIXPANEL_TOKEN": "",
+  "PADDLE_VENDOR_ID": 0,
   "SENTRY_DSN": "",
   "GOOGLE_ANALYTICS": "",
   "HEADWAY_ID": ""
