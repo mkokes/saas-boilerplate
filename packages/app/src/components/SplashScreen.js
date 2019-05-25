@@ -7,7 +7,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BaseLayout } from 'layout';
+import { BaseLayout } from 'Layout';
 import Loader from 'components/Loader';
 
 import Delayed from 'components/Delayed';
