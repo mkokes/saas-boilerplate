@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Navbar from 'components/Navbar/Loadable';
+import Navbar from 'components/Dashboard/Navbar/Loadable';
 import Footer from 'components/Footer/Loadable';
-import DashboardSettingsNavbar from 'components/DashboardSettingsNavbar/Loadable';
+import DashboardSettingsNavbar from 'components/Dashboard/Settings/Navbar/Loadable';
 
 import config from 'config';
 const { LEGAL_COMPANY_NAME, WEBSITE_URL } = config;

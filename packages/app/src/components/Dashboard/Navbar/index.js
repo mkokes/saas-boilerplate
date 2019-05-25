@@ -27,7 +27,7 @@ import {
 } from 'reactstrap';
 
 import { GlobalConsumer } from 'GlobalState';
-import { useMediaMin } from 'mediaQuery';
+import { useMediaMin } from 'MediaQuery';
 import Avatar from 'components/Avatar';
 import HeadWay from 'components/HeadWay';
 
@@ -111,12 +111,7 @@ function NavbarComponent(props) {
           onClick={() => setIsNavbarCollapseOpen(false)}
           className="mr-1"
         >
-          <NavLink
-            to="/dashboard"
-            exact
-            activeClassName="active"
-            tag={RRNavLink}
-          >
+          <NavLink to="/dashboard" exact tag={RRNavLink}>
             <FontAwesomeIcon icon={faHome} className="align-text-top mr-1" />
             Dashboard
           </NavLink>
@@ -144,12 +139,7 @@ function NavbarComponent(props) {
           onClick={() => setIsNavbarCollapseOpen(false)}
           className="mr-1"
         >
-          <NavLink
-            to="/dashboard/give-feedback"
-            exact
-            activeClassName="active"
-            tag={RRNavLink}
-          >
+          <NavLink to="/dashboard/give-feedback" exact tag={RRNavLink}>
             Give Feedback
           </NavLink>
         </NavItem>
