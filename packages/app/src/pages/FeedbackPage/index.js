@@ -169,7 +169,7 @@ const FeedbackForm = props => {
               placeholder="example@email.com"
               autoComplete="email"
               required
-              hidden={userProfile}
+              hidden={userProfile !== null}
             />
             <div>
               <Button
