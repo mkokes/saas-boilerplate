@@ -19,7 +19,7 @@ const refreshAuthTokenLink = () =>
     ({ graphQLErrors, networkError, operation, response, forward }) =>
       new Observable(async observer => {
         if (graphQLErrors) {
-          graphQLErrors.map(async ({ extensions }) => {
+          graphQLErrors.map(async ({ extensions }, index) => {
             switch (extensions.code) {
               case 'UNAUTHENTICATED': {
                 const retryRequest = () => {
@@ -63,7 +63,8 @@ const refreshAuthTokenLink = () =>
                     tokenSubscribers = [];
                     isFetchingToken = false;
 
-                    return globalProvider.logOut({ isForced: true });
+                    await globalProvider.logOut({ isForced: true });
+                    return observer.error(graphQLErrors[index]);
                   }
                 }
 
