@@ -254,6 +254,7 @@ class Provider extends Component {
         loggedIn: false,
       },
     });
+    await this.apolloClient().clearStore();
 
     if (silently) return;
 
