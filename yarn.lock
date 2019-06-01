@@ -15401,9 +15401,9 @@ realpath-native@^1.1.0:
     util.promisify "^1.0.0"
 
 reaptcha@^1.4.0:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/reaptcha/-/reaptcha-1.4.2.tgz#c54596e8035559b74ac97581967c10358d50cb7b"
-  integrity sha512-6/330ut6xac+M4KMmzFO8FwMQ+bZMpriiEjqSzIrfCYdjR7fa5C+pcnJYSWysHdcYuZi70Hfrca/+TYwQpAwpw==
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/reaptcha/-/reaptcha-1.5.0.tgz#9bfbb3c62d3f9b675acfa4ce86e43fb8881e076e"
+  integrity sha512-hYKeX0D5tqVOYr64aabF0PaE/AE1VfMZdVbvtjWmsUqsYTk/VawqFMGhGRl0igX0IOHXSZ0lQ1Qj17T1uFSl2Q==
 
 rechoir@^0.6.2:
   version "0.6.2"
